@@ -1,0 +1,41 @@
+{
+  "name": "@haiyue/shaderlab-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/app.ts",
+  "engines": {
+    "node": ">=24.12"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.mjs",
+    "bundle:android": "node scripts/bundle.mjs android",
+    "bundle:ios": "node scripts/bundle.mjs ios",
+    "build:android": "node scripts/build.mjs build android",
+    "build:ios": "node scripts/build.mjs build ios --for-device",
+    "run:android": "node scripts/build.mjs run android",
+    "run:ios": "node scripts/build.mjs run ios",
+    "prepare:ios": "node scripts/build.mjs prepare ios",
+    "prepare:android": "node scripts/build.mjs prepare android",
+    "test:compiler": "node test/compiler-browser.mjs",
+    "snapshots": "node scripts/snapshot-gallery.mjs",
+    "test:gpu": "node test/gpu-browser.mjs"
+  },
+  "dependencies": {
+    "@haiyue/native": "0.1.4-shaderlab.0",
+    "@haiyue/engine": "0.2.0",
+    "@nativescript/canvas": "2.1.18",
+    "@nativescript/core": "9.1.1",
+    "core-js-pure": "3.50.0"
+  },
+  "devDependencies": {
+    "@nativescript/android": "9.0.3",
+    "@nativescript/ios": "9.0.3",
+    "@nativescript/types": "9.0.0",
+    "@nativescript/webpack": "5.0.38",
+    "nativescript": "9.1.1",
+    "typescript": "5.7.3",
+    "@webgpu/types": "0.1.64"
+  }
+}

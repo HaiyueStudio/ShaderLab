@@ -1,0 +1,68 @@
+{
+  "source": "HaiyueStudio/Editor/shaderEditor",
+  "destination": "HaiyueStudio/ShaderLab/web",
+  "files": 137,
+  "modified": [
+    "src\\main.ts",
+    "src\\ui.ts",
+    "test\\arrays-browser.mjs",
+    "test\\assignments-browser.mjs",
+    "test\\browser-smoke.mjs",
+    "test\\clock-browser.mjs",
+    "test\\common-browser.mjs",
+    "test\\common-glsl-browser.mjs",
+    "test\\cubemap-browser.mjs",
+    "test\\media-browser.mjs",
+    "test\\minesweeper-browser.mjs",
+    "test\\pass-tabs-browser.mjs",
+    "test\\puzzle-browser.mjs",
+    "test\\sound-browser.mjs",
+    "test\\sound-duration-browser.mjs",
+    "test\\source-language-browser.mjs",
+    "test\\tutorial-browser.mjs",
+    "test\\wgsl-browser.mjs"
+  ],
+  "assets": [
+    {
+      "file": "assets/blue_noise.png",
+      "sha256": "54ad95664c4e751aa31d449291f1e7af0731fed996b76b663e2fe0a53e118e65"
+    },
+    {
+      "file": "assets/future_city.png",
+      "sha256": "fccd03f7faf507e6c829c1c33fc6dca424579314fb91e25c8b8a2d0c4065eddb"
+    },
+    {
+      "file": "assets/generated-images.json",
+      "sha256": "4e58e7bab04ed543ecb7ed2cf263f01350e52a292d496d033ece1be28fa6d429"
+    },
+    {
+      "file": "assets/icon.svg",
+      "sha256": "07921530be323c2b1a2983f0d29b78210f7475db806ebbd9aebf901aca70f001"
+    },
+    {
+      "file": "assets/msdf.png",
+      "sha256": "8595ce0bb0e1250633a0e6ca78620e49a618fc7c703d1cc5f291b668cc570b93"
+    },
+    {
+      "file": "assets/noise_medium.png",
+      "sha256": "b785bc13249f177f1a525653acf7e869278d5d741891bde411a07c4b126c3f10"
+    },
+    {
+      "file": "assets/noise_small.png",
+      "sha256": "89977181642088a740b4279f5a1a45d879013d2f96166ab9a7a4d46ca57ba283"
+    },
+    {
+      "file": "assets/rgba_noise_medium.png",
+      "sha256": "e59217a8eecc2e90bfbe7bb163dfcdd90de155bb35e4e904484ede91b8c0f36d"
+    },
+    {
+      "file": "assets/rgba_noise_small.png",
+      "sha256": "6c43a9a9e21bfb8bea1c1b4454206c85651c0abda657ecd3535b1f9e4e4805b4"
+    },
+    {
+      "file": "assets/webgpu.png",
+      "sha256": "d6131087eea4b48389ea5213a44c899667a232513e040927127a623b7123d2c9"
+    }
+  ],
+  "verifiedAt": "2026-10-16T05:30:26.407Z"
+}

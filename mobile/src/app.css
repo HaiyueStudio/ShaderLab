@@ -1,0 +1,16 @@
+Page { background-color:#101318; color:#e7ecf2; }
+ActionBar { background-color:#151a21; color:#e7ecf2; }
+Button { background-color:#202832; color:#dbe5ed; border-radius:6; margin:3; padding:8 12; min-height:44; font-size:13; text-transform:none; }
+Button.primary { background-color:#b8ed65; color:#15200f; }
+Button.danger { color:#ffacb7; }
+Label { color:#dce4ed; font-size:14; }
+Label.title { font-size:25; font-weight:bold; margin:12 0; }
+Label.section { font-size:17; color:#b8ed65; margin:18 0 10; }
+Label.muted { color:#91a1b4; font-size:12; }
+Label.status { color:#b8ed65; font-size:11; padding:6 10; background-color:#151b23; }
+Label.error { color:#f6b6a9; font-size:12; padding:8; }
+TextView { background-color:#0d131d; color:#d4dbe5; font-family:monospace; font-size:13; padding:12; border-width:0; }
+TextField { background-color:#202832; color:#e7ecf2; padding:10; border-radius:6; margin:4 0; }
+.card { background-color:#191f28; border-color:#303945; border-width:1; border-radius:10; padding:14; margin:6; }
+.toolbar { background-color:#171d25; padding:3; }
+.body { padding:12; }

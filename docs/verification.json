@@ -1,0 +1,66 @@
+{
+  "verifiedAt": "2026-10-16T05:53:08.589Z",
+  "platform": "win32",
+  "node": "v24.19.0",
+  "webBuildHash": "e38fcbbf424a37259ee46057156e5a16bc0008c82609517c8258508e915183db",
+  "unitTests": {
+    "web": {
+      "passed": 219,
+      "failed": 0
+    },
+    "mobile": {
+      "passed": 7,
+      "failed": 0
+    }
+  },
+  "typecheck": {
+    "web": "passed",
+    "mobile": "passed"
+  },
+  "browser": {
+    "webSmoke": "passed",
+    "sourceLanguages": "passed",
+    "wgslToGlsl": {
+      "status": "passed",
+      "compiledPasses": 81
+    },
+    "mobileShaderGraph": {
+      "status": "passed",
+      "backend": "real browser WebGPU with platform IO test ports",
+      "checks": [
+        "mobile graph renders procedural, feedback, MSDF, puzzle, minesweeper and clock",
+        "Common and four-channel bindings use the shared ABI",
+        "invalid compile retains active GPU graph",
+        "3D material scene switches on the same Engine device"
+      ]
+    },
+    "localWasmCompiler": {
+      "status": "passed",
+      "offlineWasm": true
+    }
+  },
+  "bundles": {
+    "android": "passed",
+    "ios": "passed",
+    "output": "mobile/artifacts/bundles"
+  },
+  "nativeDeviceBuilds": {
+    "ios": {
+      "status": "requires-user-mac",
+      "tools": "macOS, Xcode, CocoaPods, signing"
+    },
+    "android": {
+      "status": "toolchain-unavailable",
+      "missing": [
+        "JDK 21",
+        "Android SDK platform 35"
+      ]
+    }
+  },
+  "editorExtractionChecks": {
+    "boundaries": "passed",
+    "dependencyCompatibility": "passed",
+    "remainingProductDescriptors": 4
+  },
+  "nativeBridgeArchiveSha256": "b000100ddc581c41d5f7da0eb1683a5a6166f3bcfd5fa1fa3246b4ee85001080"
+}

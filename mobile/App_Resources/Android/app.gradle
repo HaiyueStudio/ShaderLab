@@ -1,0 +1,4 @@
+android {
+ compileSdkVersion 35
+ defaultConfig { minSdkVersion 26; targetSdkVersion 35 }
+}

@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';import {resolve} from 'node:path';import {mkdirSync,writeFileSync} from 'node:fs';import {runEditorBrowserScenario} from '../../scripts/editor-e2e/browserDriver.mjs';
+const root=resolve(import.meta.dirname,'../..'),out=resolve(root,'mobile/artifacts/compiler');mkdirSync(out,{recursive:true});
+const result=await runEditorBrowserScenario({root,route:'mobile/generated/compiler/index.html',downloadDirectory:out,gpuTestFlags:false,readinessExpression:'typeof nativeShaderCompiler!=="undefined"',scenario:async({evaluate,waitFor,assertNoBrowserErrors})=>{
+ await evaluate('nativeShaderCompiler.start("ok","fn mainImage(p:vec2f)->vec4f{return vec4f(p / iResolution.xy, 0.5, 1.0);}",{entryPoint:"image"})');let raw='';await waitFor(async()=>raw=await evaluate('nativeShaderCompiler.take("ok")'),'local WASM conversion');const translated=JSON.parse(raw);assert.deepEqual(translated.diagnostics,[]);assert.match(translated.code,/void mainImage/);
+ await evaluate('nativeShaderCompiler.start("bad","fn mainImage(",{entryPoint:"image"})');await waitFor(async()=>raw=await evaluate('nativeShaderCompiler.take("bad")'),'source diagnostics');assert.equal(JSON.parse(raw).code,null);assertNoBrowserErrors();return{status:'passed',offlineWasm:true};
+}});writeFileSync(resolve(out,'report.json'),JSON.stringify(result,null,2));console.log(result);

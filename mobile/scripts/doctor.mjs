@@ -1,0 +1,5 @@
+import {existsSync} from 'node:fs';import path from 'node:path';import {spawnSync} from 'node:child_process';
+const platform=process.argv[2]??(process.platform==='darwin'?'ios':'android');
+const java=process.env.JAVA_HOME?path.join(process.env.JAVA_HOME,'bin',process.platform==='win32'?'java.exe':'java'):'java',version=spawnSync(java,['-version'],{encoding:'utf8'}),javaText=version.stderr??'';
+const checks=platform==='ios'?{macOS:process.platform==='darwin',xcode:spawnSync('xcodebuild',['-version'],{encoding:'utf8'}).status===0,bundler:spawnSync('bundle',['--version'],{encoding:'utf8'}).status===0}:{jdk21:/version "21[.\"]/.test(javaText),androidSdk:!!process.env.ANDROID_HOME&&existsSync(process.env.ANDROID_HOME),platform35:!!process.env.ANDROID_HOME&&existsSync(path.join(process.env.ANDROID_HOME,'platforms/android-35/android.jar'))};
+console.log(JSON.stringify({platform,node:process.version,checks,ready:Object.values(checks).every(Boolean)},null,2));if(!Object.values(checks).every(Boolean))process.exitCode=1;

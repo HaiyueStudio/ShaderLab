@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "types": [
+      "@nativescript/types",
+      "@webgpu/types"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "nativescript.config.ts"
+  ]
+}
