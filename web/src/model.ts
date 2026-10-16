@@ -14,6 +14,8 @@ export const CUBE_FACE_LABELS: Record<CubeFace, string> = { px: '+X 右', nx: '�
 export type Channel = { kind: 'none' } | { kind: 'image'; assetId: string } | { kind: 'cubemap'; assetId: string } | { kind: 'buffer'; pass: BufferId } | { kind: 'builtin'; texture: BuiltinTextureId } | { kind: 'video'; assetId: string } | { kind: 'keyboard' };
 export type PreviewMode = 'canvas' | 'scene';
 export type PreviewMesh = 'sphere' | 'box' | 'torus';
+// Shared by project validation and both editors so every offered scale can be saved and reopened.
+export const PREVIEW_SCALES: readonly number[] = [1, 0.75, 0.5, 0.25];
 export interface ShaderPass { glsl?: string; id: PassId; enabled: boolean; code: string; channels: Channel[] }
 export interface ImageAsset { id: string; name: string; kind?: 'image'; dataUrl: string }
 export interface CubeAsset { id: string; name: string; kind: 'cubemap'; faces: Record<CubeFace, string> }
@@ -115,7 +117,7 @@ export function validateProject(value: unknown): ShaderProject {
     const source = id === 'common' ? p.commonGlsl : id === 'sound' ? sound.glsl : p.passes.find(pass => pass.id === id)?.glsl;
     assert(language !== 'glsl' || typeof source === 'string', 'GLSL 语言设置需要对应源码。');
   }
-  assert(p.preview && ['canvas', 'scene'].includes(p.preview.mode) && ['sphere', 'box', 'torus'].includes(p.preview.mesh) && [0.25, 0.5, 1].includes(p.preview.scale), '预览设置无效。');
+  assert(p.preview && ['canvas', 'scene'].includes(p.preview.mode) && ['sphere', 'box', 'torus'].includes(p.preview.mesh) && PREVIEW_SCALES.includes(p.preview.scale), '预览设置无效。');
   const clean = structuredClone(p);
   clean.common ??= '';
   clean.sound ??= createSound();

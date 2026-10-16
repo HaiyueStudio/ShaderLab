@@ -7,7 +7,7 @@ import type { BufferPreview } from './bufferPreviews.js';
 import { CodeEditor, GlslEditor, WgslPreview } from './codeEditor.js';
 import { GalleryStore, type GalleryItem } from './storage.js';
 import { examples } from './examples.js';
-import { createProject, codeOf, codeTabs, passOf, parseProject, PASS_IDS, PASS_LABELS, LIMITS, CUBE_FACES, CUBE_FACE_LABELS, channelTypes, type CodeId, type ShaderLanguage, type PassId, type PreviewMode, type PreviewMesh, type ShaderProject } from './model.js';
+import { createProject, codeOf, codeTabs, passOf, parseProject, PASS_IDS, PASS_LABELS, PREVIEW_SCALES, LIMITS, CUBE_FACES, CUBE_FACE_LABELS, channelTypes, type CodeId, type ShaderLanguage, type PassId, type PreviewMode, type PreviewMesh, type ShaderProject } from './model.js';
 import { BUILTIN_TEXTURES, builtinTexture, type BuiltinTextureId } from './builtinTextures.js';
 import { TutorialPage } from './tutorialPage.js';
 import { findTutorial } from './tutorialContent.js';
@@ -22,7 +22,7 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 const disposeUI = initializeUI();
 $<HYSelect>('code-language').options = [{ value: 'wgsl', label: 'WGSL' }, { value: 'glsl', label: 'GLSL' }];
 $<HYCheckbox>('detect-language').checked = true;
-$<HYSelect>('preview-scale').options = [{ value: '1', label: '100%' }, { value: '0.5', label: '50%' }, { value: '0.25', label: '25%' }];
+$<HYSelect>('preview-scale').options = PREVIEW_SCALES.map(scale => ({ value: String(scale), label: scale * 100 + '%' }));
 $<HYSelect>('sound-duration').options = [1, 4, 8, 16, 30, 60, 120].map(value => ({ value: String(value), label: `${value} 秒` }));
 $<HYSelect>('sound-volume').options = [0, 0.1, 0.25, 0.5, 1].map(value => ({ value: String(value), label: `${value * 100}%` }));
 $<HYSelect>('mesh-select').options = [{ value: 'sphere', label: '球体' }, { value: 'box', label: '立方体' }, { value: 'torus', label: '圆环' }];

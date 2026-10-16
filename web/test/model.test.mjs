@@ -7,6 +7,17 @@ import { wrapShader } from '../dist/shaders.js';
 test('project round-trip and built-in examples satisfy the serialized contract', () => {
   for (const project of [createProject(), ...examples().map(e => e.project)]) assert.deepEqual(parseProject(JSON.stringify(project)), project);
 });
+test('all preview resolution choices survive validation and project export/import', () => {
+  for (const scale of [1, 0.75, 0.5, 0.25]) {
+    const project = createProject(); project.preview.scale = scale;
+    assert.deepEqual(validateProject(project), project);
+    assert.deepEqual(parseProject(JSON.stringify(project)), project);
+  }
+  for (const scale of [0, -1, 0.6, 2, '0.75', null, NaN, Infinity]) {
+    const project = createProject(); project.preview.scale = scale;
+    assert.throws(() => validateProject(project), /预览设置无效/);
+  }
+});
 test('rejects excess channels, duplicate passes, missing assets, disabled buffers and unknown versions atomically', () => {
   for (const change of [p => p.version = 99, p => p.passes[0].id = 'image', p => p.passes[4].channels.push({kind:'none'}),
     p => p.passes[4].channels[0] = {kind:'image',assetId:'missing'}, p => p.passes[4].channels[0] = {kind:'buffer',pass:'buffer-a'},

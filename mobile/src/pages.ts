@@ -3,7 +3,7 @@ import { Canvas } from '@nativescript/canvas';
 import { NativeRenderHost, NativeTouchInput, NativeCanvasTextures } from '@haiyue/native/engine';
 import { NativeDesktopInput } from '@haiyue/native/input/desktop';
 import { savePhoto } from '@haiyue/native/media';
-import { createProject, parseProject, passOf, PASS_IDS, PASS_LABELS, CUBE_FACES, CUBE_FACE_LABELS, codeOf, type CodeId, type ShaderProject, type Channel, type BufferId, type PassId } from '../../web/dist/model.js';
+import { createProject, parseProject, passOf, PASS_IDS, PASS_LABELS, PREVIEW_SCALES, CUBE_FACES, CUBE_FACE_LABELS, codeOf, type CodeId, type ShaderProject, type Channel, type BufferId, type PassId } from '../../web/dist/model.js';
 import { examples } from '../../web/dist/examples.js';
 import { BUILTIN_TEXTURES, builtinTexture } from '../../web/dist/builtinTextures.js';
 import { TUTORIAL_CHAPTERS, TUTORIAL_STAGES, TUTORIAL_REFERENCES } from '../../web/dist/tutorialContent.js';
@@ -34,7 +34,8 @@ function row(...children: View[]) { const v = new StackLayout(); v.orientation =
 function page(title: string, back = true) { const p = new Page(); p.backgroundColor = new Color('#101318'); p.actionBar = new ActionBar(); p.actionBar.title = title; if (back) {
     const nav = new NavigationButton();
     nav.text = '返回';
-    nav.android.systemIcon = 'ic_menu_back';
+    if (isAndroid)
+        nav.android.systemIcon = 'ic_menu_back';
     nav.on('tap', () => p.frame.goBack());
     p.actionBar.navigationButton = nav;
 } return p; }
@@ -210,13 +211,14 @@ class MobileEditor {
             return; this.session.project.preview.mode = value === 'Canvas' ? 'canvas' : 'scene'; this.session.project.preview.mesh = value === '立方体' ? 'box' : value === '圆环' ? 'torus' : 'sphere'; this.session.changed(); this.runtime?.setMode(this.session.project.preview.mode, this.session.project.preview.mesh); this.draft(); }), button('查看通道', async () => { const ids = this.session.project.passes.filter(p => p.enabled).map(p => p.id); const choice = await Dialogs.action({ title: '预览输出', cancelButtonText: '取消', actions: ids.map(id => PASS_LABELS[id]) }); const id = ids.find(id => PASS_LABELS[id] === choice); if (id && this.runtime) {
             this.runtime.viewed = id;
             this.host?.requestFrame();
-        } }), button('分辨率', async () => { const scales = [1, .75, .5, .25], choice = await Dialogs.action({ title: '渲染比例', cancelButtonText: '取消', actions: scales.map(s => s * 100 + '%') }); const scale = scales.find(s => s * 100 + '%' === choice); if (scale) {
+        } }), button('分辨率', async () => { const choice = await Dialogs.action({ title: '渲染比例', cancelButtonText: '取消', actions: PREVIEW_SCALES.map(s => s * 100 + '%') }); const scale = PREVIEW_SCALES.find(s => s * 100 + '%' === choice); if (scale) {
             this.session.project.preview.scale = scale;
             this.session.changed();
             await this.compile();
         } }), button('键盘', () => this.keyboard()));
-        GridLayout.setRow(options, 2);
-        this.preview.addChild(scroll(options, true));
+        const optionsScroll = scroll(options, true);
+        GridLayout.setRow(optionsScroll, 2);
+        this.preview.addChild(optionsScroll);
         const help = label('触摸：iMouse · 3D：拖动旋转、双指缩放', 'muted');
         help.margin = 8;
         GridLayout.setRow(help, 3);
@@ -232,8 +234,9 @@ class MobileEditor {
             this.audio.pause();
         else
             this.startSound(); }), button('运行', () => this.compile(), 'primary'));
-        GridLayout.setRow(actions, 1);
-        this.code.addChild(scroll(actions, true));
+        const actionsScroll = scroll(actions, true);
+        GridLayout.setRow(actionsScroll, 1);
+        this.code.addChild(actionsScroll);
         this.editor.autocorrect = false;
         this.editor.autocapitalizationType = 'none';
         this.editor.hint = '';
@@ -277,7 +280,9 @@ class MobileEditor {
     private async save() { const revision = this.session.revision; await projects.save(structuredClone(this.session.project)); this.session.savedRevision = revision; this.status.text = this.session.dirty ? '已保存；仍有新的修改' : '已保存到我的作品'; await projects.draft(this.session.project, this.session.pass); }
     private select(pane: MobilePane) { this.pane = pane; if (pane !== 'code')
         this.editor.dismissSoftInput(); this.layout(); }
-    private layout() { const bounds = this.panes.getActualSize(), layout = mobileLayout(bounds.width, bounds.height, this.pane); this.panes.columns = layout.split && this.pane !== 'channels' ? layout.previewFraction * 100 + '%,' + (1 - layout.previewFraction) * 100 + '%' : '*'; this.preview.visibility = layout.preview && this.pane !== 'channels' ? 'visible' : 'collapse'; this.code.visibility = layout.code && this.pane !== 'channels' ? 'visible' : 'collapse'; this.channelScroll.visibility = this.pane === 'channels' ? 'visible' : 'collapse'; GridLayout.setColumn(this.code, layout.split && this.pane !== 'channels' ? 1 : 0); const visible = this.preview.visibility === 'visible'; if (this.previewVisible !== visible) {
+    // NativeScript parses column sizes as integer pixels or integer star weights,
+    // so percentages (43%) and fractional stars (0.43*) cannot express this split.
+    private layout() { const bounds = this.panes.getActualSize(), layout = mobileLayout(bounds.width, bounds.height, this.pane); this.panes.columns = layout.split && this.pane !== 'channels' ? Math.round(layout.previewFraction * 100) + '*,' + Math.round((1 - layout.previewFraction) * 100) + '*' : '*'; this.preview.visibility = layout.preview && this.pane !== 'channels' ? 'visible' : 'collapse'; this.code.visibility = layout.code && this.pane !== 'channels' ? 'visible' : 'collapse'; this.channelScroll.visibility = this.pane === 'channels' ? 'visible' : 'collapse'; GridLayout.setColumn(this.code, layout.split && this.pane !== 'channels' ? 1 : 0); const visible = this.preview.visibility === 'visible'; if (this.previewVisible !== visible) {
         this.previewVisible = visible;
         if (!visible) {
             this.hiddenRelease = this.host?.pausePresentation();

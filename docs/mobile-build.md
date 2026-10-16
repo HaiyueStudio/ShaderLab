@@ -25,6 +25,8 @@ open platforms/ios/ShaderLab.xcworkspace
 
 prepare 会从锁定的 NativeScript iOS 9.0.3 生成 Xcode 工程并安装 Canvas / Metal Pods。工程位于 mobile/platforms/ios/，属于生成物。App_Resources/iOS 的 Info.plist、图标、部署版本和手机/平板设置是受版本管理的工程输入。更改这些文件后重新 prepare。
 
+Canvas 的本地 Swift Package 默认从 App 的 `node_modules` 查找。`nativescript.config.ts` 通过已安装的 Canvas 包解析实际路径，以兼容 npm workspace 将依赖提升到仓库根目录；不要在 `mobile/` 重装另一份依赖来修复路径。
+
 在 Xcode 中为 ShaderLab target 选择你自己的 Team、签名方式和设备。未预填证书、Team ID 或 provisioning profile。
 
 ```sh
@@ -68,7 +70,19 @@ Sound 以 44100 Hz 双声道持续生成四分之一秒块，队列约一秒；i
 
 Windows 已验证类型检查、219 项原 Web 单元测试、移动端布局/文档/高亮/作品保存恢复/150 秒连续音频调度测试、真实 WebGPU 浏览器渲染及移动端 Shader 图/反馈/3D 切换（测试替换了平台文件 IO，未替换移动端渲染逻辑）、离线 WASM 转换、Android 与 iOS 的 Webpack 资源包。没有在 Windows 上声称完成 iOS 原生编译、签名或真机验收。Android APK 也需要实际 SDK / JDK 环境。
 
-Mac / Android 设备首次验收：
+2026-10-16 在 macOS / Xcode 26.3 上完成类型检查、iOS 真机编译、开发签名与导出，安装 ShaderLab 0.1.0（build 1）到 iPad Air 4 和 iPhone 15 Plus。两台设备均启动成功，25 秒启动日志采样未见应用异常，采样结束后进程仍在。构建使用的 CocoaPods 依赖已记录在 `mobile/Gemfile.lock`；安装与启动记录保存在本地忽略目录 `artifacts/ios-install-2026-10-16/`。日志末尾的 25 秒 timeout 是主动设置的控制台采样上限，不是应用崩溃。这次完成安装和启动检查，下列完整功能验收仍待执行。
+
+同日追加真机修复：返回按钮仅在 Android 设置 `systemIcon`；编辑器分栏使用整数星号权重；工具栏行号设置在直接加入 GridLayout 的 ScrollView 上。`mobile/test/ios/NavigationSmoke.swift` 在 iPad Air 4、iPhone 15 Plus 各运行两项 XCTest，均通过，覆盖新建、打开示例、教程章节、返回、代码区宽度和工具栏可点击性；截图确认原生 Shader 预览正常。最新安装、测试、截图与包哈希保存在 `artifacts/ios-navigation-2026-10-16/summary.json` 及同目录，完整导入、导出、音频和生命周期验收仍按下方清单进行。
+
+新图标原稿和生成提示词位于 `mobile/resources/branding/`。iOS 使用 `ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon` 将图标集编入应用，已验证安装包的 iPhone / iPad 图标配置；Android 使用 `mipmap-*/shaderlab_icon.png`，本次未进行安卓安装验收。
+
+同日修复 75% 预览分辨率报错：移动端菜单包含 75%，但共享工程校验原先只允许 25%、50%、100%，因此选择后触发“预览设置无效”并切到代码页。现在 Web、移动端菜单和校验共同使用 `PREVIEW_SCALES`。新增工程往返测试，并覆盖移动端 75% 工程的保存、草稿恢复、导出；220 项 Web 测试、7 项移动端测试及两端类型检查通过。iPad Air 4 先在旧包复现，再安装修复包，XCTest 验证 75% → 50% → 25% → 100% → 75% 均编译成功、保留可操作预览；截图确认实际渲染。记录位于 `artifacts/ios-resolution-2026-10-16/`。iPhone 当时未连接，修复包已完成开发签名和导出，iPhone 安装与此项真机复测仍待连接后执行。
+
+Web 同步重新构建并验证：100% 时渲染尺寸为 567 × 332，切到 75% 后为 425 × 249，编译成功且画面继续渲染，控制台无错误或警告。截图和安装包校验记录见上述目录的 `summary.json`。
+
+随后 iPhone 15 Plus 重新连接，已安装与 iPad 验收相同的修复包。首轮 XCTest 在开启系统自动化模式时超时，尚未执行应用测试；重新启动应用后复测通过：75% → 50% → 25% → 100% → 75% 全部编译成功，竖屏预览保持可见，未跳转代码页，截图确认 Shader 正常渲染。此次分辨率问题的 iPhone 待验收项已关闭，失败连接记录与成功复测分别保存在 `iphone-fixed.xcresult`、`iphone-fixed-retry.xcresult`，不表示下方其他完整功能均已验收。
+
+iOS / Android 真机功能验收清单：
 
 1. Gallery 的八个示例分别运行；教程打开示例后返回到原章节。
 2. 手机横竖屏、iPad 横屏/分屏，打开软键盘仍可编辑并看到诊断。

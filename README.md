@@ -17,6 +17,8 @@ npm run preview
 
 默认地址 http://127.0.0.1:4176 。端口可通过 EDITOR_APP_PORT 更改。已有浏览器作品仍绑定原来的地址和存储命名空间；更换地址或迁往手机前，请导出工程。完整 Web / Electron 功能说明见 [web/README.md](web/README.md)。
 
+使用 VS Code Live Server 等静态服务访问 `ShaderLab/web/index.html` 时，先在仓库根目录执行 `npm run build`。页面引用的 `web/web/main.js` 是 Rollup 生成的浏览器入口，不是重复拼错的路径；仅安装依赖、类型检查或打包 iOS 都不会生成它。看到该文件 404 时，完成 Web 构建后刷新原地址即可，保留原地址下的本地作品。
+
 ## 手机与平板
 
 手机在预览、代码、通道间切换；可用宽度至少 720、可用高度至少 420 时并排显示预览与代码。依据当前窗口实际尺寸响应旋转、软键盘和 iPad 分屏。iPhone / iPad 均启用横竖屏，Android 不锁定方向。
