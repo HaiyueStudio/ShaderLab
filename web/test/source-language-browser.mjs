@@ -21,7 +21,8 @@ scenario:async({evaluate,click:rawClick,waitFor,cdp,nextPaint})=>{
  };
  const choose=async lang=>{
   await evaluate('(()=>{const s=document.getElementById("code-language").shadowRoot.querySelector("select");s.value='+JSON.stringify(lang)+';s.dispatchEvent(new Event("change",{bubbles:true}));})()');
-  await waitFor(async()=>await language()===lang,'language selection '+lang);
+  await waitFor(()=>evaluate('!document.getElementById("code-language").disabled'),'conversion complete');
+  assert.equal(await language(),lang);
  };
  const paste=async source=>{
   await click('document.querySelector("#code-editor .cm-content")');await key('a','KeyA',65,mod);
@@ -59,12 +60,15 @@ scenario:async({evaluate,click:rawClick,waitFor,cdp,nextPaint})=>{
  assert.equal(await evaluate('document.querySelector("#generated-code .cm-content").getAttribute("contenteditable")'),'false');
  await nextPaint();let shot=await cdp.call('Page.captureScreenshot',{format:'png'});writeFileSync(resolve(out,'wgsl-preview.png'),Buffer.from(shot.result.data,'base64'));
  await click('document.querySelector("#generated-dialog button")');assert.equal((await call('shader.query')).revision,before.revision);
- await choose('wgsl');assert.equal((await call('shader.query')).passes.find(p=>p.id==='image').code,original);
+ await choose('wgsl');assert.notEqual((await call('shader.query')).passes.find(p=>p.id==='image').code,original);await render();near(await pixel(),[51,102,153,255]);
  await paste(wgsl);await render();near(await pixel(),[204,26,77,255]);await highlight('wgsl');
- await choose('glsl');assert.equal((await call('shader.query')).passes.find(p=>p.id==='image').glsl,glsl);
+ await choose('glsl');assert.notEqual((await call('shader.query')).passes.find(p=>p.id==='image').glsl,glsl);await render();near(await pixel(),[204,26,77,255]);
  await paste('// invalid\nvoid mainImage(out vec4 c, in vec2 p) {\n c=vec4(missingValue);\n}');
  await click(`document.querySelector('[data-hy-key="/shader-toolbar/controls/run"]')`);
  await waitFor(()=>evaluate('shaderEditor.getApplicationState().compile.status==="failed" && document.querySelector("#diagnostics .diagnostic")'),'GLSL error');
+ await evaluate('(()=>{const s=document.getElementById("code-language").shadowRoot.querySelector("select");s.value="wgsl";s.dispatchEvent(new Event("change",{bubbles:true}));})()');
+ await waitFor(()=>evaluate('!document.getElementById("code-language").disabled'),'failed conversion settled');
+ assert.equal(await language(),'glsl');assert.ok((await code()).includes('missingValue'));
  let q=await call('shader.query');assert.ok(q.diagnostics.some(d=>d.language==='glsl'&&d.line===3));
  near(await pixel(),[204,26,77,255]);
  await click('document.querySelector("#diagnostics .diagnostic")');assert.equal(await evaluate('document.getElementById("generated-dialog").open'),false);
@@ -77,7 +81,7 @@ scenario:async({evaluate,click:rawClick,waitFor,cdp,nextPaint})=>{
  assert.equal(await evaluate('document.getElementById("generated-dialog").open'),true);
  await waitFor(()=>evaluate('document.querySelector("#generated-code .cm-activeLine")?.textContent.includes("1.0 / 0.0")'),"generated diagnostic focus");
  await click('document.querySelector("#generated-dialog button")');
- await choose('wgsl');assert.ok((await code()).includes('0.8'));
+ await paste(wgsl);assert.equal(await language(),'wgsl');
  // Disabled auto-detection leaves the explicit choice intact even for recognized input.
  await click('document.getElementById("detect-language").shadowRoot.querySelector("label")');
  await paste(glsl);assert.equal(await language(),'wgsl');
@@ -104,7 +108,7 @@ scenario:async({evaluate,click:rawClick,waitFor,cdp,nextPaint})=>{
  assert.equal(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'),true);
  await cdp.call('Emulation.clearDeviceMetricsOverride');await nextPaint();
  shot=await cdp.call('Page.captureScreenshot',{format:'png'});writeFileSync(resolve(out,'editor.png'),Buffer.from(shot.result.data,'base64'));
- return {status:'passed',checks:['Automatic paste detection, syntax colors and undo/redo restore the matching language','Manual choices preserve both drafts, including invalid GLSL','Both languages render expected GPU colors; GLSL diagnostics target original lines and preserve last good image','Readonly generated WGSL has highlighting and leaves the document unchanged','Common/Buffer/Sound/Image language metadata survives API, export and reopen; narrow layout fits']};
+ return {status:'passed',checks:['Automatic paste detection, syntax colors and undo/redo restore the matching language','Manual choices convert current source; GPU pixels survive forward/reverse conversion','Both languages render expected GPU colors; GLSL diagnostics target original lines and preserve last good image','Readonly generated WGSL has highlighting and leaves the document unchanged','Common/Buffer/Sound/Image language metadata survives API, export and reopen; narrow layout fits']};
 }});
 writeFileSync(resolve(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 

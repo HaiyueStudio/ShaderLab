@@ -36,7 +36,7 @@ npm run app:check -w ./web
   默认在粘贴时识别语言；注释、短片段或混合语法无法明确判断时保持当前语言，也可关闭自动识别。
   Ctrl/⌘+Enter 编译所有已启用 Pass；GLSL 在运行时自动转换为 WGSL，保留原始 GLSL。转换错误定位到原文。
   「查看 WGSL」提供带高亮的只读转换结果；GPU 报错可跳转到该预览对应行。可以选择自动编译。
-  每个页签分别保存语言和两种源码，切换会恢复对应草稿；首次选择 GLSL 使用入门模板，Common 为空。
+  手动切换语言时转换当前页签的最新源码，成功后覆盖目标语言旧稿并切换编辑器；失败时保留原语言和代码。支持 GLSL → WGSL、Image/Buffer/Sound 的 WGSL → GLSL、HLSL Pass → WGSL。尚不支持生成 HLSL、HLSL → GLSL、单独 WGSL/HLSL Common 的反向转换；这些操作会提示原因。转换期间继续编辑或打开其他工程，不会被迟到的结果覆盖。已合并到 Pass 的 Common 是转换时的快照，后续修改 Common 不会自动更新该副本。
   选择 WGSL 恢复该页签已有 WGSL；需要继续修改转换结果时，可从「查看 WGSL」复制后粘贴到编辑器。
   工程保存/导出保留 `editorLanguages`；旧工程有 GLSL 原文时优先显示 GLSL。
   API `shader.source.set({pass, code, language})` 写入当前源码，`shader.query` 返回各页签语言。

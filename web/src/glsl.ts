@@ -681,7 +681,7 @@ export function translateGlsl(source: string, options: TranslationOptions = {}):
       catch (error) { if (!(error instanceof ChannelRetry) || attempt === 4) throw error; }
     }
     const channelTypes = channels.types.map(t => t ?? '2d');
-    code = cubemapRequirements(channelTypes) + (options.common !== undefined ? '// @haiyue-common-included\n' : '') + code;
+    code = cubemapRequirements(channelTypes) + (options.common !== undefined || /^\s*(?:\/\/[^\n]*\n)*\/\/ @haiyue-common-included(?:\n|$)/.test(source) ? '// @haiyue-common-included\n' : '') + code;
     const cubeWarnings = channelTypes.flatMap((t, i) => t === 'cube' ? [`iChannel${i} 使用 Cubemap，请在该 Pass 的通道面板绑定六面立方体贴图。`] : []);
     return { code, channelTypes, diagnostics: [], warnings: [...cubeWarnings, ...(textureBiasUsed ? ['已接受 texture 的 bias 参数。当前纹理只有基础 mip 层，采样仍使用第 0 层；bias 表达式会正常求值。'] : []),'支持 #define 常量宏/带参数宏、#undef、#if/#ifdef/#ifndef/#elif/#else/#endif 条件编译及 defined、标量/向量/矩阵/结构体全局变量、具名结构体（含嵌套成员、构造、成员读写、参数与返回值）、定长数组（全局/局部/成员/参数、初始化与长度推断、多维索引、length）、矩阵构造、乘法、索引与常用矩阵函数、函数重载与原型、辅助函数 out/inout 参数、惰性三元表达式、整数移位及按位运算、isnan/isinf 与布尔向量、条件、for/while、switch/case/default（含贯穿执行）、只读 gl_FragCoord、sampler2D / samplerCube 函数参数及 texture/texture2D/textureCube/textureLod/textureSize/texelFetch。可变全局变量按像素独立初始化；重载按 GLSL ES 参数类型精确匹配并改名。WGSL 保留名称自动改名并同步引用。不支持 include、宏标记拼接/字符串化、运行时长度数组及 sampler2D / samplerCube 数组或结构体成员。转换后需通过 WGSL 编译；不保证与原作逐像素一致。'] }; }
   catch (error) {

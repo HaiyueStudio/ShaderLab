@@ -13,9 +13,10 @@ export class ShaderApplication {
   private compileRequest: Cancellation | undefined;
   private openRequest: Cancellation | undefined;
   private sequence = 0;
+  private languageSequence = 0;
   private dead = false;
   private writes: Promise<unknown> = Promise.resolve();
-  private services: Partial<Pick<ShaderServices, 'projects' | 'preview'>> = {};
+  private services: Partial<Pick<ShaderServices, 'projects' | 'preview' | 'convertSource'>> = {};
 
   constructor(readonly environment: ShaderEnvironment, project = createProject('Untitled shader', environment)) {
     this.current = { project: validateProject(project), session: environment.ids.next(), revision: 1, savedRevision: 0,
@@ -24,7 +25,7 @@ export class ShaderApplication {
   }
   get state(): ShaderApplicationState { return this.current; }
   get disposed() { return this.dead; }
-  connect(services: Partial<Pick<ShaderServices, 'projects' | 'preview'>>) { this.assertLive(); this.services = { ...this.services, ...services }; }
+  connect(services: Partial<Pick<ShaderServices, 'projects' | 'preview' | 'convertSource'>>) { this.assertLive(); this.services = { ...this.services, ...services }; }
   subscribe(listener: () => void) {
     this.assertLive(); this.listeners.add(listener);
     return () => { this.listeners.delete(listener); };
@@ -86,13 +87,28 @@ export class ShaderApplication {
       else { const target = passOf(project, pass); target.code = code; delete target.glsl; delete target.hlsl; }
     });
   }
-  switchLanguage(pass: CodeId, language: ShaderLanguage) {
+  /** Explicit recovery of an older draft; UI language selection uses conversion. */
+  restoreLanguageDraft(pass: CodeId, language: ShaderLanguage) {
     if (languageOf(this.current.project, pass) === language) return;
     const project = this.current.project;
     const source = language === 'wgsl' ? codeOf(project, pass) : language === 'hlsl'
       ? (pass === 'common' ? project.commonHlsl ?? '' : passOf(project as ShaderProject, pass).hlsl ?? defaultHlsl(pass))
       : (pass === 'common' ? project.commonGlsl ?? '' : passOf(project as ShaderProject, pass).glsl ?? defaultGlsl(pass));
     this.setSource(pass, source, language);
+  }
+  /** Convert the captured revision, then commit source and language together. */
+  async switchLanguage(pass: CodeId, language: ShaderLanguage): Promise<boolean> {
+    this.assertLive();
+    if (!['wgsl', 'glsl', 'hlsl'].includes(language)) throw new Error('不支持的代码语言。');
+    const sequence = ++this.languageSequence;
+    if (languageOf(this.current.project, pass) === language) return false;
+    if (!this.services.convertSource) throw new Error('代码转换服务尚未就绪。');
+    const { session, revision } = this.current;
+    const code = await this.services.convertSource(this.snapshot(), pass, language);
+    if (this.dead || sequence !== this.languageSequence || session !== this.current.session) return false;
+    if (revision !== this.current.revision) throw new Error('转换期间代码或工程已更改，请重新选择语言。');
+    this.setSource(pass, code, language);
+    return true;
   }
   dispatch(action: ShaderAction): void | Promise<boolean> {
     if (action.type === 'session.dispose') { this.dispose(); return; }

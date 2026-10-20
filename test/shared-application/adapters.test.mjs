@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url';
 import { MobileSession } from '../../mobile/src/session.ts';
 const root=resolve(import.meta.dirname,'../..'), out=resolve(root,'artifacts/shared-application/workspace.mjs');
 mkdirSync(resolve(root,'artifacts/shared-application'),{recursive:true});
-await build({entryPoints:[resolve(root,'web/src/workspace.ts')],outfile:out,bundle:true,platform:'node',format:'esm',packages:'external',loader:{'.wasm':'file'}});
+await build({entryPoints:[resolve(root,'web/src/workspace.ts')],outfile:out,bundle:true,platform:'node',format:'esm',packages:'external',alias:{'shaderlab:slang-wasm':resolve(root,'vendor/slang-2026.19/slang-wasm.wasm')},loader:{'.wasm':'file'}});
 const {ShaderDocument,ShaderWorkspace}=await import(pathToFileURL(out));
 const environment=()=>{let id=0;return{ids:{next:()=>`id-${++id}`},clock:{nowISO:()=> '2026-10-16T00:00:00.000Z'}};};
 test('existing Web document and MobileSession use the same state for identical operations',()=>{
@@ -15,7 +15,7 @@ test('existing Web document and MobileSession use the same state for identical o
  const a=web.application,b=mobile.application;assert.deepEqual(a.state,b.state);
  mobile.open(web.serialize(),true);a.dispatch({type:'project.open',project:web.serialize(),fork:true});assert.deepEqual(a.state,b.state);
  web.setSource('image','void mainImage(out vec4 c,in vec2 p){c=vec4(1.);}','glsl');mobile.setSource('void mainImage(out vec4 c,in vec2 p){c=vec4(1.);}','glsl');assert.deepEqual(a.state,b.state);
- a.switchLanguage('image','wgsl');mobile.switchLanguage('wgsl');assert.deepEqual(a.state,b.state);
+ a.restoreLanguageDraft('image','wgsl');b.restoreLanguageDraft('image','wgsl');assert.deepEqual(a.state,b.state);
  for(const value of [1,.75,.5,.25,1,.75]){a.dispatch({type:'preview.scale',value});b.dispatch({type:'preview.scale',value});assert.deepEqual(a.state,b.state);}
  a.dispatch({type:'pass.add',pass:'buffer-a'});mobile.add('buffer-a');a.dispatch({type:'channel.set',pass:'buffer-a',index:0,channel:{kind:'buffer',pass:'buffer-b'}});mobile.channel(0,{kind:'buffer',pass:'buffer-b'});assert.deepEqual(a.state,b.state);
  web.dispose();b.dispose();

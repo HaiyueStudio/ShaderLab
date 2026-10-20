@@ -8,6 +8,20 @@ import {examples} from '../../web/dist/examples.js';
 import {TUTORIAL_CHAPTERS} from '../../web/dist/tutorialContent.js';
 import {tutorialProject} from '../../web/dist/tutorialLabs.js';
 import {refreshProjectGlsl} from '../../web/dist/glslProject.js';
+import {createSourceConverter} from '../../web/dist/sourceConversion.js';
+test('native language action converts current source and retains invalid drafts on failure',async()=>{
+ const session=new MobileSession();
+ session.application.connect({convertSource:createSourceConverter({
+  wgsl:async()=>{throw Error('unexpected reverse compile');},hlsl:async()=>{throw Error('unexpected HLSL compile');}
+ })});
+ session.setSource('void mainImage(out vec4 c,in vec2 p){c=vec4(0.37);}','glsl');
+ assert.equal(await session.switchLanguage('wgsl'),true);
+ assert.equal(session.language,'wgsl');assert.match(session.source,/0\.37/);
+ session.setSource('void mainImage(','glsl');
+ const revision=session.revision;
+ await assert.rejects(session.switchLanguage('wgsl'));
+ assert.equal(session.language,'glsl');assert.equal(session.source,'void mainImage(');assert.equal(session.revision,revision);
+});
 test('phone, tablet, rotation and keyboard bounds keep both editor panes usable',()=>{
  for(const [w,h] of [[320,480],[390,550],[640,280]]){const p=mobileLayout(w,h,'code');assert.equal(p.split,false);assert.equal(p.code,true);assert.equal(p.preview,false);}
  for(const [w,h] of [[768,800],[1194,650]]){const p=mobileLayout(w,h);assert.equal(p.split,true);assert.equal(p.code,true);assert.equal(p.preview,true);}
@@ -15,7 +29,7 @@ test('phone, tablet, rotation and keyboard bounds keep both editor panes usable'
 });
 test('opening examples stays unsaved, each language keeps its draft and buffers remain portable',()=>{
  const session=new MobileSession();session.open(examples()[0].project,true);assert.equal(session.dirty,false);assert.notEqual(session.project.id,examples()[0].project.id);
- const original=session.source;session.paste('void mainImage(out vec4 color,in vec2 coord){color=vec4(1.0);}');assert.equal(session.language,'glsl');assert.equal(session.dirty,true);session.switchLanguage('wgsl');assert.equal(session.source,original);session.switchLanguage('glsl');assert.match(session.source,/void mainImage/);
+ const original=session.source;session.paste('void mainImage(out vec4 color,in vec2 coord){color=vec4(1.0);}');assert.equal(session.language,'glsl');assert.equal(session.dirty,true);session.application.restoreLanguageDraft(session.pass,'wgsl');assert.equal(session.source,original);session.application.restoreLanguageDraft(session.pass,'glsl');assert.match(session.source,/void mainImage/);
  session.add('buffer-a');session.channel(0,{kind:'buffer',pass:'buffer-b'});assert.ok(session.tabs.includes('buffer-b'));assert.equal(passOf(session.project,'buffer-b').enabled,true);
  session.enable('buffer-b',false);assert.equal(passOf(session.project,'buffer-a').channels[0].kind,'none');session.add('sound');assert.equal(session.project.sound.enabled,true);
  const restored=parseProject(JSON.stringify(session.project));assert.deepEqual(restored,session.project);

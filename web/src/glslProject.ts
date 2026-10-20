@@ -6,7 +6,8 @@ import type { TranslationOptions } from './glslChannels.js';
 export function projectTranslationOptions(project: ShaderProject, pass: CodeId): TranslationOptions {
   if (pass === 'common') return { entryPoint: 'common' };
   return { entryPoint: pass === 'sound' ? 'sound' : 'image',
-    ...(project.commonGlsl !== undefined && languageOf(project, 'common') === 'glsl' ? { common: project.commonGlsl } : {}),
+    ...(project.commonGlsl !== undefined && languageOf(project, 'common') === 'glsl'
+      && !/^\s*(?:\/\/[^\n]*\n)*\/\/ @haiyue-common-included(?:\n|$)/.test(passOf(project, pass).glsl ?? '') ? { common: project.commonGlsl } : {}),
     channelTypes: channelTypes(passOf(project, pass).channels) };
 }
 export function translationDiagnostics(result: TranslationResult, pass: CodeId): ShaderDiagnostic[] {

@@ -2,6 +2,7 @@ import { languageOf, sourceOf } from './sourceLanguage.js';
 import { refreshProjectGlsl } from './glslProject.js';
 import { channelTypes, passOf, type ShaderProject, type ShaderDiagnostic, type CodeId } from './model.js';
 import type { HlslTranslator, HlslTranslationOptions } from './hlslTypes.js';
+import { passCommon } from './channelBindings.js';
 
 export function projectHlslOptions(project: ShaderProject, pass: CodeId): HlslTranslationOptions {
   if (pass === 'common') return { entryPoint: 'common' };
@@ -16,7 +17,8 @@ export async function refreshProjectSources(project: ShaderProject, hlsl?: HlslT
   const enabled = [...project.passes, project.sound].filter(p => p.enabled);
   for (const pass of enabled) {
     const language = languageOf(project, pass.id);
-    if (common.trim() && ((language === 'hlsl') !== (commonLanguage === 'hlsl'))) diagnostics.push({ pass: pass.id, language, severity: 'error', line: 1, column: 1, message: 'HLSL Pass 和非空 Common 必须同时选择 HLSL；请切换 Common 语言，或清空当前 Common。' });
+    if (common.trim() && !(language === 'wgsl' && !passCommon(pass, common))
+      && ((language === 'hlsl') !== (commonLanguage === 'hlsl'))) diagnostics.push({ pass: pass.id, language, severity: 'error', line: 1, column: 1, message: 'HLSL Pass 和非空 Common 必须同时选择 HLSL；请切换 Common 语言，或清空当前 Common。' });
   }
   if (diagnostics.length) return diagnostics;
   if (commonLanguage === 'hlsl') project.common = '';

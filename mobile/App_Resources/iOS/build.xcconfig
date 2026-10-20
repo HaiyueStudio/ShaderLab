@@ -1,1 +1,2 @@
 OTHER_LDFLAGS = $(inherited) -framework AVFoundation -framework CoreMedia -framework CoreVideo -framework CoreImage
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon

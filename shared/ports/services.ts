@@ -1,4 +1,4 @@
-import type { CodeId, ShaderDiagnostic, ShaderProject } from '../domain/model.js';
+import type { CodeId, ShaderDiagnostic, ShaderProject, ShaderLanguage } from '../domain/model.js';
 
 export const SHADER_APPLICATION_CONTRACT = 'shaderlab-application/2' as const;
 
@@ -18,7 +18,10 @@ export interface ShaderRequest {
   /** Captured with the project, including when a queued draft runs later. */
   readonly activePass: CodeId;
 }
+export type ShaderSourceConverter = (snapshot: Readonly<ShaderProject>, pass: CodeId, target: ShaderLanguage) => Promise<string>;
+
 export interface ShaderServices extends ShaderEnvironment {
+  readonly convertSource: ShaderSourceConverter;
   readonly projects: {
     open(context: ShaderRequest): Promise<ShaderProject | null>;
     save(snapshot: Readonly<ShaderProject>, context: ShaderRequest): Promise<'saved' | 'cancelled'>;

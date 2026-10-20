@@ -24,7 +24,7 @@ export class MobileSession {
     changed() { this.application.change(() => {}); }
     setSource(source: string, language = this.language) { this.application.setSource(this.pass, source, language); }
     paste(text: string) { this.setSource(text, this.autoDetect ? detectShaderLanguage(text, this.language) ?? this.language : this.language); }
-    switchLanguage(language: ShaderLanguage) { this.application.switchLanguage(this.pass, language); }
+    switchLanguage(language: ShaderLanguage) { return this.application.switchLanguage(this.pass, language); }
     add(pass: CodeId) { this.application.dispatch({ type: 'pass.add', pass }); }
     channel(index: number, channel: Channel) { if (this.pass !== 'common') this.application.dispatch({ type: 'channel.set', pass: this.pass, index, channel }); }
     enable(pass: RenderPassId, enabled: boolean) { if (pass !== 'image') this.application.dispatch({ type: 'pass.enable', pass, enabled }); }

@@ -6,6 +6,9 @@ import { uploadVideo, uploadImage, uploadCubemap, type FaceUpload } from './text
 import { projectTranslationOptions, refreshProjectGlsl } from './glslProject.js';
 import { languageOf } from './sourceLanguage.js';
 import { translateGlsl } from './glsl.js';
+import { translateWgsl } from './wgsl.js';
+import { translateHlsl } from './hlsl.js';
+import { createSourceConverter } from './sourceConversion.js';
 import { exportShadertoy, exportShadertoyPass, translateProjectWgsl } from './shadertoyExport.js';
 import type { ShaderRuntime } from './runtime.js';
 
@@ -43,7 +46,7 @@ export class ShaderWorkspace {
   get diagnostics(): ShaderDiagnostic[] { return [...this.application.state.compile.diagnostics]; }
   get compiledRevision() { return this.application.state.compile.acceptedRevision ?? 0; }
   constructor() {
-    this.application.connect({ preview: preparedPreview(() => {
+    this.application.connect({ convertSource: createSourceConverter({ wgsl: translateWgsl, hlsl: translateHlsl }), preview: preparedPreview(() => {
       const runtime = this.renderer();
       return { prepare: project => runtime.prepare(project), commit: value => runtime.commit(value), release: value => runtime.releasePrepared(value),
         play: value => runtime.setPlaying(value), step: () => runtime.step(), reset: () => runtime.reset() };
@@ -52,7 +55,7 @@ export class ShaderWorkspace {
   onCompiled: (() => void) | undefined;
   onOpen: (() => void) | undefined;
   private lastRevision = 0;
-  setLanguage(pass: CodeId, language: ShaderLanguage) { this.application.switchLanguage(pass, language); }
+  setLanguage(pass: CodeId, language: ShaderLanguage) { return this.application.switchLanguage(pass, language); }
   applyGlsl(pass: CodeId, source: string) {
     const next = this.document.serialize();
     const result = translateGlsl(source, projectTranslationOptions(next, pass));

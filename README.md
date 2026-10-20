@@ -34,7 +34,7 @@ Sliding city 支持在画布上向左、右、上、下滑动来移动图片块�
 
 Buffer A–D 和 Image 的通道支持“后置相机 / 前置相机 · 实时视频”。选中后运行并授权，可用 `channel0(fragCoord / iResolution.xy)` 采样 iChannel0 的相机画面；Image 也可接入 Buffer 的输出继续处理。`iChannelResolution` 和 `iChannelTime` 提供视频尺寸和采集时间。同一股相机流可供多个 Buffer 共用，同一作品使用一个方向的相机。暂停、隐藏预览、切后台或退出时会停止采集，播放或返回预览后恢复；不采集麦克风，工程仅保存相机选择。Web 需 HTTPS 或 localhost，移动端使用原生相机。
 
-语言菜单已支持 WGSL / GLSL / HLSL，各语言分别保留源码。HLSL 使用随包的 Slang 2026.19 离线转换为 WGSL，支持 Image、Buffer、Common 与 Sound；用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
+语言菜单支持 WGSL / GLSL / HLSL。手动切换会转换当前页签的最新代码，成功后一起更新语言和代码；失败或转换期间发生编辑时保留原内容，不再恢复旧草稿或填入模板。支持 GLSL → WGSL、Image/Buffer/Sound 的 WGSL → GLSL，以及 HLSL Pass → WGSL；生成 HLSL、HLSL → GLSL 和单独 WGSL/HLSL Common 的反向转换尚不支持，会提示原因。转换后的 Pass 可能包含 Common 的快照，后续修改 Common 不会自动更新已合并的副本。HLSL 使用随包的 Slang 2026.19 离线转换为 WGSL，用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
 
 只有点击保存才进入“我的作品”。自动恢复草稿存放在独立文件里。教程示例返回时沿导航栈回到对应章节。
 

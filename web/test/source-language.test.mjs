@@ -16,17 +16,17 @@ test('language detection ignores comments and refuses ambiguous or mixed syntax'
 
 test('language choices preserve independent drafts including incomplete GLSL and survive export', () => {
  const w=new ShaderWorkspace(), native=sourceOf(w.document.state,'image');
- w.setLanguage('image','glsl'); assert.equal(sourceOf(w.document.state,'image'),defaultGlsl('image'));
+ w.application.restoreLanguageDraft('image','glsl'); assert.equal(sourceOf(w.document.state,'image'),defaultGlsl('image'));
  w.document.setSource('image','void mainImage(','glsl');
- w.setLanguage('image','wgsl'); assert.equal(sourceOf(w.document.state,'image'),native);
+ w.application.restoreLanguageDraft('image','wgsl'); assert.equal(sourceOf(w.document.state,'image'),native);
  w.document.setSource('image',native+'\n// WGSL draft','wgsl');
- w.setLanguage('image','glsl'); assert.equal(sourceOf(w.document.state,'image'),'void mainImage(');
+ w.application.restoreLanguageDraft('image','glsl'); assert.equal(sourceOf(w.document.state,'image'),'void mainImage(');
  const saved=parseProject(JSON.stringify(w.document.serialize()));
  assert.equal(sourceOf(saved,'image'),'void mainImage(');
  assert.equal(passOf(saved,'image').code,native+'\n// WGSL draft');
  const snapshot=structuredClone(saved), errors=refreshProjectGlsl(snapshot);
  assert.ok(errors.some(d=>d.pass==='image'&&d.language==='glsl'&&d.severity==='error'));
- w.setLanguage('image','wgsl');
+ w.application.restoreLanguageDraft('image','wgsl');
  assert.deepEqual(refreshProjectGlsl(w.document.serialize()),[],'inactive invalid GLSL never compiles');
  assert.equal(sourceOf(w.document.state,'image'),native+'\n// WGSL draft');
 });
@@ -46,7 +46,7 @@ test('GLSL Common and Pass originals link on runtime snapshots without modifying
  assert.deepEqual(w.document.serialize(),original);
  w.document.setSource('common','const gain = 0.3;','wgsl');
  assert.equal(projectTranslationOptions(w.document.serialize(),'image').common,undefined);
- w.setLanguage('common','glsl');assert.equal(sourceOf(w.document.state,'common'),original.commonGlsl);
+ w.application.restoreLanguageDraft('common','glsl');assert.equal(sourceOf(w.document.state,'common'),original.commonGlsl);
 });
 
 test('legacy imported GLSL is editable by default; malformed language metadata is rejected', () => {

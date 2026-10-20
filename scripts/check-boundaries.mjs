@@ -3,7 +3,7 @@ import { resolve, relative, dirname, sep } from 'node:path';
 const root = resolve(import.meta.dirname, '..'), violations = [];
 // Existing shader/compiler content is still product code. Native consumes source,
 // never Web's generated page artifacts or browser UI/runtime entry points.
-const mobileWebSources = new Set(['sound','wgsl','glslProject','sourceProject','hlslTypes','channelBindings','shaders','keyboardTexture','examples','tutorialContent','tutorialLabs','glsl']);
+const mobileWebSources = new Set(['sound','wgsl','glslProject','sourceProject','sourceConversion','hlslTypes','channelBindings','shaders','keyboardTexture','examples','tutorialContent','tutorialLabs','glsl']);
 function walk(dir) {
   for (const name of readdirSync(dir)) {
     const file = resolve(dir, name);

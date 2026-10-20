@@ -19,6 +19,7 @@ import { BUILTIN_TEXTURES, builtinTexture } from '../../shared/dist/domain/built
 import { TUTORIAL_CHAPTERS, TUTORIAL_STAGES, TUTORIAL_REFERENCES } from '../../web/src/tutorialContent.js';
 import { tutorialProject } from '../../web/src/tutorialLabs.js';
 import { translateGlsl } from '../../web/src/glsl.js';
+import { createSourceConverter } from '../../web/src/sourceConversion.js';
 import { projectHlslOptions } from '../../web/src/sourceProject.js';
 import { projectTranslationOptions, refreshProjectGlsl } from '../../web/src/glslProject.js';
 import { encodeWave } from '../../web/src/sound.js';
@@ -356,7 +357,21 @@ class MobileEditor {
         this.tabs.orientation = 'horizontal';
         this.tabs.className = 'toolbar';
         this.code.addChild(scroll(this.tabs, true));
-        this.language = button('WGSL', async () => { const choice = await Dialogs.action({ title: '代码语言', cancelButtonText: '取消', actions: ['WGSL', 'GLSL', 'HLSL'] }); if (!['WGSL', 'GLSL', 'HLSL'].includes(choice)) return; this.session.switchLanguage(choice.toLowerCase() as ShaderLanguage); this.showSource(); this.draft(); });
+        this.session.application.connect({ convertSource: createSourceConverter({
+            wgsl: (code, options) => this.compiler.translate(code, options),
+            hlsl: (code, options) => this.compiler.hlsl(code, options),
+        }) });
+        this.language = button('WGSL', async () => {
+            const choice = await Dialogs.action({ title: '转换代码语言', cancelButtonText: '取消', actions: ['WGSL', 'GLSL', 'HLSL'] });
+            if (this.disposed || !['WGSL', 'GLSL', 'HLSL'].includes(choice) || choice.toLowerCase() === this.session.language) return;
+            this.language.isEnabled = false;
+            this.message('正在转换代码…');
+            try {
+                if (await this.session.switchLanguage(choice.toLowerCase() as ShaderLanguage)) {
+                    this.showSource(); this.draft(); this.message('已转换为 ' + choice);
+                }
+            } finally { if (!this.disposed) { this.language.isEnabled = true; this.showSource(); } }
+        });
         this.language.accessibilityIdentifier = 'shader-language';
         const actions = row(this.language, button('收起键盘', () => this.editor.dismissSoftInput()), button('粘贴', async () => { this.session.paste(await readClipboard()); this.showSource(); this.draft(); }), button('生成代码', () => this.generated()), button('声音', () => { if (this.audio?.playing)
             this.audio.pause();

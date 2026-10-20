@@ -471,9 +471,12 @@ async function start() {
     event.preventDefault(); $<HYDropdown>('add-pass-menu').show();
     $<HYDropdown>('add-pass-menu').shadowRoot?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
   });
-  $('code-language').addEventListener('value-change', () => { void run(() => {
-    try { workspace.setLanguage(app.state.activePass, $<HYSelect>('code-language').value as ShaderLanguage); }
-    finally { sync(); renderDiagnostics(); }
+  $('code-language').addEventListener('value-change', () => { void run(async () => {
+    const select = $<HYSelect>('code-language');
+    const language = select.value as ShaderLanguage;
+    select.disabled = true;
+    try { if (await workspace.setLanguage(app.state.activePass, language)) notice('已转换为 ' + language.toUpperCase()); }
+    finally { select.disabled = false; select.value = languageOf(workspace.document.state, app.state.activePass); sync(); renderDiagnostics(); }
   }); });
   $('detect-language').addEventListener('checked-change', () => { editor.autoDetect = $<HYCheckbox>('detect-language').checked; });
   bind('view-wgsl', () => showGenerated(app.state.activePass));

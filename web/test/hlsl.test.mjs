@@ -17,10 +17,10 @@ function valid(code){const module=parseWgsl(code);try{const info=validate(module
 test('HLSL choices preserve independent drafts, including invalid code, save/reopen and language detection',()=>{
  const w=new ShaderWorkspace(),wgsl=sourceOf(w.document.state,'image');
  for(const pass of ['image','common','buffer-a','sound']){
-  w.setLanguage(pass,'hlsl');assert.equal(sourceOf(w.document.state,pass),defaultHlsl(pass));
+  w.application.restoreLanguageDraft(pass,'hlsl');assert.equal(sourceOf(w.document.state,pass),defaultHlsl(pass));
   w.document.setSource(pass,'// unfinished\nfloat4 mainImage(','hlsl');
-  w.setLanguage(pass,'glsl');w.document.setSource(pass,'// GLSL draft','glsl');
-  w.setLanguage(pass,'hlsl');assert.equal(sourceOf(w.document.state,pass),'// unfinished\nfloat4 mainImage(');
+  w.application.restoreLanguageDraft(pass,'glsl');w.document.setSource(pass,'// GLSL draft','glsl');
+  w.application.restoreLanguageDraft(pass,'hlsl');assert.equal(sourceOf(w.document.state,pass),'// unfinished\nfloat4 mainImage(');
  }
  const restored=parseProject(JSON.stringify(w.document.serialize()));
  assert.equal(restored.passes.find(p=>p.id==='image').code,wgsl);
@@ -61,6 +61,6 @@ test('HLSL graph compilation uses snapshots, enforces Common compatibility and n
  assert.deepEqual(await refreshProjectSources(snapshot,translate),[]);
  for(const id of ['image','buffer-a'])assert.match(passOf(snapshot,id).code,/@haiyue-hlsl-module/);
  assert.deepEqual(w.document.serialize(),original);
- w.setLanguage('image','wgsl');assert.ok((await refreshProjectSources(w.document.serialize(),translate)).some(d=>d.pass==='image'&&/Common/.test(d.message)));
+ w.application.restoreLanguageDraft('image','wgsl');assert.ok((await refreshProjectSources(w.document.serialize(),translate)).some(d=>d.pass==='image'&&/Common/.test(d.message)));
  const exported=await exportShadertoyPass(original,'image');assert.equal(exported.code,null);assert.match(exported.diagnostics[0].message,/HLSL/);
 });

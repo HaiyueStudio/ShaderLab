@@ -33,7 +33,9 @@ export async function exportShadertoyPass(project: Readonly<ShaderProject>, id: 
   if (languageOf(project, id) === 'glsl' && (commonGlsl || !project.common.trim())) {
     // The authored Shadertoy source is the most faithful export: keep macros,
     // comments and original names instead of compiling it through two languages.
-    return { ...meta, code: (commonGlsl ? sourceOf(project, 'common') + '\n' : '') + sourceOf(project, id), diagnostics: [], warnings: ['导出当前 GLSL 原始源码；Common 已合并，请保持 Shadertoy Common 页为空。', '按下方清单配置相同通道、过滤与寻址方式。'] };
+    const source = sourceOf(project, id);
+    const included = /^\s*(?:\/\/[^\n]*\n)*\/\/ @haiyue-common-included(?:\n|$)/.test(source);
+    return { ...meta, code: (commonGlsl && !included ? sourceOf(project, 'common') + '\n' : '') + source, diagnostics: [], warnings: ['导出当前 GLSL 原始源码；Common 已合并，请保持 Shadertoy Common 页为空。', '按下方清单配置相同通道、过滤与寻址方式。'] };
   }
   let code = pass.code;
   if (languageOf(project, id) === 'glsl') {
