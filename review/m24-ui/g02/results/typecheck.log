@@ -1,0 +1,24 @@
+
+> @haiyue/shaderlab@0.1.0 typecheck
+> npm run build:types -w ./web && npm run typecheck -w ./web && npm run typecheck -w ./mobile
+
+
+> @haiyue/shader-editor@0.1.0 build:types
+> npm run build:shared --prefix .. && tsc -p tsconfig.json
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+
+
+> @haiyue/shader-editor@0.1.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @haiyue/shaderlab-mobile@0.1.0 typecheck
+> npm run build:shared --prefix .. && tsc --noEmit
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+

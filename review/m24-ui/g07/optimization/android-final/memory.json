@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "cycles": 50,
+  "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+  "postWarmupCycles": [
+    21,
+    50
+  ],
+  "nativeHeapMiBRange": [
+    31.223358154296875,
+    37.67742919921875
+  ],
+  "nativeHeapMiBFirstLast": [
+    27.399490356445312,
+    34.75614929199219
+  ],
+  "processPssMiBRange": [
+    170.666015625,
+    179.431640625
+  ],
+  "systemAvailableMiBRange": [
+    2459.453125,
+    2924.8359375
+  ],
+  "systemAvailableMiBFirstLast": [
+    3086.90234375,
+    2670.46484375
+  ],
+  "lastRetained": {
+    "editor": 3,
+    "page": 3,
+    "canvas": 3,
+    "host": 3,
+    "runtime": 3,
+    "engine": 3,
+    "device": 3,
+    "nativeDevice": 3,
+    "queue": 3,
+    "context": 3,
+    "nativeContext": 3
+  },
+  "allReleasedCountersZero": true,
+  "interpretation": "50 real editor/GPU lifetimes in one process. Post-warmup memory fluctuates rather than losing ~200 MiB per cycle. Recent objects can remain until later GC; no complete native GPU heap accounting claim."
+}

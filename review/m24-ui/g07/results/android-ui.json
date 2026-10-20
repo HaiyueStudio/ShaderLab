@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "checks": [
+    "five resolution choices via native picker, preview retained",
+    "settings rotation, background/resume, close and reopen",
+    "name input, keyboard dismissal preserving source, save and reopen"
+  ],
+  "name": "Untitled shader G07－1792200765637",
+  "rotationRestored": {
+    "rotation": "0",
+    "automatic": "0"
+  },
+  "evidenceCompletedAt": "2026-10-17T01:33:20.171939+00:00",
+  "kind": "ADB native controls, real software keyboard dismissal and file persistence; not physical IME"
+}

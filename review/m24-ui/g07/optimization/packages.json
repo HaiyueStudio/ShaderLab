@@ -1,0 +1,17 @@
+{
+  "capturedAt": "2026-10-17T03:45:54.149Z",
+  "scope": "local previews; Native bridge unchanged from m24.0, only package version and UI peer updated",
+  "packages": {
+    "vendor/haiyue-ui-0.2.0-m24.3.tgz": "4d6e8c21808bc4d1b1485159f3e77711d823c97fe5cd3d75c44deb50b630fcdf",
+    "vendor/haiyue-native-0.1.4-m24.3.tgz": "fb6d5e121a535824daacc1f9be8db728587fe4262e7e8b7b405b123dfd82f0a0"
+  },
+  "uiSources": {
+    "src/portable/page.ts": "12e117f2d8648710dc8613aa6f1c5ecc950e6682778856ce8bf7304ae23fba15",
+    "src/portable/tree.ts": "c3b7c46d4693678c2d2933273755a77d10e635520f821816126fdc31f0113da6",
+    "src/core/data.ts": "030acba8bceb9232f0e50363f3a7cea787b291c66fb6effa739c3b8fd9ebfbc4",
+    "src/core/validation.ts": "125ab3e401e31a2e8e8081e6c9a32c2b955fbbde5dc0d6915d0615459371eeef",
+    "src/adapters/web/dom.ts": "03027bdd295f376211e0fd7e5a1d19f2c8b07fe71d8969e022b0b8e1f5c92641",
+    "src/adapters/web/controls.ts": "d0dd3e403945929457e7ec6a06a07269e89fb4d91ffe440d93637ecd17968a1e",
+    "src/adapters/web/renderer.ts": "27a8bf7d1a48d09e470ba12066e286dc6a88250d01938a704ad3dcae0672da79"
+  }
+}

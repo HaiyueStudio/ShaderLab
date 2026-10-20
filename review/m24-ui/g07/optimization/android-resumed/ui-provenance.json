@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "candidateSha256": "38a34059db6292b96c6a0c7a6bd7e79d16ce619318674ce999377c7305b748df",
+  "package": "UI 0.2.0-m24.3",
+  "moduleHashes": {
+    "dist/core/actions.js": "52456c5a3cde568c74222c8caa0d148fa897f970e603832635739d576185a5ae",
+    "dist/core/data.js": "c10b8c12ae8e761b5948147212d919c50c0f5e06c655f48e44918135432e69fe",
+    "dist/core/platform-view.js": "2c336f2443ce5d4761870bc428fc9d625eb216437d6dd428a92bdb34c6613685",
+    "dist/core/selection.js": "e45fe390678e8dcf4e49e31db209063f9cefe79259aa138423a1c38015150ef0",
+    "dist/core/text.js": "a1efcd7a3e89eef97c6751a32d56157e56e76add8034bee40f64a3431aa275b5",
+    "dist/core/validation.js": "7e39747ba2ba41d33215b57b5bb0cd12450ed9bb0c5f5d33ff9a219e3f235365",
+    "dist/portable/page.js": "291b7418806bc836bb7cb4393cdb8cd8d031c343296754749adcab3923af4e30",
+    "dist/portable/theme.js": "42f0843d8dae0f6651d715804dfcdc928a0fb03ae0e539ac40eb695f7c540dbd",
+    "dist/portable/tree.js": "b891521e122636ca83bac1df883448b192851099ed105f970b4c2218c95bec04"
+  }
+}

@@ -61,10 +61,18 @@ export class OutputCalls {
         const fields = kinds.map(kind => `  ${kind}: ${indexed[kind]!.type === 'u32' ? 'u32' : 'i32'},`);
         this.helpers.set(type, `struct ${type} {\n  value: ${p.type},\n${fields.join('\n')}\n}`);
         const indexParams = kinds.map(kind => `${kind}: ${indexed[kind]!.type === 'u32' ? 'u32' : 'i32'}`);
-        const captureParams = ref.space === 'function' ? [`hy_value: ptr<function, ${ref.type}>`, ...indexParams] : indexParams;
-        const captureArgs = ref.space === 'function' ? [`&${ref.root}`] : [];
-        captureArgs.push(...kinds.map(kind => indexed[kind]!.code));
-        const access = referenceAccess(ref, ref.space === 'function' ? '(*hy_value)' : ref.root, Object.fromEntries(kinds.map(kind => [kind, kind])));
+        // Chrome/Metal can read a stale matrix element through a helper's root
+        // pointer after earlier writes. Capture the value at the call site,
+        // AFTER evaluating indices (which may themselves mutate the root).
+        // Keep destination pointers only for copyback; non-matrix aggregates
+        // retain the pointer path to avoid unnecessary array copies.
+        const snapshot = ref.space === 'function' && !!ref.column;
+        const indexArgs = kinds.map(kind => indexed[kind]!.code);
+        const captureParams = snapshot ? [...indexParams, `hy_value: ${ref.type}`]
+          : ref.space === 'function' ? [`hy_value: ptr<function, ${ref.type}>`, ...indexParams] : indexParams;
+        const captureArgs = snapshot ? [...indexArgs, ref.root]
+          : ref.space === 'function' ? [`&${ref.root}`, ...indexArgs] : indexArgs;
+        const access = referenceAccess(ref, snapshot ? 'hy_value' : ref.space === 'function' ? '(*hy_value)' : ref.root, Object.fromEntries(kinds.map(kind => [kind, kind])));
         this.helpers.set(capture, `fn ${capture}(${captureParams.join(', ')}) -> ${type} {\n  return ${type}(${[access.target, ...kinds].join(', ')});\n}`);
         params.push(`${param}: ${type}`); values.push(`${capture}(${captureArgs.join(', ')})`); inputs.push(`${param}.value`);
         for (const kind of kinds) indices[kind] = `${param}.${kind}`;

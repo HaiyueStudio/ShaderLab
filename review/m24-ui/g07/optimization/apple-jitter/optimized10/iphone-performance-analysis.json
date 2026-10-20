@@ -1,0 +1,87 @@
+{
+  "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+  "source": "iphone-performance.json",
+  "status": "inconclusive",
+  "allSamplesPreserved": true,
+  "foregroundContinuous": true,
+  "handlerSlowSampleThresholdMs": 3,
+  "thresholdPurpose": "Descriptive only; no exclusion or acceptance gate.",
+  "runs": [
+    {
+      "round": 0,
+      "mode": "legacy",
+      "handlerMedianMs": 0.5168750286102295,
+      "handlerP95Ms": 0.9765834808349609,
+      "slowSamples": []
+    },
+    {
+      "round": 0,
+      "mode": "shared",
+      "handlerMedianMs": 0.968000054359436,
+      "handlerP95Ms": 1.306708574295044,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 3.9955832958221436,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "shared",
+      "handlerMedianMs": 0.9670416116714478,
+      "handlerP95Ms": 1.235208511352539,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 4.237333297729492,
+          "scale": 0.75
+        },
+        {
+          "index": 34,
+          "handlerMs": 3.7504584789276123,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "legacy",
+      "handlerMedianMs": 0.46741676330566406,
+      "handlerP95Ms": 0.9925832748413086,
+      "slowSamples": []
+    },
+    {
+      "round": 2,
+      "mode": "legacy",
+      "handlerMedianMs": 0.5143959522247314,
+      "handlerP95Ms": 1.1107914447784424,
+      "slowSamples": []
+    },
+    {
+      "round": 2,
+      "mode": "shared",
+      "handlerMedianMs": 0.9743125438690186,
+      "handlerP95Ms": 1.251999855041504,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 4.138166666030884,
+          "scale": 0.75
+        },
+        {
+          "index": 13,
+          "handlerMs": 3.6386666297912598,
+          "scale": 1
+        },
+        {
+          "index": 42,
+          "handlerMs": 4.021250009536743,
+          "scale": 0.25
+        }
+      ]
+    }
+  ],
+  "interpretation": "Original six-run collection. Shared handler spread 1.0579 meets stability, but legacy spread 1.1374 exceeds 1.10 and median shared/legacy ratio 1.2614 exceeds the overhead gate. Overall inconclusive, not passed. Settled/cadence pass. Do not rerun merely to select a passing collection."
+}

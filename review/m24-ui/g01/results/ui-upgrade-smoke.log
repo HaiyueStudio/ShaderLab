@@ -1,0 +1,1 @@
+{"status":"passed","checks":["dropdown adds pass and tab returns to Image","checkbox toggles on and off","CodeMirror keyboard input preserves shader source","dialog opens and closes","explicit save, Gallery reopen and browser reload preserve project"],"browserErrors":[],"scope":"UI 0.2 integration flows; full compiler/GPU suite recorded separately"}

@@ -1,0 +1,40 @@
+{
+  "capturedAt": "2026-10-19T03:08:52.489741+00:00",
+  "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+  "iphone": {
+    "status": "partially-validated",
+    "installed": true,
+    "lastInstalledCandidate": "optimized15",
+    "reason": "Ordinary handler median reduced about 10% versus candidate 10; same-package p95 median ratio 1.018. Legacy/shared spreads 1.231/1.112 still exceed 1.10. 50 lifetimes, GPU/storage and final full UI pass.",
+    "targetCandidate": "optimized15",
+    "previousInstallError": "ERROR: CoreDeviceService was unable to locate a device matching the requested device identifier. (DeviceIdentifier: ecid_2612800698605598) (com.apple.dt.CoreDeviceError error 1011 (0x3F3))\n       DeviceIdentifier = ecid_2612800698605598\n",
+    "performance": "inconclusive",
+    "lifecycle": "passed",
+    "gpuStorageParity": "passed",
+    "systemUI": "passed",
+    "normalLaunchRestored": true,
+    "evidence": "optimized15/iphone-ui.json",
+    "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+    "performanceEvidence": "optimized14/iphone-performance.json",
+    "runtimeEquivalence": "optimized15/runtime-equivalence.json"
+  },
+  "ipad": {
+    "status": "validated-for-automated-scope",
+    "installed": true,
+    "lastInstalledCandidate": "optimized10",
+    "performance": "passed",
+    "lifecycle": "passed",
+    "gpuStorageParity": "passed",
+    "systemUI": "passed",
+    "reason": "Candidate 10 passed original same-device performance gates, 50 page lifetimes, GPU/storage replay and original full system UI test.",
+    "normalLaunchRestored": true,
+    "evidence": "optimized10/ipad-ui.json",
+    "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb"
+  },
+  "next": [
+    "Reduce remaining iPhone handler jitter without changing gates or choosing passing reruns",
+    "Revalidate the updated shared UI core/iOS typography on iPad; Android current UI core also needs its own acceptance",
+    "Web performance remains deferred by user",
+    "Physical IME, VoiceOver, iPad split view and complete native/Metal allocation accounting remain separately pending"
+  ]
+}

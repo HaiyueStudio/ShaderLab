@@ -1,0 +1,22 @@
+{
+  "repo": "ShaderLab",
+  "head": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+  "trackedPatchSha256": "368e44c7135d5a4cc770f0a979fee82d821659481ebfcdbd6869c990d019bacb",
+  "node": "v24.19.0",
+  "npm": "11.17.0",
+  "host": "macOS-26.6.2-x86_64-i386-64bit",
+  "files": {
+    "package.json": "4a9647dbab8e49f308a86179cfc39006f46776cc33fb4166f31fed05da404c93",
+    "web/package.json": "7cbf20eadbb193fbecfce5dd0e69ac2da8468e26d8d06c79e06cded74cbe1c42",
+    "mobile/package.json": "43b15c6fe386058b1b83c191a4d789173dfb7c40c4f1317d5a8373acd4ff5589",
+    "package-lock.json": "ad1a8e231ffd4fcd4874b8e56977cc16354e4cd6d29a9875eceba84cc1651b8f",
+    "web/src/main.ts": "77a6023545b7c7b618eae335db7c1cc809a02ce25bf8cfc2acc4eec9076a33d3",
+    "web/src/model.ts": "d278516a8db4467a77a6954403ba217650b92dcf2c731c695365ac3a3a0a13d1",
+    "web/src/workspace.ts": "db7e6e059c5c8335ba982758f413990e6f84604ac4ed629ea73fab15b7c16d95",
+    "mobile/src/session.ts": "4cb8b17c4b808340d99766b3abdcef2ebb0b6de83034574f98ced2cc00c3781d",
+    "mobile/src/pages.ts": "d7d96b9937500d7d41d1c9e857c272897f37696bb33eb65f620cd53e88f04afa",
+    "vendor/haiyue-ui-0.2.0.tgz": "957445c47584a47691d05473fa91466787348db5c92365f1a23fd6e34fc7a56d",
+    "review/m24-ui/g01/project.hyshader": "e6b15855bb81f98a911cad4436ca6beafe0afef00e985f71a7b606cf17baa09f",
+    "web/test/browser-smoke.mjs": "160ef3a92ca98d124729fcb8afb5914243f6bbd837146b51548a9cfdd1d3b406"
+  }
+}

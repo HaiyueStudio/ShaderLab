@@ -1,0 +1,11 @@
+✔ keyboard held/press/toggle rows use bottom-left texture coordinates and one pulse per physical press (3.525467ms)
+✔ built-in assets are packaged, generated images are 512 square, and channels round-trip without embedding images (25.011503ms)
+✔ video resources validate independently from images and cube resources (1.231968ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 179.368922

@@ -1,0 +1,11 @@
+{
+  "name": "@haiyue/m24-ui-contract-probe",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "types": "./index.d.ts", "default": "./selection.mjs" }
+  },
+  "files": ["index.d.ts", "selection.mjs"],
+  "scripts": { "test": "node --test selection.test.mjs" }
+}

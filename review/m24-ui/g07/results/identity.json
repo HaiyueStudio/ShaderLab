@@ -1,0 +1,40 @@
+{
+  "capturedAt": "2026-10-17T01:34:43.268620+00:00",
+  "revision": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+  "dirty": true,
+  "sourceSnapshot": "fresh-build.json sourceHashes identify the tested clean-directory source snapshot",
+  "workspaceChangesSinceSnapshot": [],
+  "note": "Concurrent unrelated workspace edits are preserved; fresh-build success applies to its recorded snapshot, not later edits.",
+  "packages": {
+    "vendor/haiyue-native-0.1.4-m24.0.tgz": "bd060ac09e0efba83c4bdfcd61b9663eb06108e371adfc761b68a4c857486fcd",
+    "vendor/haiyue-ui-0.2.0-m24.0.tgz": "6272686e1a42453e8e0726cd3425e766168def5b9172906420873355e5e8b981"
+  },
+  "lockSha256": "3ac4d32485cd4861e435e14ce3e69c876227fa2c2b1e01a79a6777a4388751ff",
+  "artifacts": {
+    "ios": {
+      "sha256": "0da2921beaa9a003556cac75144ee180dc1d500e38bd66f32a87d11f91e25c1a",
+      "bytes": 40501797,
+      "bundleSha256": "154758df1bfe78179698956c64e17f9aa9ad764a704748713aea0df7b989d703"
+    },
+    "android": {
+      "sha256": "10bddc8aac906ac12420e6ca2df816dff75757c99b4db08447a47eb2d30c4067",
+      "bytes": 210192083,
+      "bundleSha256": "d2d761bfe8586c9d72b321d9a3eba3bcb6bf1d18a38a6e55fd503e2a3bc189f3"
+    },
+    "web": {
+      "sha256": "697ff210b839cd1307f11fa6a2438ce199714646debe13b4cae251a631b27729",
+      "bytes": 2342913
+    }
+  },
+  "g07CurrentSources": {
+    "shared/views/editor-controller.ts": "20e2b61cf0fbcbe88f963a6bdb115c5c66e1be074ee84dfbe26bff6c516752c6",
+    "shared/views/editor-page.ts": "0adf31a46519162a6e0ffa50e90da2d4f644864e2a5fe0bafd6c47b87909211e",
+    "web/src/platform/shared-editor.ts": "3c3bbf4f1ff1796096eebd98596551475c590fa5ecd5fbae6344acf79262df79",
+    "mobile/src/platform/shared-editor.ts": "09019edb57ec7d77130c5e40a4bfd2143bb17c0c6a22d02838fcdeb61a2a4d5e",
+    "mobile/src/platform/validation.ts": "61393c83176036de9179df79ea424b410792b24fa48169e608a12cd6d082df4e",
+    "mobile/src/pages.ts": "f0039f4a2e3a1fb688a8939b9c4a31d8193e127fad5d23bda7c9c26e088ee471",
+    "web/src/main.ts": "ef08c0b788ff0db33b58b6589121c6f7bde115cee3095b1ef60e40ff1c3373ae",
+    "web/styles.css": "89a69ba008f2b2b63b77088cffdb258ccaa8ca1948c457dd8b30b82bef46b43d",
+    "mobile/src/app.css": "128115b5660801b1ea56e63155bf4d12a41df901fd25cbd55c8bbfc313ce2dab"
+  }
+}

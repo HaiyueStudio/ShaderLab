@@ -1,0 +1,101 @@
+{
+  "status": "failed",
+  "artifactSha256": "38a34059db6292b96c6a0c7a6bd7e79d16ce619318674ce999377c7305b748df",
+  "completedCycles": 18,
+  "requestedCycles": 50,
+  "points": [
+    {
+      "cycle": 1,
+      "totalPssKiB": 171583,
+      "nativeHeapBytes": 28616272
+    },
+    {
+      "cycle": 2,
+      "totalPssKiB": 180956,
+      "nativeHeapBytes": 32855824
+    },
+    {
+      "cycle": 3,
+      "totalPssKiB": 188083,
+      "nativeHeapBytes": 37355824
+    },
+    {
+      "cycle": 4,
+      "totalPssKiB": 194720,
+      "nativeHeapBytes": 41356368
+    },
+    {
+      "cycle": 5,
+      "totalPssKiB": 201636,
+      "nativeHeapBytes": 45524784
+    },
+    {
+      "cycle": 6,
+      "totalPssKiB": 194962,
+      "nativeHeapBytes": 49801968
+    },
+    {
+      "cycle": 7,
+      "totalPssKiB": 199042,
+      "nativeHeapBytes": 53921616
+    },
+    {
+      "cycle": 8,
+      "totalPssKiB": 205464,
+      "nativeHeapBytes": 57725120
+    },
+    {
+      "cycle": 9,
+      "totalPssKiB": 194368,
+      "nativeHeapBytes": 54934800
+    },
+    {
+      "cycle": 10,
+      "totalPssKiB": 200076,
+      "nativeHeapBytes": 58982880
+    },
+    {
+      "cycle": 11,
+      "totalPssKiB": 205900,
+      "nativeHeapBytes": 63209680
+    },
+    {
+      "cycle": 12,
+      "totalPssKiB": 213788,
+      "nativeHeapBytes": 67672224
+    },
+    {
+      "cycle": 13,
+      "totalPssKiB": 210621,
+      "nativeHeapBytes": 68077936
+    },
+    {
+      "cycle": 14,
+      "totalPssKiB": 210897,
+      "nativeHeapBytes": 72293664
+    },
+    {
+      "cycle": 15,
+      "totalPssKiB": 217411,
+      "nativeHeapBytes": 76521600
+    },
+    {
+      "cycle": 16,
+      "totalPssKiB": 223200,
+      "nativeHeapBytes": 80726640
+    },
+    {
+      "cycle": 17,
+      "totalPssKiB": 214396,
+      "nativeHeapBytes": 81399392
+    },
+    {
+      "cycle": 18,
+      "totalPssKiB": 202096,
+      "nativeHeapBytes": 85626816
+    }
+  ],
+  "scope": "Application total PSS and native heap observations only; excludes GPU allocation accounting and child processes. Counters returning to zero do not prove absence of native memory retention.",
+  "termination": "Android lowmemorykiller: low on swap and thrashing; see termination.txt",
+  "collectionNote": "Polling observed 13 completed cycles before detecting process exit; postmortem device file from the same startedAt contains 18. The device could not write a terminal status after OS termination."
+}

@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "checks": [
+    "GLSL ES and WGSL matching pixels for initialized arrays, parameters/returns, indexed updates, struct/matrix arrays, equality and ternaries",
+    "Nested array constructors, braces, row assignment and inout indices compile and render on GPU"
+  ],
+  "comparison": {
+    "max": 0,
+    "samples": [
+      [
+        153,
+        76,
+        25,
+        255
+      ],
+      [
+        102,
+        51,
+        25,
+        255
+      ],
+      [
+        108,
+        54,
+        25,
+        255
+      ],
+      [
+        178,
+        89,
+        25,
+        255
+      ],
+      [
+        83,
+        41,
+        25,
+        255
+      ],
+      [
+        204,
+        102,
+        25,
+        255
+      ],
+      [
+        191,
+        96,
+        25,
+        255
+      ],
+      [
+        51,
+        25,
+        25,
+        255
+      ]
+    ],
+    "reference": [
+      [
+        153,
+        76,
+        25,
+        255
+      ],
+      [
+        102,
+        51,
+        25,
+        255
+      ],
+      [
+        108,
+        54,
+        25,
+        255
+      ],
+      [
+        178,
+        89,
+        25,
+        255
+      ],
+      [
+        83,
+        41,
+        25,
+        255
+      ],
+      [
+        204,
+        102,
+        25,
+        255
+      ],
+      [
+        191,
+        96,
+        25,
+        255
+      ],
+      [
+        51,
+        25,
+        25,
+        255
+      ]
+    ]
+  }
+}

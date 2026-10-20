@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "goal": "m24-native-ui/g07-shaderlab-slice",
+  "status": "validating",
+  "capturedAt": "2026-10-19T03:08:52.489741+00:00",
+  "implementation": "optimized and implemented",
+  "identity": "optimization/identity.json",
+  "historicalBaseline": "results/verification-initial.json",
+  "matrix": [
+    {
+      "check": "unit, UI compatibility, typecheck and boundaries",
+      "status": "passed",
+      "evidence": "optimization/checks.json"
+    },
+    {
+      "check": "clean source-only install and Web/iOS/Android JS builds",
+      "status": "passed",
+      "evidence": "optimization/fresh-build.json",
+      "reason": "Applies to its sourceHashes, not later unrelated camera edits."
+    },
+    {
+      "check": "Chromium shared page, GPU, persistence and 50 route cycles",
+      "status": "passed",
+      "evidence": "optimization/web-functional.json"
+    },
+    {
+      "check": "legacy Web full editor regression",
+      "status": "passed",
+      "evidence": "optimization/legacy-web-functional.json"
+    },
+    {
+      "check": "50 real Web host lifetimes and heap observations",
+      "status": "passed",
+      "evidence": "optimization/web-host-lifecycle.json"
+    },
+    {
+      "check": "Android same-device UI CPU performance",
+      "status": "passed",
+      "evidence": "optimization/android-final/performance.json",
+      "reason": "Final m24.5: handler median ratio 1.050; both spreads <=1.10. Settled/cadence pass. Fixed surface 113x64; no GPU timestamp claim.",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4"
+    },
+    {
+      "check": "same-host old/new Web p95 <= 1.10",
+      "status": "pending-retest",
+      "evidence": "optimization/web-performance-noisy.json",
+      "reason": "User explicitly deferred while other high-load browser/GPU work continues."
+    },
+    {
+      "check": "Android current candidate system UI and lazy converter",
+      "status": "passed",
+      "evidence": "optimization/android-final/ui.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 actual picker, hidden editor clipping, keyboard, rotation, background, save/reopen and two GLSL conversions passed."
+    },
+    {
+      "check": "Android current candidate GPU/storage and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/android-final/gpu-storage.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 persisted equality permits only updatedAt normalization."
+    },
+    {
+      "check": "Android current candidate 50 full host lifetimes",
+      "status": "passed",
+      "evidence": "optimization/android-final/lifecycle.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5: 50 real same-process editor/GPU lifetimes, native views detached and counters zero; post-warmup native heap 31.2-37.7 MiB without previous per-cycle loss. Not complete GPU heap accounting.",
+      "memory": "optimization/android-final/memory.json"
+    },
+    {
+      "check": "Android follow-up mobile unit/typecheck/SDK build",
+      "status": "passed",
+      "evidence": "optimization/android-final/checks.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "25 mobile tests, 20 native adapter tests, 5 shared UI tests, core consumer/typecheck/boundaries and Android SDK build."
+    },
+    {
+      "check": "physical Chinese IME, emoji/paste, screen readers and iPad split view",
+      "status": "pending-device",
+      "reason": "Synthetic input and automated keyboard tests do not replace physical acceptance."
+    },
+    {
+      "check": "Safari application physical interaction",
+      "status": "pending-device"
+    },
+    {
+      "check": "same-size GPU timestamps and native GPU heap accounting",
+      "status": "pending-device",
+      "reason": "Frame cadence and resource disposal counters are distinct evidence; no GPU timing/heap claim."
+    },
+    {
+      "check": "iphone m24.6 system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-ui.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Exact m24.6 final IPA; picker, keyboard, rotation, background/modal reopen, two conversions, save/reopen."
+    },
+    {
+      "check": "iphone m24.6 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-gpu-storage.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Only updatedAt normalized; real nonzero GPU output."
+    },
+    {
+      "check": "iphone m24.6 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-lifecycle.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "All 550 retired wrappers released after native deferred cleanup; process footprint observed, not complete Metal heap accounting."
+    },
+    {
+      "check": "iphone m24.6 same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-final/iphone-performance.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Shared handler p95 lower but run-to-run spread exceeds 1.10; original gate unchanged. Settled and cadence pass."
+    },
+    {
+      "check": "ipad m24.6 system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-ui.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Exact m24.6 final IPA; picker, keyboard, rotation, background/modal reopen, two conversions, save/reopen."
+    },
+    {
+      "check": "ipad m24.6 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-gpu-storage.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Only updatedAt normalized; real nonzero GPU output."
+    },
+    {
+      "check": "ipad m24.6 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-lifecycle.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "All 550 retired wrappers released after native deferred cleanup; process footprint observed, not complete Metal heap accounting."
+    },
+    {
+      "check": "ipad m24.6 same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-final/ipad-performance.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Shared handler p95 lower but run-to-run spread exceeds 1.10; original gate unchanged. Settled and cadence pass."
+    },
+    {
+      "check": "Apple m24.6 local regression and native SDK build",
+      "status": "passed",
+      "evidence": "optimization/apple-final/checks.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14"
+    },
+    {
+      "check": "Android m24.6 frame-owner cleanup follow-up",
+      "status": "pending-device",
+      "reason": "Previous Android m24.5 APK remains accepted only for its own snapshot; this turn tested Apple .6. Cross-platform runtime cleanup has unit coverage."
+    },
+    {
+      "check": "Apple jitter optimized9 local tests, typecheck, signed build and diagnostic removal",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/checks.json",
+      "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6"
+    },
+    {
+      "check": "iphone optimized10 same-device CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized10/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "Shared handler spread 1.058 passes; legacy spread 1.137 exceeds 1.10 and shared/legacy median ratio 1.261 exceeds 1.10. Complete original six-run collection retained; settled/cadence pass."
+    },
+    {
+      "check": "iphone optimized10 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/iphone-lifecycle.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "50 real cycles; all 550 retired wrappers unreachable. Settled footprint 117.31 MiB; not complete native/Metal allocation accounting.",
+      "memory": "optimization/apple-jitter/optimized10/iphone-memory.json"
+    },
+    {
+      "check": "iphone optimized10 GPU/storage parity and actual system UI",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/iphone-ui.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "Original full system UI first attempt passed: picker, play, rotation, background, keyboards, two code conversions, save/reopen. Real GPU/storage replay passes; restored normal launch.",
+      "gpuStorage": "optimization/apple-jitter/optimized10/iphone-gpu-storage.json",
+      "comparison": "optimization/apple-jitter/optimized10/iphone-storage-comparison.json"
+    },
+    {
+      "check": "ipad optimized9 same-device CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized9/ipad-performance.json",
+      "identity": "optimization/apple-jitter/optimized9/identity.json",
+      "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+      "reason": "All six 100-sample runs foreground continuous; shared handler spread 2.535 exceeds 1.10. Median ratio 0.978; settled/cadence passed. All samples retained."
+    },
+    {
+      "check": "ipad optimized9 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized9/ipad-lifecycle.json",
+      "identity": "optimization/apple-jitter/optimized9/identity.json",
+      "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+      "reason": "50 same-process page/GPU lifetimes completed; all 550 retired wrappers released after explicit GC/deferred cleanup. Process footprint observation is not complete Metal heap accounting.",
+      "memory": "optimization/apple-jitter/optimized9/ipad-memory.json"
+    },
+    {
+      "check": "ipad optimized9 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized9/ipad-gpu-storage.json",
+      "identity": "optimization/apple-jitter/optimized9/identity.json",
+      "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+      "reason": "Five scales; nonzero real GPU readback; persisted equality with Web permits only updatedAt normalization.",
+      "comparison": "optimization/apple-jitter/optimized9/ipad-storage-comparison.json"
+    },
+    {
+      "check": "ipad optimized9 actual system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized9/ipad-ui.json",
+      "identity": "optimization/apple-jitter/optimized9/identity.json",
+      "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+      "reason": "Original unchanged full UI scenario passed after user enabled UI Automation and the obstructing AssistiveTouch handle was moved to the lower-right edge. App IPA unchanged; earlier initialization and obstruction failures retained."
+    },
+    {
+      "check": "ipad optimized10 local tests, typecheck, signed build and diagnostic removal",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/checks.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "37 mobile tests; typecheck, platform boundaries and ordinary signed build pass; dependency packages unchanged."
+    },
+    {
+      "check": "ipad optimized10 same-device CPU performance",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/ipad-performance.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "All original gates pass from one full six-run collection: handler ratio 1.0833, legacy/shared spreads 1.0404/1.0933. Settled/cadence pass; narrow margin retained."
+    },
+    {
+      "check": "ipad optimized10 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/ipad-lifecycle.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "50 cycles; all 550 retired wrappers unreachable. Footprint observations retained separately; not complete native/Metal heap accounting.",
+      "memory": "optimization/apple-jitter/optimized10/ipad-memory.json"
+    },
+    {
+      "check": "ipad optimized10 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/ipad-gpu-storage.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "Five preview scales, actual nonzero GPU readback and persisted equality with only updatedAt normalized.",
+      "comparison": "optimization/apple-jitter/optimized10/ipad-storage-comparison.json"
+    },
+    {
+      "check": "ipad optimized10 actual system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized10/ipad-ui.json",
+      "identity": "optimization/apple-jitter/optimized10/identity.json",
+      "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+      "reason": "First original full test passes: picker, play, settings, rotation, background recovery, both keyboards, two code conversions and save/reopen."
+    },
+    {
+      "check": "iphone optimized11 same-device CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized11/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized11/identity.json",
+      "artifactSha256": "e5ffea126c3643730946653dbf70530eb472cbffdd182ef3ec840d4b2918ce08",
+      "reason": "All six groups retained. Handler ratio 3.3110, legacy/shared spreads 1.3684/2.0405; original gates unchanged."
+    },
+    {
+      "check": "iphone optimized12 same-device CPU performance",
+      "status": "regression",
+      "evidence": "optimization/apple-jitter/optimized12/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized12/identity.json",
+      "artifactSha256": "c45e8d3e2f82db905f3c4a30feaa9c6db1298c61e4dd38a035d365389038446b",
+      "reason": "All six groups retained. Handler ratio 1.1559, legacy/shared spreads 1.0622/1.0291; original gates unchanged."
+    },
+    {
+      "check": "iphone optimized13 same-device CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized13/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized13/identity.json",
+      "artifactSha256": "32a2447c6c8d47ecc077aeccce59a0babb9a9f1d6816038e3397529e56286ca9",
+      "reason": "All six groups retained. Handler ratio 1.2075, legacy/shared spreads 1.1180/1.3728; original gates unchanged."
+    },
+    {
+      "check": "iphone optimized14 same-device CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized14/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized14/identity.json",
+      "artifactSha256": "b039923eb5a695a3cfb13b854b925ae4144a4de554bc78eb20f38825ebd3edea",
+      "reason": "All six groups retained. Handler ratio 1.0179, legacy/shared spreads 1.2311/1.1123; original gates unchanged."
+    },
+    {
+      "check": "iphone optimized15 50 real page lifetimes",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized15/../optimized14/iphone-lifecycle.json",
+      "identity": "optimization/apple-jitter/optimized15/identity.json",
+      "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+      "runtimeEquivalence": "optimization/apple-jitter/optimized15/runtime-equivalence.json",
+      "reason": "All 550 retired wrappers unreachable; explicit GC is separate from performance sampling."
+    },
+    {
+      "check": "iphone optimized15 GPU/storage parity",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized15/../optimized14/iphone-gpu-storage.json",
+      "identity": "optimization/apple-jitter/optimized15/identity.json",
+      "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+      "runtimeEquivalence": "optimization/apple-jitter/optimized15/runtime-equivalence.json",
+      "reason": "Five scales, nonzero pixels and Web/native persisted equality."
+    },
+    {
+      "check": "iphone optimized15 full system UI",
+      "status": "passed",
+      "evidence": "optimization/apple-jitter/optimized15/iphone-ui.json",
+      "identity": "optimization/apple-jitter/optimized15/identity.json",
+      "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+      "runtimeEquivalence": "optimization/apple-jitter/optimized15/runtime-equivalence.json",
+      "reason": "First unchanged test passed; picker, keyboards, rotation, background, code generation and save/reopen. Normal launch restored."
+    },
+    {
+      "check": "iphone optimized15 current performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-jitter/optimized14/iphone-performance.json",
+      "identity": "optimization/apple-jitter/optimized15/identity.json",
+      "runtimeEquivalence": "optimization/apple-jitter/optimized15/runtime-equivalence.json",
+      "reason": "Final package has identical runtime payload except signatures. Original performance result retained, not rerun for metadata correction."
+    }
+  ],
+  "published": false,
+  "g06Status": "validating",
+  "limitations": [
+    "No desktop claim.",
+    "Web performance deferred by user.",
+    "Every accepted result is tied to its recorded binary/source snapshot; unrelated later workspace changes are not automatically accepted.",
+    "Synthetic Unicode is not physical IME; cadence is not GPU timestamp.",
+    "Legacy rollback retained until required gates pass."
+  ],
+  "androidFollowUpIdentity": "optimization/android-final/identity.json",
+  "androidIntermediateCandidate": "optimization/android-m24.4-intermediate/README.md",
+  "appleFollowUpIdentity": "optimization/apple-jitter/optimized15/identity.json",
+  "applePreviousIdentity": "optimization/apple-final/identity.json",
+  "appleJitterEvidence": "optimization/apple-jitter/README.md",
+  "ipadFollowUpIdentity": "optimization/apple-jitter/optimized10/identity.json"
+}

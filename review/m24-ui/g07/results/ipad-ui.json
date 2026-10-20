@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "artifact": "local artifacts/m24-g07/ios-tests/ipad-accessible-final.xcresult",
+  "test": "SharedPageSmoke.testSharedEditor",
+  "scope": "Five resolution choices, playback, settings rotation/background/reopen, name/Done, actual keyboard key, save/reopen equality. Not physical Chinese IME or VoiceOver.",
+  "priorAttempts": "First authentication cancellation; later typeText failed AX keyboard-focus synthesis. Final test taps an actual visible keyboard key and verifies changed and persisted text."
+}

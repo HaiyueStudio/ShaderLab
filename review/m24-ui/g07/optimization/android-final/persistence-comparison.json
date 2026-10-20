@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+  "runId": "35e17b0c-d7f3-43a2-8b7d-75f25ec0c54d",
+  "normalization": [
+    "updatedAt"
+  ],
+  "reference": "review/m24-ui/g07/optimization/web-functional.json"
+}

@@ -1,0 +1,10 @@
+{
+  "archiveSha256": "0da2921beaa9a003556cac75144ee180dc1d500e38bd66f32a87d11f91e25c1a",
+  "bundleSha256": "154758df1bfe78179698956c64e17f9aa9ad764a704748713aea0df7b989d703",
+  "probeRunId": "e5b74799-43ab-48c1-b6fc-1b4aad2f1b51",
+  "testRunnerSourceSha256": "6cc57a34fa501be405dbfe9a10301a814c7e6e253946bcd3177b70315d925bf3",
+  "device": "iPhone 15 Plus",
+  "osVersion": "27.2",
+  "status": "installed, fresh GPU/storage replay and full system UI test passed",
+  "installLogFirstEventAt": "2026-10-17T03:12:48Z"
+}

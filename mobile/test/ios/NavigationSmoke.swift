@@ -42,11 +42,52 @@ final class NavigationSmoke: XCTestCase {
     func testNewAndExampleNavigation() {
         app.buttons["＋ 新建"].tap()
         checkEditor("new-editor")
-        let example = app.buttons["打开 ↗"].firstMatch
+        let example = app.buttons["example-aurora"]
         XCTAssertTrue(example.waitForExistence(timeout: 5))
         if !example.isHittable { app.swipeUp() }
         example.tap()
         checkEditor("example-editor")
+    }
+
+    func testGalleryCardsHaveSeparatePositions() {
+        let cards = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "example-"))
+        XCTAssertEqual(cards.count, 8, app.debugDescription)
+        XCTAssertFalse(app.buttons["打开 ↗"].exists, "Cards should open directly without a separate button")
+        let positions = cards.allElementsBoundByIndex.map { "\($0.frame.origin.x),\($0.frame.origin.y)" }
+        capture("gallery-eight-examples")
+        XCTAssertEqual(Set(positions).count, 8, "Every example must occupy its own grid cell")
+    }
+
+    func testAllEightExamplesRender() {
+        let samples = [
+            ("aurora", "Aurora ribbons"), ("marble", "Liquid chrome"),
+            ("tunnel", "Neon passage"), ("feedback", "Afterglow"),
+            ("keyboard", "Key light"), ("puzzle", "Sliding city"),
+            ("minesweeper", "Minefield"), ("clock", "Local time · 时钟")
+        ]
+        let presented = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "原生 WebGPU 已呈现 ")).firstMatch
+        let success = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "编译成功 · ")).firstMatch
+        for (id, name) in samples {
+            let open = app.buttons["example-" + id]
+            XCTAssertTrue(open.exists, "Missing example: " + name)
+            for _ in 0..<12 {
+                if open.isHittable { break }
+                app.swipeUp()
+            }
+            XCTAssertTrue(open.isHittable, "Unreachable example: " + name)
+            open.tap()
+            XCTAssertTrue(app.navigationBars[name].waitForExistence(timeout: 10), app.debugDescription)
+            // The host replaces the initial compile status when the first GPU
+            // frame is presented. Check that frame, then explicitly recompile.
+            XCTAssertTrue(presented.waitForExistence(timeout: 30), app.debugDescription)
+            app.buttons["运行"].firstMatch.tap()
+            XCTAssertTrue(success.waitForExistence(timeout: 15), app.debugDescription)
+            XCTAssertFalse(app.alerts.firstMatch.exists, app.debugDescription)
+            XCTAssertTrue(app.buttons["暂停"].isHittable, app.debugDescription)
+            capture("example-" + id)
+            back()
+            XCTAssertTrue(app.buttons["＋ 新建"].waitForExistence(timeout: 5))
+        }
     }
 
     func testPreviewResolutionChoices() {

@@ -1,0 +1,11 @@
+import {build} from 'esbuild';
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {runEditorBrowserScenario} from '../../../scripts/editor-e2e/browserDriver.mjs';
+const root=resolve(import.meta.dirname,'../../..');
+const buildResult=await build({entryPoints:[resolve(import.meta.dirname,'struct-no-ui.mjs')],outfile:resolve(import.meta.dirname,'struct-no-ui.bundle.js'),bundle:true,format:'esm',metafile:true});
+const inputs=Object.keys(buildResult.metafile.inputs);assert.equal(inputs.some(p=>p.includes('/@haiyue/ui/')),false);
+const report=await runEditorBrowserScenario({root,route:'review/m24-ui/g01/struct-no-ui.html',downloadDirectory:resolve(import.meta.dirname,'results/downloads'),readinessExpression:'Boolean(window.structResult)',scenario:async driver=>({...await driver.evaluate('structResult'),browserErrors:driver.getBrowserErrors(),userAgent:await driver.evaluate('navigator.userAgent')})});
+writeFileSync(resolve(import.meta.dirname,'results/struct-no-ui.json'),JSON.stringify({...report,uiModuleCount:0,inputs,classification:report.matches?'not-reproduced':'rendering failure also reproduced without UI; separate from UI package migration'},null,2)+'\n');
+console.log(JSON.stringify(report));

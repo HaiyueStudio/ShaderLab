@@ -1,0 +1,57 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -xctestrun artifacts/m24-g07/apple-jitter/optimized9/fresh-ui-runner/Build/Products/Acceptance_iphoneos26.2-arm64.xctestrun -destination id=00008101-0006546C2263001E -resultBundlePath artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult
+
+2026-10-19 07:36:32.884 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Writing result bundle at path:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult
+
+2026-10-19 07:36:32.898 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 07:36:33.012 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, arch:arm64e, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64e, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+2026-10-19 07:36:33.827 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 07:36:34.349 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 07:36:37.703703+0800 Acceptance-Runner[2315:397921] [Default] Running tests...
+2026-10-19 07:36:37.717801+0800 Acceptance-Runner[2315:397921] [UIKit App Config] Update the Info.plist: Launch screens will soon be required.
+2026-10-19 07:37:11.489 xcodebuild[52808:4596739] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 07:37:37.799051+0800 Acceptance-Runner[2315:397921] [Default] Failed to initialize for UI testing: Error Domain=com.apple.dt.XCTest.XCTFuture Code=1000 "Timed out while enabling automation mode." UserInfo={NSLocalizedDescription=Timed out while enabling automation mode.}
+
+
+*** If you believe this error represents a bug, please attach the result bundle at /Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult
+
+2026-10-19 07:37:37.221 xcodebuild[52808:4597618]  IDETestOperationsObserverDebug: Failure collecting diagnostics from devices: Process exited with error 1:
+ ERROR: The operation couldn?t be completed. (CoreDeviceCLISupport.DiagnoseError error 0.)
+This tool generates files that allow Apple to investigate issues with your
+computer and help improve Apple products. The files might contain personal
+information found on your device or associated with your Apple Account(s),
+including but not limited to your name, serial numbers of your device,
+your device name, your device's location over the last one to two days,
+your attached peripheral devices, your user name, your email address and
+email settings, file paths, file names, Siri suggestions, your computer's
+IP addresses, and network connection information.
+
+This information is used by Apple in accordance with its privacy policy
+(www.apple.com/privacy) and is not shared with any other company. By using
+this tool and sending the results to Apple, you consent to Apple using the
+contents of these files to improve Apple products.
+
+An error occurred while running devicectl diagnose. Will archive the diagnostics collected thus far.
+Wrote file to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+Partial devicectl diagnose bundle located here: /Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+
+2026-10-19 07:37:37.235 xcodebuild[52808:4596739] [MT] IDETestOperationsObserverDebug: 63.403 elapsed -- Testing started completed.
+2026-10-19 07:37:37.235 xcodebuild[52808:4596739] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 07:37:37.235 xcodebuild[52808:4596739] [MT] IDETestOperationsObserverDebug: 63.403 sec, +63.403 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult
+
+Testing failed:
+	Acceptance-Runner (2315) encountered an error (The test runner failed to initialize for UI testing. (Underlying Error: Timed out while enabling automation mode.))
+
+** TEST EXECUTE FAILED **
+
+Testing started

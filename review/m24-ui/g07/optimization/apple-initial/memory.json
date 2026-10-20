@@ -1,0 +1,54 @@
+{
+  "status": "failed",
+  "reason": "All 50 cycles complete but process physical footprint grows continuously and all retired object groups remain live; do not equate counter pass with memory acceptance.",
+  "devices": {
+    "iphone": {
+      "cycles": 50,
+      "disposalCounters": "passed",
+      "memoryStatus": "failed",
+      "firstFootprintMiB": 90.75193786621094,
+      "lastFootprintMiB": 1029.04931640625,
+      "oldestGroupRetained": {
+        "editor": true,
+        "page": true,
+        "canvas": true,
+        "host": true,
+        "runtime": true,
+        "engine": true,
+        "device": true,
+        "nativeDevice": true,
+        "queue": true,
+        "context": true,
+        "nativeContext": true
+      }
+    },
+    "ipad": {
+      "cycles": 50,
+      "disposalCounters": "passed",
+      "memoryStatus": "failed",
+      "firstFootprintMiB": 82.33050537109375,
+      "lastFootprintMiB": 1006.3319702148438,
+      "oldestGroupRetained": {
+        "editor": true,
+        "page": true,
+        "canvas": true,
+        "host": true,
+        "runtime": true,
+        "engine": true,
+        "device": true,
+        "nativeDevice": true,
+        "queue": true,
+        "context": true,
+        "nativeContext": true
+      }
+    }
+  },
+  "control": {
+    "artifactSha256": "2ec677c5d2f90178d0fc11324ee68fbf4b8b81d6db7aa09de211bd14aa5b9013",
+    "weakReferenceProbes": false,
+    "cycles": 50,
+    "firstFootprintMiB": 82.87738037109375,
+    "lastFootprintMiB": 1003.5816650390625,
+    "verdict": "failed; growth remains with diagnostic weak references disabled"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "sourceIdentity": "../identity.json",
+  "artifactSha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168",
+  "executableSha256": "7560fc6b117f835e98b8e4857fe33927bab754a63a85d371fde36a6af424d191",
+  "bundleId": "studio.haiyue.shaderlab",
+  "driverSha256": "4b941913f3624c9b3042c84f44688309b728abe37c1c3d5e0fe5ae146492eca4",
+  "buildType": "existing frozen Debug-iphoneos candidate4; no app rebuild",
+  "install": "devicectl install succeeded on iPhone 15 Plus before sampling",
+  "measurement": "Same 512x288 shader surface; GUI additionally renders full 860x1678 output. Native engine surface is 512x288; UIKit outside engine probe.",
+  "device": {
+    "model": "iPhone 15 Plus",
+    "productType": "iPhone15,5",
+    "os": "iOS 27.2",
+    "orientation": "portrait"
+  },
+  "comparedWith": "../ipad-comparison/report.json"
+}

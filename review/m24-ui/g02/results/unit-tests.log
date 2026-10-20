@@ -1,0 +1,312 @@
+
+> @haiyue/shaderlab@0.1.0 test
+> npm run test:shared && npm test -w ./web && npm test -w ./mobile
+
+
+> @haiyue/shaderlab@0.1.0 test:shared
+> npm run build:shared && node --test test/shared-application/*.test.mjs
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+
+(node:45884) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/session.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ existing Web document and MobileSession use the same state for identical operations (21.971906ms)
+✔ EditorPlatform compile rollback rejects a changed revision and releases prepared GPU resources (76.34365ms)
+✔ domain/application load and execute with no browser/native globals (256.324527ms)
+✔ old v1 fixture, missing optional fields and UTF-8 limits retain their format (10.202394ms)
+✔ deterministic replay, preview scales and independent pass/pane/playback state (17.207589ms)
+✔ invalid changes are atomic, repeated source/scale edits are no-ops, keystrokes retain assets (2.405661ms)
+✔ saving captures a revision; editing while saving keeps dirty and queued saves preserve order (10.901031ms)
+✔ save cancel/failure/retry and an earlier failure do not replace newer pending status (3.940275ms)
+✔ late save success/error after open cannot mutate state (4.429164ms)
+✔ late save success/error after dispose cannot mutate state (2.707148ms)
+✔ draft ordering captures pass and cancels queued drafts after opening another project (2.536574ms)
+✔ same-revision compiles supersede each other and release the older handle exactly once (1.922655ms)
+✔ compile completion after edit releases resources and does not publish diagnostics (3.956003ms)
+✔ compile completion after open releases resources and does not publish diagnostics (1.578115ms)
+✔ compile completion after dispose releases resources and does not publish diagnostics (1.262933ms)
+✔ prepared transactions roll back/dispose exactly once; compilation failure retains the previous accepted revision and can retry (0.80246ms)
+✔ file picker cancellation and late results do not replace edits/new sessions (0.646913ms)
+✔ selector subscriptions ignore unrelated state changes; unsubscribe and dispose are idempotent (0.692721ms)
+✔ prepared resource adapter captures its renderer and swaps synchronously, aborted handle is released (2.164654ms)
+✔ late draft failures are ignored and disposal during a notification stops remaining callbacks (5.498402ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 801.96983
+
+> @haiyue/shader-editor@0.1.0 test
+> npm run build:types && node --test test/*.test.mjs
+
+
+> @haiyue/shader-editor@0.1.0 build:types
+> npm run build:shared --prefix .. && tsc -p tsconfig.json
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+
+✔ copying translated WGSL preserves cube ABI even when every channel is empty (50.768283ms)
+✔ textureLod, explicit uniforms and forwarded samplerCube arguments retain all four requirements (7.962889ms)
+✔ binding the required cube clears warnings; image or buffer mismatch never replaces the source (2.369334ms)
+✔ ordinary WGSL and image-only translations retain binding-driven channel types (2.217937ms)
+✔ only leading standalone directives count, with nested comments, CRLF and original error positions (0.932218ms)
+✔ legacy vec3-to-vec2 channel diagnostics explain the missing binding without rewriting unrelated errors (1.01778ms)
+✔ Common persists, upgrades legacy projects, and rejects invalid shared source (43.780458ms)
+✔ shared source and pass source preserve line mappings with or without a final newline (3.307168ms)
+✔ Common texture requirements merge with local requirements and report source ownership (2.333283ms)
+✔ Common uses revision-aware API writes, exports, and rejects pass-only operations (82.165477ms)
+✔ the supplied reflected direction infers cubemap without a Shadertoy uniform declaration (42.680655ms)
+✔ explicit cube uniforms, four inferred channels and macros settle before WGSL generation (18.609026ms)
+✔ cube parameters, prototypes, overloads, outputs and lazy captures remain readonly texture handles (15.620827ms)
+✔ parameter shadowing never infers or samples the identically named global channel (2.310288ms)
+✔ channel hints select cube overloads and cube dimensions without leaking between translations (9.19093ms)
+✔ inconsistent dimensions and illegal opaque operations fail at GLSL locations (9.204371ms)
+✔ six-face projects round-trip, reject malformed faces/type mismatches and preserve legacy image assets (22.893851ms)
+✔ shader wrappers bind mixed dimensions without shifting user diagnostics (1.762886ms)
+✔ API/IPC advertises cube uploads and translates using the selected pass while preserving revisions (218.936596ms)
+✔ arrays support global/local consts, comma declarations, macros, inferred sizes and constructors (24.423926ms)
+✔ nested arrays, struct fields, braces and length retain element and dimension types (7.921157ms)
+✔ array parameters, prototypes, return values and overloads use exact shapes (15.526964ms)
+✔ indexed mutation, swizzles, matrices and output copies preserve every index (6.988157ms)
+✔ whole array assignment, equality and ternaries lower to valid aggregate operations (4.872585ms)
+✔ invalid lengths, constructors, writes and array operations fail with GLSL diagnostics (28.634898ms)
+✔ large runtime array comparisons use loops instead of expanding every element (1.449429ms)
+✔ length is a compile-time size for pure receivers and preserves call/index side effects (11.727122ms)
+✔ array GPU fixture translates through the shared importer (17.9025ms)
+✔ the supplied repeated component assignment and unbraced if/else translate (30.011071ms)
+✔ chained expressions associate rightward and return each converted stored value (6.199024ms)
+✔ assignment expressions work in arguments, return, conditions, globals and macros (12.59228ms)
+✔ assignment side effects remain lazy and are not lowered to eager select (3.706414ms)
+✔ invalid writable targets and aggregate compound assignments report GLSL diagnostics (8.256793ms)
+✔ GPU assignment fixture translates all scalar, aggregate, lazy and indexed cases (35.919594ms)
+✔ the supplied packed-coordinate expression converts shift counts and integer components (31.246739ms)
+✔ GLSL precedence and left associativity survive all bitwise operators and parentheses (2.483195ms)
+✔ shift signedness follows the left operand, including overload selection with unsigned counts (10.127166ms)
+✔ integer vectors support scalar and vector counts plus scalar broadcast masks (2.524632ms)
+✔ bitwise constants fold as 32-bit values in globals and switch labels (3.08721ms)
+✔ compound shifts/masks preserve writable roots, swizzles and single-evaluation indices (11.452044ms)
+✔ runtime expression operands and constructor components are evaluated once (2.13505ms)
+✔ nonintegers, incompatible shapes/signs, invalid constant counts and readonly targets fail at source (33.582541ms)
+✔ full GPU fixture translates packed coordinates, signs, vectors and bitwise control flow (29.381693ms)
+✔ the supplied unbraced if keeps both assignments inside the conditional block (34.798494ms)
+✔ else and nested dangling else retain the same branch boundaries for complete comma sequences (2.099724ms)
+✔ assignment, increment, call and lazy expression statements execute in source order (5.902557ms)
+✔ for comma initialization and updating preserve scope, left-to-right order and continue (13.541567ms)
+✔ call and constructor argument commas and declaration commas remain separate syntactic contexts (3.705712ms)
+✔ comma statements reuse all lowered assignments and remain within while and switch bodies (11.68424ms)
+✔ empty comma operands or writes to readonly targets fail atomically with source positions (5.450116ms)
+✔ complete comma statement GPU fixture translates the original example and ordered effects (26.742591ms)
+✔ Common accepts definitions without an entry and isolates generated helpers (59.822645ms)
+✔ Common macros, overloads, structs, arrays and global initializers link into Image and Sound (66.790031ms)
+✔ standalone Common initializes native WGSL calls after builtins and supports fragment coordinates (6.120515ms)
+✔ shared and local GLSL errors keep original source ownership and line numbers (4.207985ms)
+✔ linked GLSL specializes Common sampler overloads per Pass without stale Common ABI hints (76.972256ms)
+✔ stored originals relink after Common edits and preserve explicit native WGSL edits (58.748918ms)
+✔ failed linking identifies enabled Passes and invalid source metadata is rejected (2.369828ms)
+✔ Common conversion API previews without mutation, applies with revisions and round-trips source (28.09186ms)
+✔ if/elif/else select only the first matching branch, including nested groups (54.408503ms)
+✔ defined operands are not macro-expanded and ifdef/ifndef test existence, not macro value (1.952046ms)
+✔ integer macro expressions honor arithmetic, comparison, bitwise and logical precedence (2.239352ms)
+✔ logical short-circuit suppresses undefined-name, division and shift errors on unevaluated paths (9.951437ms)
+✔ inactive code/directives never expand macros or change definitions (24.660785ms)
+✔ GLSL ES import predefines and invocation-based line numbers are available and protected (3.484249ms)
+✔ comments, continued conditions, CRLF and surviving diagnostics preserve physical source positions (1.368491ms)
+✔ malformed directives and conditions fail atomically with source locations (8.437579ms)
+✔ condition nesting and macro expansion remain bounded, while skipped bombs are harmless (532.493749ms)
+✔ integer macro literals keep the same value in conditional and shader expressions (4.779551ms)
+✔ full conditional-compilation GPU fixture translates only selected functions and shader branches (5.623529ms)
+✔ ternaries bind below logical/comparison/arithmetic operators and associate to the right (26.465257ms)
+✔ only the selected branch runs and condition changes precede branch reads (4.212251ms)
+✔ captures distinguish swizzle fields, constructor names, scientific literals and comparisons from variables (2.468953ms)
+✔ readonly values and sampler handles are captured by value; mutable globals stay direct (26.988761ms)
+✔ out/inout, nested branches and void-returning calls preserve writes and helper dependencies (12.453699ms)
+✔ short circuits, returns, loop conditions/updates and dynamic indices keep their evaluation sites (2.864261ms)
+✔ global constant scalar/vector/matrix ternaries remain constant expressions (4.160863ms)
+✔ runtime global initializers and macros use the same lazy lowering (10.242546ms)
+✔ invalid conditions, branch types, opaque values, l-values and syntax report GLSL locations (5.381516ms)
+✔ complete ternary GPU fixture translates spatial branches, side effects, discard, captures and all value types (39.434747ms)
+✔ sprite-style nested numeric and RGB selections stay compact at scale (63.848516ms)
+✔ unknown calls, unsafe arithmetic/indexing, mutation and compound types retain lazy branches (113.949766ms)
+✔ prefix and postfix statements use integer updates or typed floating/vector arithmetic (42.533138ms)
+✔ expression values preserve prefix/postfix distinction, short circuit and loop evaluation sites (2.895502ms)
+✔ global, swizzle and indexed updates pass the root variable and evaluate indices once (14.311379ms)
+✔ rewritten builtins evaluate incrementing operands once (4.052062ms)
+✔ comma-separated local declarations split in order without splitting commas inside calls (2.172117ms)
+✔ multiple for declarations retain loop scope and continue executes floating updates (6.637181ms)
+✔ invalid increment targets and malformed declarators fail at the original source (8.480687ms)
+✔ the GPU fixture combines prefix/postfix values, lazy conditions, vector updates and declaration lists (33.297483ms)
+✔ redundant semicolons disappear without losing empty branches or for separators (10.933004ms)
+✔ gl_FragCoord exposes a vec4 captured from the original per-pixel coordinate (79.39089ms)
+✔ helpers and mutable-global initializers see coordinates before mainImage local setup (2.452648ms)
+✔ coordinates are only emitted when used, including through macros and late helper definitions (4.182537ms)
+✔ gl_FragCoord is readonly and cannot be redeclared or used as a constant initializer (3.977147ms)
+✔ the supplied mainImage shape translates with its res alias and a sampler2D dof helper (8.150838ms)
+✔ mutable globals become invocation-private variables shared by helper functions (56.714727ms)
+✔ declarator lists and macros preserve ordered runtime initialization after builtin setup (9.446093ms)
+✔ global initializers can call overloaded helpers and prototypes defined after mainImage (5.453942ms)
+✔ parameter and block shadowing leave global reads and writes bound to the right variable (3.471217ms)
+✔ invalid globals and nonconstant const initializers report their GLSL source locations (24.308866ms)
+✔ the GPU fixture combines global initialization, mutation, overloads and per-frame inputs (15.526182ms)
+✔ square aliases and every rectangular matrix size support declarations and constructors (111.406473ms)
+✔ scalar diagonals, column vectors, mixed components, resizing and matrix-to-vector conversions are lowered (9.168141ms)
+✔ matrix products infer algebraic dimensions, preserve operand order and dispatch overloads (5.727806ms)
+✔ matrix scalar operations, equality, builtins and global initializers generate valid typed shapes (6.141974ms)
+✔ matrix compound writes and indexed updates preserve each index and source evaluation once (3.083085ms)
+✔ invalid matrix constructors, operators, indices, writes and overloads fail at the GLSL source (8.619947ms)
+✔ the matrix GPU fixture translates const/runtime constructors, rotations, inverse, non-square products and component mutations (87.462181ms)
+✔ out and inout use independent copies with copyback on normal and early returns (77.823584ms)
+✔ output references share one root pointer and globals never alias a pointer parameter (3.670646ms)
+✔ indexed input snapshots and destination indices evaluate once before later arguments (2.73246ms)
+✔ swizzles and indexed matrix columns/elements copy back through the original root (3.345416ms)
+✔ matrix inout snapshots are taken after index effects and before later arguments (3.75581ms)
+✔ parameter shadows, unnamed arguments, prototypes and overloads retain the output binding (15.333048ms)
+✔ calls remain at short-circuit and loop evaluation sites and nested helper dependencies are emitted (4.249956ms)
+✔ output parameters reject readonly values, temporaries, duplicate components and incompatible types (16.635739ms)
+✔ output return validation rejects bare returns from valued functions and values from void functions (3.481244ms)
+✔ full copy-in/copy-out GPU fixture translates with nested calls, globals, matrices and sampler inputs (20.49348ms)
+✔ scalar/vector overloads and macro-expanded nested calls receive stable distinct WGSL names (54.367333ms)
+✔ arity, void parameter lists and unnamed inputs are lowered without duplicate function names (40.895429ms)
+✔ integer literals, unsigned literals, booleans, swizzles and builtin results select exact signatures (3.884569ms)
+✔ prototypes make later definitions visible and parameter names do not distinguish overloads (2.07688ms)
+✔ GLSL ES does not select an overload by return context or implicit casts/broadcasts (18.420804ms)
+✔ invalid declarations, missing definitions and recursion fail at original source positions (6.744095ms)
+✔ generated names cannot collide with a user suffix or another overload (0.967551ms)
+✔ isnan and isinf classify float bit patterns instead of self-comparing expressions (45.123117ms)
+✔ vector predicates return native boolean vectors usable in any/all/not, swizzles and indexing (3.021553ms)
+✔ bool vector parameters, overloads, outputs and ternaries preserve valid WGSL names and types (7.43971ms)
+✔ constant/global predicates stay constant while side effects execute exactly once at the call site (9.765793ms)
+✔ invalid predicate arguments, arities, reductions and writes report GLSL positions (28.01681ms)
+✔ complete GPU fixture translates finite and special-value classification paths (16.804014ms)
+✔ object macros expand whole tokens, preserve precedence and resolve names at use time (5.017504ms)
+✔ parameter macros handle nested calls, comma-containing constructors, aliases and multiline invocations (5.271064ms)
+✔ comments, continuations, CRLF and adjacent macro parentheses follow preprocessing order (1.256783ms)
+✔ empty parameters, unused arguments and macros producing statements are supported (48.167573ms)
+✔ recursion is suppressed without stopping unrelated macro expansion (4.586638ms)
+✔ identical definitions are accepted and changing a definition requires undef (1.399551ms)
+✔ source coordinates survive removed directives, expanded macro bodies and continuations (1.934731ms)
+✔ invalid macro syntax and unsupported directives fail atomically at the source location (15.467396ms)
+✔ macro expansion and nesting are bounded before reaching the GLSL parser (284.033175ms)
+✔ named structures, nested members, precision and comma field/variable declarations translate (79.355221ms)
+✔ constructors preserve field order, nested types and integer-to-float initialization (3.250764ms)
+✔ local structure types have distinct identities and do not leak outside blocks, loops or functions (5.090789ms)
+✔ struct returns, prototypes, exact overloads and output copies retain their type (3.769982ms)
+✔ member l-values preserve root identity, nested paths, swizzles, matrix indices and update helper uniqueness (4.013805ms)
+✔ struct ternaries stay lazy and global constant ternaries/equality use legal WGSL expressions (6.689414ms)
+✔ invalid struct definitions, fields, assignments and writes fail atomically at the source (3.549288ms)
+✔ WGSL reserved words are renamed in globals, consts, parameters, locals and the entry signature (1.844138ms)
+✔ reserved struct/type/member names, macros, shadowing, outputs and lazy captures use the same bindings (3.081062ms)
+✔ representative current WGSL keywords/reserved words and invalid WGSL identifiers are escaped (9.329072ms)
+✔ full struct/reserved-name GPU fixture translates through the shared importer (24.649364ms)
+✔ switch emits native WGSL cases, with a required default even when GLSL omits it (25.228296ms)
+✔ fallthrough suffixes preserve conditional break and default in the middle (2.112053ms)
+✔ adjacent selectors, empty statements, and default aliases merge without extra execution (1.045429ms)
+✔ selector side effects evaluate once; empty switch is valid (4.061926ms)
+✔ GLSL case scope hoists renamed storage while keeping initializers at their execution site (2.847567ms)
+✔ case constants include macros, local/global const, arithmetic, casts, builtins and ternaries (5.549482ms)
+✔ loop continue, nested switches, returns and output parameters keep native control targets (4.240991ms)
+✔ invalid switches fail atomically with original source positions and useful diagnostics (6.524427ms)
+✔ case expansion is bounded while long groups of aliases remain compact (24.231598ms)
+✔ complete switch GPU fixture translates control flow, constants, shared scope and side effects (11.06158ms)
+✔ tanh accepts float, literal and vec2/3/4 without changing expression evaluation (23.477552ms)
+✔ invalid tanh argument count and types fail at the original call (5.216246ms)
+✔ the supplied negative texture bias converts with a clear single-mip notice (20.132605ms)
+✔ optional bias supports aliases, sampler parameters and cubemap inference (5.507176ms)
+✔ coordinates and bias are evaluated once, even when their values contain writes (4.378147ms)
+✔ Common and Sound share bias conversion, including lazy nonuniform branches (4.127493ms)
+✔ bad bias signatures fail at their GLSL call without changing explicit-LOD arities (3.963457ms)
+✔ sampler2D parameters become immutable WGSL texture handles and forward through prototypes and overloads (20.94333ms)
+✔ explicit builtin uniforms and sampler precision declarations reuse channel bindings (5.978337ms)
+✔ a sampler parameter shadowing iChannel0 samples the passed handle instead of the global (1.979728ms)
+✔ textureLod, textureSize and texelFetch accept sampler parameters and preserve single evaluation (4.038328ms)
+✔ unused sampler arguments and mutable-global initializers retain valid declarations (1.797431ms)
+✔ invalid sampler declarations, writes, conversions and sampling signatures report GLSL locations (10.4883ms)
+✔ the sampler GPU fixture translates shared image/framebuffer handles and nested sampling calls (10.62637ms)
+✔ translates the standard Shadertoy entry, scalar/vector promotion and texture sampling (20.386916ms)
+✔ function parameters become mutable copies; loops, early returns and swizzle writes survive (4.039782ms)
+✔ unsupported syntax is rejected with line and column; no misleading partial translation (4.258908ms)
+✔ comments, scientific notation, precision and constant definitions are parsed (1.417357ms)
+✔ integer literals broadcast to vectors, mutable coordinates and vertical derivatives preserve GLSL conventions (1.981104ms)
+✔ Shadertoy constants, helper macros and texture aliases produce the same WGSL as expanded GLSL (5.64931ms)
+✔ high precision requests the optional filtering feature without losing engine features, limits or native method receivers (5.346167ms)
+✔ unsupported adapters retain their native request and use filterable half precision without requesting an invalid feature (0.630414ms)
+✔ unavailable adapters and native device request failures are preserved (1.479287ms)
+✔ precision follows enabled device features rather than merely advertised adapter features (3.054493ms)
+✔ keyboard held/press/toggle rows use bottom-left texture coordinates and one pulse per physical press (9.586939ms)
+✔ built-in assets are packaged, generated images are 512 square, and channels round-trip without embedding images (36.868614ms)
+✔ video resources validate independently from images and cube resources (2.643225ms)
+✔ project round-trip and built-in examples satisfy the serialized contract (33.913127ms)
+✔ all preview resolution choices survive validation and project export/import (7.06163ms)
+✔ rejects excess channels, duplicate passes, missing assets, disabled buffers and unknown versions atomically (1.541075ms)
+✔ cycles have deterministic Shadertoy ordering, including self-feedback (0.628652ms)
+✔ WGSL diagnostics map back to user source without exposing wrapper offsets (1.59099ms)
+✔ automation honors revisions, validates channel writes, and round-trips via owned resources (73.550033ms)
+✔ fresh projects expose only Image; added empty/disabled tabs survive export and reopen (20.683113ms)
+✔ legacy, imported, and externally edited projects reveal every authored or enabled module (1.38564ms)
+✔ API additions preserve revisions and Buffer channel binding reveals its tab (13.87088ms)
+✔ rolling playback passes 16/60/120 seconds with exact contiguous samples and bounded scheduled buffers (661.337468ms)
+✔ pause/replacement discard pending chunks and underruns retain the next sample (33.277112ms)
+✔ a gesture can unlock before synthesis; mute cancels pending authorization (7.682879ms)
+✔ Sound is optional in legacy files, disabled by default, and round-trips settings/channels (12.638361ms)
+✔ mainSound overload forms translate with normal macros, globals, sample rate and safe naming (12.596672ms)
+✔ Sound wrapper keeps sample index exact across chunks and maps Common/Sound source lines (1.825266ms)
+✔ WAV exports interleaved stereo PCM16 with clipping and nonfinite sanitization (0.725903ms)
+✔ Sound API config/code/translation/export schema preserves revisions and old project compatibility (21.0555ms)
+✔ language detection ignores comments and refuses ambiguous or mixed syntax (2.59743ms)
+✔ language choices preserve independent drafts including incomplete GLSL and survive export (16.145039ms)
+✔ GLSL Common and Pass originals link on runtime snapshots without modifying editor drafts (11.850808ms)
+✔ legacy imported GLSL is editable by default; malformed language metadata is rejected (3.101387ms)
+✔ source API reports language, rejects stale writes and shares assets without mutating prior drafts (12.722797ms)
+✔ 65 progressive chapters have their own derivations, experiments, runnable examples and references (8.489568ms)
+✔ existing deep links and Chinese/English search remain available (5.424289ms)
+✔ every example creates a valid unsaved document and progressive input bindings (16.255114ms)
+✔ code comparisons reconstruct both examples and expose actual Boolean changes (14.628248ms)
+✔ all Gallery and tutorial WGSL modules compile to Shadertoy entries (422.105049ms)
+✔ Gallery exports can be imported again, including vector comparisons and ties-to-even rounding (152.172333ms)
+✔ Sound, arrays, structs, matrices, loop continuing and bitcasts use the compiler type system (2.012655ms)
+✔ current GLSL originals and Common are exported without a lossy roundtrip (4.767848ms)
+✔ source diagnostics identify Common and unsupported WebGPU bindings fail explicitly (10.756976ms)
+✔ read-only WGSL translation and project export share API/IPC and preserve revisions (13.104262ms)
+ℹ tests 221
+ℹ suites 0
+ℹ pass 221
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2462.20963
+
+> @haiyue/shaderlab-mobile@0.1.0 test
+> node --experimental-strip-types --test test/*.test.mjs
+
+(node:46042) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/audio-transport.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ native streaming passes 16 and 120 seconds continuously with bounded synthesis and preserves pause position (247.490152ms)
+✔ replacement discards asynchronous samples from a stopped generation (0.725013ms)
+(node:46043) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/session.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ phone, tablet, rotation and keyboard bounds keep both editor panes usable (1.419666ms)
+✔ opening examples stays unsaved, each language keeps its draft and buffers remain portable (14.487815ms)
+✔ the shared mobile source path can link every Gallery and all progressive tutorials (28.495787ms)
+✔ GLSL and WGSL highlights preserve UTF-16 offsets and color directives, comments and language tokens (1.45707ms)
+✔ explicit saves stay separate from recovery, imported IDs stay independent and damaged saves retain backup (41.455553ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 458.848063

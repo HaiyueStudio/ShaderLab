@@ -1,3 +1,4 @@
+import { mountWebSharedEditor } from './platform/shared-editor.js';
 import type {} from '@haiyue/editor-app-kit';
 import type { HYSelect, HYCheckbox, HYDropdown, HYDropdownSelectDetail } from '@haiyue/ui';
 import { initializeUI } from './ui.js';
@@ -7,35 +8,41 @@ import type { BufferPreview } from './bufferPreviews.js';
 import { CodeEditor, GlslEditor, WgslPreview } from './codeEditor.js';
 import { GalleryStore, type GalleryItem } from './storage.js';
 import { examples } from './examples.js';
-import { createProject, codeOf, codeTabs, passOf, parseProject, PASS_IDS, PASS_LABELS, PREVIEW_SCALES, LIMITS, CUBE_FACES, CUBE_FACE_LABELS, channelTypes, type CodeId, type ShaderLanguage, type PassId, type PreviewMode, type PreviewMesh, type ShaderProject } from './model.js';
+import { createProject, codeOf, codeTabs, passOf, parseProject, PASS_IDS, PASS_LABELS, PREVIEW_SCALES, LIMITS, CUBE_FACES, CUBE_FACE_LABELS, channelTypes, type CodeId, type ShaderLanguage, type PassId, type PreviewMode, type PreviewMesh, type PreviewScale, type ShaderProject } from './model.js';
 import { BUILTIN_TEXTURES, builtinTexture, type BuiltinTextureId } from './builtinTextures.js';
 import { TutorialPage } from './tutorialPage.js';
 import { findTutorial } from './tutorialContent.js';
 import { createCubeUploader } from './cubeUpload.js';
 import { languageOf, sourceOf } from './sourceLanguage.js';
 import { projectTranslationOptions } from './glslProject.js';
+import { translateHlsl } from './hlsl.js';
+import { projectHlslOptions } from './sourceProject.js';
 import { translateGlsl } from './glsl.js';
 import { translateWgsl } from './wgsl.js';
 import { exportShadertoy, exportShadertoyPass } from './shadertoyExport.js';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const disposeUI = initializeUI();
-$<HYSelect>('code-language').options = [{ value: 'wgsl', label: 'WGSL' }, { value: 'glsl', label: 'GLSL' }];
+const sharedUIEnabled = new URLSearchParams(location.search).get('ui') !== 'legacy';
+let sharedUI: ReturnType<typeof mountWebSharedEditor> | undefined;
+$<HYSelect>('code-language').options = [{ value: 'wgsl', label: 'WGSL' }, { value: 'glsl', label: 'GLSL' }, { value: 'hlsl', label: 'HLSL' }];
 $<HYCheckbox>('detect-language').checked = true;
 $<HYSelect>('preview-scale').options = PREVIEW_SCALES.map(scale => ({ value: String(scale), label: scale * 100 + '%' }));
 $<HYSelect>('sound-duration').options = [1, 4, 8, 16, 30, 60, 120].map(value => ({ value: String(value), label: `${value} 秒` }));
 $<HYSelect>('sound-volume').options = [0, 0.1, 0.25, 0.5, 1].map(value => ({ value: String(value), label: `${value * 100}%` }));
 $<HYSelect>('mesh-select').options = [{ value: 'sphere', label: '球体' }, { value: 'box', label: '立方体' }, { value: 'torus', label: '圆环' }];
 const workspace = new ShaderWorkspace(), store = new GalleryStore(), samples = examples();
+const app = workspace.application;
 const uploadCube = createCubeUploader(workspace, compile);
 const tutorial = new TutorialPage(id => { setRoute('tutorial/' + id); $('tutorial-title').focus({ preventScroll: true }); $('tutorial-title').scrollIntoView({ block: 'start' }); }, project => { void run(() => open(project, true)); });
 const thumbnails = new Map<string, string>();
 const thumbnailFailures = new Set<string>();
 let exampleThumbnailJob: Promise<void> | undefined;
-let saved: GalleryItem[] = [], currentPass: CodeId = 'image', opened = false, route = 'gallery', disposed = false;
+let saved: GalleryItem[] = [], opened = false, route = 'gallery', disposed = false;
 let revision = 0, openedRevision = 0, openSequence = 0, autoTimer: ReturnType<typeof setTimeout> | undefined;
 let runtimePromise: Promise<ShaderRuntime> | undefined, openPromise: Promise<void> = Promise.resolve();
-let saveQueue: Promise<unknown> = Promise.resolve(), uploadIndex = 0, translation: string | null = null;
+let uploadIndex = 0, translation: string | null = null;
+let pendingImport: File | undefined;
 let controlSignature = '', compileSequence = 0;
 let editorReturnRoute = 'gallery';
 let bufferPreviews: BufferPreview[] = [];
@@ -58,7 +65,7 @@ function renderShadertoyExport() {
   shadertoyPreview.view.requestMeasure();
 }
 async function showShadertoyExport() {
-  const snapshot = workspace.document.serialize(), pass = currentPass === 'common' ? 'image' : currentPass;
+  const snapshot = workspace.document.serialize(), pass = app.state.activePass === 'common' ? 'image' : app.state.activePass;
   shadertoyBundle = undefined; renderShadertoyExport();
   $<HTMLDialogElement>('shadertoy-dialog').showModal();
   shadertoyBundle = await exportShadertoy(snapshot);
@@ -75,7 +82,7 @@ const glslEditor = new GlslEditor($('glsl-source'), () => {
 }, translateSource);
 
 function translateSource() {
-  const result = translateGlsl(glslEditor.value, projectTranslationOptions(workspace.document.state as ShaderProject, currentPass)); translation = result.code; $<HTMLButtonElement>('apply-glsl').disabled = !translation;
+  const result = translateGlsl(glslEditor.value, projectTranslationOptions(workspace.document.state as ShaderProject, app.state.activePass)); translation = result.code; $<HTMLButtonElement>('apply-glsl').disabled = !translation;
   wgslPreview.show(result.code ?? '');
   $('glsl-messages').textContent = result.code ? result.warnings.join('\n') : result.diagnostics.map(d => `${d.source === 'common' ? 'Common ' : ''}${d.line}:${d.column} ${d.message}`).join('\n');
   $('glsl-messages').classList.toggle('error', !result.code);
@@ -96,7 +103,9 @@ function setRoute(next: string) {
   const backLabel = editorReturnRoute.startsWith('tutorial/') ? '返回教程 · ' + findTutorial(editorReturnRoute.slice(9)).title : '返回 Gallery';
   $('back-gallery').setAttribute('aria-label', backLabel); $('back-gallery').title = backLabel;
   route = next.startsWith('tutorial') ? 'tutorial' : next;
+  app.dispatch({ type: 'route.select', route: route === 'editor' ? 'editor' : 'gallery' });
   $('gallery').hidden = route !== 'gallery'; $('workspace').hidden = route !== 'editor'; $('tutorial').hidden = route !== 'tutorial';
+  sharedUI?.setVisible(route === 'editor');
   for (const page of ['gallery', 'editor', 'tutorial']) {
     $('nav-' + page).classList.toggle('active', route === page);
     if (route === page) $('nav-' + page).setAttribute('aria-current', 'page'); else $('nav-' + page).removeAttribute('aria-current');
@@ -112,11 +121,11 @@ async function ensureRuntime() {
     runtime.onError = message => { $('gpu-message').textContent = message; $('gpu-overlay').hidden = false; $('gpu-overlay').classList.add('failed'); $('gpu-retry').hidden = false; };
     try { await runtime.initialize(); }
     catch (error) { runtime.onError?.(`无法启动 WebGPU：${error instanceof Error ? error.message : String(error)}。仍可编辑、导入和保存代码。请使用支持 WebGPU 的浏览器或检查硬件加速。`); throw error; }
-    workspace.runtime = runtime; runtime.onSoundError = message => notice(message, true); runtime.onSoundProgress = fraction => { $('compile-state').textContent = `正在合成音频… ${Math.round(fraction * 100)}%`; }; runtime.setBufferPreviews(workspace.document.state.id, bufferPreviews);
+    workspace.runtime = runtime; runtime.onSoundError = message => notice(message, true); runtime.onCameraError = message => notice(message, true); runtime.onSoundProgress = fraction => { $('compile-state').textContent = `正在合成音频… ${Math.round(fraction * 100)}%`; }; runtime.setBufferPreviews(workspace.document.state.id, bufferPreviews);
     runtime.onFrame = state => {
       $('time-label').textContent = `${state.time.toFixed(2)} s`;
       $('resolution-label').textContent = `${state.width} × ${state.height}`;
-      $('play-pause').textContent = state.playing ? 'Ⅱ' : '▶'; $('play-pause').setAttribute('aria-label', state.playing ? '暂停' : '播放');
+      if (!sharedUI) { $('play-pause').textContent = state.playing ? 'Ⅱ' : '▶'; $('play-pause').setAttribute('aria-label', state.playing ? '暂停' : '播放'); }
       $('gpu-overlay').hidden = true;
       $('sound-toggle').textContent = state.sound.audible ? '静音' : '开启声音';
       $('sound-toggle').setAttribute('aria-pressed', String(state.sound.audible));
@@ -126,6 +135,7 @@ async function ensureRuntime() {
   return runtimePromise;
 }
 async function compile() {
+  if (sharedUI) { await sharedUI.controller.compile(); return; }
   const sequence = ++compileSequence;
   $('compile-state').textContent = '正在编译…'; $<HTMLButtonElement>('compile').disabled = true;
   try {
@@ -134,9 +144,9 @@ async function compile() {
     if (!compiled && !workspace.diagnostics.length) $('compile-state').textContent = '代码已变化，请重新运行';
   } finally { if (sequence === compileSequence) $<HTMLButtonElement>('compile').disabled = false; }
 }
-function showGenerated(pass: CodeId, line = 1) {
+async function showGenerated(pass: CodeId, line = 1) {
   const project = workspace.document.state;
-  const result = languageOf(project, pass) === 'glsl' ? translateGlsl(sourceOf(project, pass), projectTranslationOptions(project as ShaderProject, pass)) : null;
+  const result = languageOf(project, pass) === 'hlsl' ? await translateHlsl(sourceOf(project, pass), projectHlslOptions(project as ShaderProject, pass)) : languageOf(project, pass) === 'glsl' ? translateGlsl(sourceOf(project, pass), projectTranslationOptions(project as ShaderProject, pass)) : null;
   generatedPreview.show(result ? result.code ?? '' : codeOf(project, pass));
   $('generated-message').textContent = result?.code === null ? result.diagnostics.map(d => `${d.line}:${d.column} ${d.message}`).join('\n') : '只读预览 · ' + PASS_LABELS[pass] + ' · 可选择复制';
   const notes = $<HTMLDetailsElement>('generated-notes');
@@ -150,58 +160,70 @@ function renderDiagnostics() {
   const diagnostics = workspace.diagnostics, list = $('diagnostics'); list.replaceChildren();
   $('diagnostics-count').textContent = `${diagnostics.filter(d => d.severity === 'error').length} 个错误 · ${diagnostics.filter(d => d.severity === 'warning').length} 个警告`;
   if (!diagnostics.length) { const p = document.createElement('p'); p.className = 'diagnostics-empty'; p.textContent = workspace.compiledRevision ? '✓ 编译成功 · Haiyue WebGPU' : '点击运行，查看你的 Shader。'; list.append(p); }
-  for (const diagnostic of diagnostics) list.append(button(`${PASS_LABELS[diagnostic.pass]}:${diagnostic.line}:${diagnostic.column} · ${(diagnostic.language ?? 'wgsl').toUpperCase()}  ${diagnostic.message}`, () => { if (languageOf(workspace.document.state, diagnostic.pass) === 'glsl' && diagnostic.language !== 'glsl') showGenerated(diagnostic.pass, diagnostic.line); else { selectPass(diagnostic.pass); editor.focusLine(diagnostic.line); } }, `diagnostic ${diagnostic.severity}`));
+  for (const diagnostic of diagnostics) list.append(button(`${PASS_LABELS[diagnostic.pass]}:${diagnostic.line}:${diagnostic.column} · ${(diagnostic.language ?? 'wgsl').toUpperCase()}  ${diagnostic.message}`, () => { if (languageOf(workspace.document.state, diagnostic.pass) !== 'wgsl' && diagnostic.language !== languageOf(workspace.document.state, diagnostic.pass)) showGenerated(diagnostic.pass, diagnostic.line); else { selectPass(diagnostic.pass); editor.focusLine(diagnostic.line); } }, `diagnostic ${diagnostic.severity}`));
   editor.diagnostics(diagnostics);
   $('compile-state').textContent = diagnostics.some(d => d.severity === 'error') ? '编译失败 · 保留上次预览' : workspace.compiledRevision === workspace.document.revision ? '● 已编译' : '● 代码已修改';
 }
-function selectPass(pass: CodeId) { currentPass = pass; editor.show(pass, sourceOf(workspace.document.state, pass), languageOf(workspace.document.state, pass)); controlSignature = ''; sync(); renderDiagnostics(); }
+function selectPass(pass: CodeId) { app.dispatch({ type: 'pass.select', pass }); editor.show(pass, sourceOf(workspace.document.state, pass), languageOf(workspace.document.state, pass)); controlSignature = ''; sync(); renderDiagnostics(); }
+let sharedHostState: { signature:string; source:string } | undefined;
 function sync() {
-  const p = workspace.document.state, language = languageOf(p, currentPass), source = sourceOf(p, currentPass);
+  const p = workspace.document.state, language = languageOf(p, app.state.activePass), source = sourceOf(p, app.state.activePass);
+  const visibleTabs = codeTabs(p);
+  const signature = JSON.stringify([app.state.activePass, language, visibleTabs, Boolean(workspace.runtime), p.sound.enabled, p.sound.channels, p.passes.map(item => [item.id, item.enabled, item.channels]), p.assets.map(a => [a.id, a.name])]);
+  // The shared fragments own name/scale/playback/save. Only refresh the legacy
+  // host controls when their inputs change; compiling a new scale does not
+  // rewrite the language, sound selectors or CodeMirror contents.
+  if(sharedUI){
+    const hostSignature=JSON.stringify([signature,p.preview.mode,p.sound.duration,p.sound.volume]);
+    const same=sharedHostState?.signature===hostSignature&&sharedHostState.source===source&&controlSignature===signature;
+    sharedHostState={signature:hostSignature,source};
+    if(same){if(workspace.compiledRevision!==workspace.document.revision){const label=$('compile-state'),text='● 代码已修改 · Ctrl / ⌘ + Enter 运行';if(label.textContent!==text)label.textContent=text;}return;}
+  }
   $<HYSelect>('code-language').value = language;
-  $('view-wgsl').hidden = language !== 'glsl';
-  if (document.activeElement !== $('project-name')) $<HTMLInputElement>('project-name').value = p.name;
-  if (editor.view.state.doc.toString() !== source || editor.language !== language) editor.show(currentPass, source, language);
-  $<HYSelect>('preview-scale').value = String(p.preview.scale);
-  $<HYSelect>('mesh-select').value = p.preview.mesh;
-  $('mode-canvas').setAttribute('aria-pressed', String(p.preview.mode === 'canvas'));
-  $('mode-scene').setAttribute('aria-pressed', String(p.preview.mode === 'scene'));
+  $('view-wgsl').hidden = language === 'wgsl';
+  if (!sharedUI && document.activeElement !== $('project-name')) $<HTMLInputElement>('project-name').value = p.name;
+  if (editor.view.state.doc.toString() !== source || editor.language !== language) editor.show(app.state.activePass, source, language);
+  if (!sharedUI) {
+    $<HYSelect>('preview-scale').value = String(p.preview.scale);
+    $<HYSelect>('mesh-select').value = p.preview.mesh;
+    $('mode-canvas').setAttribute('aria-pressed', String(p.preview.mode === 'canvas'));
+    $('mode-scene').setAttribute('aria-pressed', String(p.preview.mode === 'scene'));
+  }
   $('scene-controls').hidden = p.preview.mode !== 'scene';
-  $('sound-settings').hidden = currentPass !== 'sound';
+  $('sound-settings').hidden = app.state.activePass !== 'sound';
   $('sound-toggle').hidden = !p.sound.enabled;
   for (const [id, value, label] of [['sound-duration', p.sound.duration, `${p.sound.duration} 秒`], ['sound-volume', p.sound.volume, `${Math.round(p.sound.volume * 100)}%`]] as const) {
     const select = $<HYSelect>(id); if (!select.options.some(option => option.value === String(value))) select.options = [...select.options, { value: String(value), label }];
     select.value = String(value);
   }
-  const visibleTabs = codeTabs(p);
-  const signature = JSON.stringify([currentPass, language, visibleTabs, Boolean(workspace.runtime), p.sound.enabled, p.sound.channels, p.passes.map(item => [item.id, item.enabled, item.channels]), p.assets.map(a => [a.id, a.name])]);
   if (signature !== controlSignature) {
     controlSignature = signature; const tabs = $('pass-tabs'); tabs.replaceChildren();
     for (const id of visibleTabs) {
       const b = button(PASS_LABELS[id], () => selectPass(id), id === 'common' || passOf(p as ShaderProject, id).enabled ? 'enabled' : '');
-      b.dataset.pass = id; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(id === currentPass)); tabs.append(b);
+      b.dataset.pass = id; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(id === app.state.activePass)); tabs.append(b);
     }
     const available = (['buffer-a', 'buffer-b', 'buffer-c', 'buffer-d', 'sound', 'common'] as CodeId[]).filter(id => !visibleTabs.includes(id));
     $<HYDropdown>('add-pass-menu').items = available.map(id => ({ value: id, label: PASS_LABELS[id], disabled: id === 'sound' && !workspace.runtime }));
     $<HYDropdown>('add-pass-menu').hidden = !available.length;
-    $('pass-enable-label').hidden = currentPass === 'image' || currentPass === 'common';
-    $<HYCheckbox>('pass-enabled').checked = currentPass === 'common' || passOf(p as ShaderProject, currentPass).enabled;
-    $('common-help').hidden = currentPass !== 'common';
-    $('code-entry-label').textContent = currentPass === 'common' ? '共享函数 · 常量 · 结构体' : currentPass === 'sound' ? (language === 'glsl' ? 'mainSound → vec2 · GLSL' : 'mainSound → vec2f · WGSL') : (language === 'glsl' ? 'mainImage(out vec4, in vec2) · GLSL' : 'mainImage → vec4f · WGSL');
+    $('pass-enable-label').hidden = app.state.activePass === 'image' || app.state.activePass === 'common';
+    $<HYCheckbox>('pass-enabled').checked = app.state.activePass === 'common' || passOf(p as ShaderProject, app.state.activePass).enabled;
+    $('common-help').hidden = app.state.activePass !== 'common';
+    $('code-entry-label').textContent = app.state.activePass === 'common' ? '共享函数 · 常量 · 结构体' : app.state.activePass === 'sound' ? (language === 'hlsl' ? 'mainSound → float2 · HLSL' : language === 'glsl' ? 'mainSound → vec2 · GLSL' : 'mainSound → vec2f · WGSL') : (language === 'hlsl' ? 'mainImage(float2) → float4 · HLSL' : language === 'glsl' ? 'mainImage(out vec4, in vec2) · GLSL' : 'mainImage → vec4f · WGSL');
     $<HTMLButtonElement>('glsl-button').disabled = false;
-    $('glsl-button').title = currentPass === 'common' ? 'GLSL → WGSL 公共定义（无需入口）' : 'GLSL → WGSL';
-    $('channel-pass-label').textContent = PASS_LABELS[currentPass].toUpperCase();
-    $('channel-kinds').textContent = currentPass === 'sound' ? '静态图片 / 内置纹理 / Cubemap' : '图片 / 视频 / 键盘 / Buffer'; renderChannels();
+    $('glsl-button').title = app.state.activePass === 'common' ? 'GLSL → WGSL 公共定义（无需入口）' : 'GLSL → WGSL';
+    $('channel-pass-label').textContent = PASS_LABELS[app.state.activePass].toUpperCase();
+    $('channel-kinds').textContent = app.state.activePass === 'sound' ? '静态图片 / 内置纹理 / Cubemap' : '图片 / 视频 / 键盘 / Buffer'; renderChannels();
   }
   if (workspace.compiledRevision !== workspace.document.revision) $('compile-state').textContent = '● 代码已修改 · Ctrl / ⌘ + Enter 运行';
 }
 function renderChannels() {
   const p = workspace.document.state, container = $('channels'); container.replaceChildren();
   bufferPreviews = [];
-  if (currentPass === 'common') {
+  if (app.state.activePass === 'common') {
     const hint = document.createElement('p'); hint.className = 'muted common-channel-help'; hint.textContent = 'Common 没有独立纹理通道。公共函数中的 channel0–3 使用调用它的 Buffer / Image / Sound 的绑定。'; container.append(hint);
     workspace.runtime?.setBufferPreviews(p.id, bufferPreviews); return;
   }
-  const targetPass = currentPass, pass = passOf(p as ShaderProject, targetPass);
+  const targetPass = app.state.activePass, pass = passOf(p as ShaderProject, targetPass);
   pass.channels.forEach((channel, index) => {
     const card = document.createElement('div'); card.className = 'channel-card'; card.dataset.channel = String(index);
     const top = document.createElement('div'); top.className = 'channel-top'; const label = document.createElement('span'); label.textContent = `iChannel${index}`;
@@ -223,6 +245,7 @@ function renderChannels() {
     }
     else if (channel.kind === 'keyboard') { body.textContent = '⌨'; body.title = '点击预览后按键 · 256 × 3'; }
     else if (channel.kind === 'video') { body.textContent = '▶'; body.title = p.assets.find(a => a.id === channel.assetId)?.name ?? '视频'; }
+    else if (channel.kind === 'camera') { body.textContent = '◉'; body.title = channel.facing === 'user' ? '前置相机 · 实时视频' : '后置相机 · 实时视频'; }
     else if (channel.kind === 'buffer') {
       const canvas = document.createElement('canvas'); canvas.className = 'buffer-preview'; canvas.width = 160; canvas.height = 90;
       canvas.dataset.buffer = channel.pass; canvas.dataset.previewState = 'waiting';
@@ -234,13 +257,13 @@ function renderChannels() {
     }
     else body.textContent = '+';
     const select = document.createElement('hy-select') as HYSelect; select.setAttribute('aria-label', `iChannel${index} 来源`);
-    select.options = [{ value: 'none', label: '无纹理' }, ...(targetPass === 'sound' ? [] : [{ value: 'keyboard', label: '⌨ 键盘 · 256 × 3' }]),
+    select.options = [{ value: 'none', label: '无纹理' }, ...(targetPass === 'sound' ? [] : [{ value: 'keyboard', label: '⌨ 键盘 · 256 × 3' }, { value: 'camera:environment', label: '◉ 后置相机 · 实时视频' }, { value: 'camera:user', label: '◉ 前置相机 · 实时视频' }]),
       ...BUILTIN_TEXTURES.map(asset => ({ value: 'builtin:' + asset.id, label: '内置 · ' + asset.name })),
-      ...PASS_IDS.filter(id => id !== 'image' && targetPass !== 'sound').map(id => ({ value: id, label: `${PASS_LABELS[id]}${id === currentPass ? ' ↺' : ''}` })),
+      ...PASS_IDS.filter(id => id !== 'image' && targetPass !== 'sound').map(id => ({ value: id, label: `${PASS_LABELS[id]}${id === app.state.activePass ? ' ↺' : ''}` })),
       ...p.assets.filter(asset => targetPass !== 'sound' || asset.kind !== 'video').map(asset => ({ value: `${asset.kind ?? 'image'}:${asset.id}`, label: `${asset.kind === 'cubemap' ? 'Cubemap · ' : asset.kind === 'video' ? '视频 · ' : ''}${asset.name}` }))];
-    select.value = channel.kind === 'buffer' ? channel.pass : (channel.kind === 'image' || channel.kind === 'cubemap' || channel.kind === 'video') ? `${channel.kind}:${channel.assetId}` : channel.kind === 'builtin' ? 'builtin:' + channel.texture : channel.kind;
+    select.value = channel.kind === 'camera' ? 'camera:' + channel.facing : channel.kind === 'buffer' ? channel.pass : (channel.kind === 'image' || channel.kind === 'cubemap' || channel.kind === 'video') ? `${channel.kind}:${channel.assetId}` : channel.kind === 'builtin' ? 'builtin:' + channel.texture : channel.kind;
     select.addEventListener('value-change', () => { void run(async () => {
-      const value = select.value; workspace.setChannel(targetPass, index, value === 'none' ? { kind: 'none' } : value === 'keyboard' ? { kind: 'keyboard' } : value.startsWith('builtin:') ? { kind: 'builtin', texture: value.slice(8) as BuiltinTextureId } : value.startsWith('video:') ? { kind: 'video', assetId: value.slice(6) } : value.startsWith('image:') ? { kind: 'image', assetId: value.slice(6) } : value.startsWith('cubemap:') ? { kind: 'cubemap', assetId: value.slice(8) } : { kind: 'buffer', pass: value as Exclude<PassId, 'image'> }); await compile();
+      const value = select.value; workspace.setChannel(targetPass, index, value === 'none' ? { kind: 'none' } : value.startsWith('camera:') ? { kind: 'camera', facing: value === 'camera:user' ? 'user' : 'environment' } : value === 'keyboard' ? { kind: 'keyboard' } : value.startsWith('builtin:') ? { kind: 'builtin', texture: value.slice(8) as BuiltinTextureId } : value.startsWith('video:') ? { kind: 'video', assetId: value.slice(6) } : value.startsWith('image:') ? { kind: 'image', assetId: value.slice(6) } : value.startsWith('cubemap:') ? { kind: 'cubemap', assetId: value.slice(8) } : { kind: 'buffer', pass: value as Exclude<PassId, 'image'> }); await compile();
     }); });
     const upload = button('↑ 上传图片', () => { uploadIndex = index; $<HTMLInputElement>('texture-input').click(); }, 'upload-channel');
     const cube = button('↑ 上传立方体贴图', () => uploadCube(targetPass, index), 'upload-cubemap');
@@ -250,9 +273,9 @@ function renderChannels() {
   });
   workspace.runtime?.setBufferPreviews(p.id, bufferPreviews);
 }
-function hasUnsavedChanges() { return opened && workspace.document.dirty && workspace.document.revision !== openedRevision; }
+function hasUnsavedChanges() { return opened && ((workspace.document.dirty && workspace.document.revision !== openedRevision) || (sharedUI !== undefined && sharedUI.controller.getSnapshot().name !== app.state.project.name)); }
 function refreshSaveState() {
-  $('save-state').textContent = hasUnsavedChanges() ? '有未保存的修改' : saved.some(item => item.project.id === workspace.document.state.id) && !workspace.document.dirty ? '已保存到此浏览器' : '尚未保存';
+  if (!sharedUI) $('save-state').textContent = app.state.save.status === 'saving' ? '正在保存…' : app.state.save.status === 'failed' ? '保存失败 · 请导出备份' : hasUnsavedChanges() ? '有未保存的修改' : saved.some(item => item.project.id === workspace.document.state.id) && !workspace.document.dirty ? '已保存到此浏览器' : '尚未保存';
   window.haiyueEditorHost?.updateDocumentState({ dirty: hasUnsavedChanges(), name: workspace.document.state.name, locale: 'zh-CN' });
 }
 function changed() {
@@ -264,29 +287,38 @@ function changed() {
   if (autoTimer) clearTimeout(autoTimer);
   if (opened && $<HYCheckbox>('auto-run').checked) autoTimer = setTimeout(() => { void run(compile); }, 650);
 }
+// Browser-specific persistence and thumbnail capture; sequencing/dirty state live in app.
+app.connect({ projects: {
+  async open(context) {
+    const file = pendingImport; pendingImport = undefined;
+    if (!file || context.signal.aborted) return null;
+    if (file.size > LIMITS.projectBytes) throw new Error('工程不能超过 48 MB。');
+    return parseProject(await file.text());
+  },
+  saveDraft: async () => {}, // Web Gallery has no automatic recovery-draft feature.
+  async save(project, context) {
+    if (context.signal.aborted) return 'cancelled';
+    const fallback = saved.find(item => item.project.id === project.id)?.thumbnail ?? '';
+    const runtime = workspace.runtime;
+    // A queued save must never attach a later revision's image to an older snapshot.
+    const canCapture = app.state.session === context.session && app.state.revision === context.revision
+      && workspace.compiledRevision === context.revision && runtime?.status().ready && runtime.status().frame > 0;
+    const thumbnail = canCapture ? await runtime!.readImage().then(result => imageDataUrl(result)).catch(() => fallback) : fallback;
+    if (context.signal.aborted) return 'cancelled';
+    await store.save(project as ShaderProject, thumbnail);
+    if (!disposed) {
+      saved = [{ project: project as ShaderProject, thumbnail, savedAt: new Date().toISOString() }, ...saved.filter(item => item.project.id !== project.id)];
+      if (route === 'gallery') renderGallery();
+    }
+    return 'saved';
+  },
+} });
 async function save() {
-  if (!opened) return;
-  const project = workspace.document.serialize(), savedRevision = workspace.document.revision, owner = openSequence;
-  const fallback = saved.find(item => item.project.id === project.id)?.thumbnail ?? '';
-  // Capture the current Image target only for an explicit save. Copying begins
-  // now, so a later edit or project switch cannot replace this snapshot's image.
-  const runtime = workspace.runtime;
-  const image = workspace.compiledRevision && runtime?.status().ready && runtime.status().frame > 0
-    ? runtime.readImage().then(result => imageDataUrl(result)).catch(() => fallback) : Promise.resolve(fallback);
-  const job = saveQueue.catch(() => {}).then(async () => { const thumbnail = await image; await store.save(project, thumbnail); return thumbnail; }); saveQueue = job;
-  $('save-state').textContent = '正在保存…';
-  try {
-    const thumbnail = await job;
-    saved = [{ project, thumbnail, savedAt: new Date().toISOString() }, ...saved.filter(item => item.project.id !== project.id)];
-    if (opened && owner === openSequence && workspace.document.state.id === project.id) workspace.document.markSaved(savedRevision);
-    if (route === 'gallery') renderGallery();
-  } catch (error) { if (owner === openSequence) $('save-state').textContent = '保存失败 · 请导出备份'; throw new Error(`本地保存失败：${String(error)}。请导出工程以保留作品。`); }
+  if (!opened) return false;
+  try { return await (sharedUI ? sharedUI.controller.save() : app.save()); }
+  catch (error) { throw new Error(`本地保存失败：${String(error)}。请导出工程以保留作品。`); }
 }
-async function open(project: ShaderProject, fork = false) {
-  const next = structuredClone(project);
-  if (fork) { next.id = crypto.randomUUID(); next.updatedAt = new Date().toISOString(); }
-  workspace.open(next); await openPromise;
-}
+async function open(project: ShaderProject, fork = false) { workspace.open(project, fork); await openPromise; }
 function card(project: ShaderProject, image: string, category: string, click: () => Promise<void>, index = '', placeholder = '暂无预览') {
   const article = document.createElement('article'); article.className = 'shader-card';
   const open = button('', click, 'card-open'); open.setAttribute('aria-label', `打开 ${project.name}`); open.dataset.project = project.id;
@@ -311,7 +343,7 @@ function renderGallery() {
     const remove = button('', async () => {
       if (!confirm(`删除本地作品「${item.project.name}」？`)) return;
       if (workspace.document.state.id === item.project.id) { opened = false; if (autoTimer) clearTimeout(autoTimer); refreshSaveState(); }
-      await saveQueue.catch(() => {}); await store.delete(item.project.id); saved = saved.filter(p => p.project.id !== item.project.id); renderGallery();
+      await app.whenWritesSettled(); await store.delete(item.project.id); saved = saved.filter(p => p.project.id !== item.project.id); renderGallery();
     }, 'card-delete');
     remove.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/></svg>';
     remove.setAttribute('aria-label', `删除 ${item.project.name}`); remove.title = `删除 ${item.project.name}`; element.append(remove); return element;
@@ -361,6 +393,16 @@ function generateExampleThumbnails(): Promise<void> {
 
 async function start() {
   await workspace.start();
+  if (sharedUIEnabled) sharedUI = mountWebSharedEditor(app, {
+    ensurePreview: async () => { if (autoTimer) clearTimeout(autoTimer); return ensureRuntime(); },
+    flushEditor: () => { app.setSource(app.state.activePass, editor.view.state.doc.toString(), editor.language); },
+    previewModeChanged: () => { workspace.runtime?.setMode(app.state.project.preview.mode); workspace.runtime?.setMesh(app.state.project.preview.mesh); },
+    playbackChanged: () => {},
+    compiled: () => { sync(); renderDiagnostics(); },
+  }, { canvas: $<HTMLCanvasElement>('shader-canvas'), editor: editor.view.dom,
+    focusEditor: () => editor.view.focus(), measureEditor: () => editor.view.requestMeasure(),
+    previewVisible: visible => workspace.runtime?.setVisible(visible && route === 'editor'),
+  });
   Object.defineProperty(window, 'haiyueEditor', { value: workspace.api, configurable: true });
   workspace.platform.rpc.connect(window.haiyueEditorIPC);
   workspace.onCompiled = renderDiagnostics;
@@ -369,14 +411,14 @@ async function start() {
     opened = true; openedRevision = workspace.document.revision; ++openSequence;
     const stored = saved.find(item => item.project.id === workspace.document.state.id);
     if (stored && JSON.stringify(stored.project) === JSON.stringify(workspace.document.state)) workspace.document.markSaved();
-    currentPass = 'image'; editor.reset(); editor.show(currentPass, sourceOf(workspace.document.state, currentPass), languageOf(workspace.document.state, currentPass));
+    editor.reset(); editor.show(app.state.activePass, sourceOf(workspace.document.state, app.state.activePass), languageOf(workspace.document.state, app.state.activePass));
     controlSignature = ''; revision = 0; setRoute('editor'); changed();
     openPromise = (async () => { await run(compile); })();
   };
   workspace.document.subscribe(changed);
   Object.defineProperty(window, 'shaderEditor', { value: Object.freeze({
     open: (project: ShaderProject) => open(project), create: () => open(createProject()), compile,
-    translateGlsl, translateWgsl, exportShadertoy: () => exportShadertoy(workspace.document.serialize()), getProject: () => workspace.document.serialize(), getStatus: () => workspace.runtime?.status() ?? null,
+    translateGlsl, translateHlsl, translateWgsl, exportShadertoy: () => exportShadertoy(workspace.document.serialize()), getProject: () => workspace.document.serialize(), getStatus: () => workspace.runtime?.status() ?? null, getSharedUI: () => sharedUI?.diagnostics() ?? null, getApplicationState: () => app.state, save,
   }), configurable: true });
   bind('dismiss-notice', () => { $('notice').hidden = true; });
   bind('new-project', () => open(createProject())); bind('empty-new', () => open(createProject()));
@@ -401,12 +443,12 @@ async function start() {
   bind('import-project', () => $<HTMLInputElement>('project-input').click());
   $<HTMLInputElement>('project-input').onchange = () => { void run(async () => {
     const input = $<HTMLInputElement>('project-input'), file = input.files?.[0]; input.value = ''; if (!file) return;
-    if (file.size > LIMITS.projectBytes) throw new Error('工程不能超过 48 MB。');
-    await open(parseProject(await file.text()), true);
+    pendingImport = file;
+    if (await app.pick(true)) { void workspace.runtime?.setSoundAudible(false); workspace.onOpen?.(); await openPromise; }
   }); };
-  bind('save-project', async () => { await save(); notice('作品已保存到此浏览器的 Gallery。'); });
+  if (!sharedUI) bind('save-project', async () => { if (await save()) notice('作品已保存到此浏览器的 Gallery。'); });
   bind('export-project', () => download(JSON.stringify(workspace.document.serialize(), null, 2), `${basename()}.hyshader`, 'application/json'));
-  $<HTMLInputElement>('project-name').onchange = () => { void run(() => workspace.document.change(p => { p.name = $<HTMLInputElement>('project-name').value.trim() || 'Untitled shader'; })); };
+  if (!sharedUI) $<HTMLInputElement>('project-name').onchange = () => { void run(() => app.dispatch({ type: 'project.rename', name: $<HTMLInputElement>('project-name').value.trim() || 'Untitled shader' })); };
   $('gallery-search').addEventListener('input', renderGallery);
   $('add-pass-menu').addEventListener('item-select', event => {
     const pass = (event as CustomEvent<HYDropdownSelectDetail>).detail.value as CodeId;
@@ -420,7 +462,7 @@ async function start() {
       const armed = await audio;
       if (workspace.document.state.id !== projectId || owner !== openSequence) return;
       if (autoTimer) clearTimeout(autoTimer);
-      if (armed && workspace.document.state.sound.enabled) runtime?.setPlaying(true);
+      if (armed && workspace.document.state.sound.enabled) app.dispatch({ type: 'preview.play', value: true });
       await compile();
     });
   });
@@ -430,11 +472,11 @@ async function start() {
     $<HYDropdown>('add-pass-menu').shadowRoot?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
   });
   $('code-language').addEventListener('value-change', () => { void run(() => {
-    try { workspace.setLanguage(currentPass, $<HYSelect>('code-language').value as ShaderLanguage); }
+    try { workspace.setLanguage(app.state.activePass, $<HYSelect>('code-language').value as ShaderLanguage); }
     finally { sync(); renderDiagnostics(); }
   }); });
   $('detect-language').addEventListener('checked-change', () => { editor.autoDetect = $<HYCheckbox>('detect-language').checked; });
-  bind('view-wgsl', () => showGenerated(currentPass));
+  bind('view-wgsl', () => showGenerated(app.state.activePass));
   bind('shadertoy-button', showShadertoyExport);
   $('shadertoy-pass').addEventListener('value-change', renderShadertoyExport);
   bind('copy-shadertoy', async () => {
@@ -448,14 +490,16 @@ async function start() {
     if (result?.code) download(result.code, `${basename()}-${result.pass}.glsl`, 'text/plain');
   });
   bind('download-shadertoy-all', () => { if (shadertoyBundle) download(JSON.stringify(shadertoyBundle, null, 2), `${basename()}-shadertoy.json`, 'application/json'); });
-  bind('compile', compile);
+  if (!sharedUI) bind('compile', compile);
   $('auto-run').addEventListener('checked-change', () => { if ($<HYCheckbox>('auto-run').checked) void run(compile); else if (autoTimer) clearTimeout(autoTimer); });
   const mode = (mode: PreviewMode) => { workspace.preview(mode, $<HYSelect>('mesh-select').value as PreviewMesh); };
+  if (!sharedUI) {
   bind('mode-canvas', () => mode('canvas')); bind('mode-scene', () => mode('scene'));
   $('mesh-select').addEventListener('value-change', () => { void run(() => mode('scene')); });
-  $('preview-scale').addEventListener('value-change', () => { void run(async () => { workspace.document.change(p => { p.preview.scale = Number($<HYSelect>('preview-scale').value); }); await compile(); }); });
-  $('pass-enabled').addEventListener('checked-change', () => { void run(async () => { if (currentPass === 'common') return; workspace.setEnabled(currentPass, $<HYCheckbox>('pass-enabled').checked); await compile(); }); });
-  bind('play-pause', () => workspace.runtime?.setPlaying(!workspace.runtime.status().playing)); bind('reset-time', () => workspace.runtime?.reset()); bind('step-frame', () => workspace.runtime?.step());
+  $('preview-scale').addEventListener('value-change', () => { void run(async () => { app.dispatch({ type: 'preview.scale', value: Number($<HYSelect>('preview-scale').value) as PreviewScale }); await compile(); }); });
+  }
+  $('pass-enabled').addEventListener('checked-change', () => { void run(async () => { if (app.state.activePass === 'common') return; workspace.setEnabled(app.state.activePass, $<HYCheckbox>('pass-enabled').checked); await compile(); }); });
+  if (!sharedUI) { bind('play-pause', () => app.dispatch({ type: 'preview.play', value: !app.state.playing })); bind('reset-time', () => app.dispatch({ type: 'preview.reset' })); bind('step-frame', () => app.dispatch({ type: 'preview.step' })); }
   bind('reset-camera', () => workspace.runtime?.resetCamera());
   bind('fullscreen', () => document.fullscreenElement ? document.exitFullscreen() : $('viewport').requestFullscreen());
   bind('capture', async () => { const result = await (await ensureRuntime()).readImage(); const url = imageDataUrl(result, result.width); const a = document.createElement('a'); a.href = url; a.download = `${basename()}.png`; a.click(); });
@@ -463,8 +507,8 @@ async function start() {
     const input = $<HTMLInputElement>(kind === 'video' ? 'video-input' : 'texture-input'), file = input.files?.[0]; input.value = ''; if (!file) return;
     if (kind === 'image' && (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > LIMITS.imageBytes)) throw new Error('请选择不超过 8 MB 的 PNG、JPEG 或 WebP 图片。');
     if (kind === 'video' && (!['video/mp4', 'video/webm'].includes(file.type) || file.size > LIMITS.videoBytes)) throw new Error('请选择不超过 24 MB 的 MP4 或 WebM 视频。');
-    if (currentPass === 'common') return;
-    const pass = currentPass, index = uploadIndex;
+    if (app.state.activePass === 'common') return;
+    const pass = app.state.activePass, index = uploadIndex;
     const resource = workspace.api.putResource(new Uint8Array(await file.arrayBuffer()));
     try {
       const response = await workspace.api.execute({ apiVersion: '1', requestId: crypto.randomUUID(), operation: kind === 'video' ? 'shader.video.upload' : 'shader.texture.upload', documentId: workspace.document.identity.id, expectedRevision: workspace.document.revision, params: { resourceId: resource.resourceId, name: file.name.slice(0, 160), mimeType: file.type } });
@@ -475,7 +519,7 @@ async function start() {
   bind('sound-toggle', async () => {
     const runtime = workspace.runtime; if (!runtime) return;
     await runtime.setSoundAudible(!runtime.status().sound.audible);
-    if (runtime.status().sound.audible) runtime.setPlaying(true);
+    if (runtime.status().sound.audible) app.dispatch({ type: 'preview.play', value: true });
     $('sound-toggle').textContent = runtime.status().sound.audible ? '静音' : '开启声音';
     $('sound-toggle').setAttribute('aria-pressed', String(runtime.status().sound.audible));
   });
@@ -488,19 +532,19 @@ async function start() {
   });
   bind('help-button', () => $<HTMLDialogElement>('help-dialog').showModal());
   bind('glsl-button', () => {
-    const project = workspace.document.state, source = currentPass === 'common' ? project.commonGlsl : passOf(project as ShaderProject, currentPass).glsl;
+    const project = workspace.document.state, source = app.state.activePass === 'common' ? project.commonGlsl : passOf(project as ShaderProject, app.state.activePass).glsl;
     translation = null; $<HTMLButtonElement>('apply-glsl').disabled = true; wgslPreview.show('');
     if (source !== undefined) glslEditor.value = source;
     $('glsl-messages').classList.remove('error');
-    $('glsl-messages').textContent = currentPass === 'common' ? 'Common 只需公共定义，无需 mainImage / mainSound；宏与函数会参与其他 Pass 的转换。' : '转换时会自动加入已导入的 Common GLSL。';
+    $('glsl-messages').textContent = app.state.activePass === 'common' ? 'Common 只需公共定义，无需 mainImage / mainSound；宏与函数会参与其他 Pass 的转换。' : '转换时会自动加入已导入的 Common GLSL。';
     $<HTMLDialogElement>('glsl-dialog').showModal(); glslEditor.focus();
   });
   bind('translate-glsl', translateSource);
-  bind('apply-glsl', async () => { if (!translation) return; workspace.applyGlsl(currentPass, glslEditor.value); editor.show(currentPass, sourceOf(workspace.document.state, currentPass), languageOf(workspace.document.state, currentPass)); $<HTMLDialogElement>('glsl-dialog').close(); await compile(); });
+  bind('apply-glsl', async () => { if (!translation) return; workspace.applyGlsl(app.state.activePass, glslEditor.value); editor.show(app.state.activePass, sourceOf(workspace.document.state, app.state.activePass), languageOf(workspace.document.state, app.state.activePass)); $<HTMLDialogElement>('glsl-dialog').close(); await compile(); });
   bind('gpu-retry', () => location.reload());
   window.addEventListener('keydown', event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); void run(save); } });
   window.addEventListener('beforeunload', event => { if (hasUnsavedChanges()) { event.preventDefault(); event.returnValue = ''; } });
-  window.addEventListener('pagehide', () => { disposed = true; if (autoTimer) clearTimeout(autoTimer); disposeUI(); tutorial.dispose(); wgslPreview.destroy(); generatedPreview.destroy(); shadertoyPreview.destroy(); glslEditor.destroy(); editor.destroy(); void workspace.dispose(); void store.close(); }, { once: true });
+  window.addEventListener('pagehide', () => { disposed = true; if (autoTimer) clearTimeout(autoTimer); sharedUI?.dispose(); disposeUI(); tutorial.dispose(); wgslPreview.destroy(); generatedPreview.destroy(); shadertoyPreview.destroy(); glslEditor.destroy(); editor.destroy(); void workspace.dispose(); void store.close(); }, { once: true });
   window.haiyueEditorHost?.onSaveAndClose(async () => { try { await save(); return !workspace.document.dirty; } catch { return false; } });
   try { saved = await store.list(); } catch (error) { notice(`无法读取 Gallery：${String(error)}。原有数据保留，可导入工程继续创作。`, true); }
   const initialRoute = location.hash.slice(1); renderGallery(); $('app').setAttribute('aria-busy', 'false');

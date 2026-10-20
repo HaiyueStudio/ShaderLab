@@ -7,6 +7,7 @@
  <key>UISupportedInterfaceOrientations</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string></array>
  <key>UISupportedInterfaceOrientations~ipad</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationPortraitUpsideDown</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string></array>
  <key>NSPhotoLibraryAddUsageDescription</key><string>将你绘制的 Shader 图像保存到照片。</string>
+ <key>NSCameraUsageDescription</key><string>将相机实时画面作为着色器的纹理输入，用于你选择的 Buffer 或 Image 效果。</string>
  <key>CFBundleDocumentTypes</key><array><dict><key>CFBundleTypeName</key><string>ShaderLab project</string><key>LSHandlerRank</key><string>Owner</string><key>LSItemContentTypes</key><array><string>studio.haiyue.shaderlab.project</string></array></dict></array>
  <key>UTExportedTypeDeclarations</key><array><dict><key>UTTypeIdentifier</key><string>studio.haiyue.shaderlab.project</string><key>UTTypeConformsTo</key><array><string>public.json</string></array><key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>hyshader</string></array><key>public.mime-type</key><string>application/json</string></dict></dict></array>
 </dict></plist>

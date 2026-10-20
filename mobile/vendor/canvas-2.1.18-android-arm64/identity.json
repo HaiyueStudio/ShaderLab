@@ -1,0 +1,10 @@
+{
+  "upstream": "1fd6ef470dfdfd43b3385fa7ef43feddd1debd06",
+  "abi": "arm64-v8a",
+  "librarySha256": "2f5e366fc92f15f55fdf0521c4277f27801813c1c90b9a87fd6b6fe1a28439a1",
+  "patchSha256": "2f2ef7959060771533b6633d4a858ef8b9a75b0da277f47ef03cb0f16e5c6574",
+  "cargoLockSha256": "0b6da55c01d519e7c1000471d47f93f35c0b28f165c2c4cc9b36b5b3641762ea",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "ndk": "Pkg.Desc = Android NDK\nPkg.Revision = 27.2.12479018\nPkg.BaseRevision = 27.2.12479018\nPkg.ReleaseName = r27c\n",
+  "status": "built; requires device acceptance"
+}

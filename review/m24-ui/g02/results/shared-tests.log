@@ -1,0 +1,45 @@
+
+> @haiyue/shaderlab@0.1.0 test
+> npm run test:shared && npm test -w ./web && npm test -w ./mobile
+
+
+> @haiyue/shaderlab@0.1.0 test:shared
+> npm run build:shared && node --test test/shared-application/*.test.mjs
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+
+(node:45884) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/session.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ existing Web document and MobileSession use the same state for identical operations (21.971906ms)
+✔ EditorPlatform compile rollback rejects a changed revision and releases prepared GPU resources (76.34365ms)
+✔ domain/application load and execute with no browser/native globals (256.324527ms)
+✔ old v1 fixture, missing optional fields and UTF-8 limits retain their format (10.202394ms)
+✔ deterministic replay, preview scales and independent pass/pane/playback state (17.207589ms)
+✔ invalid changes are atomic, repeated source/scale edits are no-ops, keystrokes retain assets (2.405661ms)
+✔ saving captures a revision; editing while saving keeps dirty and queued saves preserve order (10.901031ms)
+✔ save cancel/failure/retry and an earlier failure do not replace newer pending status (3.940275ms)
+✔ late save success/error after open cannot mutate state (4.429164ms)
+✔ late save success/error after dispose cannot mutate state (2.707148ms)
+✔ draft ordering captures pass and cancels queued drafts after opening another project (2.536574ms)
+✔ same-revision compiles supersede each other and release the older handle exactly once (1.922655ms)
+✔ compile completion after edit releases resources and does not publish diagnostics (3.956003ms)
+✔ compile completion after open releases resources and does not publish diagnostics (1.578115ms)
+✔ compile completion after dispose releases resources and does not publish diagnostics (1.262933ms)
+✔ prepared transactions roll back/dispose exactly once; compilation failure retains the previous accepted revision and can retry (0.80246ms)
+✔ file picker cancellation and late results do not replace edits/new sessions (0.646913ms)
+✔ selector subscriptions ignore unrelated state changes; unsubscribe and dispose are idempotent (0.692721ms)
+✔ prepared resource adapter captures its renderer and swaps synchronously, aborted handle is released (2.164654ms)
+✔ late draft failures are ignored and disposal during a notification stops remaining callbacks (5.498402ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 801.96983
+

@@ -1,79 +1,31 @@
-import { createProject, codeTabs, passOf, revealCodeTab, validateProject, type ShaderProject, type CodeId, type ShaderLanguage, type RenderPassId, type Channel } from '../../web/dist/model.js';
-import { languageOf, sourceOf, defaultGlsl } from '../../web/dist/sourceLanguage.js';
-import { detectShaderLanguage } from '../../web/dist/sourceLanguage.js';
-/** Both platforms edit the identical portable .hyshader v1 document. */
+import { ShaderApplication, selectors } from '../../shared/dist/application/application.js';
+import { detectShaderLanguage } from '../../shared/dist/domain/sourceLanguage.js';
+import type { ShaderEnvironment } from '../../shared/dist/ports/services.js';
+import type { ShaderProject, CodeId, ShaderLanguage, RenderPassId, Channel } from '../../shared/dist/domain/model.js';
+
+/** Compatibility facade: all document state and commands belong to the shared application. */
 export class MobileSession {
-    project: ShaderProject = createProject();
-    pass: CodeId = 'image';
-    revision = 0;
-    savedRevision = 0;
+    readonly application: ShaderApplication;
     autoDetect = true;
-    get dirty() { return this.revision !== this.savedRevision; }
-    get language() { return languageOf(this.project, this.pass); }
-    get source() { return sourceOf(this.project, this.pass); }
-    get tabs() { return codeTabs(this.project); }
-    open(project: ShaderProject, fork = false) {
-        this.project = validateProject(structuredClone(project));
-        if (fork)
-            this.project.id = crypto.randomUUID();
-        this.pass = 'image';
-        this.revision++;
-        this.savedRevision = this.revision;
+    constructor(environment: ShaderEnvironment = { ids: { next: () => crypto.randomUUID() }, clock: { nowISO: () => new Date().toISOString() } }) {
+        this.application = new ShaderApplication(environment);
     }
-    changed() { this.project.updatedAt = new Date().toISOString(); this.revision++; }
-    setSource(text: string, language = this.language) {
-        if (text === this.source && language === this.language)
-            return;
-        if (text.length > 100000)
-            throw Error('单个页签最多 100 KB。');
-        this.project.editorLanguages = { ...this.project.editorLanguages, [this.pass]: language };
-        if (this.pass === 'common') {
-            if (language === 'glsl')
-                this.project.commonGlsl = text;
-            else
-                this.project.common = text;
-        }
-        else {
-            const p = passOf(this.project, this.pass);
-            if (language === 'glsl')
-                p.glsl = text;
-            else
-                p.code = text;
-        }
-        this.changed();
-    }
-    paste(text: string) { this.setSource(text, this.autoDetect ? detectShaderLanguage(text) ?? this.language : this.language); }
-    switchLanguage(language: ShaderLanguage) {
-        if (language === this.language)
-            return;
-        const text = this.pass === 'common' ? language === 'glsl' ? this.project.commonGlsl ?? '' : this.project.common
-            : language === 'glsl' ? passOf(this.project, this.pass).glsl ?? defaultGlsl(this.pass) : passOf(this.project, this.pass).code;
-        this.setSource(text, language);
-    }
-    add(pass: CodeId) {
-        revealCodeTab(this.project, pass);
-        if (pass !== 'common')
-            passOf(this.project, pass).enabled = true;
-        this.pass = pass;
-        this.changed();
-    }
-    channel(index: number, channel: Channel) {
-        if (this.pass === 'common')
-            return;
-        if (channel.kind === 'buffer') {
-            passOf(this.project, channel.pass).enabled = true;
-            revealCodeTab(this.project, channel.pass);
-        }
-        passOf(this.project, this.pass).channels[index] = channel;
-        this.changed();
-    }
-    enable(pass: RenderPassId, enabled: boolean) {
-        if (pass === 'image')
-            return;
-        passOf(this.project, pass).enabled = enabled;
-        if (!enabled)
-            for (const p of [...this.project.passes, this.project.sound])
-                p.channels = p.channels.map(c => c.kind === 'buffer' && c.pass === pass ? { kind: 'none' } : c);
-        this.changed();
-    }
+    get project() { return this.application.state.project as ShaderProject; }
+    get pass() { return this.application.state.activePass; }
+    set pass(pass: CodeId) { this.application.dispatch({ type: 'pass.select', pass }); }
+    get revision() { return this.application.state.revision; }
+    get savedRevision() { return this.application.state.savedRevision; }
+    get dirty() { return selectors.dirty(this.application.state); }
+    get language() { return selectors.language(this.application.state); }
+    get source() { return selectors.source(this.application.state); }
+    get tabs() { return selectors.tabs(this.application.state); }
+    open(project: ShaderProject, fork = false) { this.application.dispatch({ type: 'project.open', project, fork }); }
+    /** Kept for the G01 replay; production adapters use change/actions. */
+    changed() { this.application.change(() => {}); }
+    setSource(source: string, language = this.language) { this.application.setSource(this.pass, source, language); }
+    paste(text: string) { this.setSource(text, this.autoDetect ? detectShaderLanguage(text, this.language) ?? this.language : this.language); }
+    switchLanguage(language: ShaderLanguage) { this.application.switchLanguage(this.pass, language); }
+    add(pass: CodeId) { this.application.dispatch({ type: 'pass.add', pass }); }
+    channel(index: number, channel: Channel) { if (this.pass !== 'common') this.application.dispatch({ type: 'channel.set', pass: this.pass, index, channel }); }
+    enable(pass: RenderPassId, enabled: boolean) { if (pass !== 'image') this.application.dispatch({ type: 'pass.enable', pass, enabled }); }
 }

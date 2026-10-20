@@ -1,12 +1,15 @@
 import { HaiyueEngine, Entity, Camera3D, CartesianTransform3D, SphericalTransform3D, OrbitControl,
   BasicMaterial, Mesh3D, createSphere3D, createBox3D, type Scene } from '@haiyue/engine';
 import { createTorus3D } from '@haiyue/engine/geometry';
-import { type PassId, type ShaderProject, type ShaderPass, type ShaderDiagnostic, type PreviewMode, type PreviewMesh, LIMITS, CUBE_FACES, usesCurrentFrame, validateProject } from './model.js';
+import { type PassId, type ShaderProject, type ShaderPass, type ShaderDiagnostic, type PreviewMode, type PreviewMesh, LIMITS, CUBE_FACES, usesCurrentFrame, validateProject, cameraFacing } from './model.js';
 import { resolveChannelBindings, channelDiagnostic } from './channelBindings.js';
-import { refreshProjectGlsl } from './glslProject.js';
+import { refreshProjectSources } from './sourceProject.js';
+import { translateHlsl } from './hlsl.js';
 import { builtinTexture } from './builtinTextures.js';
 import { KeyboardState, keyboardCode } from './keyboardTexture.js';
 import { VideoSource } from './videoTexture.js';
+import { openCamera } from './cameraTexture.js';
+import { LiveCamera } from '../../shared/dist/ports/liveCamera.js';
 import { PRESENT, wrapShader } from './shaders.js';
 import { shaderGpuProvider, feedbackFormat } from './gpuPrecision.js';
 import { createSoundRenderer, SOUND_BLOCK, SOUND_RATE, SoundCompileError, encodeWave, type StereoSound, type SoundRenderer } from './sound.js';
@@ -50,6 +53,10 @@ export class ShaderRuntime {
   private mesh!: Mesh3D;
   private geometries = { sphere: createSphere3D({ radius: 1, widthSegments: 64, heightSegments: 40 }), box: createBox3D({ width: 1.6, height: 1.6, depth: 1.6 }), torus: createTorus3D({ radius: 0.85, tube: 0.32, radialSegments: 32, tubularSegments: 64 }) };
   private active: PreparedShader | undefined;
+  private cameraTexture: Texture | undefined;
+  private cameraTime = 0;
+  private cameraInput = new LiveCamera(openCamera, () => { this.dirty = true; }, message => this.onCameraError?.(message));
+  onCameraError: ((message: string) => void) | undefined;
   private targets = new Map<PassId, [Texture, Texture]>();
   private current = 0;
   private sampler!: GPUSampler;
@@ -127,7 +134,7 @@ export class ShaderRuntime {
   async prepare(project: ShaderProject): Promise<PreparedShader> {
     if (this.dead || this.failed) throw new Error('GPU 预览不可用，请重新加载。');
     const snapshot = validateProject(project), generation = ++this.generation;
-    const linked = refreshProjectGlsl(snapshot); if (linked.length) throw new CompileError(linked);
+    const linked = await refreshProjectSources(snapshot, translateHlsl); if (linked.length) throw new CompileError(linked);
     const result: PreparedShader = { project: snapshot, passes: [], images: new Map(), videos: new Map(), diagnostics: [], generation };
     const device = this.engine.device;
     try {
@@ -226,6 +233,10 @@ export class ShaderRuntime {
   commit(prepared: PreparedShader) {
     if (this.dead || this.failed || prepared.generation !== this.generation) throw new Error('编译结果已过期。');
     const previous = this.active;
+    if (!previous || cameraFacing(previous.project) !== cameraFacing(prepared.project)) {
+      if (this.cameraTexture) this.retire([this.cameraTexture.texture]);
+      this.cameraTexture = undefined; this.cameraTime = 0;
+    }
     this.active = prepared; this.soundExportDuration = prepared.project.sound.duration;
     this.sound.onError = message => this.onSoundError?.(message);
     this.sound.load(prepared.audio, prepared.soundRenderer ? (start, count, current) => prepared.soundRenderer!.render(start, count, () => current() && !this.dead && this.active === prepared) : undefined); this.sound.setVolume(prepared.project.sound.volume);
@@ -248,7 +259,11 @@ export class ShaderRuntime {
   }
   setMesh(mesh: PreviewMesh) { this.mesh.geometry = this.geometries[mesh]; }
   resetCamera() { this.camera.set(3.6, 0.45, 1.25).setTarget(0, 0, 0); }
-  private syncVideos() { this.active?.videos.forEach(source => source.play(this.playing && this.visible && !document.hidden && !this.failed)); }
+  private syncVideos() {
+    const enabled = this.playing && this.visible && !document.hidden && !this.failed && !this.dead;
+    this.active?.videos.forEach(source => source.play(enabled));
+    this.cameraInput.configure(this.active ? cameraFacing(this.active.project) : null, enabled);
+  }
   setPlaying(value: boolean) { this.playing = value; this.syncSound(); this.syncVideos(); }
   setVisible(value: boolean) { this.visible = value; this.syncSound(); if (!value) { this.keyboard.release(); this.dirty = true; } this.syncVideos(); if (value && !this.failed) this.engine.run(); else this.engine.stop(); }
   setBufferPreviews(projectId: string, previews: readonly BufferPreview[]) { this.bufferPreviewProject = projectId; this.bufferPreviews?.set(previews); }
@@ -290,9 +305,18 @@ export class ShaderRuntime {
           device.queue.copyExternalImageToTexture({ source: source.video }, { texture: target.texture }, [target.width, target.height]);
         }
       }
+      const camera = this.cameraInput.read();
+      if (camera) {
+        if (!this.cameraTexture || this.cameraTexture.width !== camera.width || this.cameraTexture.height !== camera.height) {
+          if (this.cameraTexture) this.retire([this.cameraTexture.texture]);
+          this.cameraTexture = this.texture(camera.width, camera.height, 'rgba8unorm', 'camera');
+        }
+        device.queue.copyExternalImageToTexture({ source: camera.video }, { texture: this.cameraTexture.texture }, [camera.width, camera.height]);
+        this.cameraTime = camera.time;
+      }
       const next = 1 - this.current;
       for (const compiled of this.active.passes) {
-        const inputs = compiled.pass.channels.map((c, index) => c.kind === 'keyboard' ? this.keyboardTexture : c.kind === 'builtin' ? this.active!.images.get('builtin:' + c.texture)! : c.kind === 'image' || c.kind === 'cubemap' || c.kind === 'video' ? this.active!.images.get(c.assetId)! : c.kind === 'buffer'
+        const inputs = compiled.pass.channels.map((c, index) => c.kind === 'camera' ? this.cameraTexture ?? this.fallback : c.kind === 'keyboard' ? this.keyboardTexture : c.kind === 'builtin' ? this.active!.images.get('builtin:' + c.texture)! : c.kind === 'image' || c.kind === 'cubemap' || c.kind === 'video' ? this.active!.images.get(c.assetId)! : c.kind === 'buffer'
           ? this.targets.get(c.pass)![usesCurrentFrame(compiled.pass.id, c.pass) ? next : this.current]! : compiled.channelDimensions[index] === 'cube' ? this.fallbackCube : this.fallback);
         const data = new Float32Array(36);
         data.set([this.width, this.height, 1, this.time, this.delta, this.frame, this.delta > 0 ? 1 / this.delta : 0, 44100]);
@@ -302,7 +326,7 @@ export class ShaderRuntime {
         inputs.forEach((input, i) => {
           if (compiled.pass.channels[i]!.kind !== 'none') data.set([input.width, input.height, 1, 0], 16 + i * 4);
           const c = compiled.pass.channels[i]!;
-          data[32 + i] = c.kind === 'video' ? this.active!.videos.get(c.assetId)!.video.currentTime : c.kind === 'buffer' ? (usesCurrentFrame(compiled.pass.id, c.pass) ? this.time : Math.max(0, this.time - this.delta)) : 0;
+          data[32 + i] = c.kind === 'camera' ? this.cameraTime : c.kind === 'video' ? this.active!.videos.get(c.assetId)!.video.currentTime : c.kind === 'buffer' ? (usesCurrentFrame(compiled.pass.id, c.pass) ? this.time : Math.max(0, this.time - this.delta)) : 0;
         });
         device.queue.writeBuffer(compiled.uniform, 0, data);
         const group = device.createBindGroup({ layout: compiled.channelLayout, entries: [{ binding: 0, resource: this.sampler }, ...inputs.map((input, i) => ({ binding: i + 1, resource: input.view }))] });
@@ -379,7 +403,7 @@ export class ShaderRuntime {
     document.addEventListener('visibilitychange', () => { if (document.hidden) releaseKeys(); this.syncSound(); this.syncVideos(); if (document.hidden) this.engine.stop(); else if (this.visible && !this.failed) this.engine.run(); }, options);
   }
   async dispose() {
-    if (this.dead) return; this.dead = true; await this.sound.dispose(); this.invalidate(); this.engine.stop(); this.lifecycle.abort(); this.orbit?.dispose();
+    if (this.dead) return; this.dead = true; this.cameraInput.dispose(); if (this.cameraTexture) this.retire([this.cameraTexture.texture]); await this.sound.dispose(); this.invalidate(); this.engine.stop(); this.lifecycle.abort(); this.orbit?.dispose();
     if (this.errorListener) this.gpu?.removeEventListener('uncapturederror', this.errorListener);
     this.bufferPreviews?.dispose(); this.scene?.destroy(); this.releaseTargets(); if (this.active) this.releasePrepared(this.active);
     await this.gpu?.queue.onSubmittedWorkDone().catch(() => {});

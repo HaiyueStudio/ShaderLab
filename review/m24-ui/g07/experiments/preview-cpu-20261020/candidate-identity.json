@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-20",
+  "ipa": "artifacts/m24-g07/preview-cpu-20261020/candidate/ShaderLab.ipa",
+  "sha256": "14bd02986ca06d93c1192719a15b5b581d632d99f737fb2b8d222212334173b7",
+  "sources": {
+    "mobile/src/gpu-runtime.ts": "1ad2b9b02626183bcd5e3335a9f703172dfc7002b23f4ad5d4828a67a1e9748b",
+    "web/src/keyboardTexture.ts": "b6298694f57f0228362dae65e312d9ade4fabb6717e6c9f5543692312674f114",
+    "mobile/src/pages.ts": "989876e78c33a8332567fc3d1f1a783e1fad523be66dc4c0e2458b6d22e76d23",
+    "mobile/src/experiments/gui-ui/page.ts": "7526274605fcd0684183b1442d0a7c6b6a3566c6a7ad4da335174c943a7f95f0",
+    "mobile/src/experiments/gui-ui/preview-profile.ts": "2fdf66eb969224190b3dd0337c619f433a52239873433649294383650025a6f6",
+    "mobile/src/experiments/gui-ui/sampling.ts": "8b8941887f8cb9eae274d455d993993156c3355c8e1371449c1b0e9ce842f6fb",
+    "mobile/test/gui-cpu-comparison.mjs": "2a19bfa6cffeb37de4a62457231c91597a9f5408ed9ae72f647b5d0c0ebbb3ae",
+    "package-lock.json": "9038405fb284bb3a286b0a86907e586dc92eb0c5a43a7eb020915cb9aee92878"
+  },
+  "dependencies": "same Native 0.1.4-m24.21 / UI 0.2.0-m24.6 / Engine 0.2.0 plus existing GUI patch",
+  "baselineFlag": "--shaderlab-preview-baseline",
+  "diagnosticFlag": "--shaderlab-preview-profile",
+  "build": "Debug signed device build",
+  "formalDriverSha256": "42ee299a684673d4420ede9b4e1f18baf6ca4b8b2adc53aeadb69add7bdbd4e9",
+  "note": "Formal driver adds four-arm balanced ordering after app build; application sources remained unchanged."
+}

@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "goal": "m24-native-ui/g07-shaderlab-slice",
+  "status": "validating",
+  "capturedAt": "2026-10-18T14:06:35.995616+00:00",
+  "implementation": "optimized and implemented",
+  "identity": "optimization/identity.json",
+  "historicalBaseline": "results/verification-initial.json",
+  "matrix": [
+    {
+      "check": "unit, UI compatibility, typecheck and boundaries",
+      "status": "passed",
+      "evidence": "optimization/checks.json"
+    },
+    {
+      "check": "clean source-only install and Web/iOS/Android JS builds",
+      "status": "passed",
+      "evidence": "optimization/fresh-build.json",
+      "reason": "Applies to its sourceHashes, not later unrelated camera edits."
+    },
+    {
+      "check": "Chromium shared page, GPU, persistence and 50 route cycles",
+      "status": "passed",
+      "evidence": "optimization/web-functional.json"
+    },
+    {
+      "check": "legacy Web full editor regression",
+      "status": "passed",
+      "evidence": "optimization/legacy-web-functional.json"
+    },
+    {
+      "check": "50 real Web host lifetimes and heap observations",
+      "status": "passed",
+      "evidence": "optimization/web-host-lifecycle.json"
+    },
+    {
+      "check": "Android same-device UI CPU performance",
+      "status": "passed",
+      "evidence": "optimization/android-final/performance.json",
+      "reason": "Final m24.5: handler median ratio 1.050; both spreads <=1.10. Settled/cadence pass. Fixed surface 113x64; no GPU timestamp claim.",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4"
+    },
+    {
+      "check": "same-host old/new Web p95 <= 1.10",
+      "status": "pending-retest",
+      "evidence": "optimization/web-performance-noisy.json",
+      "reason": "User explicitly deferred while other high-load browser/GPU work continues."
+    },
+    {
+      "check": "Android current candidate system UI and lazy converter",
+      "status": "passed",
+      "evidence": "optimization/android-final/ui.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 actual picker, hidden editor clipping, keyboard, rotation, background, save/reopen and two GLSL conversions passed."
+    },
+    {
+      "check": "Android current candidate GPU/storage and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/android-final/gpu-storage.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 persisted equality permits only updatedAt normalization."
+    },
+    {
+      "check": "Android current candidate 50 full host lifetimes",
+      "status": "passed",
+      "evidence": "optimization/android-final/lifecycle.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5: 50 real same-process editor/GPU lifetimes, native views detached and counters zero; post-warmup native heap 31.2-37.7 MiB without previous per-cycle loss. Not complete GPU heap accounting.",
+      "memory": "optimization/android-final/memory.json"
+    },
+    {
+      "check": "Android follow-up mobile unit/typecheck/SDK build",
+      "status": "passed",
+      "evidence": "optimization/android-final/checks.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "25 mobile tests, 20 native adapter tests, 5 shared UI tests, core consumer/typecheck/boundaries and Android SDK build."
+    },
+    {
+      "check": "physical Chinese IME, emoji/paste, screen readers and iPad split view",
+      "status": "pending-device",
+      "reason": "Synthetic input and automated keyboard tests do not replace physical acceptance."
+    },
+    {
+      "check": "Safari application physical interaction",
+      "status": "pending-device"
+    },
+    {
+      "check": "same-size GPU timestamps and native GPU heap accounting",
+      "status": "pending-device",
+      "reason": "Frame cadence and resource disposal counters are distinct evidence; no GPU timing/heap claim."
+    },
+    {
+      "check": "iphone m24.6 system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-ui.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Exact m24.6 final IPA; picker, keyboard, rotation, background/modal reopen, two conversions, save/reopen."
+    },
+    {
+      "check": "iphone m24.6 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-gpu-storage.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Only updatedAt normalized; real nonzero GPU output."
+    },
+    {
+      "check": "iphone m24.6 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-final/iphone-lifecycle.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "All 550 retired wrappers released after native deferred cleanup; process footprint observed, not complete Metal heap accounting."
+    },
+    {
+      "check": "iphone m24.6 same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-final/iphone-performance.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Shared handler p95 lower but run-to-run spread exceeds 1.10; original gate unchanged. Settled and cadence pass."
+    },
+    {
+      "check": "ipad m24.6 system UI interactions",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-ui.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Exact m24.6 final IPA; picker, keyboard, rotation, background/modal reopen, two conversions, save/reopen."
+    },
+    {
+      "check": "ipad m24.6 GPU/storage replay and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-gpu-storage.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Only updatedAt normalized; real nonzero GPU output."
+    },
+    {
+      "check": "ipad m24.6 50 real host lifetimes and retired object release",
+      "status": "passed",
+      "evidence": "optimization/apple-final/ipad-lifecycle.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "All 550 retired wrappers released after native deferred cleanup; process footprint observed, not complete Metal heap accounting."
+    },
+    {
+      "check": "ipad m24.6 same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/apple-final/ipad-performance.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+      "reason": "Shared handler p95 lower but run-to-run spread exceeds 1.10; original gate unchanged. Settled and cadence pass."
+    },
+    {
+      "check": "Apple m24.6 local regression and native SDK build",
+      "status": "passed",
+      "evidence": "optimization/apple-final/checks.json",
+      "identity": "optimization/apple-final/identity.json",
+      "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14"
+    },
+    {
+      "check": "Android m24.6 frame-owner cleanup follow-up",
+      "status": "pending-device",
+      "reason": "Previous Android m24.5 APK remains accepted only for its own snapshot; this turn tested Apple .6. Cross-platform runtime cleanup has unit coverage."
+    }
+  ],
+  "published": false,
+  "g06Status": "validating",
+  "limitations": [
+    "No desktop claim.",
+    "Web performance deferred by user.",
+    "Every accepted result is tied to its recorded binary/source snapshot; unrelated later workspace changes are not automatically accepted.",
+    "Synthetic Unicode is not physical IME; cadence is not GPU timestamp.",
+    "Legacy rollback retained until required gates pass."
+  ],
+  "androidFollowUpIdentity": "optimization/android-final/identity.json",
+  "androidIntermediateCandidate": "optimization/android-m24.4-intermediate/README.md",
+  "appleFollowUpIdentity": "optimization/apple-final/identity.json"
+}

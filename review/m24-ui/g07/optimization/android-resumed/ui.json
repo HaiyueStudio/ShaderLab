@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-17T06:44:20.864Z",
+  "checks": [
+    "five resolution choices via native picker, preview retained",
+    "settings rotation, background/resume, close and reopen",
+    "on-demand native converter generates GLSL twice and modal closes without changing source",
+    "name input, keyboard dismissal preserving source, save and reopen"
+  ],
+  "name": "Untitled shader G07－1792219529512",
+  "rotationRestored": {
+    "rotation": "0",
+    "automatic": "0"
+  },
+  "completedAt": "2026-10-17T06:46:23.607Z",
+  "artifactSha256": "38a34059db6292b96c6a0c7a6bd7e79d16ce619318674ce999377c7305b748df",
+  "scope": "ADB system UI and visible keyboard actions; not physical Chinese IME or TalkBack."
+}

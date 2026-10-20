@@ -1,0 +1,49 @@
+{
+  "capturedAt": "2026-10-19T00:08:24.252309+00:00",
+  "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+  "userObservation": "No automation/authentication prompt appeared on iPad.",
+  "deviceChecks": {
+    "transport": "wired",
+    "paired": true,
+    "developerMode": "enabled",
+    "ddiServicesAvailable": true,
+    "passcodeRequired": false,
+    "unlockedSinceBoot": true
+  },
+  "observedFailureStage": "After successful test runner authorization and daemon session initiation, enabling automation mode times out at 60 seconds before application test execution.",
+  "cause": "Disabled UI Automation setting blocked initialization; after user enabled it, test execution started.",
+  "diagnosticExcerpt": [
+    "07:10:37.137 xcodebuild[51636:4570446] Got reply to authorization request for pid 2310 (result:error): 1: (null)",
+    "07:10:32.537 xcodebuild[51636:4570430] Got reply to session initiation request with identifier 229333F5-E74F-4064-B934-792014CFA9D6 (error: (null))",
+    "07:10:38.382 Acceptance-Runner[2310:390891] Initializing for UI testing.",
+    "07:10:38.383 Acceptance-Runner[2310:390891] Linked XCTAutomationSupport.framework from /System/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework/XCTAutomationSupport, built with Xcode 2630(17C503), modified on 2026\u5e742\u670816\u65e5 \u661f\u671f\u4e00 \u4e2d\u56fd\u6807\u51c6\u65f6\u95f4 11:30:58, bundle version: 24507",
+    "07:10:38.384 Acceptance-Runner[2310:390891] Creating future for 'enabling automation mode' with timeout 60.00",
+    "07:11:38.445 Acceptance-Runner[2310:390891] <XCTWaiter: 0x1062065e0> reporting timed out failure with enabling automation mode"
+  ],
+  "next": "No UI blocker remains for this scenario; performance stability still requires separate work.",
+  "freshRunner": {
+    "build": "passed",
+    "xcode": "26.3 (17C529)",
+    "sameTestSource": true,
+    "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+    "testBinarySha256": "38b5dd8231f23de63758d75df24a234baec0c72946138c585c9a9595b79ebe59",
+    "appRebuilt": false,
+    "appReinstalled": false,
+    "performanceResampled": false,
+    "result": "same automation-mode timeout before UI cases"
+  },
+  "normalLaunchRestored": true,
+  "userSettingConfirmation": "Enable UI Automation was off; user enabled it.",
+  "secondaryIssue": {
+    "kind": "system-overlay-obstruction",
+    "evidence": [
+      "screens/ipad-new-obstructed.png",
+      "screens/ipad-assistive-touch-menu.png",
+      "screens/ipad-overlay-moved.png"
+    ],
+    "observed": "AssistiveTouch handle overlaps New button; synthesized tap opens system AssistiveTouch menu instead of editor.",
+    "next": "Move handle to unused screen edge and rerun original, unchanged UI cases.",
+    "action": "Moved AssistiveTouch handle from New button to lower-right edge using a separate XCTest preparation step; AssistiveTouch remains enabled."
+  },
+  "resolution": "Original full UI scenario passed after enabling UI Automation and moving obstructing AssistiveTouch; no app changes or assertion changes required."
+}

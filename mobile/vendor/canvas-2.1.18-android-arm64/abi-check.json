@@ -1,0 +1,34 @@
+{
+  "oldExports": 1060,
+  "newExports": 1060,
+  "missingExports": [],
+  "v8RequiredCanvasSymbols": 798,
+  "unresolvedCanvasSymbols": [],
+  "oldNeeded": [
+    "libandroid.so",
+    "libjnigraphics.so",
+    "libEGL.so",
+    "libc.so",
+    "libm.so",
+    "libdl.so",
+    "liblog.so",
+    "libGLESv2.so"
+  ],
+  "newNeeded": [
+    "libandroid.so",
+    "libjnigraphics.so",
+    "libEGL.so",
+    "libc.so",
+    "libm.so",
+    "libdl.so",
+    "liblog.so",
+    "libGLESv2.so"
+  ],
+  "newLoadSegments": [
+    "LOAD           0x000000 0x0000000000000000 0x0000000000000000 0xc50d20 0xc50d20 R   0x4000",
+    "LOAD           0xc50d40 0x0000000000c54d40 0x0000000000c54d40 0x903b00 0x903b00 R E 0x4000",
+    "LOAD           0x1554840 0x000000000155c840 0x000000000155c840 0x05d0c0 0x05d7c0 RW  0x4000",
+    "LOAD           0x15b1900 0x00000000015bd900 0x00000000015bd900 0x007c98 0x00cce0 RW  0x4000"
+  ],
+  "librarySha256": "2f5e366fc92f15f55fdf0521c4277f27801813c1c90b9a87fd6b6fe1a28439a1"
+}

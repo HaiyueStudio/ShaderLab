@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-20",
+  "status": "measurement complete; sustained preview CPU stability not passed",
+  "candidateSha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168",
+  "roundsPerArm": 4,
+  "operationsPerArm": 400,
+  "samplesFiltered": 0,
+  "backgroundInterruptions": 0,
+  "nonblankReadbackRuns": 8,
+  "threshold": {
+    "maxRoundP95OverMinRoundP95": 1.1
+  },
+  "stability": {
+    "engineFrameCpu": {
+      "shared": {
+        "spread": 1.1166979279772364,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.0578577311007429,
+        "passed": true
+      }
+    },
+    "handlerPlusSettlingFramesCpu": {
+      "shared": {
+        "spread": 1.172649146005431,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.0519684280639052,
+        "passed": true
+      }
+    },
+    "idleFrameCpu": {
+      "shared": {
+        "spread": 1.822472244899365,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.427491194795615,
+        "passed": false
+      }
+    },
+    "cadence": {
+      "shared": {
+        "spread": 1.0320995156642265,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.0168570408365365,
+        "passed": true
+      }
+    },
+    "settled": {
+      "shared": {
+        "spread": 1.00712707413995,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.0130120811232628,
+        "passed": true
+      }
+    }
+  },
+  "cadence": {
+    "shared": {
+      "count": 480,
+      "maxMs": 18.425333261489868,
+      "intervalsOver33_333ms": 0
+    },
+    "optimized": {
+      "count": 480,
+      "maxMs": 19.001624822616577,
+      "intervalsOver33_333ms": 0
+    }
+  },
+  "scope": "Editor resolution semantic dispatch and continuous preview. Not gallery/settings animation, touch latency, process-wide CPU or page-release acceptance.",
+  "limitations": [
+    "Semantic commands exclude picker animation and touch-to-display latency.",
+    "Engine frame CPU includes deferred GUI work; native UIKit layout/compositor CPU is outside the engine and not measured.",
+    "Queue fence measures submitted GPU completion, not physical display presentation.",
+    "Engine debug counters disabled in both arms: Canvas returns no object for an empty bind group and Engine debug tracking throws. Resource snapshot only; no draw/upload/GPU duration claim.",
+    "GUI uses a full-screen GPU surface; shader target pixels are equal. Additional GUI pixel cost is intentional.",
+    "GUI uses direct retained bindings; shared application/controller are identical, but portable UI reconciliation is not used."
+  ],
+  "comparisonLimits": [
+    "iPhone 15 Plus iOS 27.2 portrait GUI surface 860x1678; iPad Air 4 iPadOS 26.7.1 landscape GUI surface 2360x1526. Hardware, OS and UI surface differ.",
+    "Compare within-device UI ratios; do not infer hardware-only speedup or stability causality.",
+    "Four short rounds without confidence intervals or randomized repetitions."
+  ],
+  "g07Overall": "remains validating",
+  "restoredDefaultNativeEntry": true
+}

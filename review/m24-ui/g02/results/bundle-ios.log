@@ -1,0 +1,47 @@
+
+> @haiyue/shaderlab@0.1.0 bundle:ios
+> npm run bundle:ios -w ./mobile
+
+
+> @haiyue/shaderlab-mobile@0.1.0 bundle:ios
+> node scripts/bundle.mjs ios
+
+Canvas compatibility: {
+  version: '2.1.18',
+  queueSha256: 'a38a58942c488ccece244424b1c4e91c8f3e257dd201b85dd63871988ff30369',
+  file: 'WebGPU/GPURenderPassEncoder.js',
+  sha256: '7a14f279e042bb748781c10a6c56a6122931525f56943096815fb1143b583cf7'
+}
+assets by path assets/ 6.96 MiB
+  assets by path assets/gallery/ 661 KiB 9 assets
+  assets by path assets/*.png 6.32 MiB
+    asset assets/blue_noise.png 4.01 MiB [compared for emit] [from: src/assets/blue_noise.png] [copied]
+    + 7 assets
+  asset assets/generated-images.json 1.37 KiB [compared for emit] [from: src/assets/generated-images.json] [copied]
+  asset assets/icon.svg 300 bytes [compared for emit] [from: src/assets/icon.svg] [copied]
+assets by path *.mjs 7.93 MiB
+  asset vendor.mjs 7.32 MiB [compared for emit] [javascript module] (name: vendor) (id hint: vendor) 1 related asset
+  asset bundle.mjs 619 KiB [emitted] [javascript module] (name: bundle) 1 related asset
+  asset runtime.mjs 6 KiB [compared for emit] [javascript module] (name: runtime) 1 related asset
+assets by path compiler/ 2.65 MiB
+  asset compiler/compiler.js 2.65 MiB [compared for emit] [from: generated/compiler/compiler.js] [copied]
+  asset compiler/index.html 123 bytes [compared for emit] [from: generated/compiler/index.html] [copied]
+asset tns_modules/inspector_modules.mjs 779 bytes [compared for emit] [javascript module] (name: tns_modules/inspector_modules) 1 related asset
+Entrypoint bundle 7.93 MiB (8.56 MiB) = runtime.mjs 6 KiB vendor.mjs 7.32 MiB bundle.mjs 619 KiB 3 auxiliary assets
+Entrypoint tns_modules/inspector_modules 7.33 MiB (7.71 MiB) = runtime.mjs 6 KiB vendor.mjs 7.32 MiB tns_modules/inspector_modules.mjs 779 bytes 3 auxiliary assets
+orphan modules 102 KiB [orphan] 17 modules
+runtime modules 3.09 KiB 7 modules
+modules by path ../node_modules/ 6.39 MiB 691 modules
+modules by path ../web/src/*.ts 394 KiB
+  ../web/src/examples.ts 7.09 KiB [built] [code generated]
+  + 36 modules
+modules by path ./src/ 103 KiB
+  modules by path ./src/*.ts 97.5 KiB 19 modules
+  ./src/ sync \.(xml%7Cjs%7C(%3F<%21\.d\.)ts%7Cs%3Fcss)$ 651 bytes [built] [code generated]
+  ./src/app.css 4.42 KiB [built] [code generated]
+modules by path ../shared/dist/ 33.1 KiB
+  modules by path ../shared/dist/domain/*.js 13.7 KiB 4 modules
+  modules by path ../shared/dist/application/*.js 18 KiB 3 modules
+  ../shared/dist/ports/preparedPreview.js 1.31 KiB [built] [code generated]
+external "~/package.json" 42 bytes [built] [code generated]
+webpack 5.111.1 compiled successfully in 17013 ms

@@ -1,0 +1,357 @@
+diff --git a/README.md b/README.md
+index ad5b167..3c5d1ba 100644
+--- a/README.md
++++ b/README.md
+@@ -25,6 +25,8 @@ npm run preview
+ 
+ GLSL 和 WGSL 使用原生 TextView 高亮；粘贴按钮自动识别语言，独立保留两份源码。可添加 Common / Buffer A–D / Sound，选择四个图片、立方体、视频、内置纹理或键盘输入。Buffer 可以切换为实际画面预览。支持原生图片/视频文件选择、工程导入导出、截图保存/分享、持续 Sound 播放和 WAV 导出。示例封面来自实际 Shader 渲染。
+ 
++首页与 Web 共用全部 8 个示例：Aurora ribbons、Liquid chrome、Neon passage、Afterglow、Key light、Sliding city、Minefield、Local time · 时钟。卡片显示名称、分类和封面，按窗口宽度排列为 1–3 列，打开后可直接编辑。
++
+ 只有点击保存才进入“我的作品”。自动恢复草稿存放在独立文件里。教程示例返回时沿导航栈回到对应章节。
+ 
+ [iOS / Android 构建说明](docs/mobile-build.md) 包含 Mac 打包、Xcode 签名、Android 环境和设备验收清单。
+diff --git a/docs/mobile-build.md b/docs/mobile-build.md
+index a7d2c07..efe376c 100644
+--- a/docs/mobile-build.md
++++ b/docs/mobile-build.md
+@@ -82,6 +82,10 @@ Web 同步重新构建并验证：100% 时渲染尺寸为 567 × 332，切到 75
+ 
+ 随后 iPhone 15 Plus 重新连接，已安装与 iPad 验收相同的修复包。首轮 XCTest 在开启系统自动化模式时超时，尚未执行应用测试；重新启动应用后复测通过：75% → 50% → 25% → 100% → 75% 全部编译成功，竖屏预览保持可见，未跳转代码页，截图确认 Shader 正常渲染。此次分辨率问题的 iPhone 待验收项已关闭，失败连接记录与成功复测分别保存在 `iphone-fixed.xcresult`、`iphone-fixed-retry.xcresult`，不表示下方其他完整功能均已验收。
+ 
++同日修复移动端 Gallery 只显示一个示例：八个共享示例原已随包提供，但卡片没有在首次测量前分配网格位置，旧包真机测试确认八张卡片叠在同一位置。现在先分配独立单元格，再根据卡片区的实际宽度排列为 1–3 列，显示示例名称、编号和分类。行列重排延后到当前布局结束，避免 iOS 清空已测量的子控件；编辑器也预先初始化预览，并在根容器完成布局后更新分栏，修复首次打开预览空白。
++
++iPad Air 4、iPhone 15 Plus 均已安装最终修复包，八个示例分别通过打开、原生 WebGPU 首帧呈现、重新编译及返回检查，保存了每台设备的八张渲染截图。两台设备的卡片位置、代码页宽度、分辨率切换和教程导航回归也通过。验收先等待首帧状态，再主动运行并检查编译结果，避免宿主用首帧状态覆盖启动时的编译状态造成误报。类型检查、220 项 Web / 7 项移动端单元测试、全部八个示例的浏览器 WebGPU 渲染，以及最终 iOS / Android 平台资源打包通过；Android 未做真机安装验收。安装包、截图、包哈希和分次测试结果见本地忽略目录 `artifacts/ios-examples-2026-10-16/summary.json`，最终 IPA 位于同目录 `export-final/ShaderLab.ipa`。
++
+ iOS / Android 真机功能验收清单：
+ 
+ 1. Gallery 的八个示例分别运行；教程打开示例后返回到原章节。
+diff --git a/mobile/src/pages.ts b/mobile/src/pages.ts
+index 018cde1..8b7854f 100644
+--- a/mobile/src/pages.ts
++++ b/mobile/src/pages.ts
+@@ -54,13 +54,55 @@ export function galleryPage() {
+     else
+         await Dialogs.alert('暂无可恢复草稿'); });
+     content.addChild(draft);
+-    content.addChild(label('示例 · 打开即可编辑', 'section'));
++    const samples = examples();
++    content.addChild(label(`示例 · ${samples.length} 个 · 打开即可编辑`, 'section'));
+     const cards = new GridLayout();
+     content.addChild(cards);
+-    const samples = examples(), sampleViews = samples.map(sample => { const card = new StackLayout(); card.className = 'card'; const preview = new Image(); preview.src = '~/assets/gallery/' + sample.id + '.png'; preview.height = 140; preview.stretch = 'aspectFill'; card.addChild(preview); card.addChild(label(sample.category, 'muted')); card.addChild(label(sample.label, 'section')); card.addChild(label(sample.project.description, 'muted')); card.addChild(button('打开 ↗', () => navigate(() => editorPage(sample.project, true)))); cards.addChild(card); return card; });
++    const sampleViews = samples.map(sample => {
++        const card = new StackLayout();
++        card.className = 'card';
++        const preview = new Image();
++        preview.src = '~/assets/gallery/' + sample.id + '.png';
++        preview.height = 140;
++        preview.stretch = 'aspectFill';
++        card.addChild(preview);
++        card.addChild(label(sample.label + ' · ' + sample.category, 'muted'));
++        card.addChild(label(sample.project.name, 'section'));
++        card.addChild(label(sample.project.description, 'muted'));
++        const open = button('打开 ↗', () => navigate(() => editorPage(sample.project, true)));
++        open.accessibilityIdentifier = 'example-' + sample.id;
++        card.addChild(open);
++        cards.addChild(card);
++        return card;
++    });
+     let columns = 0;
+-    p.on('layoutChanged', () => { const count = mobileLayout(p.getActualSize().width, p.getActualSize().height).galleryColumns; if (count === columns)
+-        return; columns = count; cards.columns = Array(count).fill('*').join(','); cards.rows = Array(Math.ceil(sampleViews.length / count)).fill('auto').join(','); sampleViews.forEach((view, i) => { GridLayout.setColumn(view, i % count); GridLayout.setRow(view, Math.floor(i / count)); }); });
++    const arrange = (count: number) => {
++        if (count === columns)
++            return;
++        columns = count;
++        cards.columns = Array(count).fill('*').join(',');
++        cards.rows = Array(Math.ceil(sampleViews.length / count)).fill('auto').join(',');
++        sampleViews.forEach((view, i) => { GridLayout.setColumn(view, i % count); GridLayout.setRow(view, Math.floor(i / count)); });
++    };
++    // Give every card a cell before the first measure. Resize after layout:
++    // changing GridLayout specs during layout clears iOS's measured children.
++    arrange(1);
++    let arrangeTimer: ReturnType<typeof setTimeout> | undefined;
++    cards.on('layoutChanged', () => {
++        if (arrangeTimer)
++            return;
++        arrangeTimer = setTimeout(() => {
++            arrangeTimer = undefined;
++            const { width, height } = cards.getActualSize();
++            if (width > 0)
++                arrange(mobileLayout(width, height).galleryColumns);
++        }, 0);
++    });
++    cards.on('unloaded', () => {
++        if (arrangeTimer)
++            clearTimeout(arrangeTimer);
++        arrangeTimer = undefined;
++    });
+     content.addChild(label('我的作品', 'section'));
+     const works = new StackLayout();
+     content.addChild(works);
+@@ -131,6 +173,7 @@ class MobileEditor {
+     private compiling = false;
+     private editTimer?: ReturnType<typeof setTimeout>;
+     private draftTimer?: ReturnType<typeof setTimeout>;
++    private layoutTimer?: ReturnType<typeof setTimeout>;
+     private previewVisible = true;
+     private foreground = true;
+     private playingButton!: Button;
+@@ -180,7 +223,7 @@ class MobileEditor {
+         this.panes.addChild(this.channelScroll);
+         this.showSource();
+         this.renderChannels();
+-        this.page.on('layoutChanged', () => this.layout());
++        this.root.on('layoutChanged', () => this.scheduleLayout());
+         this.canvas.ignoreTouchEvents = true;
+         this.canvas.on('loaded', () => this.attach());
+         this.page.on('navigatingFrom', event => { if ((event as {
+@@ -192,6 +235,7 @@ class MobileEditor {
+         const resume = () => { this.foreground = true; };
+         Application.on(Application.resumeEvent, resume);
+         this.unlisten = () => { Application.off(Application.suspendEvent, suspend); Application.off(Application.resumeEvent, resume); };
++        this.layout();
+     }
+     private createPreview() {
+         this.preview.rows = 'auto,*,auto,auto';
+@@ -280,6 +324,15 @@ class MobileEditor {
+     private async save() { const revision = this.session.revision; await projects.save(structuredClone(this.session.project)); this.session.savedRevision = revision; this.status.text = this.session.dirty ? '已保存；仍有新的修改' : '已保存到我的作品'; await projects.draft(this.session.project, this.session.pass); }
+     private select(pane: MobilePane) { this.pane = pane; if (pane !== 'code')
+         this.editor.dismissSoftInput(); this.layout(); }
++    private scheduleLayout() {
++        if (this.disposed || this.layoutTimer)
++            return;
++        this.layoutTimer = setTimeout(() => {
++            this.layoutTimer = undefined;
++            if (!this.disposed)
++                this.layout();
++        }, 0);
++    }
+     // NativeScript parses column sizes as integer pixels or integer star weights,
+     // so percentages (43%) and fractional stars (0.43*) cannot express this split.
+     private layout() { const bounds = this.panes.getActualSize(), layout = mobileLayout(bounds.width, bounds.height, this.pane); this.panes.columns = layout.split && this.pane !== 'channels' ? Math.round(layout.previewFraction * 100) + '*,' + Math.round((1 - layout.previewFraction) * 100) + '*' : '*'; this.preview.visibility = layout.preview && this.pane !== 'channels' ? 'visible' : 'collapse'; this.code.visibility = layout.code && this.pane !== 'channels' ? 'visible' : 'collapse'; this.channelScroll.visibility = this.pane === 'channels' ? 'visible' : 'collapse'; GridLayout.setColumn(this.code, layout.split && this.pane !== 'channels' ? 1 : 0); const visible = this.preview.visibility === 'visible'; if (this.previewVisible !== visible) {
+@@ -530,7 +583,8 @@ class MobileEditor {
+     } }
+     private dispose() { if (this.disposed)
+         return; this.disposed = true; if (this.editTimer)
+-        clearTimeout(this.editTimer); if (this.draftTimer)
++        clearTimeout(this.editTimer); if (this.layoutTimer)
++        clearTimeout(this.layoutTimer); if (this.draftTimer)
+         clearTimeout(this.draftTimer); void projects.draft(this.session.project, this.session.pass).catch(() => { }); this.unlisten(); this.compiler.dispose(); this.audio?.dispose(); this.host?.dispose(); this.touch?.dispose(); this.desktop?.dispose(); }
+ }
+ function keyCode(key: string) { const special: Record<string, number> = { ArrowLeft: 37, ArrowUp: 38, ArrowRight: 39, ArrowDown: 40, '←': 37, '↑': 38, '→': 39, '↓': 40, ' ': 32, Space: 32 }; return special[key] ?? key.toUpperCase().charCodeAt(0); }
+diff --git a/mobile/test/gpu-browser.mjs b/mobile/test/gpu-browser.mjs
+index bdf9c66..a3435fb 100644
+--- a/mobile/test/gpu-browser.mjs
++++ b/mobile/test/gpu-browser.mjs
+@@ -11,9 +11,10 @@ writeFileSync(resolve(out,'index.html'),'<!doctype html><canvas width="320" heig
+ const report=await runEditorBrowserScenario({root,route:'mobile/artifacts/gpu/index.html',downloadDirectory:out,failureScreenshotPath:resolve(out,'failure.png'),readinessExpression:'typeof nativeGraph!=="undefined"',scenario:async({evaluate,waitFor,assertNoBrowserErrors})=>{
+  const compile=async expression=>{await evaluate('(async()=>{await nativeGraph.runtime.compile('+expression+');nativeGraph.engine.run();})()');await waitFor(()=>evaluate('nativeGraph.runtime.status().frame>2'),'mobile graph renders');await evaluate('nativeGraph.runtime.setPlaying(false)');};
+  await compile('nativeGraph.createProject()');let stats=await evaluate('(async()=>{const r=await nativeGraph.runtime.readImage();return {width:r.width,height:r.height,center:Array.from(r.pixels.slice((Math.floor(r.height/2)*r.width+Math.floor(r.width/2))*4,(Math.floor(r.height/2)*r.width+Math.floor(r.width/2))*4+4))};})()');assert.ok(stats.width>0&&stats.height>0);assert.equal(stats.center[3],255);
+- for(const index of [1,3,4,5,6,7]){await evaluate('nativeGraph.runtime.setPlaying(true)');await compile('nativeGraph.examples()['+index+'].project');const r=await evaluate('nativeGraph.runtime.status()');assert.ok(r.frame>2);}
++ const samples=await evaluate('nativeGraph.examples().map(e=>({id:e.id,name:e.project.name}))');assert.equal(samples.length,8);
++ for(const [index,sample] of samples.entries()){await evaluate('nativeGraph.runtime.setPlaying(true)');await compile('nativeGraph.examples()['+index+'].project');const r=await evaluate('nativeGraph.runtime.status()');assert.ok(r.frame>2,sample.name);const colors=await evaluate('(async()=>{const {pixels}=await nativeGraph.runtime.readImage();const colors=new Set();for(let i=0;i<pixels.length;i+=4)colors.add(pixels[i]+","+pixels[i+1]+","+pixels[i+2]);return colors.size;})()');assert.ok(colors>8,sample.name+' must render visible shader content');}
+  // An invalid replacement keeps the active graph and GPU output.
+  const failed=await evaluate('(async()=>{const p=nativeGraph.createProject();nativeGraph.passOf(p,"image").code="fn mainImage(";try{await nativeGraph.runtime.compile(p);return false;}catch{return nativeGraph.runtime.status().ready;}})()');assert.equal(failed,true);
+  await evaluate('nativeGraph.runtime.setMode("scene","box");nativeGraph.runtime.setPlaying(true)');await new Promise(r=>setTimeout(r,100));await evaluate('nativeGraph.runtime.setMode("canvas")');
+- assertNoBrowserErrors();await evaluate('nativeGraph.runtime.dispose();nativeGraph.engine.destroy()');return{status:'passed',backend:'real browser WebGPU with platform IO test ports',checks:['mobile graph renders procedural, feedback, MSDF, puzzle, minesweeper and clock','Common and four-channel bindings use the shared ABI','invalid compile retains active GPU graph','3D material scene switches on the same Engine device']};
++ assertNoBrowserErrors();await evaluate('nativeGraph.runtime.dispose();nativeGraph.engine.destroy()');return{status:'passed',backend:'real browser WebGPU with platform IO test ports',examples:samples,checks:['all eight shared examples compile and render visible content through the mobile graph','Common and four-channel bindings use the shared ABI','invalid compile retains active GPU graph','3D material scene switches on the same Engine device']};
+ }});writeFileSync(resolve(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(report);
+diff --git a/mobile/test/ios/NavigationSmoke.swift b/mobile/test/ios/NavigationSmoke.swift
+index 82a865b..93f3b87 100644
+--- a/mobile/test/ios/NavigationSmoke.swift
++++ b/mobile/test/ios/NavigationSmoke.swift
+@@ -49,6 +49,46 @@ final class NavigationSmoke: XCTestCase {
+         checkEditor("example-editor")
+     }
+ 
++    func testGalleryCardsHaveSeparatePositions() {
++        let cards = app.buttons.matching(NSPredicate(format: "label == %@", "打开 ↗"))
++        XCTAssertEqual(cards.count, 8, app.debugDescription)
++        let positions = cards.allElementsBoundByIndex.map { "\($0.frame.origin.x),\($0.frame.origin.y)" }
++        capture("gallery-eight-examples")
++        XCTAssertEqual(Set(positions).count, 8, "Every example must occupy its own grid cell")
++    }
++
++    func testAllEightExamplesRender() {
++        let samples = [
++            ("aurora", "Aurora ribbons"), ("marble", "Liquid chrome"),
++            ("tunnel", "Neon passage"), ("feedback", "Afterglow"),
++            ("keyboard", "Key light"), ("puzzle", "Sliding city"),
++            ("minesweeper", "Minefield"), ("clock", "Local time · 时钟")
++        ]
++        let presented = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "原生 WebGPU 已呈现 ")).firstMatch
++        let success = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "编译成功 · ")).firstMatch
++        for (id, name) in samples {
++            let open = app.buttons["example-" + id]
++            XCTAssertTrue(open.exists, "Missing example: " + name)
++            for _ in 0..<12 {
++                if open.isHittable { break }
++                app.swipeUp()
++            }
++            XCTAssertTrue(open.isHittable, "Unreachable example: " + name)
++            open.tap()
++            XCTAssertTrue(app.navigationBars[name].waitForExistence(timeout: 10), app.debugDescription)
++            // The host replaces the initial compile status when the first GPU
++            // frame is presented. Check that frame, then explicitly recompile.
++            XCTAssertTrue(presented.waitForExistence(timeout: 30), app.debugDescription)
++            app.buttons["运行"].firstMatch.tap()
++            XCTAssertTrue(success.waitForExistence(timeout: 15), app.debugDescription)
++            XCTAssertFalse(app.alerts.firstMatch.exists, app.debugDescription)
++            XCTAssertTrue(app.buttons["暂停"].isHittable, app.debugDescription)
++            capture("example-" + id)
++            back()
++            XCTAssertTrue(app.buttons["＋ 新建"].waitForExistence(timeout: 5))
++        }
++    }
++
+     func testPreviewResolutionChoices() {
+         app.buttons["＋ 新建"].tap()
+         XCTAssertTrue(app.buttons["保存"].waitForExistence(timeout: 15), app.debugDescription)
+diff --git a/package-lock.json b/package-lock.json
+index c264428..5d561b4 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1097,9 +1097,9 @@
+       "link": true
+     },
+     "node_modules/@haiyue/ui": {
+-      "version": "0.1.2",
+-      "resolved": "https://registry.npmjs.org/@haiyue/ui/-/ui-0.1.2.tgz",
+-      "integrity": "sha512-gy5qzD2FagDWi2xxQAUJwPOk40z0vmelL5gpfA66ItNExPMnIsMGEcAQpC/2ndqMfDYG14PdQyz5eB2rsF+q2A==",
++      "version": "0.2.0",
++      "resolved": "file:vendor/haiyue-ui-0.2.0.tgz",
++      "integrity": "sha512-TNzw1Ff23FIFKFok/7gEs5e8Gk8GXSspR8HzleCiDNE0VIIh0xgTNRt4mDLgLzAmhtD3kZlz44Q3EjYPna+Wmw==",
+       "license": "MIT",
+       "engines": {
+         "node": ">=22"
+@@ -11451,7 +11451,7 @@
+         "@haiyue/editor-platform": "0.1.0",
+         "@haiyue/editor-plugin-sdk": "0.1.0",
+         "@haiyue/engine": ">=0.1.0 <0.2.0",
+-        "@haiyue/ui": ">=0.1.0 <0.2.0",
++        "@haiyue/ui": "file:../vendor/haiyue-ui-0.2.0.tgz",
+         "@lezer/highlight": "^1.2.1",
+         "codemirror": "^6.0.1",
+         "naga-wasm": "30.2.0"
+diff --git a/web/package.json b/web/package.json
+index e975bfd..36a664f 100644
+--- a/web/package.json
++++ b/web/package.json
+@@ -23,7 +23,7 @@
+     "electron:pack": "npm run build:app && node ../scripts/run-editor-app-kit.mjs electron-pack"
+   },
+   "dependencies": {
+-    "@haiyue/ui": ">=0.1.0 <0.2.0",
++    "@haiyue/ui": "file:../vendor/haiyue-ui-0.2.0.tgz",
+     "@haiyue/engine": ">=0.1.0 <0.2.0",
+     "@haiyue/editor-platform": "0.1.0",
+     "@haiyue/editor-plugin-sdk": "0.1.0",
+diff --git a/web/test/browser-smoke.mjs b/web/test/browser-smoke.mjs
+index 1717cee..27e6a57 100644
+--- a/web/test/browser-smoke.mjs
++++ b/web/test/browser-smoke.mjs
+@@ -93,27 +93,38 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
+     await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38});
+     await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38}); await nextPaint();
+     assert.ok(await splitRatio('code-split') < originalCode);
++    const codeBeforeTyping = await evaluate('shaderEditor.getProject().passes[4].code');
+     await click('document.querySelector(".cm-content")');
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35});
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35});
++    const isMac = await evaluate('navigator.platform.startsWith("Mac")');
++    const endKey = isMac ? {key:'ArrowDown',code:'ArrowDown',modifiers:4,windowsVirtualKeyCode:40} : {key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35};
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',...endKey});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',...endKey});
+     await cdp.call('Input.insertText',{text:'\n// edited inside split pane'});
+     await waitFor(()=>evaluate('shaderEditor.getProject().passes[4].code.includes("// edited inside split pane")'),'slotted CodeMirror editing');
++    assert.equal(await evaluate('shaderEditor.getProject().passes[4].code'),codeBeforeTyping+'\n// edited inside split pane','comment is appended without corrupting shader code');
+     assert.equal(await evaluate('getComputedStyle(document.querySelector(".cm-scroller")).display'),'flex');
+     const storedRatio = await splitRatio('workspace-split');
+     assert.equal(await evaluate('document.querySelectorAll("hy-select").length'),10);
+     const optionColors = await evaluate(`(()=>{const s=${el('preview-scale')}.shadowRoot.querySelector('select'); return Array.from(s.options).map(o=>{const c=getComputedStyle(o);return {foreground:c.color,background:c.backgroundColor,scheme:getComputedStyle(s).colorScheme};});})()`);
+     assert.ok(optionColors.every(c=>c.scheme==='dark' && ((c.background==='rgb(28, 34, 44)' && c.foreground==='rgb(233, 237, 243)') || (c.background==='rgb(53, 71, 41)' && c.foreground==='rgb(216, 247, 183)'))),JSON.stringify(optionColors));
+-    const selectScale = async key => {
+-      await click(`${el('preview-scale')}.shadowRoot.querySelector('select')`);
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:key==='Home'?36:40});
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key,code:key,windowsVirtualKeyCode:key==='Home'?36:40});
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
++    // macOS headless Chrome does not route CDP keys through the native select
++    // popup (also reproduced with a plain HTML select). Exercise the native
++    // control's input/change contract here; physical popup keyboard is a device gate.
++    const selectScale = async value => {
++      await evaluate(`(() => {
++        const select = ${el('preview-scale')}.shadowRoot.querySelector('select');
++        if (!Array.from(select.options).some(option => option.value === ${JSON.stringify(value)} && !option.disabled)) throw new Error('Missing enabled scale option');
++        select.focus(); select.value = ${JSON.stringify(value)};
++        select.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
++        select.dispatchEvent(new Event('change', { bubbles: true }));
++      })()`);
+     };
+-    await selectScale('ArrowDown');
++    await selectScale('0.75');
++    await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.75 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select includes the 75 percent render scale');
++    await selectScale('0.5');
+     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.5 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select changes render scale and renders');
+     const halfWidth = (await pixels()).width;
+-    await selectScale('Home');
++    await selectScale('1');
+     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===1 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select restores full scale and renders');
+     assert.ok(Math.abs((await pixels()).width-halfWidth*2)<=2);
+     await click(`${el('auto-run')}.shadowRoot.querySelector('label')`);
+@@ -255,8 +266,8 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
+     const sourceInput = async value => {
+       await evaluate('document.getElementById("glsl-source").scrollIntoView({block:"center"})');
+       await click('document.querySelector("#glsl-source .cm-scroller")');
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});
+-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});
++      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',modifiers:isMac?4:2,windowsVirtualKeyCode:65});
++      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',modifiers:isMac?4:2,windowsVirtualKeyCode:65});
+       await cdp.call('Input.insertText',{text:value}); await nextPaint();
+     };
+     await sourceInput('#define F(a,b) a+b\nvoid mainImage(out vec4 c,in vec2 p){c=vec4(F(1.0));}');
+@@ -282,14 +293,14 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
+     await sourceInput(macroSource+'\n// changed'); assert.equal(await evaluate(`${el('apply-glsl')}.disabled`),true);
+     assert.match(await evaluate(`${el('glsl-messages')}.textContent`),/重新翻译/);
+     assert.equal(await evaluate('document.querySelector("#glsl-result .cm-content").textContent.trim()'),'');
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'z',code:'KeyZ',modifiers:2,windowsVirtualKeyCode:90});
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'z',code:'KeyZ',modifiers:2,windowsVirtualKeyCode:90});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'z',code:'KeyZ',modifiers:isMac?4:2,windowsVirtualKeyCode:90});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'z',code:'KeyZ',modifiers:isMac?4:2,windowsVirtualKeyCode:90});
+     assert.equal(await evaluate('document.querySelector("#glsl-source .cm-content").textContent.includes("// changed")'),false,'undo restores the previous GLSL source');
+     await evaluate('document.querySelector("#glsl-dialog .dialog-header").scrollIntoView({block:"nearest"})');
+     await click('document.querySelector("#glsl-dialog .dialog-header button")'); await click(el('glsl-button'));
+     assert.ok(await evaluate('document.querySelector("#glsl-source .cm-content").textContent.includes("#define BASE")'));
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',modifiers:2,windowsVirtualKeyCode:13});
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',modifiers:2,windowsVirtualKeyCode:13});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',modifiers:isMac?4:2,windowsVirtualKeyCode:13});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',modifiers:isMac?4:2,windowsVirtualKeyCode:13});
+     assert.equal(await evaluate(`${el('apply-glsl')}.disabled`),false,'Ctrl+Enter translates after reopening');
+     await click(el('apply-glsl'));
+     await waitFor(()=>evaluate(`!${el('compile')}.disabled && !${el('glsl-dialog')}.open`),'macro shader applied and compiled');
+@@ -419,10 +430,10 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
+       return w;
+     };
+     const coordFullWidth=await checkCoordinates();
+-    await selectScale('ArrowDown');
++    await selectScale('0.5');
+     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.5 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'gl_FragCoord at half resolution');
+     const coordHalfWidth=await checkCoordinates();assert.ok(Math.abs(coordHalfWidth*2-coordFullWidth)<=2);
+-    await selectScale('Home');
++    await selectScale('1');
+     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===1 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'gl_FragCoord restores full resolution');
+     assert.equal(await checkCoordinates(),coordFullWidth);
+     checks.push('gl_FragCoord translates through API/UI, resolves in helpers and globals before user initialization, stays independent of a mutated mainImage argument, matches pixel centers at two resolutions, and preserves image/Buffer sampling orientation');
+@@ -658,8 +669,8 @@ fn mainImage(p: vec2f) -> vec4f {
+     assert.deepEqual(await savedProjects(),firstSaved,'edits and returning home do not overwrite a saved project');
+     await click(el('nav-editor'));
+     assert.equal(await evaluate('shaderEditor.getProject().passes[4].code'),editedCode);
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'s',code:'KeyS',modifiers:2,windowsVirtualKeyCode:83});
+-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'s',code:'KeyS',modifiers:2,windowsVirtualKeyCode:83});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'s',code:'KeyS',modifiers:isMac?4:2,windowsVirtualKeyCode:83});
++    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'s',code:'KeyS',modifiers:isMac?4:2,windowsVirtualKeyCode:83});
+     await waitFor(()=>evaluate(`${el('save-state')}.textContent==='已保存到此浏览器'`),'keyboard save');
+     const resaved=await savedProjects();assert.equal(resaved.length,1);assert.equal(resaved[0].project.passes[4].code,editedCode);
+     await call('shader.code.set',{pass:'image',code:translated.code});

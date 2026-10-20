@@ -67,11 +67,17 @@ export class Updates {
     const ref = value.reference;
     if (!ref?.writable) throw new TranslationError(token, '赋值需要可写变量或不重复的向量分量。');
     const path = this.path(ref), rightType = rhs.type === 'number' ? 'i32' : rhs.type;
-    const result = operation({ code: path.target, type: value.type }, { code: 'hy_rhs', type: rightType });
+    // Read matrix components from a call-site value snapshot. The Chrome/Metal
+    // regression loses preceding component writes when the read goes through
+    // a helper's root pointer. Snapshot after indices/RHS, retaining their order.
+    const snapshot = ref.space === 'function' && !!ref.column && token.value !== '=';
+    const read = snapshot ? referenceAccess(ref, 'hy_snapshot').target : path.target;
+    const result = operation({ code: read, type: value.type }, { code: 'hy_rhs', type: rightType });
     if (result.type !== value.type) throw new TranslationError(token, '复合赋值的矩阵/向量维度与目标不匹配。');
     const name = `hy_assign_${this.assignment++}`;
-    this.helpers.set(name, `fn ${name}(hy_value: ptr<${ref.space}, ${ref.type}>, ${[...path.parameters, `hy_rhs: ${rightType}`].join(', ')})${returnsValue ? ` -> ${value.type}` : ''} {\n  let hy_next = ${result.code};\n${writeReference(ref, path, 'hy_next')}\n${returnsValue ? '  return hy_next;\n' : ''}}`);
-    return `${name}(&${ref.root}, ${[...path.arguments_, rhs.code].join(', ')})`;
+    const parameters = [...path.parameters, `hy_rhs: ${rightType}`, ...(snapshot ? [`hy_snapshot: ${ref.type}`] : [])];
+    this.helpers.set(name, `fn ${name}(hy_value: ptr<${ref.space}, ${ref.type}>, ${parameters.join(', ')})${returnsValue ? ` -> ${value.type}` : ''} {\n  let hy_next = ${result.code};\n${writeReference(ref, path, 'hy_next')}\n${returnsValue ? '  return hy_next;\n' : ''}}`);
+    return `${name}(&${ref.root}, ${[...path.arguments_, rhs.code, ...(snapshot ? [ref.root] : [])].join(', ')})`;
   }
   lower(token: Token, value: Expression, prefix: boolean): Expression {
     const ref = value.reference;
@@ -83,9 +89,13 @@ export class Updates {
     const one = matrix(value.type) ? `${value.type}(${Array.from({ length: size.columns }, () => `vec${size.rows}f(1.0)`).join(', ')})`
       : value.type.startsWith('vec') ? `${value.type}(${unit})` : unit;
     const path = this.path(ref);
+    const snapshot = ref.space === 'function' && !!ref.column;
+    const read = snapshot ? referenceAccess(ref, 'hy_snapshot').target : path.target;
     const name = `hy_update_${prefix ? 'pre' : 'post'}_${decrement ? 'dec' : 'inc'}_${ref.space}_${ref.type.replace(/[^A-Za-z0-9_]/g, '_')}${ref.components ? '_' + ref.components : ''}${path.suffix}`;
-    this.helpers.set(name, `fn ${name}(hy_value: ptr<${ref.space}, ${ref.type}>${path.parameters.length ? ', ' + path.parameters.join(', ') : ''}) -> ${value.type} {\n  let hy_old = ${path.target};\n  let hy_next = hy_old ${op} ${one};\n${writeReference(ref, path, 'hy_next')}\n  return ${prefix ? 'hy_next' : 'hy_old'};\n}`);
-    const call = `${name}(&${ref.root}${path.arguments_.length ? ', ' + path.arguments_.join(', ') : ''})`;
+    const parameters = [...path.parameters, ...(snapshot ? [`hy_snapshot: ${ref.type}`] : [])];
+    this.helpers.set(name, `fn ${name}(hy_value: ptr<${ref.space}, ${ref.type}>${parameters.length ? ', ' + parameters.join(', ') : ''}) -> ${value.type} {\n  let hy_old = ${read};\n  let hy_next = hy_old ${op} ${one};\n${writeReference(ref, path, 'hy_next')}\n  return ${prefix ? 'hy_next' : 'hy_old'};\n}`);
+    const args = [...path.arguments_, ...(snapshot ? [ref.root] : [])];
+    const call = `${name}(&${ref.root}${args.length ? ', ' + args.join(', ') : ''})`;
     const direct = !referenceIndices(ref).length && (!ref.components || ref.components.length === 1);
     const targetCode = referenceAccess(ref, ref.root).target;
     const statement = direct ? ['i32', 'u32'].includes(value.type) ? `${targetCode}${token.value}` : `${targetCode} ${op}= ${one}` : call;

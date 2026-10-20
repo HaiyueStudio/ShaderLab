@@ -1,0 +1,14 @@
+NativeScript Canvas 2.1.18 iOS ARM64 device framework
+Upstream: https://github.com/NativeScript/canvas
+Revision: 1fd6ef470dfdfd43b3385fa7ef43feddd1debd06
+License: Apache-2.0 (LICENSE alongside this file).
+
+Contains Haiyue's context readback texture, shader module and command encoder
+lifetime fixes, plus weak notification and touch-handler references in the Apple
+wrapper. See ../../patches/canvas-2.1.18-resource-lifetime.patch,
+../../patches/canvas-2.1.18-apple-lifetime.patch and ../../patches/README.md.
+The upstream Xcode prebuild hook is temporarily bypassed after the locked Rust
+library is built. Objective-C sources and C headers are unchanged.
+
+Only the ios-arm64 device slice is replaced. No simulator/visionOS acceptance
+is implied. Build provenance and per-file checksums are in identity.json.

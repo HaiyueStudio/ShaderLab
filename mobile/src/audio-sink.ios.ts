@@ -1,5 +1,5 @@
 import { File, knownFolders, path } from '@nativescript/core';
-import { encodeWave, type StereoSound } from '../../web/dist/sound.js';
+import { encodeWave, type StereoSound } from '../../web/src/sound.js';
 import { writeBytes } from './files';
 /** AVAudioPlayerNode retains the scheduled PCM; completion stays on native threads. */
 export class AudioSink {

@@ -1,0 +1,1300 @@
+{
+  "before-input-relay": {
+    "mobileEditors": 50,
+    "heapSha256": "5c4d021462cdc93da24a33bdbfa33139764c6b5287d5b688423bb8d0c8e8e41f",
+    "paths": [
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "898",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3431,
+          "id": 6863,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 202373,
+          "id": 404747,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 202376,
+          "id": 404753,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 202378,
+          "id": 404757,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 290314,
+          "id": 580629,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 290411,
+          "id": 580823,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 290783,
+          "id": 581567,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 290795,
+          "id": 581591,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 208971,
+          "id": 417943,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "host",
+          "edgeType": "property"
+        },
+        {
+          "index": 208147,
+          "id": 416295,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 180535,
+          "id": 361071,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 198396,
+          "id": 396793,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "_observers",
+          "edgeType": "property"
+        },
+        {
+          "index": 288166,
+          "id": 576333,
+          "name": "Object",
+          "type": "object",
+          "size": 56,
+          "edge": "layoutChanged",
+          "edgeType": "property"
+        },
+        {
+          "index": 264225,
+          "id": 528451,
+          "name": "Array",
+          "type": "object",
+          "size": 32,
+          "edge": 0,
+          "edgeType": "element"
+        },
+        {
+          "index": 264226,
+          "id": 528453,
+          "name": "Object",
+          "type": "object",
+          "size": 48,
+          "edge": "callback",
+          "edgeType": "property"
+        },
+        {
+          "index": 264533,
+          "id": 529067,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 208179,
+          "id": 416359,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 208184,
+          "id": 416369,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 215844,
+          "id": 431689,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ],
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "826",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3359,
+          "id": 6719,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 269827,
+          "id": 539655,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 306034,
+          "id": 612069,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 264563,
+          "id": 529127,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 264224,
+          "id": 528449,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 288147,
+          "id": 576295,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 264622,
+          "id": 529245,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 264585,
+          "id": 529171,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 264542,
+          "id": 529085,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "host",
+          "edgeType": "property"
+        },
+        {
+          "index": 289706,
+          "id": 579413,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 263349,
+          "id": 526699,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 263180,
+          "id": 526361,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "_observers",
+          "edgeType": "property"
+        },
+        {
+          "index": 263184,
+          "id": 526369,
+          "name": "Object",
+          "type": "object",
+          "size": 56,
+          "edge": "layoutChanged",
+          "edgeType": "property"
+        },
+        {
+          "index": 263458,
+          "id": 526917,
+          "name": "Array",
+          "type": "object",
+          "size": 32,
+          "edge": 0,
+          "edgeType": "element"
+        },
+        {
+          "index": 305161,
+          "id": 610323,
+          "name": "Object",
+          "type": "object",
+          "size": 48,
+          "edge": "callback",
+          "edgeType": "property"
+        },
+        {
+          "index": 306101,
+          "id": 612203,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 195207,
+          "id": 390415,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 289696,
+          "id": 579393,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 272191,
+          "id": 544383,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ],
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "815",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3348,
+          "id": 6697,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 358571,
+          "id": 717143,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 359309,
+          "id": 718619,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 285761,
+          "id": 571523,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 285614,
+          "id": 571229,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 285759,
+          "id": 571519,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 284552,
+          "id": 569105,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 284811,
+          "id": 569623,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 284812,
+          "id": 569625,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "host",
+          "edgeType": "property"
+        },
+        {
+          "index": 283352,
+          "id": 566705,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 283348,
+          "id": 566697,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 283335,
+          "id": 566671,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "_observers",
+          "edgeType": "property"
+        },
+        {
+          "index": 284770,
+          "id": 569541,
+          "name": "Object",
+          "type": "object",
+          "size": 56,
+          "edge": "layoutChanged",
+          "edgeType": "property"
+        },
+        {
+          "index": 284871,
+          "id": 569743,
+          "name": "Array",
+          "type": "object",
+          "size": 32,
+          "edge": 0,
+          "edgeType": "element"
+        },
+        {
+          "index": 307702,
+          "id": 615405,
+          "name": "Object",
+          "type": "object",
+          "size": 48,
+          "edge": "callback",
+          "edgeType": "property"
+        },
+        {
+          "index": 359272,
+          "id": 718545,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 283387,
+          "id": 566775,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 283338,
+          "id": 566677,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 283339,
+          "id": 566679,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ],
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "793",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3326,
+          "id": 6653,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 328651,
+          "id": 657303,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 360749,
+          "id": 721499,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 352239,
+          "id": 704479,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 352229,
+          "id": 704459,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 352237,
+          "id": 704475,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 352206,
+          "id": 704413,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 352217,
+          "id": 704435,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 337853,
+          "id": 675707,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "host",
+          "edgeType": "property"
+        },
+        {
+          "index": 351516,
+          "id": 703033,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 311165,
+          "id": 622331,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "parent",
+          "edgeType": "property"
+        },
+        {
+          "index": 336119,
+          "id": 672239,
+          "name": "GridLayout",
+          "type": "object",
+          "size": 296,
+          "edge": "_observers",
+          "edgeType": "property"
+        },
+        {
+          "index": 701374,
+          "id": 1402749,
+          "name": "Object",
+          "type": "object",
+          "size": 56,
+          "edge": "layoutChanged",
+          "edgeType": "property"
+        },
+        {
+          "index": 328840,
+          "id": 657681,
+          "name": "Array",
+          "type": "object",
+          "size": 32,
+          "edge": 0,
+          "edgeType": "element"
+        },
+        {
+          "index": 328841,
+          "id": 657683,
+          "name": "Object",
+          "type": "object",
+          "size": 48,
+          "edge": "callback",
+          "edgeType": "property"
+        },
+        {
+          "index": 361257,
+          "id": 722515,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 299623,
+          "id": 599247,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 351563,
+          "id": 703127,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 311259,
+          "id": 622519,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ],
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "798",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3331,
+          "id": 6663,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 324934,
+          "id": 649869,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 353388,
+          "id": 706777,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 350105,
+          "id": 700211,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 336249,
+          "id": 672499,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 350103,
+          "id": 700207,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 349855,
+          "id": 699711,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 350121,
+          "id": 700243,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 349700,
+          "id": 699401,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "options",
+          "edgeType": "property"
+        },
+        {
+          "index": 349284,
+          "id": 698569,
+          "name": "Object",
+          "type": "object",
+          "size": 64,
+          "edge": "onError",
+          "edgeType": "property"
+        },
+        {
+          "index": 349287,
+          "id": 698575,
+          "name": "onError",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 349692,
+          "id": 699385,
+          "name": "system / Context",
+          "type": "object",
+          "size": 64,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 327363,
+          "id": 654727,
+          "name": "NativeSharedEditor",
+          "type": "object",
+          "size": 48,
+          "edge": "controller",
+          "edgeType": "property"
+        },
+        {
+          "index": 326955,
+          "id": 653911,
+          "name": "ShaderEditorController",
+          "type": "object",
+          "size": 88,
+          "edge": "ports",
+          "edgeType": "property"
+        },
+        {
+          "index": 360559,
+          "id": 721119,
+          "name": "Object",
+          "type": "object",
+          "size": 64,
+          "edge": "compiled",
+          "edgeType": "property"
+        },
+        {
+          "index": 360562,
+          "id": 721125,
+          "name": "compiled",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 325265,
+          "id": 650531,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 349424,
+          "id": 698849,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 313792,
+          "id": 627585,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ],
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 1,
+          "edgeType": "element"
+        },
+        {
+          "index": 1,
+          "id": 3,
+          "name": "(GC roots)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": 13,
+          "edgeType": "element"
+        },
+        {
+          "index": 14,
+          "id": 29,
+          "name": "(Global handles)",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "681",
+          "edgeType": "internal"
+        },
+        {
+          "index": 3214,
+          "id": 6429,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 319247,
+          "id": 638495,
+          "name": "system / Context",
+          "type": "object",
+          "size": 120,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 321199,
+          "id": 642399,
+          "name": "system / Context",
+          "type": "object",
+          "size": 48,
+          "edge": "changed",
+          "edgeType": "context"
+        },
+        {
+          "index": 321436,
+          "id": 642873,
+          "name": "sample",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 332925,
+          "id": 665851,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": 1,
+          "edgeType": "hidden"
+        },
+        {
+          "index": 357546,
+          "id": 715093,
+          "name": "HYTextController",
+          "type": "object",
+          "size": 144,
+          "edge": "emit",
+          "edgeType": "property"
+        },
+        {
+          "index": 357547,
+          "id": 715095,
+          "name": "emit",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 357550,
+          "id": 715101,
+          "name": "system / Context",
+          "type": "object",
+          "size": 56,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 346187,
+          "id": 692375,
+          "name": "HYNativeScriptRenderer",
+          "type": "object",
+          "size": 216,
+          "edge": "options",
+          "edgeType": "property"
+        },
+        {
+          "index": 356973,
+          "id": 713947,
+          "name": "Object",
+          "type": "object",
+          "size": 64,
+          "edge": "onError",
+          "edgeType": "property"
+        },
+        {
+          "index": 356976,
+          "id": 713953,
+          "name": "onError",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 357675,
+          "id": 715351,
+          "name": "system / Context",
+          "type": "object",
+          "size": 64,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 348264,
+          "id": 696529,
+          "name": "NativeSharedEditor",
+          "type": "object",
+          "size": 48,
+          "edge": "controller",
+          "edgeType": "property"
+        },
+        {
+          "index": 334740,
+          "id": 669481,
+          "name": "ShaderEditorController",
+          "type": "object",
+          "size": 88,
+          "edge": "ports",
+          "edgeType": "property"
+        },
+        {
+          "index": 356963,
+          "id": 713927,
+          "name": "Object",
+          "type": "object",
+          "size": 64,
+          "edge": "compiled",
+          "edgeType": "property"
+        },
+        {
+          "index": 356968,
+          "id": 713937,
+          "name": "compiled",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 317621,
+          "id": 635243,
+          "name": "system / Context",
+          "type": "object",
+          "size": 80,
+          "edge": "previous",
+          "edgeType": "internal"
+        },
+        {
+          "index": 356524,
+          "id": 713049,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 316661,
+          "id": 633323,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ]
+    ],
+    "diagnosticOnly": true
+  },
+  "after-input-relay": {
+    "mobileEditors": 1,
+    "heapSha256": "d3d3b0723de5c6d1b3f954f7e4bd258756a5ad4d25a6707a072186d59d092568",
+    "paths": [
+      [
+        {
+          "index": 0,
+          "id": 1,
+          "name": "",
+          "type": "synthetic",
+          "size": 0,
+          "edge": "2",
+          "edgeType": "shortcut"
+        },
+        {
+          "index": 3886,
+          "id": 7773,
+          "name": "NativeScriptGlobalObject",
+          "type": "object",
+          "size": 40,
+          "edge": "cancelAnimationFrame",
+          "edgeType": "property"
+        },
+        {
+          "index": 37476,
+          "id": 74953,
+          "name": "value",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 182454,
+          "id": 364909,
+          "name": "system / Context",
+          "type": "object",
+          "size": 72,
+          "edge": "reportFrameError",
+          "edgeType": "context"
+        },
+        {
+          "index": 182467,
+          "id": 364935,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 763369,
+          "id": 1526739,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 778783,
+          "id": 1557567,
+          "name": "NativeRenderHost",
+          "type": "object",
+          "size": 312,
+          "edge": "status",
+          "edgeType": "property"
+        },
+        {
+          "index": 797480,
+          "id": 1594961,
+          "name": "",
+          "type": "closure",
+          "size": 56,
+          "edge": "context",
+          "edgeType": "internal"
+        },
+        {
+          "index": 765986,
+          "id": 1531973,
+          "name": "system / Context",
+          "type": "object",
+          "size": 40,
+          "edge": "this",
+          "edgeType": "context"
+        },
+        {
+          "index": 766365,
+          "id": 1532731,
+          "name": "MobileEditor",
+          "type": "object",
+          "size": 296
+        }
+      ]
+    ],
+    "diagnosticOnly": true
+  },
+  "after-frame-owner-cleanup": {
+    "mobileEditors": 0,
+    "heapSha256": "f0134cc84b0943f544f3b4b2b8f888c98c5ab105cc18c01d0e5320e5cfd1634b",
+    "paths": [],
+    "diagnosticOnly": true
+  }
+}

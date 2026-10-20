@@ -1,0 +1,55 @@
+Canvas compatibility: {
+  version: '2.1.18',
+  deviceSha256: 'e39fc2dfcb46d56b4a45be5ff5debc3551a9cca4a96700fb5172b74c222243ff',
+  queueSha256: 'a38a58942c488ccece244424b1c4e91c8f3e257dd201b85dd63871988ff30369',
+  file: 'WebGPU/GPURenderPassEncoder.js',
+  sha256: '7a14f279e042bb748781c10a6c56a6122931525f56943096815fb1143b583cf7'
+}
+Canvas iOS lifetime patch: {
+  originalSha256: '0d72b8720c338cdde1f93abf15252603621585f05711a377b7664357ce0920ef',
+  frameworkSha256: '8f5dbd29d613d5bcce1d994704c54f296910ad32addd5ac1a8e2a3096268fb75',
+  librarySha256: '30120298c9eedce57490d1bd92952bf8cf742f81bcc473985c58bd8418637bbe',
+  abi: 'ios-arm64',
+  upstream: '1fd6ef470dfdfd43b3385fa7ef43feddd1debd06'
+}
+Command npm failed with exit code 1 Error output: 
+ npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: @haiyue/native@0.1.4-m24.12
+npm warn Found: @haiyue/ui@0.2.0-m24.4
+npm warn node_modules/@haiyue/ui
+npm warn   dev @haiyue/ui@"file:vendor/haiyue-ui-0.2.0-m24.4.tgz" from the root project
+npm warn   2 more (@haiyue/shader-editor, @haiyue/shaderlab-mobile)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional @haiyue/ui@"0.2.0-m24.3" from @haiyue/native@0.1.4-m24.12
+npm warn node_modules/@haiyue/native
+npm warn   dev @haiyue/native@"file:vendor/haiyue-native-0.1.4-m24.12.tgz" from the root project
+npm warn   1 more (@haiyue/shaderlab-mobile)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: @haiyue/native@0.1.4-m24.12
+npm warn Found: @haiyue/ui@0.2.0-m24.4
+npm warn node_modules/@haiyue/ui
+npm warn   dev @haiyue/ui@"file:vendor/haiyue-ui-0.2.0-m24.4.tgz" from the root project
+npm warn   2 more (@haiyue/shader-editor, @haiyue/shaderlab-mobile)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional @haiyue/ui@"0.2.0-m24.3" from @haiyue/native@0.1.4-m24.12
+npm warn node_modules/@haiyue/native
+npm warn   dev @haiyue/native@"file:vendor/haiyue-native-0.1.4-m24.12.tgz" from the root project
+npm warn   1 more (@haiyue/shaderlab-mobile)
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: @haiyue/native@0.1.4-m24.12
+npm warn Found: @haiyue/ui@undefined
+npm warn node_modules/@haiyue/ui
+npm warn   dev @haiyue/ui@"file:vendor/haiyue-ui-0.2.0-m24.4.tgz" from the root project
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional @haiyue/ui@"0.2.0-m24.3" from @haiyue/native@0.1.4-m24.12
+npm warn node_modules/@haiyue/native
+npm warn   dev @haiyue/native@"file:vendor/haiyue-native-0.1.4-m24.12.tgz" from the root project
+npm warn   1 more (@haiyue/shaderlab-mobile)
+npm error code ETARGET
+npm error notarget No matching version found for @haiyue/ui@0.2.0-m24.3.
+npm error notarget In most cases you or one of your dependencies are requesting a package version that doesn't exist.
+npm error A complete log of this run can be found in: /Users/qingque/.npm/_logs/2026-10-19T02_27_42_788Z-debug-0.log
+

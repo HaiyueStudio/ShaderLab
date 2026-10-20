@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+  "device": {
+    "architecture": "arm64e",
+    "modelName": "iPad Air (4th generation)",
+    "osBuildNumber": "23H30",
+    "osVersion": "26.7.1",
+    "platform": "iOS"
+  },
+  "test": "SharedPageSmoke/testSharedEditor",
+  "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+  "resultBundle": "artifacts/m24-g07/apple-final-m24.6-r2/ipad-ui.xcresult",
+  "logSha256": "8036c3ff09f372c3cdb8985e74b118b53e40f702f602272f30a85bd9486ba04a",
+  "checks": [
+    "75%, 50%, 25%, 100%, 75% actual native picker; preview remains active",
+    "pause/resume",
+    "settings modal landscape, background/foreground, close and reopen",
+    "single-line field keyboard Done dismiss; value retained",
+    "multiline editor actual space key and hide keyboard",
+    "GLSL conversion opened twice; source preserved",
+    "save and reopen; name and edited source preserved"
+  ],
+  "screenshots": [
+    {
+      "path": "screens/ipad-saved-reopened.png",
+      "sha256": "aa0a45f4915d847917d178593168256fc093787a9ece6dffeb8c7484c2813bc5"
+    },
+    {
+      "path": "screens/ipad-settings-landscape.png",
+      "sha256": "5bce900259f527394fd4de939b041fcae1b732aecd63b199eafbb41c4ab289f2"
+    },
+    {
+      "path": "screens/ipad-shared-preview-75.png",
+      "sha256": "9dac08dacd0d6521b745814fc66e38cd9c1d279155e7f441891484ce14032567"
+    }
+  ],
+  "limitations": [
+    "Automated system UI; not physical Chinese IME/VoiceOver or iPad split-view acceptance"
+  ]
+}

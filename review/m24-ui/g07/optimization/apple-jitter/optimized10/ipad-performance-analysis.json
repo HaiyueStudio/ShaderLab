@@ -1,0 +1,83 @@
+{
+  "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+  "source": "ipad-performance.json",
+  "status": "passed",
+  "allSamplesPreserved": true,
+  "foregroundContinuous": true,
+  "handlerSlowSampleThresholdMs": 3,
+  "thresholdPurpose": "Descriptive only; no exclusion or acceptance gate.",
+  "runs": [
+    {
+      "round": 0,
+      "mode": "legacy",
+      "handlerMedianMs": 1.1687708348035812,
+      "handlerP95Ms": 1.3821250051259995,
+      "slowSamples": []
+    },
+    {
+      "round": 0,
+      "mode": "shared",
+      "handlerMedianMs": 1.28006249666214,
+      "handlerP95Ms": 1.4555833339691162,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 4.532166674733162,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "shared",
+      "handlerMedianMs": 1.2923958264291286,
+      "handlerP95Ms": 1.4972083494067192,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 4.581000000238419,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "legacy",
+      "handlerMedianMs": 1.1954791732132435,
+      "handlerP95Ms": 1.4031666666269302,
+      "slowSamples": [
+        {
+          "index": 74,
+          "handlerMs": 4.515333339571953,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "legacy",
+      "handlerMedianMs": 1.2012500017881393,
+      "handlerP95Ms": 1.3486666530370712,
+      "slowSamples": []
+    },
+    {
+      "round": 2,
+      "mode": "shared",
+      "handlerMedianMs": 1.2837916649878025,
+      "handlerP95Ms": 1.5913333296775818,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 5.00708332657814,
+          "scale": 0.75
+        },
+        {
+          "index": 21,
+          "handlerMs": 3.031916670501232,
+          "scale": 0.5
+        }
+      ]
+    }
+  ],
+  "interpretation": "One complete original six-run collection on this candidate. All original ratio and spread gates pass, with shared handler spread 1.0933 close to the 1.10 limit. This evidence is specific to iPad and this IPA; not proof of zero stalls or other-device stability."
+}

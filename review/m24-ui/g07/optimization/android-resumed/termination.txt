@@ -1,0 +1,1 @@
+10-17 14:42:43.349   577   577 I lowmemorykiller: Kill 'studio.haiyue.shaderlab' (24138), uid 10149, oom_score_adj 0 to free 54472kB rss, 199696kB swap; reason: device is low on swap (92024kB < 314572kB) and thrashing (83%)

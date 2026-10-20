@@ -52,6 +52,21 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint})=>{
   assert.deepEqual((await call('shader.query')).diagnostics.filter(d=>d.severity==='error'),[]);
   await call('shader.playback.set',{playing:false});await step();await click('document.getElementById("shader-canvas")');await step();
  };
+ const swipe=async(dir,{touch=true,distance=.18,cross=0,hold=false}={})=>{
+  const r=await evaluate('(()=>{const r=document.getElementById("shader-canvas").getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};})()');
+  const unit=Math.min(r.width,r.height),start={x:r.x+r.width*.5,y:r.y+r.height*.5};
+  const vector=[null,[-1,0],[1,0],[0,-1],[0,1]][dir];
+  const point=(amount)=>({x:start.x+unit*(vector[0]*amount+(vector[0]===0?cross:0)),y:start.y+unit*(vector[1]*amount+(vector[1]===0?cross:0))});
+  const pointer=(phase,p)=>touch?cdp.call('Input.dispatchTouchEvent',{type:{down:'touchStart',move:'touchMove',up:'touchEnd'}[phase],touchPoints:phase==='up'?[]:[{...p,id:1}]}):cdp.call('Input.dispatchMouseEvent',{type:{down:'mousePressed',move:'mouseMoved',up:'mouseReleased'}[phase],...p,button:'left',buttons:phase==='up'?0:1,clickCount:phase==='move'?0:1});
+  await pointer('down',start);await step();await pointer('move',point(distance));await step();
+  const held=await read(4,4);
+  if(hold){
+   await pointer('move',point(.35));await step(8);assert.deepEqual((await read(4,4)).tiles,held.tiles,'long drag only moves one tile');
+   await pointer('move',point(-.18));await step();assert.deepEqual((await read(4,4)).tiles,held.tiles,'reversing a consumed gesture cannot move another tile');
+  }
+  await pointer('up',point(distance));await step();
+  const released=await read(4,4);assert.deepEqual(released.tiles,held.tiles,'release cannot replay a swipe');return released;
+ };
  await open(4,4);let state=await read(4,4);valid(state.tiles,4,4);assert.equal(state.status[1],0);assert.equal(state.status[3],0);
  await shot('sliding-city.png');
  const initial=state,dir=[1,2,3,4].find(d=>adjacent(state.status[0],d,4,4)>=0);
@@ -79,9 +94,23 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint})=>{
  // Zero-step learning mode, WASD, and clamping the largest supported grid.
  await open(3,5,0);state=await read(3,5);assert.equal(state.status[3],255);assert.equal(state.status[0],14);
  await press(['d','KeyD',68]);state=await read(3,5);assert.equal(state.status[0],13);assert.equal(state.status[1],1);
+ // Real touch and mouse gestures share iMouse; no platform-specific game logic.
+ await cdp.call('Emulation.setTouchEmulationEnabled',{enabled:true});
+ await open(4,4,0);state=await read(4,4);
+ assert.deepEqual((await swipe(2,{distance:.01})).tiles,state.tiles,'tap jitter does not slide a tile');
+ assert.deepEqual((await swipe(1)).tiles,state.tiles,'swiping into a board edge cannot wrap');
+ for(const [index,move] of [2,4,1,3].entries()){
+  const want=[...state.tiles],blank=state.status[0],next=adjacent(blank,move,4,4);assert.ok(next>=0);
+  [want[blank],want[next]]=[want[next],want[blank]];
+  const moved=await swipe(move,{touch:index%2===0,cross:.06,hold:index===0});
+  assert.deepEqual(moved.tiles,want,'swipe direction must match tile movement');assert.equal(moved.status[1],state.status[1]+1);
+  state=moved;
+ }
+ await press(directions[2]);assert.equal((await read(4,4)).status[1],5,'keyboard still works after touch and mouse swipes');
+ await shot('swipe-controls.png');
  await open(8,8,256);state=await read(8,8);valid(state.tiles,8,8);assert.equal(state.status[3],0);
  await step(12);assert.deepEqual((await read(8,8)).tiles,state.tiles,'feedback remains stable with no input');
- return {status:'passed',checks:['4x4, rectangular 3x5 and 8x8 shuffles have every tile and correct solvability parity','Real arrow/WASD presses move exactly one adjacent tile, reject row wrapping and ignore repeats/editor focus','R resets move count and creates another solvable board; Space previews without changing state','Analytic UV picture validates tile cropping and top/bottom orientation','Independent solver completes a 2x2 game and verifies blank position, move counter and solved flag']};
+ return {status:'passed',checks:['4x4, rectangular 3x5 and 8x8 shuffles have every tile and correct solvability parity','Real arrow/WASD presses move exactly one adjacent tile, reject row wrapping and ignore repeats/editor focus','R resets move count and creates another solvable board; Space previews without changing state','Analytic UV picture validates tile cropping and top/bottom orientation','Independent solver completes a 2x2 game and verifies blank position, move counter and solved flag','Touch and mouse swipes in all four directions move exactly one tile along the dominant axis; jitter, board edges, held/reversed drags and release cannot add moves; keyboard continues working']};
 }});
 writeFileSync(resolve(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 

@@ -1,0 +1,11 @@
+{
+  "mobileTests": {
+    "passed": 37,
+    "failed": 0
+  },
+  "mobileTypecheck": "passed",
+  "platformBoundaries": "passed",
+  "ordinaryDeviceBuild": "passed",
+  "temporaryDiagnosticHooks": "absent",
+  "publicVersionsChanged": false
+}

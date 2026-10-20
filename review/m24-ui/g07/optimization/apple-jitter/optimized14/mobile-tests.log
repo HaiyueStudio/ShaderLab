@@ -1,0 +1,61 @@
+
+> @haiyue/shaderlab-mobile@0.1.0 test
+> node --experimental-strip-types --test test/*.test.mjs
+
+(node:64567) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/audio-transport.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ native streaming passes 16 and 120 seconds continuously with bounded synthesis and preserves pause position (249.216967ms)
+✔ replacement discards asynchronous samples from a stopped generation (0.550865ms)
+✔ ready listeners reuse one ObjC class and keep instance state separate (3.619565ms)
+✔ retained native lifecycle blocks do not retain a disposed JS Canvas (235.875191ms)
+✔ Apple Canvas patch is audited, repeatable and clears native blocks on teardown (6.661423ms)
+✔ device patch is idempotent and rejects an unknown binding (3.142729ms)
+✔ native GPU errors retain a weak observable without rooting the device (Android) (7.354888ms)
+✔ native GPU errors retain a weak observable without rooting the device (iOS) (1.983014ms)
+✔ destroy settles lost even when the native callback never arrives, and only destroys once (2.130984ms)
+✔ native loss forwards reason/message and late native loss cannot replace explicit destruction (3.788226ms)
+✔ native loss rejection is handled and forwarded (3.018416ms)
+✔ pending native loss cannot retain a destroyed device or its engine subscribers (282.483106ms)
+✔ GPU one-shot patch is idempotent (1.156303ms)
+✔ GPUAdapter one-shot patch is idempotent (0.655512ms)
+✔ retained one-shot callbacks neither repeat construction nor retain their closures after completion (2.19588ms)
+✔ AAR replacement changes only the requested arm64 Rust library (53.05847ms)
+✔ AAR replacement refuses an archive without the expected native library (4.585569ms)
+✔ opening and disposing ordinary editors never creates a converter WebView (77.97117ms)
+✔ converter loads once on demand and detaches on Android (1.970823ms)
+✔ converter loads once on demand and detaches on iOS (1.427301ms)
+✔ dispose cancels a pending load and removes its callback (1.219487ms)
+✔ dispose settles an outstanding native evaluation even when native callback never arrives (3.153445ms)
+(node:64572) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/session.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ trailing draft keeps latest deadline without per-edit timer replacement, and releases on disposal (2.157528ms)
+✔ draft callback can request a later save without losing its timer (0.390644ms)
+✔ native document projection ignores compile status and preserves rename, source, pass, open, draft and unsubscribe (13.301098ms)
+✔ final GPU disposal destroys resources before the host destroys the device, without a deferred fence (292.758252ms)
+✔ prepare owns a validated snapshot before asynchronous source translation mutates it (122.913084ms)
+✔ frame bindings are reused for both feedback slots and invalidated on texture replacement or reset (78.078688ms)
+✔ pipeline reuse preserves warnings, owns uniforms and invalidates source, Common and texture dimension changes (64.699756ms)
+✔ application compile hands off an independent snapshot without validating or copying it again (72.425182ms)
+✔ performance fixture restores idle policy and observers (interrupted=false) (12.933577ms)
+✔ performance fixture restores idle policy and observers (interrupted=true) (1.933729ms)
+(node:64575) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/src/session.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ phone, tablet, rotation and keyboard bounds keep both editor panes usable (2.063516ms)
+✔ opening examples stays unsaved, each language keeps its draft and buffers remain portable (22.962774ms)
+✔ the shared mobile source path can link every Gallery and all progressive tutorials (38.859001ms)
+✔ GLSL and WGSL highlights preserve UTF-16 offsets and color directives, comments and language tokens (1.685114ms)
+✔ explicit saves stay separate from recovery, imported IDs stay independent and damaged saves retain backup (59.601314ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1408.369872

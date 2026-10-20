@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "capturedAt": "2026-10-18T14:03:25.375388+00:00",
+  "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+  "checks": [
+    {
+      "check": "ShaderLab mobile unit tests",
+      "count": 28,
+      "status": "passed"
+    },
+    {
+      "check": "Native adapter and native callback/frame-owner real-GC tests",
+      "count": 22,
+      "status": "passed",
+      "command": "npm run verify:ui -- --profile core",
+      "jitless": true
+    },
+    {
+      "check": "ShaderLab shared UI tests",
+      "count": 5,
+      "status": "passed"
+    },
+    {
+      "check": "Shared/mobile types and import boundaries",
+      "status": "passed"
+    },
+    {
+      "check": "Signed iOS device SDK build",
+      "status": "passed",
+      "command": "node mobile/scripts/build.mjs build ios --for-device --teamId <configured-team>"
+    },
+    {
+      "check": "Removed temporary heap-dump C++ hook and JS launch option",
+      "status": "passed"
+    },
+    {
+      "check": "Both devices: exact final candidate 50 lifetimes and all settled retired wrappers released",
+      "status": "passed",
+      "evidence": "memory.json"
+    }
+  ],
+  "logs": {
+    "native-m24.6-core.log": "1e230c7297d9a93fdda34c6b4d12db489becc96e8fd0092c3a044c22430c419c",
+    "shaderlab-apple-final-typecheck.log": "81cef39b906d5c2f54951eb28cd42513d1b96fa7118a940b059b5e2aa1669049",
+    "shaderlab-apple-shared-ui.log": "a231a4e2dcce79cfb6de3e0c3167df5014f62dfc81b9e8f6745d391c9c71e4b5",
+    "shaderlab-apple-m24.6-r2-build.log": "a58050475774f5525271dd44b81cc75516e6b7814a8de4b622a42f7ef70d7856"
+  },
+  "sourceHashes": {
+    "ShaderLab/mobile/src/platform/lifecycle-validation.ts": "784e3e938cb9d3610db3f05af039582e9837ecdd9b685fe9aed1b2f7802f42c0",
+    "ShaderLab/mobile/test/shared-lifecycle.mjs": "6121e11f6d2852dfa23fee81363f9d1fb0402e893805887b8e9e324a5cc7db27",
+    "ShaderLab/mobile/scripts/build-canvas-ios.mjs": "e943f4b653d5187ea3f3fa9868ac920c45a91cdd3de6c63788488d736cb165fd",
+    "ShaderLab/mobile/scripts/patch-canvas-ios.mjs": "36f9de26412bcb65baf66fb6464399572fa1c0211a0f18343044639c786789e0",
+    "ShaderLab/mobile/scripts/canvas-ios-files.mjs": "1b9cfe702ceac27a0b477d7ee570561637341928c0a413ffe55d463183aebea3",
+    "ShaderLab/mobile/scripts/patch-canvas.mjs": "8f2b482e37f744873f3dab643627b4b270b0aa8f4a6307f1243ec6fefdf2fec8",
+    "ShaderLab/mobile/test/canvas-apple-lifecycle.test.mjs": "55759408a298667d9a6f0acb5fbde8ea0d045dc809ea79264f5313a954119e4f",
+    "Native/bridge/lifecycle/runtime.ts": "81d83f3766952e1fbed53b303a1d5337a674537779c8431810b9e5503fdfac97",
+    "Native/bridge/lifecycle/host.ts": "827c11c222281acc5648b351d0da48ecef4efd0da4aaebdd3446f469357b9640",
+    "Native/bridge/ui/nativescript/native-callback.ts": "6685f69022d26bca9ee675d07b13a73d660211d1f9045f1a238bb429900fd8f0",
+    "Native/bridge/ui/nativescript/platform.ios.ts": "df407ad86ab99eadf674bd2229a136772bc1648338c30f11a213e5200764f995",
+    "Native/test/ui/nativescript/native-callback.test.mjs": "5adba48cf386ab359ab0e60cb24efa3477d8131fec7214f684819ac82b207419",
+    "Native/test/ui/nativescript/native-runtime.test.mjs": "eb248061ec010e29b4c054807805b1e1c01c089ce810431e99ff2b4416420c43",
+    "Native/scripts/validation/ui.mjs": "7468898c1accb8973eb4e0b8cddf9bdc27dec730112d9c8b64948524fc3d621f"
+  }
+}

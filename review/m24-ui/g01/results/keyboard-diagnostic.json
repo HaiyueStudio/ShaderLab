@@ -1,0 +1,64 @@
+[
+  {
+    "mode": "click-open",
+    "host": "1",
+    "input": "1",
+    "project": 1,
+    "status": {
+      "ready": true,
+      "frame": 3,
+      "time": 0.06665999999999986,
+      "playing": true,
+      "width": 657,
+      "height": 369,
+      "mode": "canvas",
+      "sound": {
+        "ready": false,
+        "audible": false,
+        "playing": false,
+        "continuous": true,
+        "bufferedUntil": 0,
+        "exportDuration": 60,
+        "sampleRate": 44100
+      },
+      "bufferFormat": "rgba32float",
+      "camera": {
+        "theta": 0.45,
+        "phi": 1.25,
+        "radius": 3.6
+      }
+    },
+    "focus": "preview-scale"
+  },
+  {
+    "mode": "focused-closed",
+    "host": "1",
+    "input": "1",
+    "project": 1,
+    "status": {
+      "ready": true,
+      "frame": 4,
+      "time": 0.08332999999999993,
+      "playing": true,
+      "width": 657,
+      "height": 369,
+      "mode": "canvas",
+      "sound": {
+        "ready": false,
+        "audible": false,
+        "playing": false,
+        "continuous": true,
+        "bufferedUntil": 0,
+        "exportDuration": 60,
+        "sampleRate": 44100
+      },
+      "bufferFormat": "rgba32float",
+      "camera": {
+        "theta": 0.45,
+        "phi": 1.25,
+        "radius": 3.6
+      }
+    },
+    "focus": "preview-scale"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "reason": "Swift Canvas weak references alone did not release the JS page graph: all 50 pages remain live.",
+  "devices": {
+    "iphone": {
+      "cycles": 50,
+      "firstFootprintMiB": 110.26756286621094,
+      "lastFootprintMiB": 1028.0335998535156,
+      "lastLiveGroups": 50,
+      "settledFootprintMiB": null,
+      "settledLiveGroups": null
+    },
+    "ipad": {
+      "cycles": 50,
+      "firstFootprintMiB": 87.4710693359375,
+      "lastFootprintMiB": 1232.0972290039062,
+      "lastLiveGroups": 50,
+      "settledFootprintMiB": null,
+      "settledLiveGroups": null
+    }
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "status": "passed",
+  "kind": "audit GPU structural counters; no hardware timing",
+  "results": {
+    "baseline": {
+      "idle": {
+        "frames": 100,
+        "bufferAllocations": 100,
+        "uploadCalls": 400,
+        "uploadBytes": 33600,
+        "drawCalls": 300,
+        "liveBuffers": 6
+      },
+      "interaction": {
+        "frames": 100,
+        "bufferAllocations": 101,
+        "uploadCalls": 562,
+        "uploadBytes": 1707312,
+        "drawCalls": 300,
+        "liveBuffers": 6
+      },
+      "residue": {
+        "buffer": {
+          "created": 208,
+          "destroyed": 208,
+          "live": 0,
+          "maxLive": 6
+        },
+        "texture": {
+          "created": 5,
+          "destroyed": 5,
+          "live": 0,
+          "maxLive": 5
+        },
+        "sampler": {
+          "created": 2,
+          "destroyed": 0,
+          "live": 2,
+          "maxLive": 2
+        },
+        "shader-module": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "bind-group-layout": {
+          "created": 5,
+          "destroyed": 0,
+          "live": 5,
+          "maxLive": 5
+        },
+        "bind-group": {
+          "created": 6,
+          "destroyed": 0,
+          "live": 6,
+          "maxLive": 6
+        },
+        "pipeline-layout": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "render-pipeline": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "compute-pipeline": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        },
+        "command-encoder": {
+          "created": 1,
+          "destroyed": 0,
+          "live": 1,
+          "maxLive": 1
+        },
+        "command-buffer": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        },
+        "query-set": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        }
+      }
+    },
+    "optimized": {
+      "idle": {
+        "frames": 100,
+        "bufferAllocations": 0,
+        "uploadCalls": 0,
+        "uploadBytes": 0,
+        "drawCalls": 500,
+        "liveBuffers": 8
+      },
+      "interaction": {
+        "frames": 100,
+        "bufferAllocations": 1,
+        "uploadCalls": 81,
+        "uploadBytes": 332352,
+        "drawCalls": 500,
+        "liveBuffers": 8
+      },
+      "residue": {
+        "buffer": {
+          "created": 9,
+          "destroyed": 9,
+          "live": 0,
+          "maxLive": 8
+        },
+        "texture": {
+          "created": 5,
+          "destroyed": 5,
+          "live": 0,
+          "maxLive": 5
+        },
+        "sampler": {
+          "created": 2,
+          "destroyed": 0,
+          "live": 2,
+          "maxLive": 2
+        },
+        "shader-module": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "bind-group-layout": {
+          "created": 5,
+          "destroyed": 0,
+          "live": 5,
+          "maxLive": 5
+        },
+        "bind-group": {
+          "created": 6,
+          "destroyed": 0,
+          "live": 6,
+          "maxLive": 6
+        },
+        "pipeline-layout": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "render-pipeline": {
+          "created": 3,
+          "destroyed": 0,
+          "live": 3,
+          "maxLive": 3
+        },
+        "compute-pipeline": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        },
+        "command-encoder": {
+          "created": 1,
+          "destroyed": 0,
+          "live": 1,
+          "maxLive": 1
+        },
+        "command-buffer": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        },
+        "query-set": {
+          "created": 0,
+          "destroyed": 0,
+          "live": 0,
+          "maxLive": 0
+        }
+      }
+    }
+  }
+}

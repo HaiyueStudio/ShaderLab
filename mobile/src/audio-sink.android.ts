@@ -1,5 +1,5 @@
 import { Application, Utils } from '@nativescript/core';
-import type { StereoSound } from '../../web/dist/sound.js';
+import type { StereoSound } from '../../web/src/sound.js';
 export class AudioSink {
     private track: android.media.AudioTrack;
     private dead = false;

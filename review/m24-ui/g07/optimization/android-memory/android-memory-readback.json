@@ -1,0 +1,4044 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-17T09:06:48.896Z",
+  "completedAt": "",
+  "device": {
+    "os": "Android",
+    "version": "14",
+    "model": "X4000"
+  },
+  "kind": "50 real native editor/GPU host lifetimes; adapter and frame resources; process memory observation is not native GPU heap accounting",
+  "cycles": [
+    {
+      "cycle": 1,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 172831,
+        "nativeHeapBytes": 28256672
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t24028168 kB",
+        "VmRSS:\t  257028 kB",
+        "VmSwap:\t   21452 kB",
+        "Threads:\t36"
+      ],
+      "systemMemory": [
+        "MemAvailable:    3607656 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             356212 kB",
+        "SUnreclaim:       269160 kB",
+        "PageTables:        70864 kB"
+      ]
+    },
+    {
+      "cycle": 2,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 182419,
+        "nativeHeapBytes": 32563440
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t24274856 kB",
+        "VmRSS:\t  267368 kB",
+        "VmSwap:\t   21432 kB",
+        "Threads:\t38"
+      ],
+      "systemMemory": [
+        "MemAvailable:    3375840 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             356628 kB",
+        "SUnreclaim:       269576 kB",
+        "PageTables:        70892 kB"
+      ]
+    },
+    {
+      "cycle": 3,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 190019,
+        "nativeHeapBytes": 36945968
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t24457668 kB",
+        "VmRSS:\t  275512 kB",
+        "VmSwap:\t   21380 kB",
+        "Threads:\t36"
+      ],
+      "systemMemory": [
+        "MemAvailable:    3140524 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             357056 kB",
+        "SUnreclaim:       270004 kB",
+        "PageTables:        70944 kB"
+      ]
+    },
+    {
+      "cycle": 4,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 196435,
+        "nativeHeapBytes": 40878592
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t24704876 kB",
+        "VmRSS:\t  281488 kB",
+        "VmSwap:\t   21368 kB",
+        "Threads:\t38"
+      ],
+      "systemMemory": [
+        "MemAvailable:    2912368 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             357368 kB",
+        "SUnreclaim:       270316 kB",
+        "PageTables:        70976 kB"
+      ]
+    },
+    {
+      "cycle": 5,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 202811,
+        "nativeHeapBytes": 44513648
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t24950916 kB",
+        "VmRSS:\t  287264 kB",
+        "VmSwap:\t   21364 kB",
+        "Threads:\t40"
+      ],
+      "systemMemory": [
+        "MemAvailable:    2683924 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             357784 kB",
+        "SUnreclaim:       270732 kB",
+        "PageTables:        71000 kB"
+      ]
+    },
+    {
+      "cycle": 6,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 193450,
+        "nativeHeapBytes": 48807392
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t25197544 kB",
+        "VmRSS:\t  278616 kB",
+        "VmSwap:\t   21356 kB",
+        "Threads:\t42"
+      ],
+      "systemMemory": [
+        "MemAvailable:    2469336 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             358216 kB",
+        "SUnreclaim:       271164 kB",
+        "PageTables:        71020 kB"
+      ]
+    },
+    {
+      "cycle": 7,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 200553,
+        "nativeHeapBytes": 52864512
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t25443600 kB",
+        "VmRSS:\t  285172 kB",
+        "VmSwap:\t   21348 kB",
+        "Threads:\t44"
+      ],
+      "systemMemory": [
+        "MemAvailable:    2241844 kB",
+        "SwapFree:        2192724 kB",
+        "Slab:             358696 kB",
+        "SUnreclaim:       271644 kB",
+        "PageTables:        71044 kB"
+      ]
+    },
+    {
+      "cycle": 8,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 193037,
+        "nativeHeapBytes": 50812768
+      },
+      "retained": [
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t25689304 kB",
+        "VmRSS:\t  278216 kB",
+        "VmSwap:\t   20832 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    2037876 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             359220 kB",
+        "SUnreclaim:       272168 kB",
+        "PageTables:        70952 kB"
+      ]
+    },
+    {
+      "cycle": 9,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 197465,
+        "nativeHeapBytes": 51094448
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t25894880 kB",
+        "VmRSS:\t  282660 kB",
+        "VmSwap:\t   20832 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    1888384 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             359644 kB",
+        "SUnreclaim:       272592 kB",
+        "PageTables:        71116 kB"
+      ]
+    },
+    {
+      "cycle": 10,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 197415,
+        "nativeHeapBytes": 54723088
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t26104960 kB",
+        "VmRSS:\t  282372 kB",
+        "VmSwap:\t   20832 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    1669292 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             360060 kB",
+        "SUnreclaim:       273008 kB",
+        "PageTables:        71140 kB"
+      ]
+    },
+    {
+      "cycle": 11,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 202687,
+        "nativeHeapBytes": 58836752
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t26315696 kB",
+        "VmRSS:\t  287476 kB",
+        "VmSwap:\t   20832 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    1441440 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             360492 kB",
+        "SUnreclaim:       273440 kB",
+        "PageTables:        71156 kB"
+      ]
+    },
+    {
+      "cycle": 12,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 201343,
+        "nativeHeapBytes": 59570704
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t26527280 kB",
+        "VmRSS:\t  286176 kB",
+        "VmSwap:\t   20812 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    1220160 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             360988 kB",
+        "SUnreclaim:       273936 kB",
+        "PageTables:        71160 kB"
+      ]
+    },
+    {
+      "cycle": 13,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 205064,
+        "nativeHeapBytes": 61266400
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t26739932 kB",
+        "VmRSS:\t  284108 kB",
+        "VmSwap:\t   20800 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:    1044304 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             360496 kB",
+        "SUnreclaim:       274372 kB",
+        "PageTables:        70960 kB"
+      ]
+    },
+    {
+      "cycle": 14,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 208384,
+        "nativeHeapBytes": 65477872
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t26951368 kB",
+        "VmRSS:\t  283300 kB",
+        "VmSwap:\t   20796 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:     822988 kB",
+        "SwapFree:        2180180 kB",
+        "Slab:             360636 kB",
+        "SUnreclaim:       274864 kB",
+        "PageTables:        71244 kB"
+      ]
+    },
+    {
+      "cycle": 15,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 212573,
+        "nativeHeapBytes": 69589712
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t27162112 kB",
+        "VmRSS:\t  285380 kB",
+        "VmSwap:\t   20936 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:     681860 kB",
+        "SwapFree:        2079828 kB",
+        "Slab:             359884 kB",
+        "SUnreclaim:       274872 kB",
+        "PageTables:        69956 kB"
+      ]
+    },
+    {
+      "cycle": 16,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 212090,
+        "nativeHeapBytes": 70002432
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t27372848 kB",
+        "VmRSS:\t  284140 kB",
+        "VmSwap:\t   20940 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:     523840 kB",
+        "SwapFree:        1999904 kB",
+        "Slab:             359996 kB",
+        "SUnreclaim:       274984 kB",
+        "PageTables:        68896 kB"
+      ]
+    },
+    {
+      "cycle": 17,
+      "active": {
+        "disposed": false,
+        "pageLoaded": true,
+        "pageNative": true,
+        "canvasNative": true,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "pageLoaded": false,
+        "pageNative": false,
+        "canvasNative": false,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 207823,
+        "nativeHeapBytes": 71865920
+      },
+      "retained": [
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": false,
+          "page": false,
+          "canvas": false,
+          "host": false,
+          "runtime": false,
+          "engine": false,
+          "device": false
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        },
+        {
+          "editor": true,
+          "page": true,
+          "canvas": true,
+          "host": true,
+          "runtime": true,
+          "engine": true,
+          "device": true
+        }
+      ],
+      "processStatus": [
+        "VmSize:\t27581104 kB",
+        "VmRSS:\t  199140 kB",
+        "VmSwap:\t   92820 kB",
+        "Threads:\t46"
+      ],
+      "systemMemory": [
+        "MemAvailable:     439272 kB",
+        "SwapFree:        1884032 kB",
+        "Slab:             359824 kB",
+        "SUnreclaim:       275040 kB",
+        "PageTables:        66776 kB"
+      ]
+    }
+  ],
+  "error": "Application process exited during lifecycle acceptance; inspect logcat for the termination reason.",
+  "artifactSha256": "f2e39c08857f8b5b30b5c7d7b1a13386f40c099d7c0f93239aa6dc9858b90312"
+}

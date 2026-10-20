@@ -1,0 +1,770 @@
+{
+  "status": "passed",
+  "frames": 16,
+  "msaa": [
+    1,
+    4
+  ],
+  "coverage": [
+    "retained/fresh pixel equality",
+    "texture alternation",
+    "clip mutation",
+    "text mutation",
+    "viewport resize",
+    "resource teardown"
+  ],
+  "validationErrors": [],
+  "browserEvidence": {
+    "product": "Chrome/155.0.8059.80",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "platform": "MacIntel",
+    "url": "http://127.0.0.1:50677/scripts/webgpu-gate/gui-cache-fixture.html?",
+    "angleBackend": "metal",
+    "nativeBackend": true,
+    "presentationMode": "headless",
+    "storageMode": "isolated-memory-context"
+  },
+  "browserDiagnostics": {
+    "consoleErrorCount": 0,
+    "exceptionCount": 0,
+    "unclassifiedFailureCount": 0,
+    "profileCleanup": {
+      "status": "passed",
+      "attempts": 1,
+      "durationMs": 38
+    }
+  },
+  "httpProvenance": {
+    "transport": "http",
+    "requestCount": 121,
+    "uniqueFileCount": 121,
+    "files": [
+      {
+        "sourcePath": "engine/dist/chunks/align-BPmoUMBR.js",
+        "byteLength": 312,
+        "sha256": "f7c6c62e415ac0695d81277ef4e46e0bd536686be4117f4491ee2b286b89e250",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/AmbientLight-6OVB3Sip.js",
+        "byteLength": 548,
+        "sha256": "0d6b6d83e7ef4d60fb107a8aea1e5bc53e0cc0012a7013f23b21201a0ae2bf85",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/arrayAccess-BQLJ0IHW.js",
+        "byteLength": 1568,
+        "sha256": "843e370458d25854f17210a6ac95b3afec64529e8aa689f01d7fb3ff0ebb3f43",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/AssetParser-BT55VvTe.js",
+        "byteLength": 2904,
+        "sha256": "3a1c7d9def1cae0ebd0ec074834726fc034ea4024695b59807d96a0279f9aefd",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/assets-BxsHA2ZS.js",
+        "byteLength": 38096,
+        "sha256": "fa7f8101d1f9c82fc25529181a0f8a8d34b7a4968380ba19ed24eb17ad4f4b41",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/AssetUploadScheduler-v9a8vCxA.js",
+        "byteLength": 10113,
+        "sha256": "a7f297c309ffe7063784b41815c72b64a460d1489eae5269de2db2ce05520aa0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BaseRenderer-CGKbAAig.js",
+        "byteLength": 13520,
+        "sha256": "423db84912034ab8d49c60dcc66f93917e4cebc28f200661c65ef9dc3cc414b6",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BasicMaterial-BXzo165h.js",
+        "byteLength": 4629,
+        "sha256": "27cb365ecaaf83f254bc4bec3d323b6f8c728de1a2e78d8151f1949d43b405af",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BitmapFontBuilder-D3xOMkyv.js",
+        "byteLength": 3602,
+        "sha256": "f78de07aec46d601a6db0e2dc86825074fb81443b41a5479cfaeb52d536b00e3",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BitmapFontParser-JHdB1PmU.js",
+        "byteLength": 6300,
+        "sha256": "edd50fc6ca624a4bfbb60da4ca2708d3b0dc0e7865b0043de0f0135810554e82",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BitmapText-j3LxNaG7.js",
+        "byteLength": 1395,
+        "sha256": "ef699152e05f68049f1d4f37f0f5b29154006d0e011d26927a21c48f04c4b93c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BitmapTextRenderer-CIcT_x1C.js",
+        "byteLength": 16211,
+        "sha256": "b19b0f7faf82b8a0738ba3c4818f8411e3344bdbb3c1af10a7c6954cab261aba",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BitmapTextRenderSystem-DTKRZG3c.js",
+        "byteLength": 7008,
+        "sha256": "e158101ec181e81f00ca8bce7f83bc3a2534b0a848435a786b0b3a9bd865e942",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Box2DPhysics2DBackend-BXkYU_wh.js",
+        "byteLength": 1029297,
+        "sha256": "f0335ec5d85ac4f50b4be82ff5c80e55b5a1ca33c90438e80112e713f74566d4",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BoxSelectionControl-DTSmLh0p.js",
+        "byteLength": 14425,
+        "sha256": "a373787686320bd833a4b6fe62910eb34ac0d511360a0ae7e03dc02bea438616",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BuiltinRenderShader-4o-Hd2hR.js",
+        "byteLength": 953,
+        "sha256": "225c97c51ea114788b2b0412cbbb5a11062f66187659def32f8a9fcbef267ec0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BuiltinSpecializedRenderingShader-CWsuNVNG.js",
+        "byteLength": 802,
+        "sha256": "a8b7acc667696c6e22059f2dc547a15eae7a0be8befe70993cd0ee66e018ea06",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/BvhLod3D-CrDMn2hg.js",
+        "byteLength": 5947,
+        "sha256": "3d93767f54b45f88fba199714168dfb05fd73401d0dc8c3a6cfe140285e3873c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Camera3D-V7M71MBL.js",
+        "byteLength": 7545,
+        "sha256": "c6052f2ab1568225016bb13ce3e2b2f6a6cafd777101d40432df5981090853a5",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/CartesianTransform3D--7y3_ktY.js",
+        "byteLength": 7859,
+        "sha256": "7e4142d21497f352fb0f5b75429698f5e059ec7245539fcb744cdacc38fa2b1c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ClippingPlanes-CMq5GScg.js",
+        "byteLength": 4625,
+        "sha256": "e7ab5ded624eee06c2324a1e980bf38121dbb85e7bf14c7f5c9e3fc24748e7a9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ColorLike-D5R86nM0.js",
+        "byteLength": 8449,
+        "sha256": "40e927eed7fc4622d928b8a7ea1638c71334e43d796113656a8689649da94df6",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ColorSRGB-eG_tjqby.js",
+        "byteLength": 4403,
+        "sha256": "ecb69e92a0b5d65d63107f3da10f53aefadd0286292c6df26bd4aeaba978ab4b",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Component-Du0fittL.js",
+        "byteLength": 5010,
+        "sha256": "685f63bc79b39ad0d3913d99d52d5cb2dabcc00b0ff716e39fe433923f53af33",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ComponentSerializationRegistry-BHbcoj5l.js",
+        "byteLength": 29477,
+        "sha256": "d6a0a613ca3870131d53f4468008fef96315114cf090bb7014736d4c55aa2a92",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/constants-Do1J_v-k.js",
+        "byteLength": 188,
+        "sha256": "bbeb0c6e0d36fe3f6cc271cbeb5a997b08a922c9dadf0a54fbde908ede75d848",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/CssMaterial-BsnXPG6E.js",
+        "byteLength": 11613,
+        "sha256": "1b1592b971ef7291156be4dce1620230ac0c2b0553b16554a400d9c54c21d302",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Engine-BpC4yGKc.js",
+        "byteLength": 57049,
+        "sha256": "8342a07f911213e82245d535bfd320241db9ab03a68e981ca2b04b31b21b2b3a",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/EngineDiagnosticsAccess-SXWvpo8N.js",
+        "byteLength": 785,
+        "sha256": "83ef06a54945d6f5801917bbef2dd210786a075a89f2e020c9afe162de8e9ff9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/EngineError-Cp-e1RTL.js",
+        "byteLength": 10324,
+        "sha256": "320dbdc121cdf5fcf2b540235114047757bc5f4d2f5af142b6775b778c499cc9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Entity-D-_UAiw1.js",
+        "byteLength": 24569,
+        "sha256": "4d9bfea1c61042d887deb748e5ecb2857059e786fe70222b6fb5da2c26afa8d0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/FrameDiagnostics-CLUmYEdK.js",
+        "byteLength": 4151,
+        "sha256": "93b6ef29e6147c6b4ac87fa9298b769d5dd7836f2d8ba0f7f205bf44635e5c2e",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/FrameGraphCapture-ms8fmjCK.js",
+        "byteLength": 7733,
+        "sha256": "71b01e6420a5a2b6ea1c7fa1ca49d45299e103c35f2e12f95a3a37c944162e31",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Frustum-BAnnJrL_.js",
+        "byteLength": 11397,
+        "sha256": "425828a59f979c61fabdacca0c4a28358f989e5a06f271a99407518e1343db79",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Geometry2D-D7SVMQoB.js",
+        "byteLength": 3341,
+        "sha256": "6e53d9db99363a44c421a9c4db42d46ba9b7a03becfa2f44b357565d5114eced",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Global-Ny7k6KJK.js",
+        "byteLength": 1074,
+        "sha256": "cb9476d924e852917be05bd4ca28900c0f3c3ed1d3409b31a08806646da448e4",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/GPUResourceTracker-sUyyEY-J.js",
+        "byteLength": 28142,
+        "sha256": "942a97d42c95e80d05398e57c01364984307f034b4322923ddeaccc1791e4b5c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/GpuSimulationCapabilities-Dnk9Kmj1.js",
+        "byteLength": 17931,
+        "sha256": "612bf0f2b2813bcac43adb4001d3a194575227913b7647288a5f2c2df2f03be8",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/GuiSystem-D4bpj_Dp.js",
+        "byteLength": 175140,
+        "sha256": "244edfdf002167f3e5682063b73a4918d96db3e32caaf72c285756dfa162e747",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/hierarchy-CZkgLn-Q.js",
+        "byteLength": 1012,
+        "sha256": "9873bcd2267676559b2434745666376ee688e66646061373fec307fd486f5dd3",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/IEngine-BWIJHt_0.js",
+        "byteLength": 925,
+        "sha256": "6248980d2d17d2f337c1a2ca0e1d0561e6918c95b6a997ad3500729a895577ff",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ImageTextureUpload-DAWR8dpf.js",
+        "byteLength": 5577,
+        "sha256": "dbd940bb1ea59b99fd8b2d09461edd9c3b9c3cf45472b7ebe956d067b5c0e992",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/InstancedMesh3D-DuRokMfx.js",
+        "byteLength": 522,
+        "sha256": "38e506cb9bb8e81c880cb7e3a4de88533b9c1306e59317e145112ab17db400d0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/InstancedMesh3DRenderer-BducdBLZ.js",
+        "byteLength": 38849,
+        "sha256": "b6d3e4bc09f9743a1bedd8bd2534453f9f16780e8dc314c8c8bdcc5d042ed9af",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/InstancedPbrMaterial-DuffcNHC.js",
+        "byteLength": 9224,
+        "sha256": "ed3ce628e98396e1c5d95577ceb7988c06b8188cc586cb2933cd7e905f7024b3",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/InteractionSystem-BqfmWgkW.js",
+        "byteLength": 73623,
+        "sha256": "3909de03c0c44d9db73cb00cac5df24327c825b9bfd88ec506722055985a8d67",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Ktx2TextureLoader-BEb-GLxa.js",
+        "byteLength": 296135,
+        "sha256": "f6cbedcba2390e864bd793096a16823a667e23c0fa0417509ba01353f39f171d",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Line3D-DIZTyrsJ.js",
+        "byteLength": 3694,
+        "sha256": "999f57b3bdd07e84e186b5d2c1c608d8948a8b1b64821565cdfb8fec2f4d7ae0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/LineMaterial-DRBrVF-Q.js",
+        "byteLength": 2040,
+        "sha256": "ff9c044dd8ef7bf795be33709fb148630e576789469759bd7798391f47dade47",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Material2D-DtFEsr3Z.js",
+        "byteLength": 1103,
+        "sha256": "4c6800eff0847ce874948ec1d7a9439d0b6d5ef943b5f0d4c6f4a1a7570f6002",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/MaterialRegistryBase-DngXOQhW.js",
+        "byteLength": 3422,
+        "sha256": "a23e68cc20442811427ddd0c4a0326381ea265675090e4ba0db2271b834725b0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/materialValidation-CjxnEfgm.js",
+        "byteLength": 22848,
+        "sha256": "7c563ab75f11a48103c6454e3368d41b8ce4bbeab8ef7c1cea4740b708f9925c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Mesh2D-C0Flc9a6.js",
+        "byteLength": 9330,
+        "sha256": "0402dbfa79ecd3d4abbbd151e1c1c5c1e09371d10bc763941a02910465822d85",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Mesh2DRenderer-BImL2i0-.js",
+        "byteLength": 18658,
+        "sha256": "cbf6a1312652ec4adfc2ff636bdf2d7e7107e521443d96e660af90a718505389",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Mesh2DRenderSystem-0AfzC70i.js",
+        "byteLength": 6420,
+        "sha256": "57bacf19cfcf828644c6eb63b35ac508984d3cbe2550e723229169ac4832b3af",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Mesh3D-Di7qgIpw.js",
+        "byteLength": 2399,
+        "sha256": "d3e1cc4bd7411e56d8a83805db14b96614a5e99d9e2b5993d34494acf3ec8a6d",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/MeshHelper-DBWOGBSx.js",
+        "byteLength": 10472,
+        "sha256": "29f2d2f0567fbb36892c925f84631e15e37fdd6c7ac80260a43af7098dc153f3",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/OrbitControl-dZCAmOUY.js",
+        "byteLength": 8928,
+        "sha256": "2c9373004898c6a449268ad65be0b6d87726302852a43f6b02468fef89cf6ad9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/OutlinePass-CEmm7H2A.js",
+        "byteLength": 89631,
+        "sha256": "3803102865332575a04151da35bebcbe6796b671154ce81b08d50f4b99627813",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PbrDeferredSurfacePort-BSjOGvH1.js",
+        "byteLength": 655,
+        "sha256": "ace1c1b229c0cdbfb98649882b8b0351887e7f1d2bec8da7e6f93830e213cd06",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PbrMaterial-DnnLMc_E.js",
+        "byteLength": 39424,
+        "sha256": "a9531fe878155a8c72caea3a2dbb51a4d6ffd3bef44d4a762f9975c163b9f27d",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/physics-components-k1t-DPVR.js",
+        "byteLength": 7002,
+        "sha256": "1437d615b1d89772ec6fe4550a6d1e8887d45d090bd159ae8326112584291caf",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Physics2DSystem-C0Kyb0Xx.js",
+        "byteLength": 26066,
+        "sha256": "92d94d207bcf41e9bf90741b88e6e83b8a9b4587c11dac8eb5df2237d0c214ff",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Physics2DTo3DTransformSync-DJYQr2KX.js",
+        "byteLength": 1554,
+        "sha256": "cce72238a0eb8b190a17f156c56d938cc264ec6ec6221bbd9996cad86b260c90",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Physics2DTo3DTransformSyncSystem-DfpEhUcx.js",
+        "byteLength": 3745,
+        "sha256": "f492f6e96d28dc0c33e700dd2257e64e34e5be749d4177569ce221780431acc9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Physics3DJoint-B5ICiwzh.js",
+        "byteLength": 8617,
+        "sha256": "1b7f6fd0154052a105278463d4d59668712e91b6341c958031a60af41f67b1b2",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PipelineWarmup-DqYBVQLM.js",
+        "byteLength": 15759,
+        "sha256": "1ffe77cf140aff41712079138bcd63885fb9af57681be5ff4544dfd0b16c0298",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PlanarMirrorMaterial-3ILW5aJz.js",
+        "byteLength": 2560,
+        "sha256": "14fb5f6468146d7987c86e416cd5191276843c7bfdb676e3e169ab2bb1d46208",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PlaneGeometry-BcONL_T8.js",
+        "byteLength": 5583,
+        "sha256": "05c94b28ff0d432faac799efc53cc9c9fd8e2d6176c3d26de46818808aa0971c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PointLight-D_MdtNz7.js",
+        "byteLength": 11460,
+        "sha256": "0c09350cc67f462a76f78cee67d260ac0bbabf63524954797ab1babc29229ece",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PostProcessSceneTextureStore-lCp4o80Q.js",
+        "byteLength": 33226,
+        "sha256": "4a19994c57bd499aab737deec219c0c25366aa2902d85a94657b5bbdf1784b40",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/PostProcessTransientTextures-BdrBeFuL.js",
+        "byteLength": 24924,
+        "sha256": "6a912d0cb7ec1c919fc59b291bde28e93e294ca0ee216633f09855bc5ea33db1",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RadialShadowRenderer-DAOOThug.js",
+        "byteLength": 8642,
+        "sha256": "b8df3f50544411a4c748635b5b1d400773f9c04ab3bd9e54dc138ce2e2243d43",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Ray-sxTtwKE6.js",
+        "byteLength": 13811,
+        "sha256": "8b6dfca15bd31ff7616cf276542874bf6cdf8bf5c808a3b28edd9aee64a68c83",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RaycastBVH-DsoOrzPp.js",
+        "byteLength": 6608,
+        "sha256": "8aec6c0e4ea3fec018fe41f9a7778e07a2efea57f8defb66b1ea0f3256ef89d8",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Render3DFramePlan-w9bgjMY4.js",
+        "byteLength": 33240,
+        "sha256": "83915d2aca604b0d3112e12fb3529ce86e9fbf6b7554ea4e369cadf67161de13",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Render3DSystem-BXbAKrvn.js",
+        "byteLength": 364082,
+        "sha256": "43a6f2ae5005c3cbbdbd93668978be6fd4a241b4eaf1b09a74009be0661c9c12",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Render3DSystemAccess-CgB6aX4m.js",
+        "byteLength": 7380,
+        "sha256": "da6d8c01819beb81755e8a916bb1330dea6f27a652b6d06b59bfe9db5599c8d9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RenderCommandContext-BwnkNm0B.js",
+        "byteLength": 32365,
+        "sha256": "c06895e8bb4e8920b3a96cf2af2df8bdc0f86f2c857719984cfd328ec0fa6ae2",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/renderer-BgmuJ9eU.js",
+        "byteLength": 29636,
+        "sha256": "cad98b9762972c877d6ac16f5085b5412a84ab38f780c296fec45ed7528e2340",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RendererResourceCache-BuQAryfn.js",
+        "byteLength": 4112,
+        "sha256": "66ef766f6bee2650a1f67d655a1f78c82da5e813fad765f2d9741169dbb05fda",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RenderIntegration-Ck5LA_uZ.js",
+        "byteLength": 30356,
+        "sha256": "66e909e7672d8e507cc11dcc9ee37da1cb70726346b766212d3fd634d42dca2e",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RttEngine-ByYyS4I2.js",
+        "byteLength": 8685,
+        "sha256": "4092b32bf6d038dd7eb8804bc598eab5a40a1b7f2611ca828a88f21f4dd8c2dd",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/RttRenderContributor-COY1xKDT.js",
+        "byteLength": 3113,
+        "sha256": "36114a1671b761f9e49196342fe98a9cf29868da1e3a2edf1d45132d76df4d75",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Scene-H_fnG1jE.js",
+        "byteLength": 39968,
+        "sha256": "2d3f606ad9a3e55b25e099805eba357a113d36851592d241f955daf3ce74c39c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/SceneLightData-Dz0_RzFs.js",
+        "byteLength": 30823,
+        "sha256": "1321b16f8a833e4d3d8bb1d426ad038d9576a8a40fc50b1db9158f5adf124ca2",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ScriptComponent-DnPJqWnP.js",
+        "byteLength": 38175,
+        "sha256": "0fbb0d22a0edf2c065d89cadb2d5cfd7e6adb69a060bcd7bc60e7ecaf0f09293",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ScriptResource-uDUwsVEv.js",
+        "byteLength": 8077,
+        "sha256": "87cb5e979ba64df9c67b8fbd902aae72a4d5a0d5c9faccf464254eb32fd43c68",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Sky-CMwO4Q6R.js",
+        "byteLength": 2654,
+        "sha256": "1e287ffd6f0b7bea685af2dbb3f807b85272a9a1a4511d38bf67e3a409bf61da",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/SpatialIndexService-DbHlH87W.js",
+        "byteLength": 56693,
+        "sha256": "b355e39c00794d7eebb70970a42da6c042ef2a8fbcc560f9b4ac62f3bee5f646",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/SphericalTransform3D-DpXtwAeG.js",
+        "byteLength": 5687,
+        "sha256": "5563706701c966dd7d7e4f755914e06d7c1c8383cd890506eba771ab903e5be0",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/SVGGeometry2D-DOyPKSV7.js",
+        "byteLength": 121456,
+        "sha256": "ebf41133aa6f7ccf6ce065b616ec5d327a4d3c807b1e8d5fa2cb8c69810cc6fb",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/System-CIIb_ci6.js",
+        "byteLength": 3406,
+        "sha256": "84f2bcb7f7b93635bdf95ec307bcc41953268deefbff368da1a57892331af27c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/ToonMaterial-VWrWoBkY.js",
+        "byteLength": 11283,
+        "sha256": "ea1dbbad2ed8c58c1e371c20226bd3290113517ebf49a6ee5a2273195b0da0fa",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Transform2D-BQcy9yW6.js",
+        "byteLength": 5218,
+        "sha256": "98b0fd783baf9f5545ed2224990915d2057a4580a5b7df5bb0ab5a222d060d30",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/Transform3D-ClwzR-VK.js",
+        "byteLength": 4432,
+        "sha256": "e422baa0b4c244895e54867d56a07e820f183cdb2f0c82562b7189290a8ffbf9",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/TransparentMegaBatch-DA7qrBP_.js",
+        "byteLength": 361011,
+        "sha256": "9dec2059eb1655d8ca7cff9ea57a0deedee2bdcab05f6aa984db19867c8ae928",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/VolumeMaterial-BFN3BCso.js",
+        "byteLength": 6685,
+        "sha256": "02ea5064f2f5de3aa121eb276e5098d1d1ff8d5c41fa2dd15801ca592b6f62ae",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/World-NSjwM1ON.js",
+        "byteLength": 59239,
+        "sha256": "b8dd487d854eb913c7bac3361358b43c8d842d8984b1814d0305bb96dfa1a4e7",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/chunks/WorldResourceCleanup-CSTul4-x.js",
+        "byteLength": 892,
+        "sha256": "d22ecd6960a36ab7707a70bb5999c7c87123688c0787e301cffaa72f50607f48",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/compute.js",
+        "byteLength": 11379,
+        "sha256": "e2c06cef1051614a1c69663198a8a5c88b0d9e1eea60b8aa59d2685746d1342a",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental.js",
+        "byteLength": 38162,
+        "sha256": "531a9bf769e7f4ff58073ff54a074aa1d32125418d73495980627d3c2aec9a8c",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental/assets.js",
+        "byteLength": 15475,
+        "sha256": "49204e6d517657803c567d8921f8a1619e25675827369b799fa242f443a417a7",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental/async.js",
+        "byteLength": 9289,
+        "sha256": "a9ee561a00a54a8fbe1a3e4b8dd46d93826b95fb9deed0af075d4f35d4c14a38",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental/audio.js",
+        "byteLength": 11126,
+        "sha256": "aa5e2f6b94034ca03aaa62968d9a803ead5b4cf0cf2a62ea0d5e86b8a817a449",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental/diagnostics.js",
+        "byteLength": 3127,
+        "sha256": "a6395cb84e0205fc9b4e106bb871a76d3832f6e67bdb42502d3b9a22d88048fb",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/experimental/simulation.js",
+        "byteLength": 33515,
+        "sha256": "19e64adf940f387396ed3951608181fdf6b51d0975507fcb81878ecf7e23e8d1",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/gui.js",
+        "byteLength": 34679,
+        "sha256": "0a88f182b09d67cab02c09a3874e9d373f02e00a35a752d0dd1f6de2253728dd",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/input.js",
+        "byteLength": 3818,
+        "sha256": "fe114fc7ac9e07841d8f7ca830160df4b0ab620a256463a7099bed70544f5781",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/2d-ui-shader-artifact.js",
+        "byteLength": 53787,
+        "sha256": "d9719d72ec89cce1029e843de072884453b52f993a46d6474ec463b4b3569894",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/compute-shader-artifact.js",
+        "byteLength": 22753,
+        "sha256": "cd9c3736c1d8d3cb99468c8faaac519eb7a4b280af9d4d946f867bad1c7704d5",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/deformation-shader-artifact.js",
+        "byteLength": 105507,
+        "sha256": "005994b9537051abc611ff70966ec6c4375ea0304186ff8debcc0c9294d4e20f",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/material-lighting-shader-artifact.js",
+        "byteLength": 75267,
+        "sha256": "1b3f9bbf55e7f1afdb4b59027e9b9afe9244f011d121df7ca27a518bdb030945",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/postprocess-shader-artifact.js",
+        "byteLength": 68626,
+        "sha256": "89cd097cc8ae643acaf640b23ea4d06480ff9b2abe8a4a3ffc5e0eb0cf7a64c2",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/precompiled-shader-runtime.js",
+        "byteLength": 9197,
+        "sha256": "10419c3b3ddadf276d8fbd7debccfdaa86300d37c02a60a5025fc13cde9f81d3",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/simple3d-shader-artifact.js",
+        "byteLength": 59168,
+        "sha256": "071701512effa54ff5e2dd5e7ba9050195641ab0fca485f14edf25a5702d8f2e",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/internal/specialized-rendering-shader-artifact.js",
+        "byteLength": 77620,
+        "sha256": "f6399ddcf6db6992949defcfa5a276ff7c4123472976c40d7aa4eaaac95bf62f",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "engine/dist/tween.js",
+        "byteLength": 14618,
+        "sha256": "8a8c6eba210592179255e4dc217fbcf0fd313e17d734c3137f8c0c0fd2fb3667",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "node_modules/wgpu-matrix/dist/3.x/wgpu-matrix.module.js",
+        "byteLength": 199533,
+        "sha256": "32cdefcfe7b340710c242b0982316d5af501bb81ccdc3744f57bd0b2acd4e400",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "scripts/webgpu-gate/gui-cache-fixture.html",
+        "byteLength": 292,
+        "sha256": "6bc7e29228a398716301247f30cb4958cc8c115fef4f204f1919dd94cc19f8f7",
+        "requestCount": 1
+      },
+      {
+        "sourcePath": "scripts/webgpu-gate/gui-cache-fixture.mjs",
+        "byteLength": 4239,
+        "sha256": "cf314b13d52bd3a539b5fcec2db68305e9c9658edc6a9ff1a9fde5c692f1d8c4",
+        "requestCount": 1
+      }
+    ]
+  }
+}

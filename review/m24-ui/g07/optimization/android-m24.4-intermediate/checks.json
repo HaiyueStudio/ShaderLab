@@ -1,0 +1,42 @@
+{
+  "capturedAt": "2026-10-17T22:53:36.618086+00:00",
+  "artifactSha256": "17160ffa101dc936ebedf7d3ec6e8779eb862c00874fa899833e62137b816139",
+  "checks": [
+    {
+      "command": "npm test -w ./mobile",
+      "status": "passed",
+      "tests": 25
+    },
+    {
+      "command": "npm run typecheck -w ./mobile",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:shared-ui",
+      "status": "passed",
+      "tests": 5
+    },
+    {
+      "command": "npm run check:boundaries",
+      "status": "passed"
+    },
+    {
+      "command": "Native: node --test test/ui/nativescript/adapter.test.mjs",
+      "status": "passed",
+      "tests": 19
+    },
+    {
+      "command": "npm run build:android",
+      "status": "passed"
+    },
+    {
+      "command": "Canvas arm64 C ABI, dependencies, 16 KiB LOAD alignment and AAR contents",
+      "status": "passed"
+    }
+  ],
+  "nativeAdapterSha256": "4515cddbc2ce9edb106f7068897fde838c25be76093e7867a1ef4126a1699946",
+  "nativeAdapterTestsSha256": "9e72a3b93aaa34ea417063ddbdc421a68e8ce029cce05fda967a941f38c3933f",
+  "limitations": [
+    "Standalone native adapter tests and ShaderLab consumer typecheck; no claim of refreshed G06 physical device evidence."
+  ]
+}

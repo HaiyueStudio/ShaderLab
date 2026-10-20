@@ -1,0 +1,144 @@
+shared 0 {
+  handler: 1.3369998931884766,
+  engineFrameCpu: 2.5780832767486572,
+  handlerPlusNextFrameCpu: 3.2420835494995117,
+  settled: 51.79925012588501,
+  queueWait: 17.724375009536743,
+  submitToComplete: 68.45612502098083,
+  cadence: 16.984958171844482,
+  idleFrameCpu: 1.347749948501587,
+  handlerPlusSettlingFramesCpu: 7.4866249561309814
+}
+optimized 0 {
+  handler: 0.4696667194366455,
+  engineFrameCpu: 5.7667083740234375,
+  handlerPlusNextFrameCpu: 6.203999996185303,
+  settled: 51.16824984550476,
+  queueWait: 17.518958568572998,
+  submitToComplete: 67.80120825767517,
+  cadence: 17.66308331489563,
+  idleFrameCpu: 3.7542500495910645,
+  handlerPlusSettlingFramesCpu: 13.260416984558105
+}
+optimized 1 {
+  handler: 0.49500012397766113,
+  engineFrameCpu: 5.740250110626221,
+  handlerPlusNextFrameCpu: 6.1109583377838135,
+  settled: 51.06916642189026,
+  queueWait: 17.735125064849854,
+  submitToComplete: 67.8407084941864,
+  cadence: 17.324291706085205,
+  idleFrameCpu: 2.494541645050049,
+  handlerPlusSettlingFramesCpu: 12.308041334152222
+}
+shared 1 {
+  handler: 1.4499998092651367,
+  engineFrameCpu: 2.545041799545288,
+  handlerPlusNextFrameCpu: 3.1067914962768555,
+  settled: 51.853999853134155,
+  queueWait: 17.74875020980835,
+  submitToComplete: 68.52787518501282,
+  cadence: 17.32224988937378,
+  idleFrameCpu: 2.32450008392334,
+  handlerPlusSettlingFramesCpu: 7.686417102813721
+}
+shared 2 {
+  handler: 1.370375156402588,
+  engineFrameCpu: 2.526124954223633,
+  handlerPlusNextFrameCpu: 4.295916318893433,
+  settled: 51.47550010681152,
+  queueWait: 17.629832983016968,
+  submitToComplete: 68.31270813941956,
+  cadence: 17.04145836830139,
+  idleFrameCpu: 2.2519166469573975,
+  handlerPlusSettlingFramesCpu: 7.041666269302368
+}
+optimized 2 {
+  handler: 0.49341654777526855,
+  engineFrameCpu: 5.4573750495910645,
+  handlerPlusNextFrameCpu: 5.849875450134277,
+  settled: 50.981083393096924,
+  queueWait: 17.126916646957397,
+  submitToComplete: 67.59087491035461,
+  cadence: 17.324999809265137,
+  idleFrameCpu: 2.836250066757202,
+  handlerPlusSettlingFramesCpu: 12.901000022888184
+}
+optimized 3 {
+  handler: 0.4611666202545166,
+  engineFrameCpu: 5.817458391189575,
+  handlerPlusNextFrameCpu: 6.297250032424927,
+  settled: 50.58016657829285,
+  queueWait: 17.34637475013733,
+  submitToComplete: 67.67229175567627,
+  cadence: 17.633958101272583,
+  idleFrameCpu: 3.701416492462158,
+  handlerPlusSettlingFramesCpu: 12.510833024978638
+}
+shared 3 {
+  handler: 1.477874994277954,
+  engineFrameCpu: 2.6648333072662354,
+  handlerPlusNextFrameCpu: 3.5794167518615723,
+  settled: 51.75937509536743,
+  queueWait: 17.696333408355713,
+  submitToComplete: 68.56962513923645,
+  cadence: 17.38045835494995,
+  idleFrameCpu: 2.3362083435058594,
+  handlerPlusSettlingFramesCpu: 6.824291467666626
+}
+{
+  handler: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 1.4101874828338623, optimized: 0.48154163360595703 },
+    optimizedVsNative: 0.341473484531481,
+    spreads: { shared: 1.1053665761734046, optimized: 1.073365031719928 }
+  },
+  engineFrameCpu: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 2.5615625381469727, optimized: 5.753479242324829 },
+    optimizedVsNative: 2.2460818959692004,
+    spreads: { shared: 1.0549095375550148, optimized: 1.0659810510229626 }
+  },
+  handlerPlusNextFrameCpu: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 3.410750150680542, optimized: 6.157479166984558 },
+    optimizedVsNative: 1.8053152224462894,
+    spreads: { shared: 1.3827501214811522, optimized: 1.0764759157872978 }
+  },
+  settled: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 51.77931261062622, optimized: 51.02512490749359 },
+    optimizedVsNative: 0.9854345748309943,
+    spreads: { shared: 1.0073530076548503, optimized: 1.0116267562365897 }
+  },
+  queueWait: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 17.710354208946228, optimized: 17.432666659355164 },
+    optimizedVsNative: 0.9843206100614976,
+    spreads: { shared: 1.0067452270765092, optimized: 1.0355118455020043 }
+  },
+  submitToComplete: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 68.49200010299683, optimized: 67.73675000667572 },
+    optimizedVsNative: 0.988973163359438,
+    spreads: { shared: 1.0037608961321305, optimized: 1.0036962620200307 }
+  },
+  cadence: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 17.181854128837585, optimized: 17.47947895526886 },
+    optimizedVsNative: 1.0173220436048138,
+    spreads: { shared: 1.0232853198167469, optimized: 1.0195558707136883 }
+  },
+  idleFrameCpu: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 2.2882083654403687, optimized: 3.26883327960968 },
+    optimizedVsNative: 1.428555777078714,
+    spreads: { shared: 1.7334137879977138, optimized: 1.5049859187721606 }
+  },
+  handlerPlusSettlingFramesCpu: {
+    values: { shared: [Array], optimized: [Array] },
+    medians: { shared: 7.264145612716675, optimized: 12.70591652393341 },
+    optimizedVsNative: 1.749127454396058,
+    spreads: { shared: 1.1263318894323067, optimized: 1.0773783272699322 }
+  }
+}

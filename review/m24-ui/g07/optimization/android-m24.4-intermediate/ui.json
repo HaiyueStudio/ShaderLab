@@ -1,0 +1,15 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-17T22:56:26.304Z",
+  "checks": [
+    "five resolution choices via native picker, preview retained",
+    "settings rotation, background/resume, close and reopen"
+  ],
+  "name": "Untitled shader G07－1792277845710",
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(editor)\n\n    at file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/test/android/shared-page.mjs:36:166",
+  "rotationRestored": {
+    "rotation": "0",
+    "automatic": "0"
+  },
+  "completedAt": "2026-10-17T22:57:34.274Z"
+}

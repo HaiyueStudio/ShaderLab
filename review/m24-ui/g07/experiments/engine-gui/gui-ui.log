@@ -1,0 +1,408 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -xctestrun artifacts/m24-g07/gui-comparison/ui-derived/Build/Products/Acceptance_iphoneos26.2-arm64.xctestrun -destination id=00008120-000948541182601E -resultBundlePath artifacts/m24-g07/gui-comparison/candidate5/gui-ui-normalized.xcresult
+
+2026-10-19 12:51:48.772 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Writing result bundle at path:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/gui-comparison/candidate5/gui-ui-normalized.xcresult
+
+2026-10-19 12:51:48.785 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 12:51:48.893 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 12:51:49.002 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, arch:arm64e, id:00008120-000948541182601E, name:Hypnos的 iPhone }
+{ platform:iOS, arch:arm64, id:00008120-000948541182601E, name:Hypnos的 iPhone }
+2026-10-19 12:51:49.520 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 12:51:50.053 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 12:51:54.990760+0800 Acceptance-Runner[80651:15952980] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-19 12:51:55.928.
+Test Suite 'Acceptance.xctest' started at 2026-10-19 12:51:55.929.
+Test Suite 'GuiExperimentSmoke' started at 2026-10-19 12:51:55.929.
+Test Case '-[Acceptance.GuiExperimentSmoke testGuiEditor]' started.
+    t =     0.00s Start Test at 2026-10-19 12:51:55.930
+    t =     0.02s Set Up
+    t =     0.02s Getting device orientation
+    t =     0.02s Setting device orientation to Portrait
+    t =     0.03s     Device orientation changed to Portrait
+    t =     0.04s     Wait for studio.haiyue.shaderlab to idle
+    t =     0.05s Open studio.haiyue.shaderlab
+    t =     0.05s     Launch studio.haiyue.shaderlab
+    t =     0.05s         Terminate studio.haiyue.shaderlab:80552
+2026-10-19 12:51:55.138 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     1.22s         Setting up automation session
+    t =     2.11s         Wait for studio.haiyue.shaderlab to idle
+    t =     3.37s Waiting 30.0s for "gui-shell" Any to exist
+    t =     4.38s     Checking `Expect predicate `existsNoRetry == 1` for object "gui-shell" Any`
+    t =     4.38s         Checking existence of `"gui-shell" Any`
+    t =     5.47s Find the "gui-shell" Any
+    t =     5.63s Added attachment named 'gui-gallery'
+    t =     5.63s Find the "gui-shell" Any
+    t =     5.65s Tap "gui-shell" Any[0.17, 0.09]
+    t =     5.65s     Wait for studio.haiyue.shaderlab to idle
+    t =     5.65s     Find the "gui-shell" Any
+    t =     5.66s     Check for interrupting elements affecting "gui-shell" Image
+    t =     5.70s     Synthesize event
+    t =     5.70s         Find the "gui-shell" Image
+    t =     5.71s         Find the "gui-shell" Image
+    t =     5.72s         Find the "gui-shell" Image
+    t =     6.00s     Wait for studio.haiyue.shaderlab to idle
+    t =     7.05s Find the "gui-shell" Any
+    t =     8.10s Find the "gui-shell" Any
+    t =     8.26s Added attachment named 'gui-editor'
+    t =     8.27s Find the "gui-shell" Any
+    t =     8.28s Tap "gui-shell" Any[0.51, 0.26]
+    t =     8.28s     Wait for studio.haiyue.shaderlab to idle
+    t =     8.29s     Find the "gui-shell" Any
+    t =     8.30s     Check for interrupting elements affecting "gui-shell" Image
+    t =     8.32s     Synthesize event
+    t =     8.32s         Find the "gui-shell" Image
+    t =     8.33s         Find the "gui-shell" Image
+    t =     8.34s         Find the "gui-shell" Image
+    t =     8.63s     Wait for studio.haiyue.shaderlab to idle
+    t =     8.64s Find the "gui-shell" Any
+    t =     8.67s Tap "gui-shell" Any[0.51, 0.34]
+    t =     8.67s     Wait for studio.haiyue.shaderlab to idle
+    t =     8.67s     Find the "gui-shell" Any
+    t =     8.70s     Check for interrupting elements affecting "gui-shell" Image
+    t =     8.76s     Synthesize event
+    t =     8.76s         Find the "gui-shell" Image
+    t =     8.78s         Find the "gui-shell" Image
+    t =     8.81s         Find the "gui-shell" Image
+    t =     9.11s     Wait for studio.haiyue.shaderlab to idle
+    t =    10.14s Find the "gui-shell" Any
+    t =    11.19s Find the "gui-shell" Any
+    t =    11.21s Find the "gui-shell" Any
+    t =    11.23s Tap "gui-shell" Any[0.51, 0.26]
+    t =    11.23s     Wait for studio.haiyue.shaderlab to idle
+    t =    11.24s     Find the "gui-shell" Any
+    t =    11.26s     Check for interrupting elements affecting "gui-shell" Image
+    t =    11.32s     Synthesize event
+    t =    11.32s         Find the "gui-shell" Image
+    t =    11.35s         Find the "gui-shell" Image
+    t =    11.39s         Find the "gui-shell" Image
+    t =    11.70s     Wait for studio.haiyue.shaderlab to idle
+    t =    11.71s Find the "gui-shell" Any
+    t =    11.73s Tap "gui-shell" Any[0.51, 0.38]
+    t =    11.73s     Wait for studio.haiyue.shaderlab to idle
+    t =    11.74s     Find the "gui-shell" Any
+    t =    11.76s     Check for interrupting elements affecting "gui-shell" Image
+    t =    11.82s     Synthesize event
+    t =    11.82s         Find the "gui-shell" Image
+    t =    11.85s         Find the "gui-shell" Image
+    t =    11.87s         Find the "gui-shell" Image
+    t =    12.18s     Wait for studio.haiyue.shaderlab to idle
+    t =    13.22s Find the "gui-shell" Any
+    t =    14.27s Find the "gui-shell" Any
+    t =    14.30s Find the "gui-shell" Any
+    t =    14.31s Tap "gui-shell" Any[0.51, 0.26]
+    t =    14.31s     Wait for studio.haiyue.shaderlab to idle
+    t =    14.32s     Find the "gui-shell" Any
+    t =    14.34s     Check for interrupting elements affecting "gui-shell" Image
+    t =    14.40s     Synthesize event
+    t =    14.40s         Find the "gui-shell" Image
+    t =    14.42s         Find the "gui-shell" Image
+    t =    14.44s         Find the "gui-shell" Image
+    t =    14.73s     Wait for studio.haiyue.shaderlab to idle
+    t =    14.75s Find the "gui-shell" Any
+    t =    14.77s Tap "gui-shell" Any[0.51, 0.41]
+    t =    14.77s     Wait for studio.haiyue.shaderlab to idle
+    t =    14.78s     Find the "gui-shell" Any
+    t =    14.79s     Check for interrupting elements affecting "gui-shell" Image
+    t =    14.86s     Synthesize event
+    t =    14.86s         Find the "gui-shell" Image
+    t =    14.88s         Find the "gui-shell" Image
+    t =    14.91s         Find the "gui-shell" Image
+    t =    15.21s     Wait for studio.haiyue.shaderlab to idle
+    t =    16.24s Find the "gui-shell" Any
+    t =    17.30s Find the "gui-shell" Any
+    t =    17.32s Find the "gui-shell" Any
+    t =    17.34s Tap "gui-shell" Any[0.51, 0.26]
+    t =    17.34s     Wait for studio.haiyue.shaderlab to idle
+    t =    17.35s     Find the "gui-shell" Any
+    t =    17.37s     Check for interrupting elements affecting "gui-shell" Image
+    t =    17.44s     Synthesize event
+    t =    17.44s         Find the "gui-shell" Image
+    t =    17.46s         Find the "gui-shell" Image
+    t =    17.50s         Find the "gui-shell" Image
+    t =    17.81s     Wait for studio.haiyue.shaderlab to idle
+    t =    17.82s Find the "gui-shell" Any
+    t =    17.84s Tap "gui-shell" Any[0.51, 0.31]
+    t =    17.84s     Wait for studio.haiyue.shaderlab to idle
+    t =    17.85s     Find the "gui-shell" Any
+    t =    17.87s     Check for interrupting elements affecting "gui-shell" Image
+    t =    17.93s     Synthesize event
+    t =    17.93s         Find the "gui-shell" Image
+    t =    17.96s         Find the "gui-shell" Image
+    t =    17.98s         Find the "gui-shell" Image
+    t =    18.29s     Wait for studio.haiyue.shaderlab to idle
+    t =    19.32s Find the "gui-shell" Any
+    t =    20.37s Find the "gui-shell" Any
+    t =    20.39s Find the "gui-shell" Any
+    t =    20.41s Tap "gui-shell" Any[0.51, 0.26]
+    t =    20.41s     Wait for studio.haiyue.shaderlab to idle
+    t =    20.42s     Find the "gui-shell" Any
+    t =    20.44s     Check for interrupting elements affecting "gui-shell" Image
+    t =    20.50s     Synthesize event
+    t =    20.50s         Find the "gui-shell" Image
+    t =    20.52s         Find the "gui-shell" Image
+    t =    20.54s         Find the "gui-shell" Image
+    t =    20.84s     Wait for studio.haiyue.shaderlab to idle
+    t =    20.85s Find the "gui-shell" Any
+    t =    20.87s Tap "gui-shell" Any[0.51, 0.34]
+    t =    20.87s     Wait for studio.haiyue.shaderlab to idle
+    t =    20.88s     Find the "gui-shell" Any
+    t =    20.90s     Check for interrupting elements affecting "gui-shell" Image
+    t =    20.96s     Synthesize event
+    t =    20.96s         Find the "gui-shell" Image
+    t =    20.98s         Find the "gui-shell" Image
+    t =    21.01s         Find the "gui-shell" Image
+    t =    21.32s     Wait for studio.haiyue.shaderlab to idle
+    t =    22.36s Find the "gui-shell" Any
+    t =    23.41s Find the "gui-shell" Any
+    t =    23.43s Find the "gui-shell" Any
+    t =    23.45s Tap "gui-shell" Any[0.31, 0.26]
+    t =    23.45s     Wait for studio.haiyue.shaderlab to idle
+    t =    23.46s     Find the "gui-shell" Any
+    t =    23.48s     Check for interrupting elements affecting "gui-shell" Image
+    t =    23.54s     Synthesize event
+    t =    23.54s         Find the "gui-shell" Image
+    t =    23.57s         Find the "gui-shell" Image
+    t =    23.59s         Find the "gui-shell" Image
+    t =    23.90s     Wait for studio.haiyue.shaderlab to idle
+    t =    24.95s Find the "gui-shell" Any
+    t =    24.97s Find the "gui-shell" Any
+    t =    24.99s Tap "gui-shell" Any[0.31, 0.26]
+    t =    24.99s     Wait for studio.haiyue.shaderlab to idle
+    t =    25.01s     Find the "gui-shell" Any
+    t =    25.02s     Check for interrupting elements affecting "gui-shell" Image
+    t =    25.07s     Synthesize event
+    t =    25.07s         Find the "gui-shell" Image
+    t =    25.09s         Find the "gui-shell" Image
+    t =    25.11s         Find the "gui-shell" Image
+    t =    25.41s     Wait for studio.haiyue.shaderlab to idle
+    t =    26.44s Find the "gui-shell" Any
+    t =    26.46s Find the "gui-shell" Any
+    t =    26.48s Tap "gui-shell" Any[0.43, 0.10]
+    t =    26.48s     Wait for studio.haiyue.shaderlab to idle
+    t =    26.49s     Find the "gui-shell" Any
+    t =    26.51s     Check for interrupting elements affecting "gui-shell" Image
+    t =    26.57s     Synthesize event
+    t =    26.57s         Find the "gui-shell" Image
+    t =    26.60s         Find the "gui-shell" Image
+    t =    26.62s         Find the "gui-shell" Image
+    t =    26.93s     Wait for studio.haiyue.shaderlab to idle
+    t =    27.96s Find the "gui-shell" Any
+    t =    27.98s Find the "gui-shell" Any
+    t =    27.99s Tap "gui-shell" Any[0.73, 0.50]
+    t =    27.99s     Wait for studio.haiyue.shaderlab to idle
+    t =    28.00s     Find the "gui-shell" Any
+    t =    28.02s     Check for interrupting elements affecting "gui-shell" Image
+    t =    28.08s     Synthesize event
+    t =    28.08s         Find the "gui-shell" Image
+    t =    28.10s         Find the "gui-shell" Image
+    t =    28.13s         Find the "gui-shell" Image
+    t =    28.43s     Wait for studio.haiyue.shaderlab to idle
+    t =    28.44s Find the "gui-shell" Any
+    t =    28.46s Tap "gui-shell" Any[0.73, 0.61]
+    t =    28.46s     Wait for studio.haiyue.shaderlab to idle
+    t =    28.47s     Find the "gui-shell" Any
+    t =    28.49s     Check for interrupting elements affecting "gui-shell" Image
+    t =    28.55s     Synthesize event
+    t =    28.55s         Find the "gui-shell" Image
+    t =    28.57s         Find the "gui-shell" Image
+    t =    28.71s         Find the "gui-shell" Image
+    t =    29.03s     Wait for studio.haiyue.shaderlab to idle
+    t =    30.07s Find the "gui-shell" Any
+    t =    30.23s Added attachment named 'gui-settings'
+    t =    30.23s Setting device orientation to Landscape Left
+    t =    30.23s     Device orientation changed to Landscape Left
+    t =    30.31s     Interface orientation changed to Landscape Right
+    t =    30.31s     Wait for studio.haiyue.shaderlab to idle
+2026-10-19 12:52:25.330 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    32.49s Added attachment named 'gui-landscape'
+    t =    32.49s Pressing Home button
+    t =    32.89s     Interface orientation changed to Portrait
+2026-10-19 12:52:27.888 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    32.95s Open studio.haiyue.shaderlab
+    t =    32.95s     Activate studio.haiyue.shaderlab
+    t =    33.49s         Wait for studio.haiyue.shaderlab to idle
+    t =    33.53s             Interface orientation changed to Landscape Right
+2026-10-19 12:52:28.624 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    34.58s Find the "gui-shell" Any
+    t =    34.62s Find the "gui-shell" Any
+    t =    34.63s Tap "gui-shell" Any[0.85, 0.68]
+    t =    34.63s     Wait for studio.haiyue.shaderlab to idle
+    t =    34.64s     Find the "gui-shell" Any
+    t =    34.66s     Check for interrupting elements affecting "gui-shell" Image
+    t =    34.72s     Synthesize event
+    t =    34.72s         Find the "gui-shell" Image
+    t =    34.74s         Find the "gui-shell" Image
+    t =    34.76s         Find the "gui-shell" Image
+    t =    35.07s     Wait for studio.haiyue.shaderlab to idle
+    t =    36.10s Find the "gui-shell" Any
+    t =    36.13s Find the "gui-shell" Any
+    t =    36.15s Tap "gui-shell" Any[0.92, 0.07]
+    t =    36.15s     Wait for studio.haiyue.shaderlab to idle
+    t =    36.16s     Find the "gui-shell" Any
+    t =    36.18s     Check for interrupting elements affecting "gui-shell" Image
+    t =    36.24s     Synthesize event
+    t =    36.24s         Find the "gui-shell" Image
+    t =    36.27s         Find the "gui-shell" Image
+    t =    36.29s         Find the "gui-shell" Image
+    t =    36.60s     Wait for studio.haiyue.shaderlab to idle
+    t =    37.64s Find the "gui-shell" Any
+    t =    37.66s Find the "gui-shell" Any
+    t =    37.67s Tap "gui-shell" Any[0.85, 0.68]
+    t =    37.67s     Wait for studio.haiyue.shaderlab to idle
+    t =    37.69s     Find the "gui-shell" Any
+    t =    37.70s     Check for interrupting elements affecting "gui-shell" Image
+    t =    37.76s     Synthesize event
+    t =    37.77s         Find the "gui-shell" Image
+    t =    37.90s         Find the "gui-shell" Image
+    t =    37.94s         Find the "gui-shell" Image
+    t =    38.26s     Wait for studio.haiyue.shaderlab to idle
+    t =    39.28s Find the "gui-shell" Any
+    t =    39.31s Setting device orientation to Portrait
+    t =    39.32s     Device orientation changed to Portrait
+    t =    39.39s     Interface orientation changed to Portrait
+    t =    39.40s     Wait for studio.haiyue.shaderlab to idle
+2026-10-19 12:52:34.433 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    41.72s Find the "gui-shell" Any
+    t =    41.75s Tap "gui-shell" Any[0.31, 0.20]
+    t =    41.75s     Wait for studio.haiyue.shaderlab to idle
+    t =    41.77s     Find the "gui-shell" Any
+    t =    41.79s     Check for interrupting elements affecting "gui-shell" Image
+    t =    41.86s     Synthesize event
+    t =    41.86s         Find the "gui-shell" Image
+    t =    41.88s         Find the "gui-shell" Image
+    t =    41.91s         Find the "gui-shell" Image
+    t =    42.22s     Wait for studio.haiyue.shaderlab to idle
+    t =    43.25s Find the "gui-shell" Any
+    t =    43.29s Waiting 5.0s for TextView (First Match) to exist
+    t =    44.32s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    44.32s         Checking existence of `TextView (First Match)`
+    t =    44.35s Find the TextView (First Match)
+    t =    44.39s Tap "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    44.39s     Wait for studio.haiyue.shaderlab to idle
+    t =    44.40s     Find the "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    44.43s     Check for interrupting elements affecting "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    44.48s     Synthesize event
+    t =    44.77s     Wait for studio.haiyue.shaderlab to idle
+    t =    44.97s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    45.98s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    45.99s         Checking existence of `Keyboard (First Match)`
+    t =    46.03s Waiting 5.0s for Key (First Match) to exist
+    t =    47.06s     Checking `Expect predicate `existsNoRetry == 1` for object Key (First Match)`
+    t =    47.06s         Checking existence of `Key (First Match)`
+    t =    47.11s Tap Key (First Match)
+    t =    47.11s     Wait for studio.haiyue.shaderlab to idle
+    t =    47.12s     Find the Key (First Match)
+    t =    47.15s     Check for interrupting elements affecting "space" Key
+    t =    47.22s     Synthesize event
+    t =    47.52s     Wait for studio.haiyue.shaderlab to idle
+    t =    47.53s Find the "gui-shell" Any
+    t =    47.57s Tap "gui-shell" Any[0.57, 0.20]
+    t =    47.57s     Wait for studio.haiyue.shaderlab to idle
+    t =    47.58s     Find the "gui-shell" Any
+    t =    47.60s     Check for interrupting elements affecting "gui-shell" Image
+    t =    47.66s     Synthesize event
+    t =    47.67s         Find the "gui-shell" Image
+    t =    47.69s         Find the "gui-shell" Image
+    t =    47.73s         Find the "gui-shell" Image
+    t =    48.04s     Wait for studio.haiyue.shaderlab to idle
+    t =    48.30s Checking existence of `Keyboard (First Match)`
+    t =    48.32s Find the "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    48.33s Find the "gui-shell" Any
+    t =    48.34s Tap "gui-shell" Any[0.16, 0.10]
+    t =    48.34s     Wait for studio.haiyue.shaderlab to idle
+    t =    48.35s     Find the "gui-shell" Any
+    t =    48.36s     Check for interrupting elements affecting "gui-shell" Image
+    t =    48.41s     Synthesize event
+    t =    48.41s         Find the "gui-shell" Image
+    t =    48.43s         Find the "gui-shell" Image
+    t =    48.45s         Find the "gui-shell" Image
+    t =    48.74s     Wait for studio.haiyue.shaderlab to idle
+    t =    49.78s Find the "gui-shell" Any
+    t =    49.80s Find the "gui-shell" Any
+    t =    49.82s Tap "gui-shell" Any[0.10, 0.04]
+    t =    49.82s     Wait for studio.haiyue.shaderlab to idle
+    t =    49.83s     Find the "gui-shell" Any
+    t =    49.85s     Check for interrupting elements affecting "gui-shell" Image
+    t =    49.92s     Synthesize event
+    t =    49.92s         Find the "gui-shell" Image
+    t =    49.94s         Find the "gui-shell" Image
+    t =    49.97s         Find the "gui-shell" Image
+    t =    50.28s     Wait for studio.haiyue.shaderlab to idle
+    t =    51.29s Find the "gui-shell" Any
+    t =    51.33s Find the "gui-shell" Any
+    t =    51.35s Tap "gui-shell" Any[0.50, 0.16]
+    t =    51.35s     Wait for studio.haiyue.shaderlab to idle
+    t =    51.36s     Find the "gui-shell" Any
+    t =    51.37s     Check for interrupting elements affecting "gui-shell" Image
+    t =    51.42s     Synthesize event
+    t =    51.42s         Find the "gui-shell" Image
+    t =    51.44s         Find the "gui-shell" Image
+    t =    51.46s         Find the "gui-shell" Image
+    t =    51.76s     Wait for studio.haiyue.shaderlab to idle
+    t =    52.81s Find the "gui-shell" Any
+    t =    52.83s Find the "gui-shell" Any
+    t =    52.85s Tap "gui-shell" Any[0.31, 0.20]
+    t =    52.85s     Wait for studio.haiyue.shaderlab to idle
+    t =    52.86s     Find the "gui-shell" Any
+    t =    52.87s     Check for interrupting elements affecting "gui-shell" Image
+    t =    52.94s     Synthesize event
+    t =    52.94s         Find the "gui-shell" Image
+    t =    52.97s         Find the "gui-shell" Image
+    t =    52.99s         Find the "gui-shell" Image
+    t =    53.30s     Wait for studio.haiyue.shaderlab to idle
+    t =    54.32s Find the "gui-shell" Any
+    t =    54.35s Find the " // fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(" TextView
+    t =    54.52s Added attachment named 'gui-saved-reopened'
+    t =    54.52s Find the "gui-shell" Any
+    t =    54.53s Tap "gui-shell" Any[0.12, 0.20]
+    t =    54.53s     Wait for studio.haiyue.shaderlab to idle
+    t =    54.53s     Find the "gui-shell" Any
+    t =    54.54s     Check for interrupting elements affecting "gui-shell" Image
+    t =    54.68s     Synthesize event
+    t =    54.68s         Find the "gui-shell" Image
+    t =    54.70s         Find the "gui-shell" Image
+    t =    54.74s         Find the "gui-shell" Image
+    t =    55.05s     Wait for studio.haiyue.shaderlab to idle
+    t =    56.07s Find the "gui-shell" Any
+    t =    56.09s Setting device orientation to Face Up
+    t =    56.10s     Device orientation changed to Face Up
+    t =    56.13s     Wait for studio.haiyue.shaderlab to idle
+    t =    56.15s Tear Down
+2026-10-19 12:52:51.204 xcodebuild[72367:4954373] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Test Case '-[Acceptance.GuiExperimentSmoke testGuiEditor]' passed (56.502 seconds).
+Test Suite 'GuiExperimentSmoke' passed at 2026-10-19 12:52:52.433.
+	 Executed 1 test, with 0 failures (0 unexpected) in 56.502 (56.504) seconds
+Test Suite 'Acceptance.xctest' passed at 2026-10-19 12:52:52.438.
+	 Executed 1 test, with 0 failures (0 unexpected) in 56.502 (56.510) seconds
+Test Suite 'All tests' passed at 2026-10-19 12:52:52.440.
+	 Executed 1 test, with 0 failures (0 unexpected) in 56.502 (56.512) seconds
+2026-10-19 12:52:51.823 xcodebuild[72367:4954373] [MT] IDETestOperationsObserverDebug: 62.299 elapsed -- Testing started completed.
+2026-10-19 12:52:51.823 xcodebuild[72367:4954373] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 12:52:51.823 xcodebuild[72367:4954373] [MT] IDETestOperationsObserverDebug: 62.299 sec, +62.299 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/gui-comparison/candidate5/gui-ui-normalized.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

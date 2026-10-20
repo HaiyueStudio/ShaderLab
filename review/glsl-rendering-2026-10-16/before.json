@@ -1,0 +1,76 @@
+{
+  "status": "reproduced-before-fix",
+  "scope": "Historical evidence; not a post-fix acceptance result",
+  "originalStructEvidence": "../m24-ui/g01/results/struct-no-ui.json",
+  "commaAndLoop": {
+    "old": {
+      "samples": [
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          255,
+          0,
+          0,
+          255
+        ],
+        [
+          255,
+          0,
+          0,
+          255
+        ]
+      ],
+      "wgslSha256": "7e3eddd2da4e8e175406337e2b4bc97fb3bd7727dd7476690b34a07b223b3074"
+    },
+    "minimalLoop": {
+      "samples": [
+        [
+          51,
+          51,
+          128,
+          51
+        ],
+        [
+          51,
+          51,
+          128,
+          51
+        ],
+        [
+          51,
+          51,
+          128,
+          51
+        ]
+      ],
+      "wgslSha256": "0f1411f5c16589f39e14cecc94e027b7b6f42c5a5ffc9c1283da4e55d2bb1063"
+    },
+    "noContinue": {
+      "samples": [
+        [
+          64,
+          128,
+          191,
+          255
+        ],
+        [
+          64,
+          128,
+          191,
+          255
+        ],
+        [
+          64,
+          128,
+          191,
+          255
+        ]
+      ],
+      "wgslSha256": "169731367cac9efc05cc241b2db7ba3bcedb19db61f862b15d5326b11fc1dfe7"
+    }
+  }
+}

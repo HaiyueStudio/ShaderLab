@@ -1,0 +1,85 @@
+{
+  "status": "passed",
+  "commits": 5,
+  "events": [
+    {
+      "type": "valueChange",
+      "key": "scale",
+      "value": "0.75",
+      "reason": "pointer",
+      "transaction": 1
+    },
+    {
+      "type": "commit",
+      "key": "scale",
+      "value": "0.75",
+      "reason": "pointer",
+      "transaction": 1
+    },
+    {
+      "type": "valueChange",
+      "key": "scale",
+      "value": "0.5",
+      "reason": "pointer",
+      "transaction": 2
+    },
+    {
+      "type": "commit",
+      "key": "scale",
+      "value": "0.5",
+      "reason": "pointer",
+      "transaction": 2
+    },
+    {
+      "type": "valueChange",
+      "key": "scale",
+      "value": "0.25",
+      "reason": "pointer",
+      "transaction": 3
+    },
+    {
+      "type": "commit",
+      "key": "scale",
+      "value": "0.25",
+      "reason": "pointer",
+      "transaction": 3
+    },
+    {
+      "type": "valueChange",
+      "key": "scale",
+      "value": "1",
+      "reason": "pointer",
+      "transaction": 4
+    },
+    {
+      "type": "commit",
+      "key": "scale",
+      "value": "1",
+      "reason": "pointer",
+      "transaction": 4
+    },
+    {
+      "type": "valueChange",
+      "key": "scale",
+      "value": "0.75",
+      "reason": "pointer",
+      "transaction": 5
+    },
+    {
+      "type": "commit",
+      "key": "scale",
+      "value": "0.75",
+      "reason": "pointer",
+      "transaction": 5
+    }
+  ],
+  "checks": [
+    "options before connection",
+    "controlled roundtrip",
+    "silent programmatic update",
+    "cancel",
+    "dispose and late result"
+  ],
+  "kind": "real-WebComponent-with-synthetic-input",
+  "browserErrors": []
+}

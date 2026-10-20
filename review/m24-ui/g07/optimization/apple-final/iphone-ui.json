@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+  "device": {
+    "architecture": "arm64e",
+    "modelName": "iPhone 15 Plus",
+    "osBuildNumber": "24B5089g",
+    "osVersion": "27.2",
+    "platform": "iOS"
+  },
+  "test": "SharedPageSmoke/testSharedEditor",
+  "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+  "resultBundle": "artifacts/m24-g07/apple-final-m24.6-r2/iphone-ui.xcresult",
+  "logSha256": "508a29163bf8bf9a9615c41256f4bb324c6fd62cc7be844e44594db85d69b30d",
+  "checks": [
+    "75%, 50%, 25%, 100%, 75% actual native picker; preview remains active",
+    "pause/resume",
+    "settings modal landscape, background/foreground, close and reopen",
+    "single-line field keyboard Done dismiss; value retained",
+    "multiline editor actual space key and hide keyboard",
+    "GLSL conversion opened twice; source preserved",
+    "save and reopen; name and edited source preserved"
+  ],
+  "screenshots": [
+    {
+      "path": "screens/iphone-saved-reopened.png",
+      "sha256": "d783038a690ef7fc740f2634e68f503504db06f8aa06febffdd0183729a9d523"
+    },
+    {
+      "path": "screens/iphone-settings-landscape.png",
+      "sha256": "873fc3da8b53b61e506369f41b4513f3cd4cd63d1e60ab29b1f1c5f57286d434"
+    },
+    {
+      "path": "screens/iphone-shared-preview-75.png",
+      "sha256": "19a77d4bd86f766a8dcdf338763a100f4c620fe3ac834cfe898a7f24918ad111"
+    }
+  ],
+  "limitations": [
+    "Automated system UI; not physical Chinese IME/VoiceOver or iPad split-view acceptance"
+  ]
+}

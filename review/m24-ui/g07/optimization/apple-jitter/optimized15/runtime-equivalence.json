@@ -1,0 +1,77 @@
+{
+  "candidate14Sha256": "b039923eb5a695a3cfb13b854b925ae4144a4de554bc78eb20f38825ebd3edea",
+  "candidate15Sha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+  "reason": "Native private package provenance and version metadata corrected; no runtime source changes.",
+  "checks": [
+    {
+      "file": "app/bundle.mjs",
+      "before": "cc7e753c8f1c394d923a336e15a247347987c063eea674977b6e39854059f724",
+      "after": "cc7e753c8f1c394d923a336e15a247347987c063eea674977b6e39854059f724",
+      "equal": true
+    },
+    {
+      "file": "app/vendor.mjs",
+      "before": "83f3714e850d3c05f1564256700e81f174847d3d34f394a5472ac4d97ea8f535",
+      "after": "83f3714e850d3c05f1564256700e81f174847d3d34f394a5472ac4d97ea8f535",
+      "equal": true
+    },
+    {
+      "file": "Frameworks/CanvasNative.framework/CanvasNative",
+      "before": "fb76de98c9ee989616aa3e7db487f6549eb9251758eaa34271afa66201d4b8ad",
+      "after": "b28e92911df6aa915dd8ab00dbbbf55509f39baccfcf49deb3f67d5137bcaa34",
+      "equal": false,
+      "unsignedBefore": "3a012c6fd5c0471af8178a39f84df54b8ff75e5cb6c57ea99a4fc00e424cb9de",
+      "unsignedAfter": "3a012c6fd5c0471af8178a39f84df54b8ff75e5cb6c57ea99a4fc00e424cb9de",
+      "unsignedEqual": true
+    },
+    {
+      "file": "Frameworks/NativeScript.framework/NativeScript",
+      "before": "74139b7eb69c04ed7127f5723c7bbe3d0a56fa4bba9c13e3c934b42b7bf4b594",
+      "after": "964a140f4402dbf2ac5cc6e078ef3beb740bc45dd303dd7737a138b1548e1869",
+      "equal": false,
+      "unsignedBefore": "744777790c99b08ce86c33fcb4246b3f6abda0ca1af31c07f63ed1bcfa0299cb",
+      "unsignedAfter": "744777790c99b08ce86c33fcb4246b3f6abda0ca1af31c07f63ed1bcfa0299cb",
+      "unsignedEqual": true
+    },
+    {
+      "file": "ShaderLab",
+      "before": "209059d90d1590946ff9b6954e151658c15b42c362c7176d04ae670c9b5cd4ef",
+      "after": "8369dd4817f8ab4b346098093dd6c742d48f6e7a5857e22bbd277e50400491ae",
+      "equal": false,
+      "unsignedBefore": "398a96c8774e64fb9c19dafe96a2ef4be2298d2cc8f0173a7888e69aaab8d17a",
+      "unsignedAfter": "398a96c8774e64fb9c19dafe96a2ef4be2298d2cc8f0173a7888e69aaab8d17a",
+      "unsignedEqual": true
+    },
+    {
+      "file": "Frameworks/NSCWinterTC.framework/NSCWinterTC",
+      "unsignedBefore": "60011799130dabbc315ce405f8ec39f1e9bf1c5a9ef606994f518bde5914e5fd",
+      "unsignedAfter": "60011799130dabbc315ce405f8ec39f1e9bf1c5a9ef606994f518bde5914e5fd",
+      "unsignedEqual": true
+    },
+    {
+      "file": "Frameworks/TKLiveSync.framework/TKLiveSync",
+      "unsignedBefore": "b86838623939d1690e63856cc2fe1c84e185caf3474a6900533a44d6cb43c5b1",
+      "unsignedAfter": "b86838623939d1690e63856cc2fe1c84e185caf3474a6900533a44d6cb43c5b1",
+      "unsignedEqual": true
+    },
+    {
+      "file": "Frameworks/TNSWidgets.framework/TNSWidgets",
+      "unsignedBefore": "b89a32c61344def18e0d0fa265dbec3e469c94c892aed8827a359e3057a00e5d",
+      "unsignedAfter": "b89a32c61344def18e0d0fa265dbec3e469c94c892aed8827a359e3057a00e5d",
+      "unsignedEqual": true
+    }
+  ],
+  "performanceEvidence": "../optimized14/iphone-performance.json",
+  "performanceStatus": "inconclusive; retained without repeating collection",
+  "runtimeEqual": true,
+  "fullPayloadDifferences": [
+    "Frameworks/CanvasNative.framework/CanvasNative",
+    "Frameworks/NSCWinterTC.framework/NSCWinterTC",
+    "Frameworks/NativeScript.framework/NativeScript",
+    "Frameworks/TKLiveSync.framework/TKLiveSync",
+    "Frameworks/TNSWidgets.framework/TNSWidgets",
+    "ShaderLab",
+    "_CodeSignature/CodeResources"
+  ],
+  "payloadFilesChecked": 105
+}

@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "shaderlab": {
+    "unit": {
+      "count": 257,
+      "suites": {
+        "shared-application": 24,
+        "shared-ui": 5,
+        "web": 221,
+        "mobile": 7
+      }
+    },
+    "typecheck": "passed in fresh snapshot",
+    "boundaries": "passed in fresh snapshot"
+  },
+  "ui": {
+    "unit": 96,
+    "legacyBrowser": 61,
+    "webAdapterChromiumAndWebKit": 42,
+    "publicEntrypointsUnchanged": 39,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "sdkBuilds": {
+    "ios": "passed",
+    "android": "passed"
+  },
+  "scope": "Local checks; raw logs in artifacts/m24-g07/optimization and UI/.artifacts/g07-*; no publish or remote CI."
+}

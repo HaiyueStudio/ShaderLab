@@ -1,0 +1,66 @@
+{
+  "status": "diagnostic",
+  "note": "Inclusive timers with instrumentation overhead. Not formal timing samples.",
+  "stages": {
+    "baseline": {
+      "idle": {
+        "frames": 120,
+        "p95": {
+          "gui.ms": 1.6765000820159912,
+          "prepareRoots.ms": 0.28270816802978516,
+          "rebuildRoot.ms": 0.1823749542236328,
+          "shape.ms": 0.14841675758361816,
+          "text.ms": 0.15212512016296387,
+          "image.ms": 0.5448334217071533,
+          "shapeUpload.ms": 0.007750034332275391,
+          "textUpload.ms": 0.007124900817871094,
+          "imageUpload.ms": 0.19237518310546875
+        }
+      },
+      "dirtyRoots": {
+        "frames": 101,
+        "p95": {
+          "gui.ms": 5.662291526794434,
+          "prepareRoots.ms": 0.5035834312438965,
+          "rebuildRoot.ms": 3.8961668014526367,
+          "shape.ms": 0.21354126930236816,
+          "text.ms": 0.35045862197875977,
+          "image.ms": 0.6780002117156982,
+          "shapeUpload.ms": 0.06845831871032715,
+          "textUpload.ms": 0.1921250820159912,
+          "imageUpload.ms": 0.18975019454956055
+        }
+      }
+    },
+    "optimized": {
+      "idle": {
+        "frames": 120,
+        "p95": {
+          "gui.ms": 1.2470831871032715,
+          "prepareRoots.ms": 0.18954157829284668,
+          "rebuildRoot.ms": 0.1749582290649414,
+          "shape.ms": 0.12704181671142578,
+          "text.ms": 0.1435837745666504,
+          "image.ms": 0.16912460327148438,
+          "shapeUpload.ms": 0.008833646774291992,
+          "textUpload.ms": 0.011916875839233398,
+          "imageUpload.ms": 0.008083343505859375
+        }
+      },
+      "dirtyRoots": {
+        "frames": 101,
+        "p95": {
+          "gui.ms": 3.3108749389648438,
+          "prepareRoots.ms": 0.3508749008178711,
+          "rebuildRoot.ms": 1.414083480834961,
+          "shape.ms": 0.1568741798400879,
+          "text.ms": 0.36283302307128906,
+          "image.ms": 0.3128337860107422,
+          "shapeUpload.ms": 0.013583183288574219,
+          "textUpload.ms": 0.20833325386047363,
+          "imageUpload.ms": 0.00883340835571289
+        }
+      }
+    }
+  }
+}

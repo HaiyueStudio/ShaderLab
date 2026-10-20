@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "normalization": [
+    "updatedAt"
+  ],
+  "platforms": {
+    "ipad": true,
+    "android": true,
+    "iphone": true
+  },
+  "reference": "web.json persisted",
+  "missing": []
+}

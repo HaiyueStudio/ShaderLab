@@ -1,0 +1,114 @@
+{
+  "status": "experiment-completed",
+  "scope": "iPhone same-package native / original GUI / optimized GUI; gallery, editor, settings and dialogs; native code TextView",
+  "candidates": [
+    {
+      "id": "cpu-opt1",
+      "sha256": "84e06627b964240184ad15a9b66e5fa99fa8c2f90a57786a3a44d99e28bce995",
+      "status": "superseded",
+      "reason": "First launch locked. After unlock diagnostic initialization rejected assigning GPUDevice.createBuffer (read-only); no fresh timing samples."
+    },
+    {
+      "id": "cpu-opt2",
+      "sha256": "b37e4348e6779f17bd246c1ee8b18636f97e09383ebdef18194a32a79ef3c6fd",
+      "status": "measured-not-promoted",
+      "reason": "All 900 formal samples retained. Engine-only caching reduced audited uploads, but three-round CPU medians did not improve; idle variance remained high."
+    },
+    {
+      "id": "cpu-opt3",
+      "sha256": "ca8b83337b05f8f6cc8e9315f11efbb1edba8bdd926a539cb4494258de1de39a",
+      "status": "interaction-failed",
+      "reason": "Scale/play passed; empty dynamic overlay consumed the static settings button hit. No formal performance run. Fixed passthrough and added regression."
+    },
+    {
+      "id": "cpu-opt4",
+      "sha256": "f99875d5a092699c136dfcbf23d1ec059f01f3509e71b738321793b0a9a4be4c",
+      "status": "experiment-completed",
+      "reason": "Static/control layers plus empty-overlay hit passthrough. GUI and native physical interactions passed; all 900 formal samples preserved. CPU medians improve but idle stability remains unqualified."
+    }
+  ],
+  "localValidation": {
+    "engineWorkspaceTests": 794,
+    "engineRepositoryTests": 1509,
+    "mobileTests": 44,
+    "webgpuPixelPairs": 16,
+    "engineTypecheck": true,
+    "repositoryTypecheck": true,
+    "repositoryBuild": true,
+    "exampleBuildTargets": 100,
+    "apiAndBoundaryChecks": true
+  },
+  "pending": [],
+  "currentCandidate": "cpu-opt4",
+  "g07PerformanceGateChanged": false,
+  "formal": {
+    "arms": 3,
+    "rounds": 3,
+    "operations": 900,
+    "allForeground": true,
+    "allNonzeroReadback": true,
+    "allThreeSettlingFrames": true,
+    "noTimingInstrumentation": true
+  },
+  "observedStability": {
+    "threshold": 1.1,
+    "optimized": {
+      "handler": {
+        "spread": 1.0542291568283675,
+        "passed": true
+      },
+      "engineFrameCpu": {
+        "spread": 1.097340858383474,
+        "passed": true
+      },
+      "handlerPlusNextFrameCpu": {
+        "spread": 1.0566215052842314,
+        "passed": true
+      },
+      "settled": {
+        "spread": 1.0039949415951992,
+        "passed": true
+      },
+      "queueWait": {
+        "spread": 1.0166129480174235,
+        "passed": true
+      },
+      "submitToComplete": {
+        "spread": 1.0050290830264,
+        "passed": true
+      },
+      "cadence": {
+        "spread": 1.0094533841288533,
+        "passed": true
+      },
+      "idleFrameCpu": {
+        "spread": 1.34965940078744,
+        "passed": false
+      },
+      "handlerPlusSettlingFramesCpu": {
+        "spread": 1.0527761286492348,
+        "passed": true
+      }
+    },
+    "overallPassed": false
+  },
+  "physicalInteraction": {
+    "gui": {
+      "status": "passed",
+      "durationSeconds": 55.831
+    },
+    "sharedNative": {
+      "status": "passed",
+      "durationSeconds": 63.414
+    }
+  },
+  "limitations": [
+    "Engine frame CPU excludes UIKit layout/composition and native surface present after after-update.",
+    "Queue completion is not a GPU timestamp or physical display latency.",
+    "GUI draws a full safe-area surface; native only draws the equal-sized shader preview.",
+    "GUI uses retained direct bindings rather than portable UI reconciliation.",
+    "Idle CPU spread remains 1.350; overall stability is not passed.",
+    "GPU resource snapshots are a tracked subset, not process memory. No new 50-page-cycle claim.",
+    "Measurement scope is iPhone, not all platforms."
+  ]
+}

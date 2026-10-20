@@ -1,0 +1,24 @@
+
+> @haiyue/shaderlab@0.1.0 build
+> npm run build:app -w ./web
+
+
+> @haiyue/shader-editor@0.1.0 build:app
+> npm run build && node ../scripts/run-editor-app-kit.mjs assemble
+
+
+> @haiyue/shader-editor@0.1.0 build
+> npm run build:types && node ../scripts/build-rollup-once.mjs --expect web
+
+
+> @haiyue/shader-editor@0.1.0 build:types
+> npm run build:shared --prefix .. && tsc -p tsconfig.json
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json
+
+
+src/main.ts → web...
+created web in 18.6s
+[editor-app-kit] haiyue-shader-editor@0.1.0: 18 files, 10992920B raw, 7967626B gzip.

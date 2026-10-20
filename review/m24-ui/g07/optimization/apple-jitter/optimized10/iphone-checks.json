@@ -1,0 +1,14 @@
+{
+  "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb",
+  "deviceId": "8D9238D1-024A-538B-A175-B9E71AA32202",
+  "installed": true,
+  "installLog": "iphone-install.log",
+  "testSources": {
+    "mobile/test/shared-performance.mjs": "5ff55e9fbce04074af634f44146423a9f8b8405a4028b44cef95db5e199c8cc7",
+    "mobile/test/shared-lifecycle.mjs": "6121e11f6d2852dfa23fee81363f9d1fb0402e893805887b8e9e324a5cc7db27",
+    "mobile/test/shared-replay.mjs": "98323f3fbd0f225a4f2cefbae39ffb12db43c35859054ec408bfa3609859a136",
+    "mobile/test/ios/SharedPageSmoke.swift": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c"
+  },
+  "sourceOrDependenciesChanged": false,
+  "scope": "iPhone validation of frozen candidate 10; no rebuild; original test gates."
+}

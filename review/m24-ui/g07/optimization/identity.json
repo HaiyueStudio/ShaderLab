@@ -1,0 +1,66 @@
+{
+  "capturedAt": "2026-10-17T04:06:59.908833+00:00",
+  "revision": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+  "dirty": true,
+  "sourceSnapshot": "fresh-build.json sourceHashes identify the isolated source-only build; native and Web candidates are identified separately by exact artifact hashes",
+  "workspaceChangesSinceFreshSnapshot": [
+    "mobile/src/camera.android.ts",
+    "mobile/src/camera.ios.ts",
+    "mobile/src/platform/validation.ts",
+    "shared/application/application.ts",
+    "shared/ports/liveCamera.ts",
+    "mobile/src/gpu-runtime.ts"
+  ],
+  "packages": {
+    "vendor/haiyue-ui-0.2.0-m24.3.tgz": "4d6e8c21808bc4d1b1485159f3e77711d823c97fe5cd3d75c44deb50b630fcdf",
+    "vendor/haiyue-native-0.1.4-m24.3.tgz": "fb6d5e121a535824daacc1f9be8db728587fe4262e7e8b7b405b123dfd82f0a0"
+  },
+  "lockSha256": "ed59382d45b20777115048139ab99ab6a6261fb88845cfeb37c4dd9ebdbdd2a5",
+  "artifacts": {
+    "ios": {
+      "sha256": "c710e5adf01fad2efb1670811bd6708c688d610c91bf6b3be23834b791575de1",
+      "bytes": 38827689,
+      "bundles": {
+        "Payload/ShaderLab.app/app/runtime.mjs": "840c6c7b135b519ef47dc56c7b75d323ad7eb56c6107d052cfcbc55d30006566",
+        "Payload/ShaderLab.app/app/vendor.mjs": "858533dbcbff21cc5acf8e7a2f1e7bae2cff2d6fe30945ce43210e0323176831",
+        "Payload/ShaderLab.app/app/bundle.mjs": "aef8c79cda57d026d11c4e2ba8e2c400e5a7c53346029a6a49a96117c3047b4c"
+      },
+      "packagedSourceHashes": "ios-packaged-source-hashes.json",
+      "frozenArtifact": "local artifacts/m24-g07/optimization/ShaderLab-m24.3.ipa"
+    },
+    "android": {
+      "sha256": "2fe8586bcc71d2d0a042b7ce7a00c1943d9f11cb72e3a299e9adc54769e6e25c",
+      "bytes": null,
+      "identitySource": "android-performance.json artifactSha256",
+      "note": "Installed and measured before the shared build output was replaced; remaining acceptance must identify/reinstall an exact artifact."
+    },
+    "web": {
+      "path": "artifacts/m24-g07/optimization/web-candidate-4/web/main.js",
+      "sha256": "2880f8f8870db92321df6728780c3b0ec5f025535107693fdb20992dbcdcc20c",
+      "bytes": 2349279
+    }
+  },
+  "g07CurrentSources": {
+    "shared/views/editor-controller.ts": "a2d07ef76ceb3dc28a01a55d533f274cef179ba8fdf030a6cbf4d927c89a3f67",
+    "shared/views/editor-page.ts": "16c2b1394b604d644c111c99544f4bdd758e0ec6fa47a0991616770145c75479",
+    "web/src/platform/shared-editor.ts": "3c3bbf4f1ff1796096eebd98596551475c590fa5ecd5fbae6344acf79262df79",
+    "mobile/src/platform/shared-editor.ts": "09019edb57ec7d77130c5e40a4bfd2143bb17c0c6a22d02838fcdeb61a2a4d5e",
+    "mobile/src/platform/validation.ts": "92ca56256cc0cf01833d29d3f80fb84ecaf2c5af9dc24e3c8379ff6b600cc9db",
+    "mobile/src/platform/lifecycle-validation.ts": "a6b8030680422e7d192fb296f17d5e543f5bcd085106e985edc058d363c9c497",
+    "mobile/src/pages.ts": "e1ca6b921a279b50887de5a93b0adc8013a62b19365e3d63ddce25be2f2262bb",
+    "web/src/main.ts": "9baabf4825ce406b2662e9a43e2634d190fa096553cf6768c5b042c0650619e9"
+  },
+  "limits": [
+    "No source commit created; concurrent camera work preserved.",
+    "Fresh source bundle build and native SDK archives are separate checks.",
+    "Package previews are local only."
+  ],
+  "unrelatedCurrentAndroidOutput": {
+    "sha256": "a03e5b4dbf2e0a14a8d6394a7000543e446bab08bf4774cd1cbefd5bd4c37a0a",
+    "bytes": 211623409,
+    "bundles": {},
+    "note": "Another task rebuilt the shared APK output after G07 performance; this APK is not the tested G07 candidate."
+  },
+  "androidFollowUpIdentity": "android-resumed/identity.json",
+  "androidFollowUpNote": "Later Android-only candidate with lifecycle fixes; prior fields remain historical identities."
+}

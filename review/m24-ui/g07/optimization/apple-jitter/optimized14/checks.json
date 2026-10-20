@@ -1,0 +1,15 @@
+{
+  "nativeTests": 26,
+  "mobileTests": 37,
+  "mobileTypecheck": "passed",
+  "uiChecksReference": "../optimized13/checks.json",
+  "uiSourceAndPackageUnchangedSince13": true,
+  "diagnosticHooks": "absent",
+  "publicVersionsChanged": false,
+  "externalSourceHashes": {
+    "Native/bridge/ui/nativescript/renderer.ts": "d4331aeb54b5d9d4833506ac0a5b7555feff8d409c4dca85fbd0cf5e45a69065",
+    "Native/test/ui/nativescript/adapter.test.mjs": "993eba24e683e661c1be050743fc6cbaebf2f95dcc66656367b90f2169630d05",
+    "UI/src/portable/page.ts": "92281fbbe1276be45eec27ccb94fac0b3130f7d36ec8bb8e186ab204cfb09ed4",
+    "UI/test/portable/page.test.mjs": "1ed9d2c99bb00fe59514be875df4be5e175645aaea040864c2ac30bfb38581be"
+  }
+}

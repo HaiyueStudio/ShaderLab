@@ -27,10 +27,10 @@ test('assignment, increment, call and lazy expression statements execute in sour
 
 test('for comma initialization and updating preserve scope, left-to-right order and continue', () => {
   const code=convert(main('int i,j,total=0;for(i=0,j=6;i<3;i++,j-=2,total+=i){if(i==1)continue;}for(int a=0,b=2;a<2;a++,b--){total+=b;}color=vec4(float(total));'));
-  assert.match(code,/i = 0;\s+j = 6;\s+loop \{/);
+  assert.match(code,/i = 0;\s+j = 6;\s+if \(\(i < 3\)\) \{\s+loop \{/);
   assert.match(code,/continue;/);
   assert.match(code,/continuing \{\s+i\+\+;\s+j -= 2;\s+total \+= i;/);
-  assert.match(code,/var a: i32 = 0;\s+var b: i32 = 2;\s+loop \{/);
+  assert.match(code,/var a: i32 = 0;\s+var b: i32 = 2;\s+if \(\(a < 2\)\) \{\s+loop \{/);
   assert.match(code,/continuing \{\s+a\+\+;\s+b--;/);
 });
 

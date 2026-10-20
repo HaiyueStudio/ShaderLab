@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "compiledPasses": 81,
+  "checks": [
+    "Every Gallery/tutorial export compiled by real WebGL2",
+    "Lazy local WASM, read-only highlighted GLSL preview, channel list, current/all downloads",
+    "Independent WebGPU/WebGL pixel parity for arrays, structs, matrices, loops, bitcasts and signed float remainder",
+    "WGSL → GLSL → WGSL reimport preserves pixel values on real GPU",
+    "Raw versus convenience UV origins, textureLoad y coordinates and screen derivatives agree",
+    "Sound sample index/time and Cubemap entries compile; source diagnostics retain line numbers"
+  ]
+}

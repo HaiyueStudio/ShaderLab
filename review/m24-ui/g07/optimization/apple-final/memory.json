@@ -1,0 +1,547 @@
+{
+  "status": "passed",
+  "artifactSha256": "43c5c47e10f16c08a790c6efac1312f021265ac6f5a9ea6bab5ce9100182dd14",
+  "scope": "50 real same-process editor/GPU lifetimes; disposed view, adapter and frame resources; retired JS/native wrapper liveness and Mach process memory, not complete Metal heap accounting",
+  "devices": {
+    "iphone": {
+      "device": {
+        "os": "iOS",
+        "version": "27.2",
+        "model": "iPhone"
+      },
+      "cycles": 50,
+      "postWarmupFootprintMiB": {
+        "min": 133.56443786621094,
+        "max": 198.06446075439453
+      },
+      "firstFootprintMiB": 106.40818786621094,
+      "lastImmediateFootprintMiB": 161.51758575439453,
+      "settledFootprintMiB": 144.68946075439453,
+      "retiredGroups": 50,
+      "retiredWrappers": 550,
+      "settledLiveWrappers": 0,
+      "series": [
+        {
+          "cycle": 1,
+          "footprintMiB": 106.40818786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 2,
+          "footprintMiB": 118.25193786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 3,
+          "footprintMiB": 121.95506286621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 4,
+          "footprintMiB": 124.65818786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 5,
+          "footprintMiB": 143.09568786621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 6,
+          "footprintMiB": 149.34568786621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 7,
+          "footprintMiB": 150.59568786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 8,
+          "footprintMiB": 169.09568786621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 9,
+          "footprintMiB": 134.39256286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 10,
+          "footprintMiB": 144.40818786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 11,
+          "footprintMiB": 153.67381286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 12,
+          "footprintMiB": 164.23631286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 13,
+          "footprintMiB": 174.25193786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 14,
+          "footprintMiB": 137.93943786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 15,
+          "footprintMiB": 148.47068786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 16,
+          "footprintMiB": 167.43943786621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 17,
+          "footprintMiB": 169.72068786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 18,
+          "footprintMiB": 133.56443786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 19,
+          "footprintMiB": 143.31443786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 20,
+          "footprintMiB": 153.04881286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 21,
+          "footprintMiB": 172.20506286621094,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 22,
+          "footprintMiB": 183.01758575439453,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 23,
+          "footprintMiB": 147.03321075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 24,
+          "footprintMiB": 157.15821075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 25,
+          "footprintMiB": 167.37696075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 26,
+          "footprintMiB": 177.06446075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 27,
+          "footprintMiB": 149.68946075439453,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 28,
+          "footprintMiB": 151.72071075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 29,
+          "footprintMiB": 169.95508575439453,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 30,
+          "footprintMiB": 171.81446075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 31,
+          "footprintMiB": 143.47071075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 32,
+          "footprintMiB": 145.22068786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 33,
+          "footprintMiB": 155.81443786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 34,
+          "footprintMiB": 165.87693786621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 35,
+          "footprintMiB": 176.51756286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 36,
+          "footprintMiB": 186.48631286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 37,
+          "footprintMiB": 159.54881286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 38,
+          "footprintMiB": 170.04881286621094,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 39,
+          "footprintMiB": 180.48633575439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 40,
+          "footprintMiB": 189.81446075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 41,
+          "footprintMiB": 153.87696075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 42,
+          "footprintMiB": 163.25196075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 43,
+          "footprintMiB": 173.40821075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 44,
+          "footprintMiB": 184.04883575439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 45,
+          "footprintMiB": 194.47071075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 46,
+          "footprintMiB": 167.97071075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 47,
+          "footprintMiB": 177.72071075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 48,
+          "footprintMiB": 188.34571075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 49,
+          "footprintMiB": 198.06446075439453,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 50,
+          "footprintMiB": 161.51758575439453,
+          "liveGroups": 1
+        }
+      ]
+    },
+    "ipad": {
+      "device": {
+        "os": "iOS",
+        "version": "26.7.1",
+        "model": "iPad"
+      },
+      "cycles": 50,
+      "postWarmupFootprintMiB": {
+        "min": 148.1116943359375,
+        "max": 212.86175537109375
+      },
+      "firstFootprintMiB": 84.3460693359375,
+      "lastImmediateFootprintMiB": 165.79925537109375,
+      "settledFootprintMiB": 109.00238037109375,
+      "retiredGroups": 50,
+      "retiredWrappers": 550,
+      "settledLiveWrappers": 0,
+      "series": [
+        {
+          "cycle": 1,
+          "footprintMiB": 84.3460693359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 2,
+          "footprintMiB": 99.0648193359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 3,
+          "footprintMiB": 122.1429443359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 4,
+          "footprintMiB": 127.4085693359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 5,
+          "footprintMiB": 150.2523193359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 6,
+          "footprintMiB": 151.5179443359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 7,
+          "footprintMiB": 164.6429443359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 8,
+          "footprintMiB": 169.2679443359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 9,
+          "footprintMiB": 182.3460693359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 10,
+          "footprintMiB": 154.2210693359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 11,
+          "footprintMiB": 159.0804443359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 12,
+          "footprintMiB": 171.6116943359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 13,
+          "footprintMiB": 185.8773193359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 14,
+          "footprintMiB": 148.1116943359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 15,
+          "footprintMiB": 161.9866943359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 16,
+          "footprintMiB": 185.2523193359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 17,
+          "footprintMiB": 199.6116943359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 18,
+          "footprintMiB": 152.2523193359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 19,
+          "footprintMiB": 165.5804443359375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 20,
+          "footprintMiB": 188.0335693359375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 21,
+          "footprintMiB": 193.17425537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 22,
+          "footprintMiB": 155.11175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 23,
+          "footprintMiB": 168.62738037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 24,
+          "footprintMiB": 182.36175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 25,
+          "footprintMiB": 205.23675537109375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 26,
+          "footprintMiB": 168.09613037109375,
+          "liveGroups": 2
+        },
+        {
+          "cycle": 27,
+          "footprintMiB": 172.36175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 28,
+          "footprintMiB": 184.97113037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 29,
+          "footprintMiB": 199.26800537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 30,
+          "footprintMiB": 161.34613037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 31,
+          "footprintMiB": 174.86175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 32,
+          "footprintMiB": 189.34613037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 33,
+          "footprintMiB": 202.95550537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 34,
+          "footprintMiB": 165.28363037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 35,
+          "footprintMiB": 178.92425537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 36,
+          "footprintMiB": 192.42425537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 37,
+          "footprintMiB": 206.37738037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 38,
+          "footprintMiB": 168.53363037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 39,
+          "footprintMiB": 182.36175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 40,
+          "footprintMiB": 196.04925537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 41,
+          "footprintMiB": 209.62738037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 42,
+          "footprintMiB": 172.00238037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 43,
+          "footprintMiB": 184.84613037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 44,
+          "footprintMiB": 199.03363037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 45,
+          "footprintMiB": 212.86175537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 46,
+          "footprintMiB": 162.17425537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 47,
+          "footprintMiB": 176.12738037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 48,
+          "footprintMiB": 189.73675537109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 49,
+          "footprintMiB": 203.72113037109375,
+          "liveGroups": 1
+        },
+        {
+          "cycle": 50,
+          "footprintMiB": 165.79925537109375,
+          "liveGroups": 1
+        }
+      ]
+    }
+  }
+}

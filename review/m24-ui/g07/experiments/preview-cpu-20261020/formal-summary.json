@@ -1,0 +1,587 @@
+{
+  "handler": {
+    "values": {
+      "shared": [
+        1.4936251640319824,
+        1.0264167785644531,
+        1.057999849319458,
+        1.4916248321533203
+      ],
+      "optimized": [
+        0.37895846366882324,
+        0.4482083320617676,
+        0.49899983406066895,
+        0.48583316802978516
+      ],
+      "shared-preview-baseline": [
+        1.0799167156219482,
+        1.4055001735687256,
+        0.9644582271575928,
+        1.370666742324829
+      ],
+      "optimized-preview-baseline": [
+        0.4830000400543213,
+        0.5278332233428955,
+        0.45245862007141113,
+        0.4473750591278076
+      ]
+    },
+    "medians": {
+      "shared": 1.2748123407363892,
+      "optimized": 0.46702075004577637,
+      "shared-preview-baseline": 1.2252917289733887,
+      "optimized-preview-baseline": 0.4677293300628662
+    },
+    "optimizedVsNative": 0.3663447043319365,
+    "sharedFrameWorkVsBaseline": 1.040415364432837,
+    "guiFrameWorkVsBaseline": 0.9984850639642492,
+    "spreads": {
+      "shared": 1.4551838933507761,
+      "optimized": 1.3167665638858812,
+      "shared-preview-baseline": 1.4572950222125758,
+      "optimized-preview-baseline": 1.1798449926376033
+    },
+    "ranges": {
+      "shared": {
+        "min": 1.0264167785644531,
+        "max": 1.4936251640319824,
+        "absoluteSpreadMs": 0.4672083854675293
+      },
+      "optimized": {
+        "min": 0.37895846366882324,
+        "max": 0.49899983406066895,
+        "absoluteSpreadMs": 0.1200413703918457
+      },
+      "shared-preview-baseline": {
+        "min": 0.9644582271575928,
+        "max": 1.4055001735687256,
+        "absoluteSpreadMs": 0.4410419464111328
+      },
+      "optimized-preview-baseline": {
+        "min": 0.4473750591278076,
+        "max": 0.5278332233428955,
+        "absoluteSpreadMs": 0.08045816421508789
+      }
+    }
+  },
+  "engineFrameCpu": {
+    "values": {
+      "shared": [
+        2.101208448410034,
+        1.4528751373291016,
+        1.6463749408721924,
+        1.7966668605804443
+      ],
+      "optimized": [
+        3.479541778564453,
+        5.169500112533569,
+        5.6626667976379395,
+        5.3662919998168945
+      ],
+      "shared-preview-baseline": [
+        2.762958288192749,
+        2.978541851043701,
+        2.3395416736602783,
+        2.849874973297119
+      ],
+      "optimized-preview-baseline": [
+        5.400375127792358,
+        5.617416858673096,
+        5.634791612625122,
+        5.505416631698608
+      ]
+    },
+    "medians": {
+      "shared": 1.7215209007263184,
+      "optimized": 5.267896056175232,
+      "shared-preview-baseline": 2.806416630744934,
+      "optimized-preview-baseline": 5.561416745185852
+    },
+    "optimizedVsNative": 3.060024455092401,
+    "sharedFrameWorkVsBaseline": 0.6134231396246247,
+    "guiFrameWorkVsBaseline": 0.9472219575587999,
+    "spreads": {
+      "shared": 1.4462415898125964,
+      "optimized": 1.6274173894167678,
+      "shared-preview-baseline": 1.2731304958477996,
+      "optimized-preview-baseline": 1.043407444721084
+    },
+    "ranges": {
+      "shared": {
+        "min": 1.4528751373291016,
+        "max": 2.101208448410034,
+        "absoluteSpreadMs": 0.6483333110809326
+      },
+      "optimized": {
+        "min": 3.479541778564453,
+        "max": 5.6626667976379395,
+        "absoluteSpreadMs": 2.1831250190734863
+      },
+      "shared-preview-baseline": {
+        "min": 2.3395416736602783,
+        "max": 2.978541851043701,
+        "absoluteSpreadMs": 0.6390001773834229
+      },
+      "optimized-preview-baseline": {
+        "min": 5.400375127792358,
+        "max": 5.634791612625122,
+        "absoluteSpreadMs": 0.23441648483276367
+      }
+    }
+  },
+  "handlerPlusNextFrameCpu": {
+    "values": {
+      "shared": [
+        3.257957935333252,
+        2.40274977684021,
+        2.7482917308807373,
+        3.1877918243408203
+      ],
+      "optimized": [
+        3.6879162788391113,
+        5.724625110626221,
+        6.088416814804077,
+        5.684041738510132
+      ],
+      "shared-preview-baseline": [
+        3.2025833129882812,
+        4.376708269119263,
+        3.147291660308838,
+        3.0668747425079346
+      ],
+      "optimized-preview-baseline": [
+        6.025083065032959,
+        5.868499994277954,
+        6.015458345413208,
+        5.891625165939331
+      ]
+    },
+    "medians": {
+      "shared": 2.968041777610779,
+      "optimized": 5.704333424568176,
+      "shared-preview-baseline": 3.1749374866485596,
+      "optimized-preview-baseline": 5.9535417556762695
+    },
+    "optimizedVsNative": 1.921918170963235,
+    "sharedFrameWorkVsBaseline": 0.9348347140982047,
+    "guiFrameWorkVsBaseline": 0.958141163472904,
+    "spreads": {
+      "shared": 1.355928930567919,
+      "optimized": 1.6509097155319914,
+      "shared-preview-baseline": 1.4270906497929592,
+      "optimized-preview-baseline": 1.02668195806555
+    },
+    "ranges": {
+      "shared": {
+        "min": 2.40274977684021,
+        "max": 3.257957935333252,
+        "absoluteSpreadMs": 0.855208158493042
+      },
+      "optimized": {
+        "min": 3.6879162788391113,
+        "max": 6.088416814804077,
+        "absoluteSpreadMs": 2.400500535964966
+      },
+      "shared-preview-baseline": {
+        "min": 3.0668747425079346,
+        "max": 4.376708269119263,
+        "absoluteSpreadMs": 1.3098335266113281
+      },
+      "optimized-preview-baseline": {
+        "min": 5.868499994277954,
+        "max": 6.025083065032959,
+        "absoluteSpreadMs": 0.15658307075500488
+      }
+    }
+  },
+  "settled": {
+    "values": {
+      "shared": [
+        51.47070837020874,
+        50.31795859336853,
+        50.28945827484131,
+        51.440333127975464
+      ],
+      "optimized": [
+        50.67508339881897,
+        50.91062521934509,
+        50.86512517929077,
+        50.635250091552734
+      ],
+      "shared-preview-baseline": [
+        50.4386248588562,
+        51.782166719436646,
+        50.38604164123535,
+        51.89958333969116
+      ],
+      "optimized-preview-baseline": [
+        50.90874981880188,
+        51.02291679382324,
+        51.067874908447266,
+        50.896125078201294
+      ]
+    },
+    "medians": {
+      "shared": 50.879145860672,
+      "optimized": 50.77010428905487,
+      "shared-preview-baseline": 51.11039578914642,
+      "optimized-preview-baseline": 50.96583330631256
+    },
+    "optimizedVsNative": 0.99785685137255,
+    "sharedFrameWorkVsBaseline": 0.9954754815550942,
+    "guiFrameWorkVsBaseline": 0.9961596033153951,
+    "spreads": {
+      "shared": 1.0234890200827313,
+      "optimized": 1.0054384075776155,
+      "shared-preview-baseline": 1.0300389085777508,
+      "optimized-preview-baseline": 1.003374516821901
+    },
+    "ranges": {
+      "shared": {
+        "min": 50.28945827484131,
+        "max": 51.47070837020874,
+        "absoluteSpreadMs": 1.1812500953674316
+      },
+      "optimized": {
+        "min": 50.635250091552734,
+        "max": 50.91062521934509,
+        "absoluteSpreadMs": 0.2753751277923584
+      },
+      "shared-preview-baseline": {
+        "min": 50.38604164123535,
+        "max": 51.89958333969116,
+        "absoluteSpreadMs": 1.5135416984558105
+      },
+      "optimized-preview-baseline": {
+        "min": 50.896125078201294,
+        "max": 51.067874908447266,
+        "absoluteSpreadMs": 0.17174983024597168
+      }
+    }
+  },
+  "queueWait": {
+    "values": {
+      "shared": [
+        17.809749841690063,
+        17.20704174041748,
+        16.79866671562195,
+        17.223374843597412
+      ],
+      "optimized": [
+        17.363708019256592,
+        17.115541458129883,
+        17.467416763305664,
+        16.956083297729492
+      ],
+      "shared-preview-baseline": [
+        16.84541654586792,
+        17.514416694641113,
+        16.80537486076355,
+        17.800125122070312
+      ],
+      "optimized-preview-baseline": [
+        17.5089168548584,
+        17.423916816711426,
+        17.178125143051147,
+        17.52525019645691
+      ]
+    },
+    "medians": {
+      "shared": 17.215208292007446,
+      "optimized": 17.239624738693237,
+      "shared-preview-baseline": 17.179916620254517,
+      "optimized-preview-baseline": 17.466416835784912
+    },
+    "optimizedVsNative": 1.0014183067826794,
+    "sharedFrameWorkVsBaseline": 1.0020542399903922,
+    "guiFrameWorkVsBaseline": 0.9870155339115103,
+    "spreads": {
+      "shared": 1.0601882960823228,
+      "optimized": 1.0301563431010416,
+      "shared-preview-baseline": 1.0591923875277107,
+      "optimized-preview-baseline": 1.0202073887874883
+    },
+    "ranges": {
+      "shared": {
+        "min": 16.79866671562195,
+        "max": 17.809749841690063,
+        "absoluteSpreadMs": 1.0110831260681152
+      },
+      "optimized": {
+        "min": 16.956083297729492,
+        "max": 17.467416763305664,
+        "absoluteSpreadMs": 0.5113334655761719
+      },
+      "shared-preview-baseline": {
+        "min": 16.80537486076355,
+        "max": 17.800125122070312,
+        "absoluteSpreadMs": 0.9947502613067627
+      },
+      "optimized-preview-baseline": {
+        "min": 17.178125143051147,
+        "max": 17.52525019645691,
+        "absoluteSpreadMs": 0.3471250534057617
+      }
+    }
+  },
+  "submitToComplete": {
+    "values": {
+      "shared": [
+        68.51937508583069,
+        67.07520842552185,
+        67.0882499217987,
+        67.95229172706604
+      ],
+      "optimized": [
+        67.42150020599365,
+        67.23462510108948,
+        67.60833311080933,
+        67.11604166030884
+      ],
+      "shared-preview-baseline": [
+        67.05837488174438,
+        68.31875014305115,
+        66.86445832252502,
+        68.57583332061768
+      ],
+      "optimized-preview-baseline": [
+        67.62883305549622,
+        67.63824987411499,
+        67.52637481689453,
+        67.52924990653992
+      ]
+    },
+    "medians": {
+      "shared": 67.52027082443237,
+      "optimized": 67.32806265354156,
+      "shared-preview-baseline": 67.68856251239777,
+      "optimized-preview-baseline": 67.57904148101807
+    },
+    "optimizedVsNative": 0.9971533264226592,
+    "sharedFrameWorkVsBaseline": 0.9975137352350396,
+    "guiFrameWorkVsBaseline": 0.9962861440177869,
+    "spreads": {
+      "shared": 1.021530557924578,
+      "optimized": 1.0073349297473784,
+      "shared-preview-baseline": 1.0255946887334033,
+      "optimized-preview-baseline": 1.0016567608956326
+    },
+    "ranges": {
+      "shared": {
+        "min": 67.07520842552185,
+        "max": 68.51937508583069,
+        "absoluteSpreadMs": 1.444166660308838
+      },
+      "optimized": {
+        "min": 67.11604166030884,
+        "max": 67.60833311080933,
+        "absoluteSpreadMs": 0.4922914505004883
+      },
+      "shared-preview-baseline": {
+        "min": 66.86445832252502,
+        "max": 68.57583332061768,
+        "absoluteSpreadMs": 1.7113749980926514
+      },
+      "optimized-preview-baseline": {
+        "min": 67.52637481689453,
+        "max": 67.63824987411499,
+        "absoluteSpreadMs": 0.11187505722045898
+      }
+    }
+  },
+  "cadence": {
+    "values": {
+      "shared": [
+        17.326250076293945,
+        16.824875116348267,
+        16.868499994277954,
+        17.085333347320557
+      ],
+      "optimized": [
+        17.218291521072388,
+        17.578666925430298,
+        17.60995841026306,
+        17.63962483406067
+      ],
+      "shared-preview-baseline": [
+        17.30620837211609,
+        17.638041734695435,
+        16.930166721343994,
+        17.26241660118103
+      ],
+      "optimized-preview-baseline": [
+        17.359916925430298,
+        17.638916492462158,
+        17.607041835784912,
+        17.38574981689453
+      ]
+    },
+    "medians": {
+      "shared": 16.976916670799255,
+      "optimized": 17.59431266784668,
+      "shared-preview-baseline": 17.28431248664856,
+      "optimized-preview-baseline": 17.49639582633972
+    },
+    "optimizedVsNative": 1.0363667919811,
+    "sharedFrameWorkVsBaseline": 0.9822153287215355,
+    "guiFrameWorkVsBaseline": 1.0055964006803932,
+    "spreads": {
+      "shared": 1.029799624453587,
+      "optimized": 1.0244700998628486,
+      "shared-preview-baseline": 1.041811461458263,
+      "optimized-preview-baseline": 1.0160714805393543
+    },
+    "ranges": {
+      "shared": {
+        "min": 16.824875116348267,
+        "max": 17.326250076293945,
+        "absoluteSpreadMs": 0.5013749599456787
+      },
+      "optimized": {
+        "min": 17.218291521072388,
+        "max": 17.63962483406067,
+        "absoluteSpreadMs": 0.42133331298828125
+      },
+      "shared-preview-baseline": {
+        "min": 16.930166721343994,
+        "max": 17.638041734695435,
+        "absoluteSpreadMs": 0.7078750133514404
+      },
+      "optimized-preview-baseline": {
+        "min": 17.359916925430298,
+        "max": 17.638916492462158,
+        "absoluteSpreadMs": 0.27899956703186035
+      }
+    }
+  },
+  "idleFrameCpu": {
+    "values": {
+      "shared": [
+        1.164250135421753,
+        0.7092499732971191,
+        0.7563333511352539,
+        1.3099164962768555
+      ],
+      "optimized": [
+        2.2530834674835205,
+        2.9259166717529297,
+        2.9327497482299805,
+        2.9359166622161865
+      ],
+      "shared-preview-baseline": [
+        1.6586248874664307,
+        2.2733750343322754,
+        1.3293335437774658,
+        2.296708345413208
+      ],
+      "optimized-preview-baseline": [
+        2.6399998664855957,
+        3.0843751430511475,
+        3.854541540145874,
+        2.859208106994629
+      ]
+    },
+    "medians": {
+      "shared": 0.9602917432785034,
+      "optimized": 2.929333209991455,
+      "shared-preview-baseline": 1.965999960899353,
+      "optimized-preview-baseline": 2.971791625022888
+    },
+    "optimizedVsNative": 3.0504617273814163,
+    "sharedFrameWorkVsBaseline": 0.48844952308097445,
+    "guiFrameWorkVsBaseline": 0.9857128559506233,
+    "spreads": {
+      "shared": 1.8469038358752323,
+      "optimized": 1.3030660890230248,
+      "shared-preview-baseline": 1.7277141287556974,
+      "optimized-preview-baseline": 1.4600536875318455
+    },
+    "ranges": {
+      "shared": {
+        "min": 0.7092499732971191,
+        "max": 1.3099164962768555,
+        "absoluteSpreadMs": 0.6006665229797363
+      },
+      "optimized": {
+        "min": 2.2530834674835205,
+        "max": 2.9359166622161865,
+        "absoluteSpreadMs": 0.682833194732666
+      },
+      "shared-preview-baseline": {
+        "min": 1.3293335437774658,
+        "max": 2.296708345413208,
+        "absoluteSpreadMs": 0.9673748016357422
+      },
+      "optimized-preview-baseline": {
+        "min": 2.6399998664855957,
+        "max": 3.854541540145874,
+        "absoluteSpreadMs": 1.2145416736602783
+      }
+    }
+  },
+  "handlerPlusSettlingFramesCpu": {
+    "values": {
+      "shared": [
+        5.851583480834961,
+        4.538166761398315,
+        5.224792003631592,
+        5.74233341217041
+      ],
+      "optimized": [
+        7.370333671569824,
+        10.720916748046875,
+        12.202458620071411,
+        12.034916400909424
+      ],
+      "shared-preview-baseline": [
+        6.027958393096924,
+        7.192000389099121,
+        6.093957901000977,
+        8.108624696731567
+      ],
+      "optimized-preview-baseline": [
+        12.79591679573059,
+        13.318041324615479,
+        12.898791790008545,
+        13.253833532333374
+      ]
+    },
+    "medians": {
+      "shared": 5.483562707901001,
+      "optimized": 11.37791657447815,
+      "shared-preview-baseline": 6.642979145050049,
+      "optimized-preview-baseline": 13.07631266117096
+    },
+    "optimizedVsNative": 2.074913187020595,
+    "sharedFrameWorkVsBaseline": 0.8254673977092076,
+    "guiFrameWorkVsBaseline": 0.8701165893856256,
+    "spreads": {
+      "shared": 1.2894157020867059,
+      "optimized": 1.655618207238151,
+      "shared-preview-baseline": 1.3451693206803441,
+      "optimized-preview-baseline": 1.040803995307245
+    },
+    "ranges": {
+      "shared": {
+        "min": 4.538166761398315,
+        "max": 5.851583480834961,
+        "absoluteSpreadMs": 1.3134167194366455
+      },
+      "optimized": {
+        "min": 7.370333671569824,
+        "max": 12.202458620071411,
+        "absoluteSpreadMs": 4.832124948501587
+      },
+      "shared-preview-baseline": {
+        "min": 6.027958393096924,
+        "max": 8.108624696731567,
+        "absoluteSpreadMs": 2.0806663036346436
+      },
+      "optimized-preview-baseline": {
+        "min": 12.79591679573059,
+        "max": 13.318041324615479,
+        "absoluteSpreadMs": 0.5221245288848877
+      }
+    }
+  }
+}

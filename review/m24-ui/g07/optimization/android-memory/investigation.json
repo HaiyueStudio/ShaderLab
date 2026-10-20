@@ -1,0 +1,90 @@
+{
+  "status": "Final Android m24.5: 50-cycle memory, strict performance, actual system UI and GPU/storage acceptance passed",
+  "runs": [
+    {
+      "run": "android-memory-diagnostic-awake",
+      "status": "failed",
+      "artifactSha256": "dab9d76984624efb5ba82ab2b4b68f8396329849b092f4713478eb2906e0d459",
+      "collectedCycles": 18,
+      "nativeHeapMiB": [
+        26.7724609375,
+        78.08308410644531
+      ],
+      "systemAvailableMiB": [
+        3409.2890625,
+        147.6640625
+      ],
+      "systemAvailableLossMiBPerCycle": 191.86029411764707,
+      "lastRetained": {
+        "editor": 18,
+        "page": 18,
+        "canvas": 18,
+        "host": 18,
+        "runtime": 18,
+        "engine": 18,
+        "device": 18
+      }
+    },
+    {
+      "run": "android-memory-lost-relay",
+      "status": "failed",
+      "artifactSha256": "e8fe94a89d4a9755ed36c6cb16c004ab18ac26a62784fbd7155ddce32900b950",
+      "collectedCycles": 17,
+      "nativeHeapMiB": [
+        27.423690795898438,
+        74.77999877929688
+      ],
+      "systemAvailableMiB": [
+        3560.4765625,
+        413.97265625
+      ],
+      "systemAvailableLossMiBPerCycle": 196.656494140625,
+      "lastRetained": {
+        "editor": 2,
+        "page": 2,
+        "canvas": 2,
+        "host": 2,
+        "runtime": 2,
+        "engine": 2,
+        "device": 17
+      }
+    },
+    {
+      "run": "android-memory-native-once",
+      "status": "failed",
+      "artifactSha256": "5e6942d62df0bcddc2f304755f4e32955761667a184616eccfd9d09259d30679",
+      "collectedCycles": 17,
+      "nativeHeapMiB": [
+        26.94390869140625,
+        69.17375183105469
+      ],
+      "systemAvailableMiB": [
+        3574.3203125,
+        432.2578125
+      ],
+      "systemAvailableLossMiBPerCycle": 196.37890625,
+      "lastRetained": {
+        "editor": 2,
+        "page": 2,
+        "canvas": 2,
+        "host": 2,
+        "runtime": 2,
+        "engine": 2,
+        "device": 2
+      }
+    }
+  ],
+  "upstream": "https://github.com/NativeScript/canvas/tree/1fd6ef470dfdfd43b3385fa7ef43feddd1debd06",
+  "findings": [
+    "Native views are detached but pending native callbacks rooted old JS objects.",
+    "Lost relay allows old editors/engines to collect.",
+    "One-shot callbacks allow old JS GPUDevice wrappers to collect; native memory still falls ~200 MiB/cycle.",
+    "CanvasGPUCanvasContext does not release ContextReadBack TextureId on unconfigure/drop; Rust patch awaiting device validation.",
+    "Readback-only patched library still failed; native trace shows devices/queues finalizing while shader modules and finished command encoders accumulate.",
+    "CanvasGPUShaderModule::drop has shader_module_drop commented out.",
+    "wgpu 29 command_encoder_finish retains the encoder registry entry; Canvas destructor skipped it when open=false.",
+    "Final library restores shader_module_drop and releases finished command encoders in addition to readback cleanup; 50 same-process full host lifetimes now complete with bounded post-warmup native memory."
+  ],
+  "finalEvidence": "../android-final/lifecycle.json",
+  "finalMemory": "../android-final/memory.json"
+}

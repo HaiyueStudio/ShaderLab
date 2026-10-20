@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-17T23:01:50.851Z",
+  "checks": [
+    "five resolution choices via native picker, preview retained",
+    "settings rotation, background/resume, close and reopen",
+    "on-demand native converter generates GLSL twice and modal closes without changing source",
+    "name input, keyboard dismissal preserving source, save and reopen"
+  ],
+  "name": "Untitled shader G07\uff0d1792278170399",
+  "rotationRestored": {
+    "rotation": "0",
+    "automatic": "0"
+  },
+  "completedAt": "2026-10-17T23:03:43.574Z",
+  "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4"
+}

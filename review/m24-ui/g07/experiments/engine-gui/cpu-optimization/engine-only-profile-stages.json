@@ -1,0 +1,66 @@
+{
+  "status": "diagnostic",
+  "note": "Inclusive timers; instrumentation overhead; dirtyRoots selects frames with both preview and shell roots rebuilt, not formal performance samples.",
+  "stages": {
+    "baseline": {
+      "idle": {
+        "frames": 120,
+        "p95": {
+          "gui.ms": 1.6916248798370361,
+          "prepareRoots.ms": 0.23154139518737793,
+          "rebuildRoot.ms": 0.1752917766571045,
+          "shape.ms": 0.15879154205322266,
+          "text.ms": 0.16158318519592285,
+          "image.ms": 0.6038336753845215,
+          "shapeUpload.ms": 0.009875059127807617,
+          "textUpload.ms": 0.009000062942504883,
+          "imageUpload.ms": 0.21637511253356934
+        }
+      },
+      "dirtyRoots": {
+        "frames": 101,
+        "p95": {
+          "gui.ms": 5.486000061035156,
+          "prepareRoots.ms": 0.48741650581359863,
+          "rebuildRoot.ms": 3.8226664066314697,
+          "shape.ms": 0.22129201889038086,
+          "text.ms": 0.3404996395111084,
+          "image.ms": 0.8820414543151855,
+          "shapeUpload.ms": 0.06887507438659668,
+          "textUpload.ms": 0.19712495803833008,
+          "imageUpload.ms": 0.2193748950958252
+        }
+      }
+    },
+    "optimized": {
+      "idle": {
+        "frames": 120,
+        "p95": {
+          "gui.ms": 0.8207917213439941,
+          "prepareRoots.ms": 0.16116666793823242,
+          "rebuildRoot.ms": 0.12116670608520508,
+          "shape.ms": 0.08287549018859863,
+          "text.ms": 0.0668332576751709,
+          "image.ms": 0.14845800399780273,
+          "shapeUpload.ms": 0.006333112716674805,
+          "textUpload.ms": 0.0058748722076416016,
+          "imageUpload.ms": 0.015416622161865234
+        }
+      },
+      "dirtyRoots": {
+        "frames": 101,
+        "p95": {
+          "gui.ms": 5.387875080108643,
+          "prepareRoots.ms": 0.5200417041778564,
+          "rebuildRoot.ms": 3.9795002937316895,
+          "shape.ms": 0.10154175758361816,
+          "text.ms": 0.43524956703186035,
+          "image.ms": 0.309833288192749,
+          "shapeUpload.ms": 0.011749982833862305,
+          "textUpload.ms": 0.3115420341491699,
+          "imageUpload.ms": 0.009583234786987305
+        }
+      }
+    }
+  }
+}

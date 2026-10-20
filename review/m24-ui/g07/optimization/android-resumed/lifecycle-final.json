@@ -1,0 +1,1770 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-17T06:42:24.399Z",
+  "completedAt": "",
+  "device": {
+    "os": "Android",
+    "version": "14",
+    "model": "X4000"
+  },
+  "kind": "50 real native editor/GPU host lifetimes; adapter and frame resources; process memory observation is not native GPU heap accounting",
+  "cycles": [
+    {
+      "cycle": 1,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 171583,
+        "nativeHeapBytes": 28616272
+      }
+    },
+    {
+      "cycle": 2,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 180956,
+        "nativeHeapBytes": 32855824
+      }
+    },
+    {
+      "cycle": 3,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 188083,
+        "nativeHeapBytes": 37355824
+      }
+    },
+    {
+      "cycle": 4,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 194720,
+        "nativeHeapBytes": 41356368
+      }
+    },
+    {
+      "cycle": 5,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 5,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 201636,
+        "nativeHeapBytes": 45524784
+      }
+    },
+    {
+      "cycle": 6,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 194962,
+        "nativeHeapBytes": 49801968
+      }
+    },
+    {
+      "cycle": 7,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 199042,
+        "nativeHeapBytes": 53921616
+      }
+    },
+    {
+      "cycle": 8,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 205464,
+        "nativeHeapBytes": 57725120
+      }
+    },
+    {
+      "cycle": 9,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 194368,
+        "nativeHeapBytes": 54934800
+      }
+    },
+    {
+      "cycle": 10,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 7,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 200076,
+        "nativeHeapBytes": 58982880
+      }
+    },
+    {
+      "cycle": 11,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 205900,
+        "nativeHeapBytes": 63209680
+      }
+    },
+    {
+      "cycle": 12,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 213788,
+        "nativeHeapBytes": 67672224
+      }
+    },
+    {
+      "cycle": 13,
+      "active": {
+        "disposed": false,
+        "engineState": "ready",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 64,
+              "activeNodes": 16,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 34,
+              "activeNodes": 7,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "activeListeners": 11,
+              "activeNodes": 1,
+              "activeResources": 1,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 1
+      },
+      "released": {
+        "disposed": true,
+        "engineState": "destroyed",
+        "frame": 6,
+        "shared": {
+          "preview": 1,
+          "editor": 1,
+          "controller": {
+            "subscriptions": 0,
+            "disposed": true
+          },
+          "parts": [
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 16,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 7,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            },
+            {
+              "status": "disposed",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 1,
+              "activeListeners": 0,
+              "activeNodes": 0,
+              "activeResources": 0,
+              "activeTimers": 0
+            }
+          ]
+        },
+        "scheduledCallbacks": 0
+      },
+      "memory": {
+        "totalPssKiB": 210621,
+        "nativeHeapBytes": 68077936
+      }
+    }
+  ],
+  "error": "Application process exited during lifecycle acceptance; inspect logcat for the termination reason.",
+  "artifactSha256": "38a34059db6292b96c6a0c7a6bd7e79d16ce619318674ce999377c7305b748df"
+}

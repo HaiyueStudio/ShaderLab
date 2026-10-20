@@ -1,0 +1,8 @@
+
+> @haiyue/ui@0.2.0 typecheck
+> tsc -p tsconfig.json --noEmit && npm run typecheck:portable
+
+
+> @haiyue/ui@0.2.0 typecheck:portable
+> tsc -p tsconfig.portable.json --noEmit
+

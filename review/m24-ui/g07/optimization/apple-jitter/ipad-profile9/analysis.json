@@ -1,0 +1,365 @@
+{
+  "purpose": "Diagnostic only; wrappers allocate and affect timings. No acceptance claim or GC attribution. Nested spans must not be added together.",
+  "allSamplesPreserved": true,
+  "findings": [
+    "Shared draft scheduling occasionally takes several milliseconds; replace timer cancellation/recreation with a trailing task.",
+    "Document subscriber reads/writes native editor/title even for compile state changes; project only document changes.",
+    "Slow samples also appear in control updates and state notification; these two changes do not yet establish stability."
+  ],
+  "runs": [
+    {
+      "mode": "legacy",
+      "round": 0,
+      "handlerP95Ms": 1.8128749951720238,
+      "spans": {
+        "application.update": {
+          "medianMs": 0.013666659593582153,
+          "maxMs": 0.07766666263341904
+        },
+        "application.edit": {
+          "medianMs": 0.03945833444595337,
+          "maxMs": 0.1783750057220459
+        },
+        "application.dispatch": {
+          "medianMs": 0.12160417065024376,
+          "maxMs": 0.357041671872139
+        },
+        "mobile.draft": {
+          "medianMs": 0.7779583372175694,
+          "maxMs": 1.1759583353996277
+        },
+        "mobile.message": {
+          "medianMs": 0.11362499743700027,
+          "maxMs": 0.17875000089406967
+        },
+        "application.snapshot": {
+          "medianMs": 0.13189582899212837,
+          "maxMs": 2.875541664659977
+        },
+        "application.prepareCompilation": {
+          "medianMs": 0.3375416658818722,
+          "maxMs": 3.1750416681170464
+        },
+        "application.compile": {
+          "medianMs": 0.34672917053103447,
+          "maxMs": 3.1814583390951157
+        },
+        "mobile.compile": {
+          "medianMs": 0.51514583081007,
+          "maxMs": 3.267833337187767
+        },
+        "mobile.legacyScale": {
+          "medianMs": 1.4275208376348019,
+          "maxMs": 4.014499992132187
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "round": 0,
+      "handlerP95Ms": 2.4669166654348373,
+      "spans": {
+        "application.dispatch": {
+          "medianMs": 0.016187500208616257,
+          "maxMs": 4.388833329081535
+        },
+        "controller.transaction": {
+          "medianMs": 0.07347916439175606,
+          "maxMs": 0.21670832484960556
+        },
+        "controller.flush": {
+          "medianMs": 0.08049999922513962,
+          "maxMs": 0.2436666637659073
+        },
+        "page.0.setProps": {
+          "medianMs": 0.29879166185855865,
+          "maxMs": 0.29879166185855865
+        },
+        "renderer.0.commit": {
+          "medianMs": 1.204416662454605,
+          "maxMs": 1.204416662454605
+        },
+        "page.0.transaction": {
+          "medianMs": 1.984375,
+          "maxMs": 1.984375
+        },
+        "page.1.setProps": {
+          "medianMs": 0.06424999982118607,
+          "maxMs": 0.2983750030398369
+        },
+        "renderer.1.commit": {
+          "medianMs": 0.6962500065565109,
+          "maxMs": 2.319291666150093
+        },
+        "page.1.transaction": {
+          "medianMs": 0.8846666663885117,
+          "maxMs": 3.21258332580328
+        },
+        "controller.notify": {
+          "medianMs": 1.0040416717529297,
+          "maxMs": 3.7030416652560234
+        },
+        "mobile.draft": {
+          "medianMs": 0.1915000006556511,
+          "maxMs": 3.0091250017285347
+        },
+        "application.update": {
+          "medianMs": 1.2786666601896286,
+          "maxMs": 4.215749993920326
+        },
+        "application.edit": {
+          "medianMs": 1.2882499992847443,
+          "maxMs": 4.289250001311302
+        },
+        "controller.compileFlushed": {
+          "medianMs": 0.013458330184221268,
+          "maxMs": 0.029166661202907562
+        },
+        "controller.scale": {
+          "medianMs": 1.461458332836628,
+          "maxMs": 4.840291664004326
+        },
+        "controller.dispatch": {
+          "medianMs": 1.486312497407198,
+          "maxMs": 5.682000003755093
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "round": 1,
+      "handlerP95Ms": 2.86291666328907,
+      "spans": {
+        "application.dispatch": {
+          "medianMs": 0.016458332538604736,
+          "maxMs": 7.091708332300186
+        },
+        "controller.transaction": {
+          "medianMs": 0.07625000178813934,
+          "maxMs": 0.22170833498239517
+        },
+        "controller.flush": {
+          "medianMs": 0.08627083152532578,
+          "maxMs": 0.24783333390951157
+        },
+        "page.0.setProps": {
+          "medianMs": 0.31029167026281357,
+          "maxMs": 0.31029167026281357
+        },
+        "renderer.0.commit": {
+          "medianMs": 1.2130416631698608,
+          "maxMs": 1.2130416631698608
+        },
+        "page.0.transaction": {
+          "medianMs": 2.0230000019073486,
+          "maxMs": 2.0230000019073486
+        },
+        "page.1.setProps": {
+          "medianMs": 0.06679166108369827,
+          "maxMs": 2.608166664838791
+        },
+        "renderer.1.commit": {
+          "medianMs": 0.7486666664481163,
+          "maxMs": 1.1530416682362556
+        },
+        "page.1.transaction": {
+          "medianMs": 0.9476666674017906,
+          "maxMs": 3.6163333356380463
+        },
+        "controller.notify": {
+          "medianMs": 1.08379165828228,
+          "maxMs": 3.7437916696071625
+        },
+        "mobile.draft": {
+          "medianMs": 0.19841666519641876,
+          "maxMs": 2.9762083366513252
+        },
+        "application.update": {
+          "medianMs": 1.348791666328907,
+          "maxMs": 6.825958333909512
+        },
+        "application.edit": {
+          "medianMs": 1.3599999994039536,
+          "maxMs": 6.979750007390976
+        },
+        "controller.compileFlushed": {
+          "medianMs": 0.013000000268220901,
+          "maxMs": 0.03199999779462814
+        },
+        "controller.scale": {
+          "medianMs": 1.550104171037674,
+          "maxMs": 7.55941666662693
+        },
+        "controller.dispatch": {
+          "medianMs": 1.5788749977946281,
+          "maxMs": 8.395083338022232
+        }
+      }
+    },
+    {
+      "mode": "legacy",
+      "round": 1,
+      "handlerP95Ms": 1.7615416646003723,
+      "spans": {
+        "application.update": {
+          "medianMs": 0.014875009655952454,
+          "maxMs": 2.2554999962449074
+        },
+        "application.edit": {
+          "medianMs": 0.04229167103767395,
+          "maxMs": 2.272375002503395
+        },
+        "application.dispatch": {
+          "medianMs": 0.1328125037252903,
+          "maxMs": 2.406458333134651
+        },
+        "mobile.draft": {
+          "medianMs": 0.8111666664481163,
+          "maxMs": 1.330291673541069
+        },
+        "mobile.message": {
+          "medianMs": 0.16316667199134827,
+          "maxMs": 0.19379167258739471
+        },
+        "application.snapshot": {
+          "medianMs": 0.15966666862368584,
+          "maxMs": 0.1913750022649765
+        },
+        "application.prepareCompilation": {
+          "medianMs": 0.3568958304822445,
+          "maxMs": 0.5593333318829536
+        },
+        "application.compile": {
+          "medianMs": 0.3687500022351742,
+          "maxMs": 0.6084166690707207
+        },
+        "mobile.compile": {
+          "medianMs": 0.55610416457057,
+          "maxMs": 0.859499990940094
+        },
+        "mobile.legacyScale": {
+          "medianMs": 1.5195208378136158,
+          "maxMs": 3.2037916630506516
+        }
+      }
+    },
+    {
+      "mode": "legacy",
+      "round": 2,
+      "handlerP95Ms": 1.8426249995827675,
+      "spans": {
+        "application.update": {
+          "medianMs": 0.01487499475479126,
+          "maxMs": 0.05849999934434891
+        },
+        "application.edit": {
+          "medianMs": 0.04112500697374344,
+          "maxMs": 0.18333333730697632
+        },
+        "application.dispatch": {
+          "medianMs": 0.15027083829045296,
+          "maxMs": 0.291333332657814
+        },
+        "mobile.draft": {
+          "medianMs": 0.8348333276808262,
+          "maxMs": 1.1537500023841858
+        },
+        "mobile.message": {
+          "medianMs": 0.16441666707396507,
+          "maxMs": 0.21274999529123306
+        },
+        "application.snapshot": {
+          "medianMs": 0.15864583104848862,
+          "maxMs": 0.20879166573286057
+        },
+        "application.prepareCompilation": {
+          "medianMs": 0.3580208346247673,
+          "maxMs": 3.806708335876465
+        },
+        "application.compile": {
+          "medianMs": 0.3696041628718376,
+          "maxMs": 3.819541670382023
+        },
+        "mobile.compile": {
+          "medianMs": 0.5654166676104069,
+          "maxMs": 4.010625004768372
+        },
+        "mobile.legacyScale": {
+          "medianMs": 1.575458336621523,
+          "maxMs": 5.058833330869675
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "round": 2,
+      "handlerP95Ms": 2.0370833352208138,
+      "spans": {
+        "application.dispatch": {
+          "medianMs": 0.016354165971279144,
+          "maxMs": 4.3210416585206985
+        },
+        "controller.transaction": {
+          "medianMs": 0.07579166814684868,
+          "maxMs": 0.22195833176374435
+        },
+        "controller.flush": {
+          "medianMs": 0.0833125039935112,
+          "maxMs": 0.24454166740179062
+        },
+        "page.0.setProps": {
+          "medianMs": 0.3031666725873947,
+          "maxMs": 0.3031666725873947
+        },
+        "renderer.0.commit": {
+          "medianMs": 1.245458334684372,
+          "maxMs": 1.245458334684372
+        },
+        "page.0.transaction": {
+          "medianMs": 2.0137500017881393,
+          "maxMs": 2.0137500017881393
+        },
+        "page.1.setProps": {
+          "medianMs": 0.06462500244379044,
+          "maxMs": 2.8164166659116745
+        },
+        "renderer.1.commit": {
+          "medianMs": 0.726624995470047,
+          "maxMs": 1.022333338856697
+        },
+        "page.1.transaction": {
+          "medianMs": 0.9253749996423721,
+          "maxMs": 3.5858333334326744
+        },
+        "controller.notify": {
+          "medianMs": 1.0537500083446503,
+          "maxMs": 3.721166670322418
+        },
+        "mobile.draft": {
+          "medianMs": 0.19691666960716248,
+          "maxMs": 0.2958333343267441
+        },
+        "application.update": {
+          "medianMs": 1.3217500001192093,
+          "maxMs": 4.076041668653488
+        },
+        "application.edit": {
+          "medianMs": 1.3316250070929527,
+          "maxMs": 4.228583335876465
+        },
+        "controller.compileFlushed": {
+          "medianMs": 0.01252083107829094,
+          "maxMs": 0.027541667222976685
+        },
+        "controller.scale": {
+          "medianMs": 1.496166668832302,
+          "maxMs": 4.769124999642372
+        },
+        "controller.dispatch": {
+          "medianMs": 1.5199791640043259,
+          "maxMs": 5.599958337843418
+        }
+      }
+    }
+  ]
+}

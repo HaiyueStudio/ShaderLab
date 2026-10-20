@@ -1,0 +1,13 @@
+{
+  "predecessor": "haiyue-native-0.1.4-shaderlab.0.tgz",
+  "candidate": "haiyue-native-0.1.4-m24.0.tgz",
+  "comparedBridgeFiles": 137,
+  "normalization": "CRLF \u2192 LF",
+  "changedExistingBridgeFiles": [],
+  "addedBridgeFiles": 8,
+  "sha256": {
+    "haiyue-native-0.1.4-shaderlab.0.tgz": "b000100ddc581c41d5f7da0eb1683a5a6166f3bcfd5fa1fa3246b4ee85001080",
+    "haiyue-native-0.1.4-m24.0.tgz": "bd060ac09e0efba83c4bdfcd61b9663eb06108e371adfc761b68a4c857486fcd",
+    "haiyue-ui-0.2.0-m24.0.tgz": "6272686e1a42453e8e0726cd3425e766168def5b9172906420873355e5e8b981"
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-19T00:29:32.726Z",
+  "runId": "ae5b7192-436e-4d5a-8f6f-22b4870ec365",
+  "kind": "native synthetic semantic replay, real GPU and file storage",
+  "device": {
+    "os": "iOS",
+    "version": "26.7.1",
+    "model": "iPad"
+  },
+  "checks": [
+    {
+      "scale": 0.75,
+      "surface": {
+        "width": 705,
+        "height": 1465
+      },
+      "target": [
+        528,
+        1098
+      ],
+      "frame": 6
+    },
+    {
+      "scale": 0.5,
+      "surface": {
+        "width": 705,
+        "height": 1465
+      },
+      "target": [
+        352,
+        732
+      ],
+      "frame": 6
+    },
+    {
+      "scale": 0.25,
+      "surface": {
+        "width": 705,
+        "height": 1465
+      },
+      "target": [
+        176,
+        366
+      ],
+      "frame": 6
+    },
+    {
+      "scale": 1,
+      "surface": {
+        "width": 705,
+        "height": 1465
+      },
+      "target": [
+        615,
+        1278
+      ],
+      "frame": 6
+    },
+    {
+      "scale": 0.75,
+      "surface": {
+        "width": 705,
+        "height": 1465
+      },
+      "target": [
+        528,
+        1098
+      ],
+      "frame": 4
+    }
+  ],
+  "initial": {
+    "preview": 1,
+    "editor": 1,
+    "controller": {
+      "subscriptions": 4,
+      "disposed": false
+    },
+    "parts": [
+      {
+        "status": "mounted",
+        "commits": 1,
+        "created": 16,
+        "updated": 0,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 63,
+        "activeNodes": 16,
+        "activeResources": 0,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 3,
+        "created": 7,
+        "updated": 2,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 33,
+        "activeNodes": 7,
+        "activeResources": 0,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 1,
+        "created": 1,
+        "updated": 0,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 10,
+        "activeNodes": 1,
+        "activeResources": 1,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 1,
+        "created": 1,
+        "updated": 0,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 10,
+        "activeNodes": 1,
+        "activeResources": 1,
+        "activeTimers": 0
+      }
+    ]
+  },
+  "readback": {
+    "width": 528,
+    "height": 1098,
+    "bytes": 2318976,
+    "nonzero": true,
+    "centerRGBA": [
+      237,
+      22,
+      106,
+      255
+    ]
+  },
+  "final": {
+    "preview": 1,
+    "editor": 1,
+    "controller": {
+      "subscriptions": 4,
+      "disposed": false
+    },
+    "parts": [
+      {
+        "status": "mounted",
+        "commits": 7,
+        "created": 16,
+        "updated": 8,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 63,
+        "activeNodes": 16,
+        "activeResources": 0,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 22,
+        "created": 7,
+        "updated": 21,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 33,
+        "activeNodes": 7,
+        "activeResources": 0,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 2,
+        "created": 1,
+        "updated": 1,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 10,
+        "activeNodes": 1,
+        "activeResources": 1,
+        "activeTimers": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 2,
+        "created": 1,
+        "updated": 1,
+        "moved": 0,
+        "removed": 0,
+        "activeListeners": 10,
+        "activeNodes": 1,
+        "activeResources": 1,
+        "activeTimers": 0
+      }
+    ]
+  },
+  "persisted": {
+    "format": "haiyue-shader",
+    "version": 1,
+    "id": "m24-g01-preview",
+    "name": "海月 G07 🌙",
+    "description": "",
+    "updatedAt": "2026-10-19T00:29:33.432Z",
+    "tabs": [
+      "image"
+    ],
+    "common": "",
+    "sound": {
+      "id": "sound",
+      "enabled": false,
+      "code": "// 左右声道范围 -1 到 1；时间单位为秒。\nfn mainSound(sampleIndex: i32, time: f32) -> vec2f {\n  let beat = floor(time * 4.0);\n  let note = select(select(60.0, 64.0, beat % 4.0 == 1.0), select(67.0, 72.0, beat % 4.0 == 3.0), beat % 4.0 >= 2.0);\n  let frequency = 440.0 * pow(2.0, (note - 69.0) / 12.0);\n  let phase = fract(time * 4.0);\n  let envelope = smoothstep(0.0, 0.02, phase) * exp(-phase * 5.0);\n  let tone = sin(6.2831853 * frequency * time) * envelope * 0.3;\n  return vec2f(tone, tone);\n}",
+      "channels": [
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        }
+      ],
+      "duration": 60,
+      "volume": 0.25
+    },
+    "passes": [
+      {
+        "id": "buffer-a",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-b",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-c",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-d",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "image",
+        "enabled": true,
+        "code": "// fragCoord: 像素坐标，原点在左下角\nfn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  let color = vec3f(0.5) + 0.5 * cos(vec3f(iTime) + uv.xyx + vec3f(0.0, 2.0, 4.0));\n  return vec4f(color, 1.0);\n}\n// G07 共享页面验收 🌙\n",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      }
+    ],
+    "assets": [],
+    "preview": {
+      "mode": "canvas",
+      "mesh": "sphere",
+      "scale": 0.75
+    },
+    "editorLanguages": {
+      "image": "wgsl"
+    }
+  },
+  "render": {
+    "ready": true,
+    "frame": 4,
+    "time": 0.04916599999705795,
+    "width": 528,
+    "height": 1098,
+    "playing": true,
+    "mode": "canvas",
+    "bufferFormat": "rgba16float",
+    "capture": {
+      "active": false,
+      "width": 0,
+      "height": 0,
+      "time": 0
+    }
+  },
+  "application": {
+    "pane": "preview",
+    "compile": "ready",
+    "save": "idle"
+  },
+  "completedAt": "2026-10-19T00:29:33.539Z",
+  "artifactSha256": "1b5b29ecf535ba9baf35e9c2cba782edd965fdc9b8c21e206635311493ee12bb"
+}

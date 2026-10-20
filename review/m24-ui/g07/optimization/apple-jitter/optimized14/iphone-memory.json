@@ -1,0 +1,19 @@
+{
+  "artifactSha256": "b039923eb5a695a3cfb13b854b925ae4144a4de554bc78eb20f38825ebd3edea",
+  "source": "iphone-lifecycle.json",
+  "status": "passed-retired-wrapper-release",
+  "retiredGroups": 50,
+  "retiredWrappers": 550,
+  "settledLiveWrappers": 0,
+  "postWarmupFootprintMiB": {
+    "min": 133.34564208984375,
+    "max": 202.72071075439453
+  },
+  "settledFootprintMiB": 155.48633575439453,
+  "settledGraphicsFootprintMiB": 0.390625,
+  "limitations": [
+    "Explicit GC and deferred cleanup; not performance sampling.",
+    "Wrapper release is not a full native/Metal allocation audit.",
+    "Process footprint is higher than candidate 10; no memory improvement claim."
+  ]
+}

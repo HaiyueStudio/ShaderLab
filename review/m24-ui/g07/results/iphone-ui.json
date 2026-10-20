@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "device": "iPhone 15 Plus",
+  "osVersion": "27.2",
+  "completedAt": "2026-10-17T03:17:09.703Z",
+  "artifact": "local artifacts/m24-g07/ios-tests/iphone-keyboard-final.xcresult",
+  "test": "SharedPageSmoke.testSharedEditor",
+  "testRunnerSourceSha256": "6cc57a34fa501be405dbfe9a10301a814c7e6e253946bcd3177b70315d925bf3",
+  "scope": "Five resolution choices, playback, settings rotation/background/reopen, name/Done, actual software keyboard space key, save/reopen exact content equality. Not physical Chinese IME or VoiceOver.",
+  "priorAttempt": "The app displayed its keyboard; initial test looked for the iPad blank key label. iPhone AX hierarchy exposes identifier space. Updated test accepts both observed identifiers and retains change/persistence assertions.",
+  "screenshots": [
+    "iphone-saved-reopened.png",
+    "iphone-settings-landscape.png",
+    "iphone-shared-preview-75.png"
+  ]
+}

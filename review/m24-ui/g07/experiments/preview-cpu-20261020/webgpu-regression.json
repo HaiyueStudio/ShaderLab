@@ -1,0 +1,245 @@
+{
+  "status": "passed",
+  "backend": "real browser WebGPU with platform IO test ports",
+  "examples": [
+    {
+      "id": "aurora",
+      "name": "Aurora ribbons"
+    },
+    {
+      "id": "marble",
+      "name": "Liquid chrome"
+    },
+    {
+      "id": "tunnel",
+      "name": "Neon passage"
+    },
+    {
+      "id": "feedback",
+      "name": "Afterglow"
+    },
+    {
+      "id": "keyboard",
+      "name": "Key light"
+    },
+    {
+      "id": "puzzle",
+      "name": "Sliding city"
+    },
+    {
+      "id": "minesweeper",
+      "name": "Minefield"
+    },
+    {
+      "id": "clock",
+      "name": "Local time · 时钟"
+    }
+  ],
+  "scales": [
+    {
+      "value": 1,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "value": 0.75,
+      "width": 240,
+      "height": 135
+    },
+    {
+      "value": 0.5,
+      "width": 160,
+      "height": 90
+    },
+    {
+      "value": 0.25,
+      "width": 80,
+      "height": 45
+    },
+    {
+      "value": 1,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "value": 0.75,
+      "width": 240,
+      "height": 135
+    }
+  ],
+  "puzzleSwipes": [
+    {
+      "scale": 1,
+      "format": "rgba16float",
+      "moves": 5,
+      "empty": 14,
+      "status": "passed"
+    },
+    {
+      "scale": 0.25,
+      "format": "rgba16float",
+      "moves": 5,
+      "empty": 14,
+      "status": "passed"
+    }
+  ],
+  "keyboardFrames": [
+    {
+      "optimized": false,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        0,
+        0,
+        255
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        0,
+        255,
+        0
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "optimized": false,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        0,
+        0,
+        255
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        0,
+        255,
+        0
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "optimized": true,
+      "pixel": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "cameraFrames": {
+    "status": "passed",
+    "opened": 2,
+    "closed": 2,
+    "reads": 15,
+    "firstFrame": {
+      "top": [
+        255,
+        5,
+        0,
+        255
+      ],
+      "bottom": [
+        0,
+        5,
+        255,
+        255
+      ],
+      "metadata": [
+        64,
+        32,
+        21,
+        255
+      ]
+    }
+  },
+  "hlsl": {
+    "status": "passed",
+    "compiler": "bundled Slang WASM through the isolated mobile compiler page",
+    "pixel": [
+      102,
+      51,
+      153,
+      255
+    ],
+    "soundSamples": 2048
+  },
+  "checks": [
+    "shared application actions compile 100/75/50/25/100/75% on the mobile renderer with correct readback dimensions",
+    "all eight shared examples compile and render visible content through the mobile graph",
+    "Sliding city native touch moves in all four directions exactly once per swipe, ignores jitter and handles between-frame swipes at 100% and 25% render scales",
+    "Common and four-channel bindings use the shared ABI",
+    "invalid compile retains active GPU graph",
+    "3D material scene switches on the same Engine device"
+  ]
+}

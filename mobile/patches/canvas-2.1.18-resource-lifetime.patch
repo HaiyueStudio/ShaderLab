@@ -1,0 +1,63 @@
+diff --git a/crates/canvas-c/src/webgpu/gpu_canvas_context.rs b/crates/canvas-c/src/webgpu/gpu_canvas_context.rs
+index 8458c92..c0f6640 100644
+--- a/crates/canvas-c/src/webgpu/gpu_canvas_context.rs
++++ b/crates/canvas-c/src/webgpu/gpu_canvas_context.rs
+@@ -65,11 +65,20 @@ impl Drop for CanvasGPUCanvasContext {
+             let global = self.instance.global();
+             let surface = self.surface.lock();
+             discard_current_texture(self, *surface, "CanvasGPUCanvasContext::drop");
++            release_read_back_texture(self);
+             global.surface_drop(*surface);
+         }
+     }
+ }
+ 
++// TextureId is not an RAII handle. Keeping the readback texture registered in
++// wgpu also keeps the device and its Vulkan memory allocator alive.
++fn release_read_back_texture(context: &CanvasGPUCanvasContext) {
++    if let Some(texture) = context.read_back_texture.lock().take() {
++        context.instance.global().texture_drop(texture.texture);
++    }
++}
++
+ fn discard_current_texture(
+     context: &CanvasGPUCanvasContext,
+     surface_id: wgpu_core::id::SurfaceId,
+@@ -1342,6 +1351,7 @@ pub unsafe extern "C" fn canvas_native_webgpu_context_unconfigure(
+     }
+     let context = &*context;
+ 
++    release_read_back_texture(context);
+     let mut lock = context.data.lock();
+     *lock = None;
+ }
+diff --git a/crates/canvas-c/src/webgpu/gpu_command_encoder.rs b/crates/canvas-c/src/webgpu/gpu_command_encoder.rs
+index 858be70..ec12110 100644
+--- a/crates/canvas-c/src/webgpu/gpu_command_encoder.rs
++++ b/crates/canvas-c/src/webgpu/gpu_command_encoder.rs
+@@ -33,7 +33,9 @@ pub struct CanvasGPUCommandEncoder {
+ 
+ impl Drop for CanvasGPUCommandEncoder {
+     fn drop(&mut self) {
+-        if self.open.load(std::sync::atomic::Ordering::SeqCst) && !std::thread::panicking() {
++        // wgpu 29 finish() creates a separate command buffer; it does not
++        // remove the encoder from the registry. Release both finished and open encoders.
++        if !std::thread::panicking() {
+             let global = self.instance.global();
+             global.command_encoder_drop(self.encoder);
+         }
+diff --git a/crates/canvas-c/src/webgpu/gpu_shader_module.rs b/crates/canvas-c/src/webgpu/gpu_shader_module.rs
+index 31bc3e8..78c2a88 100644
+--- a/crates/canvas-c/src/webgpu/gpu_shader_module.rs
++++ b/crates/canvas-c/src/webgpu/gpu_shader_module.rs
+@@ -19,8 +19,8 @@ impl Drop for CanvasGPUShaderModule {
+     fn drop(&mut self) {
+         if !std::thread::panicking() {
+             let global = self.instance.global();
+-            //todo
+-            //  global.shader_module_drop(self.module);
++            // Remove the registry owner; pipelines retain their own shader references.
++            global.shader_module_drop(self.module);
+         }
+     }
+ }

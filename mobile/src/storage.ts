@@ -1,8 +1,9 @@
 import {File,Folder,knownFolders,path} from '@nativescript/core';
-import {parseProject,type ShaderProject} from '../../web/dist/model.js';
+import {parseProject,type ShaderProject} from './project';
 export class MobileProjects {
- private root=Folder.fromPath(path.join(knownFolders.documents().path,'ShaderLab'));
- private works=this.root.getFolder('works');
+ private root:Folder;
+ private works:Folder;
+ constructor(directory='ShaderLab'){this.root=Folder.fromPath(path.join(knownFolders.documents().path,directory));this.works=this.root.getFolder('works');}
  private pending:Promise<unknown>=Promise.resolve();
  private async records(){const entries:{file:File;project:ShaderProject}[]=[];for(const file of await this.works.getEntities()){if(!(file instanceof File)||!file.name.endsWith('.hyshader'))continue;try{entries.push({file,project:parseProject(await file.readText())});}catch{const backup=file.path+'.backup';if(File.exists(backup))try{entries.push({file,project:parseProject(await File.fromPath(backup).readText())});}catch{/* Keep both damaged files for manual recovery. */}}}return entries;}
  async list(){return(await this.records()).map(r=>r.project).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));}

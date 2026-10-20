@@ -1,0 +1,440 @@
+{
+  "capturedAt": "2026-10-17T01:34:19.693Z",
+  "bundleSha256": "697ff210b839cd1307f11fa6a2438ce199714646debe13b4cae251a631b27729",
+  "kind": "CPU sampling diagnostic only; 100 us requested interval; includes compilation/render waiting; not a p95 gate or GPU timestamp",
+  "runs": [
+    {
+      "mode": "legacy",
+      "durationMs": 5280.248,
+      "samples": 31783,
+      "topSelf": [
+        {
+          "function": "(idle)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3730.151
+        },
+        {
+          "function": "(program)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 788.787
+        },
+        {
+          "function": "getBoundingClientRect",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 259.695
+        },
+        {
+          "function": "eq",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 69.519
+        },
+        {
+          "function": "(garbage collector)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 18.376
+        },
+        {
+          "function": "replaceChildren",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 16.6
+        },
+        {
+          "function": "e.onFrame",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 12.988
+        },
+        {
+          "function": "_render",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 12.274
+        },
+        {
+          "function": "append",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 11.689
+        },
+        {
+          "function": "createElement",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 11.57
+        },
+        {
+          "function": "(anonymous)",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 11.363
+        },
+        {
+          "function": "createElement",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 9.822
+        },
+        {
+          "function": "getCurrentTexture",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 9.65
+        },
+        {
+          "function": "_render",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 9.484
+        },
+        {
+          "function": "(anonymous)",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 8.48
+        },
+        {
+          "function": "render",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 8.453
+        },
+        {
+          "function": "HYSelect",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 7.272
+        },
+        {
+          "function": "append",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 6.06
+        },
+        {
+          "function": "replaceChildren",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 5.575
+        },
+        {
+          "function": "(anonymous)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 5.428
+        },
+        {
+          "function": "writeTexture",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 5.128
+        },
+        {
+          "function": "sync",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 5.122
+        },
+        {
+          "function": "submit",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 4.997
+        },
+        {
+          "function": "append",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 4.09
+        },
+        {
+          "function": "sync",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 3.83
+        },
+        {
+          "function": "createCommandEncoder",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3.712
+        },
+        {
+          "function": "createElement",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3.676
+        },
+        {
+          "function": "(anonymous)",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 3.577
+        },
+        {
+          "function": "renderDiagnostics",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 3.493
+        },
+        {
+          "function": "createElement",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3.253
+        }
+      ],
+      "diagnostics": null
+    },
+    {
+      "mode": "shared",
+      "durationMs": 4678.869,
+      "samples": 27311,
+      "topSelf": [
+        {
+          "function": "(idle)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3622.193
+        },
+        {
+          "function": "(program)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 529.545
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 41.151
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 40.887
+        },
+        {
+          "function": "getBoundingClientRect",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 31.834
+        },
+        {
+          "function": "(garbage collector)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 30.542
+        },
+        {
+          "function": "eq",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 25.206
+        },
+        {
+          "function": "(anonymous)",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 11.265
+        },
+        {
+          "function": "e.onFrame",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 9.804
+        },
+        {
+          "function": "getCurrentTexture",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 9.633
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 8.365
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 7.871
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 7.66
+        },
+        {
+          "function": "render",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 7.449
+        },
+        {
+          "function": "getClientRects",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 7.409
+        },
+        {
+          "function": "writeTexture",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 6.301
+        },
+        {
+          "function": "submit",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 6.3
+        },
+        {
+          "function": "createBindGroup",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 5.526
+        },
+        {
+          "function": "beginRenderPass",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 4.731
+        },
+        {
+          "function": "pixels",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 4.393
+        },
+        {
+          "function": "submit",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 4.041
+        },
+        {
+          "function": "requestAnimationFrame",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3.998
+        },
+        {
+          "function": "(anonymous)",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 3.884
+        },
+        {
+          "function": "_tick",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 3.354
+        },
+        {
+          "function": "(anonymous)",
+          "source": "runtime",
+          "line": 1,
+          "selfMs": 3.238
+        },
+        {
+          "function": "prepare",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 3.232
+        },
+        {
+          "function": "createBindGroupLayout",
+          "source": "runtime",
+          "line": 0,
+          "selfMs": 2.951
+        },
+        {
+          "function": "onFrame",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 2.818
+        },
+        {
+          "function": "(anonymous)",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 2.599
+        },
+        {
+          "function": "resize",
+          "source": "web/main.js",
+          "line": 1,
+          "selfMs": 2.562
+        }
+      ],
+      "diagnostics": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 4,
+          "disposed": false
+        },
+        "parts": [
+          {
+            "status": "mounted",
+            "commits": 3,
+            "created": 16,
+            "updated": 3,
+            "moved": 0,
+            "removed": 0,
+            "measurements": 0,
+            "activeListeners": 80,
+            "activeNodes": 16,
+            "activeResources": 0
+          },
+          {
+            "status": "mounted",
+            "commits": 246,
+            "created": 7,
+            "updated": 245,
+            "moved": 0,
+            "removed": 0,
+            "measurements": 0,
+            "activeListeners": 38,
+            "activeNodes": 7,
+            "activeResources": 0
+          },
+          {
+            "status": "mounted",
+            "commits": 2,
+            "created": 1,
+            "updated": 1,
+            "moved": 0,
+            "removed": 0,
+            "measurements": 6,
+            "activeListeners": 9,
+            "activeNodes": 1,
+            "activeResources": 1
+          },
+          {
+            "status": "mounted",
+            "commits": 2,
+            "created": 1,
+            "updated": 1,
+            "moved": 0,
+            "removed": 0,
+            "measurements": 6,
+            "activeListeners": 9,
+            "activeNodes": 1,
+            "activeResources": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -13,6 +13,7 @@ export interface ShadertoyPassExport extends WgslTranslationResult {
 /** Resolve the active Common draft for both the UI and API. Never export stale
  * generated Common after its GLSL original has been edited. */
 export async function translateProjectWgsl(project: Readonly<ShaderProject>, code: string, id: RenderPassId = 'image'): Promise<WgslTranslationResult> {
+  if (languageOf(project, 'common') === 'hlsl' && sourceOf(project, 'common').trim()) return { code: null, diagnostics: [{ line: 1, column: 1, source: 'common', message: 'HLSL Common 暂不支持导出 Shadertoy GLSL；请导出工程或查看运行用 WGSL。' }], warnings: [] };
   let common = project.common;
   if (languageOf(project, 'common') === 'glsl') {
     const result = translateGlsl(sourceOf(project, 'common'), { entryPoint: 'common' });
@@ -24,9 +25,10 @@ export async function translateProjectWgsl(project: Readonly<ShaderProject>, cod
 export async function exportShadertoyPass(project: Readonly<ShaderProject>, id: RenderPassId): Promise<ShadertoyPassExport> {
   const pass = passOf(project as ShaderProject, id);
   const channels = pass.channels.map((channel, index) => ({ index, kind: channel.kind, source:
-    channel.kind === 'none' ? '无纹理' : channel.kind === 'buffer' ? PASS_LABELS[channel.pass] : channel.kind === 'keyboard' ? 'Keyboard · 256 × 3' : channel.kind === 'builtin' ? builtinTexture(channel.texture).name : project.assets.find(a => a.id === channel.assetId)?.name ?? channel.assetId,
+    channel.kind === 'none' ? '无纹理' : channel.kind === 'camera' ? (channel.facing === 'user' ? '前置相机 · Webcam' : '后置相机 · Webcam') : channel.kind === 'buffer' ? PASS_LABELS[channel.pass] : channel.kind === 'keyboard' ? 'Keyboard · 256 × 3' : channel.kind === 'builtin' ? builtinTexture(channel.texture).name : project.assets.find(a => a.id === channel.assetId)?.name ?? channel.assetId,
   }));
   const meta = { pass: id, label: PASS_LABELS[id], channels };
+  if (languageOf(project, id) === 'hlsl') return { ...meta, code: null, diagnostics: [{ line: 1, column: 1, message: 'HLSL 暂不支持导出 Shadertoy GLSL；请导出工程或查看运行用 WGSL。' }], warnings: [] };
   const commonGlsl = languageOf(project, 'common') === 'glsl';
   if (languageOf(project, id) === 'glsl' && (commonGlsl || !project.common.trim())) {
     // The authored Shadertoy source is the most faithful export: keep macros,

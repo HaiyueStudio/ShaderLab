@@ -1,0 +1,22 @@
+{
+  "status": "superseded-sampling",
+  "reason": "Product retention fixes applied; only the most recent page was still live at the first settled observation. A later full heap snapshot had zero MobileEditor objects; final candidate refines post-autorelease collection. iPad first performance trial remains inconclusive.",
+  "devices": {
+    "iphone": {
+      "cycles": 50,
+      "firstFootprintMiB": 106.53314208984375,
+      "lastFootprintMiB": 189.73633575439453,
+      "lastLiveGroups": 1,
+      "settledFootprintMiB": 124.54883575439453,
+      "settledLiveGroups": 1
+    },
+    "ipad": {
+      "cycles": 50,
+      "firstFootprintMiB": 83.95550537109375,
+      "lastFootprintMiB": 205.84625244140625,
+      "lastLiveGroups": 1,
+      "settledFootprintMiB": 119.83062744140625,
+      "settledLiveGroups": 1
+    }
+  }
+}

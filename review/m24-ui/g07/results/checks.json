@@ -1,0 +1,19 @@
+{
+  "unit": {
+    "status": "passed",
+    "count": 253,
+    "suites": {
+      "shared-application": 20,
+      "shared-ui": 5,
+      "web": 221,
+      "mobile": 7
+    }
+  },
+  "typecheck": "passed in clean snapshot",
+  "boundaries": "passed in clean snapshot",
+  "milestones": "repository-version-policy passed",
+  "sdkBuilds": {
+    "ios": "passed",
+    "android": "passed"
+  }
+}

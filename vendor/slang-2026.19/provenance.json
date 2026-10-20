@@ -1,0 +1,22 @@
+{
+  "version": "2026.19",
+  "source": "https://github.com/shader-slang/slang/releases/download/v2026.19/slang-2026.19-wasm.zip",
+  "archive_sha256": "dc10b68275850f08216ac77635d1fae060a9d1d35577ccb9b356bd41a4e86c17",
+  "files": {
+    "slang-wasm.js": "60fe8b4234d73d67c69d798d6deddb820c594a7f130b913b673f2d9c66b769ab",
+    "LICENSE": "b738d98b7725414b534c119ac66126876b8cbd40aa8ae48210db190714b81670",
+    "slang-wasm.wasm": "834d30ccf9fc5c01baa33cca361734fbd65a0cdd3985af95bb454ecfff66e5f1",
+    "slang-wasm.d.ts": "5bb793de34090712a81ae03e75c26d4e78a11d6876c437c140d4a71be04ba150",
+    "LICENSES/LLVM-exception.txt": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+    "LICENSES/CC-BY-4.0.txt": "d557539df68e771cc1eedcc91d13f70fca930e508d11eedcafa4b15db49e3744",
+    "LICENSES/BSL-1.0.txt": "84c6ef3ea9e3254a54d0acf5d3e0c61ae011b8fef7dd6940591cf060e6380a8f",
+    "LICENSES/Unlicense.txt": "0bdebfeda07d45dada625ae1317c6f833186e798b171d0db640bcf32e92a8240",
+    "LICENSES/MIT.txt": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+    "LICENSES/Apache-2.0.txt": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+    "LICENSES/LicenseRef-UOI-NCSA.txt": "f06d1f94379189536107328d9b393a462e3b2f67aa2b5b0f947add2c28098a1c",
+    "third-party-notices/lz4-LICENSE": "8b58c446121a109ccf32edc094bba3010a3d85e4ee3702950db55e4d3e87736c",
+    "third-party-notices/unordered_dense-LICENSE": "4f5a62734899ec0ba85d3e8264a7ed1fcb4bcb8f0b4359c0afd627b6314ae599",
+    "third-party-notices/miniz-LICENSE": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3",
+    "third-party-notices/cmark-COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9"
+  }
+}

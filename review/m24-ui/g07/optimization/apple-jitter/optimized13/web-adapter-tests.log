@@ -1,0 +1,61 @@
+
+> @haiyue/ui@0.2.0 test:web-adapter
+> npm run build && playwright test -c test/web-adapter/playwright.config.mjs
+
+
+> @haiyue/ui@0.2.0 build
+> tsc -p tsconfig.json
+
+[WebServer] (node:62654) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 42 tests using 1 worker
+
+(node:62658) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › test/web-adapter/adapter.spec.mjs:4:1 › all 18 semantic kinds render; registration stays focused; resource mounts once (461ms)
+  ✓   2 [chromium] › test/web-adapter/adapter.spec.mjs:11:1 › selector and button keyboard input each produce one transaction; programmatic updates are silent (378ms)
+  ✓   3 [chromium] › test/web-adapter/adapter.spec.mjs:20:1 › updating parents and reordering preserves input identity, focus, draft and selection (373ms)
+  ✓   4 [chromium] › test/web-adapter/adapter.spec.mjs:30:1 › Chinese composition sequences never commit on confirmation Enter; later blur commits once (349ms)
+  ✓   5 [chromium] › test/web-adapter/adapter.spec.mjs:40:1 › textarea preserves newline and only commits on blur (437ms)
+  ✓   6 [chromium] › test/web-adapter/adapter.spec.mjs:47:1 › modal keyboard trap, Escape, opener restoration and immediate reopen (579ms)
+  ✓   7 [chromium] › test/web-adapter/adapter.spec.mjs:56:1 › theme, RTL, scaling and safe area update without replacing controls (563ms)
+  ✓   8 [chromium] › test/web-adapter/adapter.spec.mjs:65:1 › slider keyboard and toggle pointer changes emit one commit and retain controlled state (418ms)
+  ✓   9 [chromium] › test/web-adapter/adapter.spec.mjs:72:1 › suspension and cleanup release nodes, listeners and platform resources (307ms)
+  ✓  10 [chromium] › test/web-adapter/adapter.spec.mjs:78:1 › slider pointer cancellation restores the accepted value without commit (388ms)
+  ✓  11 [chromium] › test/web-adapter/contracts.spec.mjs:10:1 › the exact recording sequence reaches the real backend, with stable resource and bounded writes (284ms)
+  ✓  12 [chromium] › test/web-adapter/contracts.spec.mjs:35:1 › 50 lifecycles release resources, window handlers, observers, animation requests and late events (408ms)
+  ✓  13 [chromium] › test/web-adapter/contracts.spec.mjs:68:1 › legacy defaults and event contracts remain independent of the portable opt-in modes (296ms)
+  ✓  14 [chromium] › test/web-adapter/contracts.spec.mjs:100:1 › unsupported slot and resource failures include key/revision; explicit rebuild releases partial mounts (250ms)
+  ✓  15 [chromium] › test/web-adapter/contracts.spec.mjs:117:1 › controlled rejection preserves text draft/error, discrete controls restore and revised text wins after composition (411ms)
+  ✓  16 [chromium] › test/web-adapter/contracts.spec.mjs:145:1 › scroll survives placement; RTL tabs use visual direction and long content stays within the viewport (361ms)
+  ✓  17 [chromium] › test/web-adapter/contracts.spec.mjs:159:1 › slotted button content activates once; non-dismissible modal blocks Escape and restores focus on explicit close (411ms)
+  ✓  18 [chromium] › test/web-adapter/contracts.spec.mjs:181:1 › PlatformView starts hidden in inactive slots and failure owns/reclaims the allocated resource (252ms)
+  ✓  19 [chromium] › test/web-adapter/contracts.spec.mjs:208:1 › typing, selection and browser undo survive an unrelated page update (364ms)
+  ✓  20 [chromium] › test/web-adapter/contracts.spec.mjs:218:1 › props-only updates keep focus and selection without a synchronous focus geometry read (278ms)
+  ✓  21 [chromium] › test/web-adapter/contracts.spec.mjs:232:1 › select value updates retain option nodes while labels and parent errors stay current (246ms)
+(node:62692) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [webkit] › test/web-adapter/adapter.spec.mjs:4:1 › all 18 semantic kinds render; registration stays focused; resource mounts once (1.8s)
+  ✓  23 [webkit] › test/web-adapter/adapter.spec.mjs:11:1 › selector and button keyboard input each produce one transaction; programmatic updates are silent (771ms)
+  ✓  24 [webkit] › test/web-adapter/adapter.spec.mjs:20:1 › updating parents and reordering preserves input identity, focus, draft and selection (876ms)
+  ✓  25 [webkit] › test/web-adapter/adapter.spec.mjs:30:1 › Chinese composition sequences never commit on confirmation Enter; later blur commits once (991ms)
+  ✓  26 [webkit] › test/web-adapter/adapter.spec.mjs:40:1 › textarea preserves newline and only commits on blur (864ms)
+  ✓  27 [webkit] › test/web-adapter/adapter.spec.mjs:47:1 › modal keyboard trap, Escape, opener restoration and immediate reopen (1.0s)
+  ✓  28 [webkit] › test/web-adapter/adapter.spec.mjs:56:1 › theme, RTL, scaling and safe area update without replacing controls (1.1s)
+  ✓  29 [webkit] › test/web-adapter/adapter.spec.mjs:65:1 › slider keyboard and toggle pointer changes emit one commit and retain controlled state (750ms)
+  ✓  30 [webkit] › test/web-adapter/adapter.spec.mjs:72:1 › suspension and cleanup release nodes, listeners and platform resources (710ms)
+  ✓  31 [webkit] › test/web-adapter/adapter.spec.mjs:78:1 › slider pointer cancellation restores the accepted value without commit (686ms)
+  ✓  32 [webkit] › test/web-adapter/contracts.spec.mjs:10:1 › the exact recording sequence reaches the real backend, with stable resource and bounded writes (640ms)
+  ✓  33 [webkit] › test/web-adapter/contracts.spec.mjs:35:1 › 50 lifecycles release resources, window handlers, observers, animation requests and late events (840ms)
+  ✓  34 [webkit] › test/web-adapter/contracts.spec.mjs:68:1 › legacy defaults and event contracts remain independent of the portable opt-in modes (639ms)
+  ✓  35 [webkit] › test/web-adapter/contracts.spec.mjs:100:1 › unsupported slot and resource failures include key/revision; explicit rebuild releases partial mounts (589ms)
+  ✓  36 [webkit] › test/web-adapter/contracts.spec.mjs:117:1 › controlled rejection preserves text draft/error, discrete controls restore and revised text wins after composition (819ms)
+  ✓  37 [webkit] › test/web-adapter/contracts.spec.mjs:145:1 › scroll survives placement; RTL tabs use visual direction and long content stays within the viewport (886ms)
+  ✓  38 [webkit] › test/web-adapter/contracts.spec.mjs:159:1 › slotted button content activates once; non-dismissible modal blocks Escape and restores focus on explicit close (844ms)
+  ✓  39 [webkit] › test/web-adapter/contracts.spec.mjs:181:1 › PlatformView starts hidden in inactive slots and failure owns/reclaims the allocated resource (605ms)
+  ✓  40 [webkit] › test/web-adapter/contracts.spec.mjs:208:1 › typing, selection and browser undo survive an unrelated page update (1.1s)
+  ✓  41 [webkit] › test/web-adapter/contracts.spec.mjs:218:1 › props-only updates keep focus and selection without a synchronous focus geometry read (777ms)
+  ✓  42 [webkit] › test/web-adapter/contracts.spec.mjs:232:1 › select value updates retain option nodes while labels and parent errors stay current (583ms)
+
+  42 passed (30.0s)

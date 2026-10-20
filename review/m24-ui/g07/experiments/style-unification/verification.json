@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-19",
+  "scope": [
+    "gallery",
+    "editor toolbar",
+    "settings",
+    "dialogs"
+  ],
+  "candidate": {
+    "path": "artifacts/m24-g07/style-unification/candidate4/ShaderLab.ipa",
+    "sha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168"
+  },
+  "platforms": {
+    "web": "passed: Chrome WebGPU visual and interaction checks",
+    "iphone": "passed: native shared UI and Engine GUI XCTest flows; screenshots inspected",
+    "ipad": "Same frozen candidate performance comparison completed: see ipad-comparison/verification.json; full styled UI touch acceptance pending",
+    "android": "new styled candidate not tested"
+  },
+  "checks": {
+    "uiUnit": 98,
+    "nativeUiUnit": 28,
+    "shaderlabMobileUnit": 44,
+    "shaderlabSharedUiUnit": 5,
+    "uiChromiumAndWebKit": 44,
+    "iphoneXCTest": {
+      "passed": 2,
+      "failed": 0
+    },
+    "typecheck": "passed",
+    "build": "Web and signed iOS passed"
+  },
+  "iphoneFlows": [
+    "gallery/new project",
+    "100/75/50/25 resolution",
+    "play/pause",
+    "settings nested select",
+    "dialog close/reopen",
+    "portrait/landscape",
+    "background/foreground",
+    "keyboard dismissal",
+    "code edit/save/reopen"
+  ],
+  "performance": {
+    "newHardwareTiming": "iPhone and iPad four-round comparisons completed: see iphone-comparison/ and ipad-comparison/. Full stability gate remains unpassed.",
+    "structuralReplay": "passed; 100 idle GUI frames: zero buffer allocation and zero uploads; disposed buffer and texture live count zero",
+    "g07OverallGate": "remains validating; no new stability or 50-page memory acceptance claimed"
+  },
+  "limitations": [
+    "GUI experimental preview remains Canvas only",
+    "Native system navigation, keyboard and sharing retain platform appearance",
+    "This is presentation alignment, not pixel-identical full application migration"
+  ]
+}

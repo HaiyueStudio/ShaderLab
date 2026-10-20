@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-20",
+  "status": "optimization validated; sustained preview CPU stability unresolved",
+  "candidateSha256": "14bd02986ca06d93c1192719a15b5b581d632d99f737fb2b8d222212334173b7",
+  "conditions": "User reported closing other background apps before the first run; no system-wide process enumeration or isolation claimed.",
+  "formal": {
+    "runs": 16,
+    "operations": 1600,
+    "roundsPerArm": 4,
+    "samplesFiltered": 0,
+    "allForeground": true,
+    "allReadbacksNonblank": true,
+    "instrumented": false,
+    "sameCandidate": true,
+    "schedule": [
+      [
+        "shared",
+        "optimized",
+        "shared-preview-baseline",
+        "optimized-preview-baseline"
+      ],
+      [
+        "optimized-preview-baseline",
+        "shared-preview-baseline",
+        "optimized",
+        "shared"
+      ],
+      [
+        "shared-preview-baseline",
+        "shared",
+        "optimized-preview-baseline",
+        "optimized"
+      ],
+      [
+        "optimized",
+        "optimized-preview-baseline",
+        "shared",
+        "shared-preview-baseline"
+      ]
+    ]
+  },
+  "threshold": 1.1,
+  "stability": {
+    "handlerPlusSettlingFramesCpu": {
+      "shared": {
+        "spread": 1.2894157020867059,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.655618207238151,
+        "passed": false
+      },
+      "shared-preview-baseline": {
+        "spread": 1.3451693206803441,
+        "passed": false
+      },
+      "optimized-preview-baseline": {
+        "spread": 1.040803995307245,
+        "passed": true
+      }
+    },
+    "idleFrameCpu": {
+      "shared": {
+        "spread": 1.8469038358752323,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.3030660890230248,
+        "passed": false
+      },
+      "shared-preview-baseline": {
+        "spread": 1.7277141287556974,
+        "passed": false
+      },
+      "optimized-preview-baseline": {
+        "spread": 1.4600536875318455,
+        "passed": false
+      }
+    },
+    "cadence": {
+      "shared": {
+        "spread": 1.029799624453587,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.0244700998628486,
+        "passed": true
+      },
+      "shared-preview-baseline": {
+        "spread": 1.041811461458263,
+        "passed": true
+      },
+      "optimized-preview-baseline": {
+        "spread": 1.0160714805393543,
+        "passed": true
+      }
+    },
+    "settled": {
+      "shared": {
+        "spread": 1.0234890200827313,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.0054384075776155,
+        "passed": true
+      },
+      "shared-preview-baseline": {
+        "spread": 1.0300389085777508,
+        "passed": true
+      },
+      "optimized-preview-baseline": {
+        "spread": 1.003374516821901,
+        "passed": true
+      }
+    }
+  },
+  "cadence": {
+    "shared": {
+      "count": 480,
+      "maximumMs": 18.058708429336548,
+      "over33_333ms": 0
+    },
+    "optimized": {
+      "count": 480,
+      "maximumMs": 18.426708459854126,
+      "over33_333ms": 0
+    },
+    "shared-preview-baseline": {
+      "count": 480,
+      "maximumMs": 18.651833295822144,
+      "over33_333ms": 0
+    },
+    "optimized-preview-baseline": {
+      "count": 480,
+      "maximumMs": 18.532416343688965,
+      "over33_333ms": 0
+    }
+  },
+  "tests": {
+    "mobile": 47,
+    "webMedia": 3,
+    "webgpu": "passed, including 14 keyboard state readbacks across both paths, examples, feedback, camera, HLSL, scales and scene switching",
+    "mobileTypecheck": "passed",
+    "webTypes": "passed",
+    "boundaries": "passed",
+    "signedIosBuild": "passed"
+  },
+  "systemTrace": {
+    "recorded": [
+      "artifacts/m24-g07/preview-cpu-20261020/gui-steady.trace",
+      "artifacts/m24-g07/preview-cpu-20261020/native-steady.trace"
+    ],
+    "export": "Both xctrace export --toc exited 139 and produced empty files. GUI crash report confirmed EXC_BAD_ACCESS / SIGSEGV. No call-stack or scheduling conclusions extracted.",
+    "template": "Time Profiler; attach ShaderLab only; 30s recording with last 10s retained; separate from formal benchmark"
+  },
+  "limitations": [
+    "Semantic commands exclude picker animation and touch-to-display latency.",
+    "Engine frame CPU includes deferred GUI work; native UIKit layout/compositor CPU is outside the engine and not measured.",
+    "Queue fence measures submitted GPU completion, not physical display presentation.",
+    "Engine debug counters disabled in both arms: Canvas returns no object for an empty bind group and Engine debug tracking throws. Resource snapshot only; no draw/upload/GPU duration claim.",
+    "GUI uses a full-screen GPU surface; shader target pixels are equal. Additional GUI pixel cost is intentional.",
+    "GUI uses direct retained bindings; shared application/controller are identical, but portable UI reconciliation is not used.",
+    "CPU-labelled metrics are synchronous elapsed wall durations, not OS thread CPU accounting; preemption is included.",
+    "Only 120 steady frames per run; short windows and runtime/system scheduling remain potential sources, not diagnosed causes."
+  ],
+  "defaultNativeRestored": true,
+  "overallG07Gate": "remains validating"
+}

@@ -1,0 +1,34 @@
+{
+  "capturedAt": "2026-10-18T22:42:14.627877+00:00",
+  "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+  "status": "passed",
+  "commands": {
+    "npm test": {
+      "status": "passed",
+      "sharedApplication": 30,
+      "sharedUI": 5,
+      "web": 225,
+      "mobile": 34
+    },
+    "Native adapter/callback/runtime tests": {
+      "status": "passed",
+      "tests": 25
+    },
+    "mobile typecheck": "passed",
+    "iOS signed device build": "passed",
+    "boundaries": "passed",
+    "diagnostic marker scan": {
+      "status": "passed",
+      "matches": []
+    },
+    "installed Native provenance": {
+      "status": "passed",
+      "files": 147
+    }
+  },
+  "limits": [
+    "Newest IPA has not been installed: iPhone disconnected; iPad explicitly deferred.",
+    "Existing device passes are tied to older artifacts.",
+    "No new Web performance or fresh-directory native build in this turn."
+  ]
+}

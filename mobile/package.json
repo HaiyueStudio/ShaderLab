@@ -8,7 +8,7 @@
     "node": ">=24.12"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run build:shared --prefix .. && tsc --noEmit",
     "test": "node --experimental-strip-types --test test/*.test.mjs",
     "bundle:android": "node scripts/bundle.mjs android",
     "bundle:ios": "node scripts/bundle.mjs ios",
@@ -23,8 +23,9 @@
     "test:gpu": "node test/gpu-browser.mjs"
   },
   "dependencies": {
-    "@haiyue/native": "0.1.4-shaderlab.0",
     "@haiyue/engine": "0.2.0",
+    "@haiyue/native": "0.1.4-m24.21",
+    "@haiyue/ui": "0.2.0-m24.6",
     "@nativescript/canvas": "2.1.18",
     "@nativescript/core": "9.1.1",
     "core-js-pure": "3.50.0"
@@ -34,8 +35,10 @@
     "@nativescript/ios": "9.0.3",
     "@nativescript/types": "9.0.0",
     "@nativescript/webpack": "5.0.38",
+    "@webgpu/types": "0.1.64",
     "nativescript": "9.1.1",
     "typescript": "5.7.3",
-    "@webgpu/types": "0.1.64"
+    "yauzl": "3.4.0",
+    "yazl": "3.3.1"
   }
 }

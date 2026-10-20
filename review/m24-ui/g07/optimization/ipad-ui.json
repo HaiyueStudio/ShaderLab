@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "artifactSha256": "c710e5adf01fad2efb1670811bd6708c688d610c91bf6b3be23834b791575de1",
+  "test": "SharedPageSmoke.testSharedEditor",
+  "artifact": "local artifacts/m24-g07/ios-tests/ipad-optimized-final.xcresult",
+  "durationSeconds": 59.998,
+  "scope": "Five actual resolution choices, play/pause, modal reopen, rotation/background, name and Done, actual visible keyboard key, save/reopen equality. Not physical IME or VoiceOver."
+}

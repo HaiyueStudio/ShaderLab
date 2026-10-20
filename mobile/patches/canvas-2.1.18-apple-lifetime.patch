@@ -1,0 +1,79 @@
+diff --git a/packages/canvas/src-native/canvas-ios/CanvasNative/Source/NSCCanvas.swift b/packages/canvas/src-native/canvas-ios/CanvasNative/Source/NSCCanvas.swift
+index d0f3554..f8fc805 100644
+--- a/packages/canvas/src-native/canvas-ios/CanvasNative/Source/NSCCanvas.swift
++++ b/packages/canvas/src-native/canvas-ios/CanvasNative/Source/NSCCanvas.swift
+@@ -561,12 +561,12 @@ public class NSCCanvas: UIView {
+ 	var enterBackgroundListener: (()-> Void)?
+ 	var becomeActiveListener: (()-> Void)?
+ 	private func setup(){
+-		self.enterBackgroundNotification = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil){ _ in
+-			self.enterBackgroundListener?()
++		self.enterBackgroundNotification = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil){ [weak self] _ in
++			self?.enterBackgroundListener?()
+ 		}
+ 		
+-		self.becomeActiveNotification = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { _ in
+-			self.becomeActiveListener?()
++		self.becomeActiveNotification = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [weak self] _ in
++			self?.becomeActiveListener?()
+ 		}
+ 	}
+ 	
+diff --git a/packages/canvas/src-native/canvas-ios/NSCTouchHandler.swift b/packages/canvas/src-native/canvas-ios/NSCTouchHandler.swift
+index e92c2ed..b4590fb 100644
+--- a/packages/canvas/src-native/canvas-ios/NSCTouchHandler.swift
++++ b/packages/canvas/src-native/canvas-ios/NSCTouchHandler.swift
+@@ -9,7 +9,7 @@ import Foundation
+ import UIKit
+ class NSCTouchHandler: NSObject {
+     
+-    private let view: NSCCanvas
++    private weak var view: NSCCanvas?
+     var gestureRecognizer: TouchGestureRecognizer?
+     var panRecognizer: UIPanGestureRecognizer?
+     var pinchRecognizer: UIPinchGestureRecognizer?
+@@ -243,7 +243,7 @@ class NSCTouchHandler: NSObject {
+          
+          sb += "}"
+          
+-         view.touchEventListener?(sb, gestureRecognizer)
++         view?.touchEventListener?(sb, gestureRecognizer)
+          
+          */
+     }
+@@ -262,7 +262,7 @@ class NSCTouchHandler: NSObject {
+         
+         sb += "}"
+         
+-        view.touchEventListener?(sb, gestureRecognizer)
++        view?.touchEventListener?(sb, gestureRecognizer)
+         
+     }
+     
+@@ -279,7 +279,7 @@ class NSCTouchHandler: NSObject {
+         
+         sb += "}"
+         
+-        view.touchEventListener?(sb, gestureRecognizer)
++        view?.touchEventListener?(sb, gestureRecognizer)
+     }
+     
+     private func onCancel(
+@@ -294,7 +294,7 @@ class NSCTouchHandler: NSObject {
+         append("y", y, &sb, true)
+         sb += "}"
+         
+-        view.touchEventListener?(sb, gestureRecognizer)
++        view?.touchEventListener?(sb, gestureRecognizer)
+     }
+     
+     private func onMove(
+@@ -331,7 +331,7 @@ class NSCTouchHandler: NSObject {
+             sb += "]"
+             
+             sb += "}"
+-            view.touchEventListener?(sb, gestureRecognizer)
++            view?.touchEventListener?(sb, gestureRecognizer)
+             
+             
+             return

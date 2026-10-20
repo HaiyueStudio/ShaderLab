@@ -1,0 +1,34 @@
+✔ Android keyboard observer detaches after attach merges its tree and ignores queued callbacks (19.631784ms)
+✔ embedded image fixture has valid PNG checksums and decodable pixel data (1.341102ms)
+✔ all 18 kinds mount from the independent shared package; unrelated updates preserve instances (32.480744ms)
+✔ Android uses an explicit image fallback without requesting iOS system symbols (16.195782ms)
+✔ programmatic toggle/text/slider writes and delayed setter echoes emit no application actions (14.534667ms)
+✔ Chinese composition is kept across unrelated renders; candidate confirmation does not commit (12.985092ms)
+✔ new authoritative text wins only after marked text is complete; disposed callbacks are inert (11.550231ms)
+✔ rejected toggle returns to accepted value and accepted slider commits once (11.698419ms)
+✔ stable keys move instances; hidden tabs cannot send actions (3.878265ms)
+✔ dialog programmatic close does not cancel; user close cancels and restores focus (35.652833ms)
+✔ 50 mount/unmount cycles release root observers, native input bindings and resources (664.154045ms)
+✔ rapid dialog reopen waits for the native asynchronous dismissal callback (31.205503ms)
+✔ capability failures identify a node and a failed renderer is disposable (1.151606ms)
+✔ throwing product disposers still release every observer and sibling (10.828995ms)
+✔ native Select cancel/reopen, stale resolution and option choice preserve controlled value (42.578827ms)
+✔ optional mobile entry does not pollute root or system exports (1.560956ms)
+✔ leaf value changes preserve native layout and typography while accessibility stays current (22.528243ms)
+✔ layout, clipping, environment and visibility changes still reach native controls (32.198076ms)
+✔ form labels and errors survive leaf changes and update with the parent (12.174989ms)
+✔ clipped PlatformView refreshes its native rectangle after hidden layout becomes visible (33.288282ms)
+✔ native leaf updates compare immutable props without serializing the control tree (11.056724ms)
+✔ value-only commits avoid redundant layout timers but real native layout still refreshes PlatformView bounds (24.013091ms)
+✔ accessibility value updates skip unchanged UIKit fields and preserve Android derived labels (22.853354ms)
+✔ iOS single-line controls avoid paragraph titles while multiline and Android keep theme spacing (21.13787ms)
+✔ retained ObjC callbacks release page captures on disposal, including jitless V8 (357.08078ms)
+✔ frame runtime releases disposed owners without clearing a newer host (421.73806ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2791.500376

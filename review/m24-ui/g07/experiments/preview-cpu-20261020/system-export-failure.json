@@ -1,0 +1,27 @@
+{
+  "command": "xcrun xctrace export --input <trace> --toc --output <xml>",
+  "bothExitCodes": 139,
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000000070020",
+    "rawCodes": [
+      1,
+      458784
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000000070020"
+  },
+  "triggeredStack": [
+    "objc_release",
+    "AutoreleasePoolPage::releaseUntil(objc_object**)",
+    "objc_autoreleasePoolPop",
+    "swift::runJobInEstablishedExecutorContext(swift::Job*)",
+    "swift_job_runImpl(swift::Job*, swift::SerialExecutorRef)",
+    "_dispatch_root_queue_drain.cold.4",
+    "_dispatch_root_queue_drain",
+    "_dispatch_worker_thread2",
+    "_pthread_wqthread",
+    "start_wqthread"
+  ],
+  "rawTracesRetained": true
+}

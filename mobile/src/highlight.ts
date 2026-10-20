@@ -1,5 +1,5 @@
 import { Color, TextView, isAndroid } from '@nativescript/core';
-import type { ShaderLanguage } from '../../web/dist/model.js';
+import type { ShaderLanguage } from './project';
 import { shaderSpans } from './highlight-tokens';
 /** Attribute-only updates preserve native selection, undo and IME composition. */
 export function applyShaderHighlight(editor: TextView, language: ShaderLanguage) {

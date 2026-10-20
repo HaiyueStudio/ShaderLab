@@ -1,0 +1,18 @@
+
+> @haiyue/shaderlab@0.1.0 test:shared:fresh
+> node test/shared-application/fresh-build.mjs
+
+{
+  "status": "passed",
+  "description": "fresh source-only directory, no Web directory, no platform packages, independent shared tsc build + MobileSession bundle + replay",
+  "inputs": [
+    "shared/dist/domain/values.js",
+    "shared/dist/domain/builtinTextures.js",
+    "shared/dist/domain/model.js",
+    "shared/dist/domain/sourceLanguage.js",
+    "shared/dist/application/cancellation.js",
+    "shared/dist/application/state.js",
+    "shared/dist/application/application.js",
+    "mobile/src/session.ts"
+  ]
+}

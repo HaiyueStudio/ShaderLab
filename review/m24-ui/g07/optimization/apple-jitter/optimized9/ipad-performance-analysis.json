@@ -1,0 +1,125 @@
+{
+  "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+  "source": "ipad-performance.json",
+  "status": "inconclusive",
+  "allSamplesPreserved": true,
+  "foregroundContinuous": true,
+  "handlerSlowSampleThresholdMs": 3,
+  "thresholdPurpose": "Descriptive count only; not an exclusion or acceptance gate.",
+  "runs": [
+    {
+      "round": 0,
+      "mode": "legacy",
+      "handlerMedianMs": 1.2089791670441628,
+      "handlerP95Ms": 1.6974166631698608,
+      "slowSamples": [
+        {
+          "index": 37,
+          "handlerMs": 4.945041656494141,
+          "scale": 0.25
+        }
+      ]
+    },
+    {
+      "round": 0,
+      "mode": "shared",
+      "handlerMedianMs": 1.4992708303034306,
+      "handlerP95Ms": 4.125500001013279,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 7.4437083303928375,
+          "scale": 0.75
+        },
+        {
+          "index": 8,
+          "handlerMs": 4.125500001013279,
+          "scale": 1
+        },
+        {
+          "index": 41,
+          "handlerMs": 4.7433333322405815,
+          "scale": 0.5
+        },
+        {
+          "index": 49,
+          "handlerMs": 4.212999999523163,
+          "scale": 0.75
+        },
+        {
+          "index": 53,
+          "handlerMs": 4.427416667342186,
+          "scale": 1
+        },
+        {
+          "index": 57,
+          "handlerMs": 4.125791668891907,
+          "scale": 0.25
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "shared",
+      "handlerMedianMs": 1.5034166723489761,
+      "handlerP95Ms": 1.6566249951720238,
+      "slowSamples": [
+        {
+          "index": 0,
+          "handlerMs": 4.908791676163673,
+          "scale": 0.75
+        },
+        {
+          "index": 37,
+          "handlerMs": 4.5072083324193954,
+          "scale": 0.25
+        },
+        {
+          "index": 49,
+          "handlerMs": 4.471291661262512,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "legacy",
+      "handlerMedianMs": 1.4015000015497208,
+      "handlerP95Ms": 1.6727500036358833,
+      "slowSamples": [
+        {
+          "index": 59,
+          "handlerMs": 4.946125000715256,
+          "scale": 0.75
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "legacy",
+      "handlerMedianMs": 1.4859791621565819,
+      "handlerP95Ms": 1.6931250095367432,
+      "slowSamples": [
+        {
+          "index": 37,
+          "handlerMs": 4.383000001311302,
+          "scale": 0.25
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "shared",
+      "handlerMedianMs": 1.479812502861023,
+      "handlerP95Ms": 1.627666674554348,
+      "slowSamples": [
+        {
+          "index": 12,
+          "handlerMs": 4.737874999642372,
+          "scale": 0.25
+        }
+      ]
+    }
+  ],
+  "interpretation": "The first shared round has six >3ms samples, the other shared rounds have three and one. The frozen 100-sample p95 gate therefore fails stability. This clean build did not instrument GC; attributing each iPad slow sample to GC would require separate diagnostics."
+}

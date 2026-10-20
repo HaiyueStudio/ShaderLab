@@ -1,0 +1,8 @@
+
+> @haiyue/shaderlab-mobile@0.1.0 typecheck
+> npm run build:shared --prefix .. && tsc --noEmit
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json && tsc -p shared/tsconfig.views.json && node scripts/build-presentation.mjs
+

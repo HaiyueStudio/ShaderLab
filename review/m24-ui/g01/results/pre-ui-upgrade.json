@@ -1,0 +1,17 @@
+{
+  "capturedAt": "2026-10-16T10:17:29.554Z",
+  "head": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+  "dirty": " M README.md\n M mobile/src/pages.ts\n M mobile/test/gpu-browser.mjs\n M mobile/test/ios/NavigationSmoke.swift\n",
+  "ui": "0.1.2",
+  "engineWeb": "0.1.0",
+  "hashes": {
+    "package.json": "4a9647dbab8e49f308a86179cfc39006f46776cc33fb4166f31fed05da404c93",
+    "package-lock.json": "9b00354cb260ada8dc6bc38b8c41a578244d77bdacae22320325746e20cb685d",
+    "web/package.json": "597d22f173f8e58294f571f0c5f58f34d85aafc304b1af6c97ea12ae6409425d",
+    "mobile/package.json": "43b15c6fe386058b1b83c191a4d789173dfb7c40c4f1317d5a8373acd4ff5589",
+    "web/src/model.ts": "d278516a8db4467a77a6954403ba217650b92dcf2c731c695365ac3a3a0a13d1",
+    "web/src/main.ts": "77a6023545b7c7b618eae335db7c1cc809a02ce25bf8cfc2acc4eec9076a33d3",
+    "mobile/src/pages.ts": "d7d96b9937500d7d41d1c9e857c272897f37696bb33eb65f620cd53e88f04afa",
+    "mobile/src/session.ts": "4cb8b17c4b808340d99766b3abdcef2ebb0b6de83034574f98ced2cc00c3781d"
+  }
+}

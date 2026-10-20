@@ -14,23 +14,31 @@
   "scripts": {
     "build": "npm run build:app -w ./web",
     "typecheck": "npm run build:types -w ./web && npm run typecheck -w ./web && npm run typecheck -w ./mobile",
-    "test": "npm test -w ./web && npm test -w ./mobile",
+    "test": "npm run test:shared && npm run test:shared-ui && npm test -w ./web && npm test -w ./mobile",
     "preview": "npm run preview -w ./web",
     "test:browser": "npm run test:browser -w ./web",
     "build:android": "npm run build:android -w ./mobile",
     "build:ios": "npm run build:ios -w ./mobile",
     "bundle:android": "npm run bundle:android -w ./mobile",
     "bundle:ios": "npm run bundle:ios -w ./mobile",
-    "check:boundaries": "node scripts/check-boundaries.mjs"
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "build:shared": "tsc -p shared/tsconfig.json && tsc -p shared/tsconfig.views.json && node scripts/build-presentation.mjs",
+    "test:shared": "npm run build:shared && node --test test/shared-application/*.test.mjs",
+    "test:shared:fresh": "node test/shared-application/fresh-build.mjs",
+    "test:shared-ui": "npm run build:shared && node --test test/shared-ui/*.test.mjs",
+    "test:shared-ui:browser": "node test/shared-ui/browser.mjs",
+    "test:shared-ui:performance": "node test/shared-ui/performance.mjs",
+    "test:shared-ui:fresh": "node test/shared-ui/fresh-build.mjs"
   },
   "devDependencies": {
     "@haiyue/editor-plugin-sdk": "file:vendor/haiyue-editor-plugin-sdk-0.1.0.tgz",
     "@haiyue/editor-platform": "file:vendor/haiyue-editor-platform-0.1.0.tgz",
     "@haiyue/editor-app-kit": "file:vendor/haiyue-editor-app-kit-0.1.0.tgz",
     "@rollup/plugin-terser": "^1.0.0",
-    "@haiyue/native": "file:vendor/haiyue-native-0.1.4-shaderlab.0.tgz",
+    "@haiyue/native": "file:vendor/haiyue-native-0.1.4-m24.21.tgz",
     "esbuild": "0.25.0",
-    "webpack": "5.111.1"
+    "webpack": "5.111.1",
+    "@haiyue/ui": "file:vendor/haiyue-ui-0.2.0-m24.6.tgz"
   },
   "overrides": {
     "webpack": "5.111.1"

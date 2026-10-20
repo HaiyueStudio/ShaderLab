@@ -1,0 +1,88 @@
+{
+  "status": "measurement completed; full CPU stability gate not passed",
+  "candidateSha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168",
+  "roundsPerArm": 4,
+  "operationsPerArm": 400,
+  "samplesFiltered": 0,
+  "backgroundInterruptions": 0,
+  "nonblankReadbackRuns": 8,
+  "threshold": {
+    "maxRoundP95OverMinRoundP95": 1.1
+  },
+  "stability": {
+    "engineFrameCpu": {
+      "shared": {
+        "spread": 1.566551089708589,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.049981755763372,
+        "passed": true
+      }
+    },
+    "handlerPlusSettlingFramesCpu": {
+      "shared": {
+        "spread": 1.1916527550251468,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.1171890984114814,
+        "passed": false
+      }
+    },
+    "idleFrameCpu": {
+      "shared": {
+        "spread": 1.2191537701786914,
+        "passed": false
+      },
+      "optimized": {
+        "spread": 1.0267815088083667,
+        "passed": true
+      }
+    },
+    "cadence": {
+      "shared": {
+        "spread": 1.0990795757125351,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.0124023393567827,
+        "passed": true
+      }
+    },
+    "settled": {
+      "shared": {
+        "spread": 1.0070069020632506,
+        "passed": true
+      },
+      "optimized": {
+        "spread": 1.008995679712273,
+        "passed": true
+      }
+    }
+  },
+  "cadence": {
+    "shared": {
+      "count": 480,
+      "maxMs": 19.290124997496605,
+      "intervalsOver33_333ms": 0
+    },
+    "optimized": {
+      "count": 480,
+      "maxMs": 19.66550000011921,
+      "intervalsOver33_333ms": 0
+    }
+  },
+  "scope": "Editor resolution changes and continuous preview; semantic dispatch, not tap latency or gallery/settings animation performance.",
+  "limitations": [
+    "Semantic commands exclude picker animation and touch-to-display latency.",
+    "Engine frame CPU includes deferred GUI work; native UIKit layout/compositor CPU is outside the engine and not measured.",
+    "Queue fence measures submitted GPU completion, not physical display presentation.",
+    "Engine debug counters disabled in both arms: Canvas returns no object for an empty bind group and Engine debug tracking throws. Resource snapshot only; no draw/upload/GPU duration claim.",
+    "GUI uses a full-screen GPU surface; shader target pixels are equal. Additional GUI pixel cost is intentional.",
+    "GUI uses direct retained bindings; shared application/controller are identical, but portable UI reconciliation is not used."
+  ],
+  "build": "Same frozen Debug IPA in both arms; no app/source changes or timing retries",
+  "g07Overall": "remains validating",
+  "restoredDefaultNativeEntry": true
+}

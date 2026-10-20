@@ -1,0 +1,104 @@
+{
+  "status": "passed",
+  "capturedAt": "2026-10-19T00:08:24.252309+00:00",
+  "artifactSha256": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+  "device": {
+    "architecture": "arm64e",
+    "modelName": "iPad Air (4th generation)",
+    "osBuildNumber": "23H30",
+    "osVersion": "26.7.1",
+    "platform": "iOS"
+  },
+  "test": "SharedPageSmoke/testSharedEditor",
+  "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+  "reason": "Original unchanged full UI scenario passed after user enabled UI Automation and the obstructing AssistiveTouch handle was moved to the lower-right edge. App IPA unchanged; earlier initialization and obstruction failures retained.",
+  "attempts": [
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui.xcresult",
+      "status": "initialization-failed",
+      "log": "ipad-ui.log",
+      "logSha256": "75230189f56a0de8cae69bce7e79a539c0f032122623cdcf4bba466e68dc6be2",
+      "error": "The test runner failed to initialize for UI testing. (Underlying Error: Timed out while enabling automation mode.)",
+      "intendedTestExecuted": false
+    },
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-retry.xcresult",
+      "status": "initialization-failed",
+      "log": "ipad-ui-retry.log",
+      "logSha256": "9b367caa6dc2a5d7c13e9046cb37eaacf5f0ba72d6a3383fe51db2496666f06f",
+      "error": "The test runner failed to initialize for UI testing. (Underlying Error: Timed out while enabling automation mode.)",
+      "intendedTestExecuted": false
+    },
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-fresh-runner.xcresult",
+      "status": "initialization-failed",
+      "log": "ipad-ui-fresh-runner.log",
+      "logSha256": "4e98a511c6e87d577c6b699f666d511e435015c6a3e74d7b8744afe9b56dc351",
+      "error": "The test runner failed to initialize for UI testing. (Underlying Error: Timed out while enabling automation mode.)",
+      "intendedTestExecuted": false,
+      "freshRunner": true
+    },
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-automation-enabled.xcresult",
+      "status": "blocked-by-system-overlay",
+      "log": "ipad-ui-automation-enabled.log",
+      "logSha256": "cc0b13c365196e20dd3cbcb0b8e8dc68aebcb413bc800114550e751a1c51c637",
+      "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+      "error": "New button tap opened AssistiveTouch menu; save control never appeared.",
+      "intendedTestExecuted": true,
+      "completed": false,
+      "diagnosticOnly": false
+    },
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult",
+      "status": "blocked-by-system-overlay",
+      "log": "ipad-ui-tap-diagnostic.log",
+      "logSha256": "e522963f004d077a7da0b3e13ca48c18624c8dd19a31d4f3a16ce0d555214037",
+      "testSourceSha256": "d3461757de2cd7f5fc2d8098185dd6a28d8ee3615da7a605d71aede48dc0a40e",
+      "error": "New button tap opened AssistiveTouch menu; save control never appeared.",
+      "intendedTestExecuted": true,
+      "completed": false,
+      "diagnosticOnly": true
+    },
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-overlay-cleared.xcresult",
+      "status": "passed",
+      "log": "ipad-ui-overlay-cleared.log",
+      "logSha256": "53de93c020026407783538f27174fb929b7f00f9263335b41d8faabf0fe49ff5",
+      "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+      "intendedTestExecuted": true,
+      "completed": true,
+      "passedTests": 1,
+      "failedTests": 0
+    }
+  ],
+  "remaining": [],
+  "diagnosis": "ipad-ui-diagnosis.json",
+  "checks": [
+    "75%, 50%, 25%, 100%, 75% actual native picker; preview remains active",
+    "pause/resume",
+    "settings modal landscape, background/foreground, close and reopen",
+    "single-line field keyboard Done dismiss; value retained",
+    "multiline editor actual space key and hide keyboard",
+    "GLSL conversion opened twice; source preserved",
+    "save and reopen; name and edited source preserved"
+  ],
+  "screenshots": [
+    {
+      "path": "screens/ipad-shared-preview-75.png",
+      "sha256": "ec756c56585347802f95b284174c0829add969f4b9934c05dba6a2c16291ab99"
+    },
+    {
+      "path": "screens/ipad-settings-landscape.png",
+      "sha256": "16e30bb3b4df64508c2c297f1ace658857a53ace4df50c39d31246230b698ed5"
+    },
+    {
+      "path": "screens/ipad-saved-reopened.png",
+      "sha256": "9bed804c7a2c85db10b5504f0b09f20d095ed03f04cbf39864781c6b91937482"
+    }
+  ],
+  "limitations": [
+    "System UI automation does not replace physical Chinese IME, VoiceOver or iPad split-view acceptance.",
+    "UI interaction pass does not change the inconclusive performance result."
+  ]
+}

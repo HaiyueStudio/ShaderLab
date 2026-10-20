@@ -1,0 +1,23 @@
+shared 0 {
+  handler: 1.6440832614898682,
+  engineFrameCpu: 1.8722500801086426,
+  handlerPlusNextFrameCpu: 3.6125833988189697,
+  settled: 51.214333057403564,
+  queueWait: 17.50724983215332,
+  submitToComplete: 68.147958278656,
+  cadence: 17.007083415985107,
+  idleFrameCpu: 0.795041561126709,
+  handlerPlusSettlingFramesCpu: 5.541375398635864
+}
+optimized 0 {
+  handler: 0.5702083110809326,
+  engineFrameCpu: 6.122499942779541,
+  handlerPlusNextFrameCpu: 6.562666416168213,
+  settled: 51.506500005722046,
+  queueWait: 18.58637499809265,
+  submitToComplete: 68.48216676712036,
+  cadence: 17.97683334350586,
+  idleFrameCpu: 3.4661247730255127,
+  handlerPlusSettlingFramesCpu: 12.994791269302368
+}
+{}

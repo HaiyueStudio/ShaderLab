@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-16",
+  "status": "passed",
+  "resolves": "../m24-ui/g01/known-rendering-issue.md",
+  "history": "G01 冻结记录保留修复前的失败结果；本记录为之后的修复验收，不改写历史基线。",
+  "changes": [
+    "GLSL→WGSL 的局部矩阵元素通过调用处值快照读取，保留原位置写回，覆盖 inout、复合赋值和前后自增。",
+    "多条 for 更新语句使用入口条件保护和 continuing 尾部 break-if，保持 continue 后完整更新以及条件求值次数。"
+  ],
+  "diagnosis": {
+    "observed": "本机 Chrome/Metal 路径出现矩阵旧值读取及 continue 后循环更新结果错误；未确定是 Dawn 还是下层 Metal 编译器的具体优化环节。",
+    "matrix": {
+      "before": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        64,
+        128,
+        191,
+        255
+      ],
+      "after": [
+        [
+          64,
+          128,
+          191,
+          255
+        ],
+        [
+          64,
+          128,
+          191,
+          255
+        ],
+        [
+          64,
+          128,
+          191,
+          255
+        ],
+        [
+          64,
+          128,
+          191,
+          255
+        ]
+      ]
+    },
+    "loop": {
+      "before": {
+        "i": 2,
+        "j": 2,
+        "total": 5,
+        "visits": 2
+      },
+      "expected": {
+        "i": 3,
+        "j": 0,
+        "total": 6,
+        "visits": 2
+      },
+      "originalEmitterAlsoFailed": true
+    },
+    "preFixEvidence": "before.json",
+    "wgslSemantics": "https://www.w3.org/TR/WGSL/"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "webUnitTests": 221,
+    "mobileUnitTests": 7,
+    "focusedGpuCases": 8,
+    "browserSmokeChecks": 32,
+    "arrays": "passed",
+    "wgslExportPasses": 81,
+    "build": "passed",
+    "physicalDevices": "not-run-in-this-fix"
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "darwin",
+    "architecture": "x64",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "rdna-1",
+      "device": "",
+      "description": "",
+      "isFallbackAdapter": false
+    }
+  },
+  "source": {
+    "head": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+    "dirty": true,
+    "sha256": {
+      "web/src/glsl.ts": "bc7b15c5f9f5b11b479164e1dd0e72beabec37c84bb8108bc012fd42938bc079",
+      "web/src/glslOutputs.ts": "dfb7947015d66333768b270a3c3f144f633285bca133011a937c56ccf3361cd3",
+      "web/src/glslUpdates.ts": "ecd3e8a2f47747488a155becb37ee52eb2df4175af21b6e85477f0a56279ba2c",
+      "web/test/structs-browser.mjs": "7a782a8349598504cd7cdf4948f6d792c12e32a1d19bd9b1d5214e6c15cc6ec5",
+      "web/test/glsl-matrices.test.mjs": "c023a0e0d04c5244b09411c02c733c06c407e070e252cd01089e68ebdc671068",
+      "web/test/glsl-outputs.test.mjs": "75c597fe05715315c52ec2124e84fd4f38137bf815dbbf18349d5764698e0df6",
+      "web/test/glsl-comma-statements.test.mjs": "d2fdfc5defa6e470e99d232e2cd3fa7eb77f48c224e5d2898a39e88b57261157",
+      "web/test/fixtures/structs.glsl": "39a024888f7d28b5f3d5af373106465db077ea86b99cc6838a009cc7609d2e82",
+      "web/test/fixtures/comma-statements.glsl": "62adfafcf2f15e08ec07445b8fb59aa8448ac001a069b0c14d767e5081916c0f",
+      "package-lock.json": "ad1a8e231ffd4fcd4874b8e56977cc16354e4cd6d29a9875eceba84cc1651b8f"
+    },
+    "buildHash": "3520ef8c0591bb637daa7a87d4e6c3dcdd8651bf50fcd5d6eea654c1f9ef1a4d"
+  },
+  "commands": [
+    "npm run typecheck",
+    "npm test",
+    "npm run build",
+    "node web/test/structs-browser.mjs",
+    "node web/test/browser-smoke.mjs",
+    "node web/test/arrays-browser.mjs",
+    "node web/test/wgsl-browser.mjs"
+  ],
+  "reports": [
+    "gpu-cases.json",
+    "browser-smoke.json",
+    "arrays.json",
+    "wgsl-roundtrip.json"
+  ]
+}

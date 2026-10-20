@@ -6,8 +6,9 @@ import { createHash } from 'node:crypto';
 import { runEditorBrowserScenario } from '../../scripts/editor-e2e/browserDriver.mjs';
 
 const root = resolve(import.meta.dirname, '../..'), output = resolve(root, 'web/artifacts/browser');
+const buildPath = process.env.SHADERLAB_TEST_BUILD ?? 'web/app-dist';
 const downloads = resolve(output, `downloads-${Date.now()}`); mkdirSync(downloads, {recursive:true});
-const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.html', downloadDirectory:downloads,
+const report = await runEditorBrowserScenario({root, route:buildPath+'/index.html', downloadDirectory:downloads,
   failureScreenshotPath:resolve(output,'failure.png'), timeoutMs:45000,
   readinessExpression:'document.querySelector("#app")?.getAttribute("aria-busy") === "false"',
   scenario: async driver => {
@@ -93,27 +94,38 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
     await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38});
     await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38}); await nextPaint();
     assert.ok(await splitRatio('code-split') < originalCode);
+    const codeBeforeTyping = await evaluate('shaderEditor.getProject().passes[4].code');
     await click('document.querySelector(".cm-content")');
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35});
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35});
+    const isMac = await evaluate('navigator.platform.startsWith("Mac")');
+    const endKey = isMac ? {key:'ArrowDown',code:'ArrowDown',modifiers:4,windowsVirtualKeyCode:40} : {key:'End',code:'End',modifiers:2,windowsVirtualKeyCode:35};
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',...endKey});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',...endKey});
     await cdp.call('Input.insertText',{text:'\n// edited inside split pane'});
     await waitFor(()=>evaluate('shaderEditor.getProject().passes[4].code.includes("// edited inside split pane")'),'slotted CodeMirror editing');
+    assert.equal(await evaluate('shaderEditor.getProject().passes[4].code'),codeBeforeTyping+'\n// edited inside split pane','comment is appended without corrupting shader code');
     assert.equal(await evaluate('getComputedStyle(document.querySelector(".cm-scroller")).display'),'flex');
     const storedRatio = await splitRatio('workspace-split');
     assert.equal(await evaluate('document.querySelectorAll("hy-select").length'),10);
     const optionColors = await evaluate(`(()=>{const s=${el('preview-scale')}.shadowRoot.querySelector('select'); return Array.from(s.options).map(o=>{const c=getComputedStyle(o);return {foreground:c.color,background:c.backgroundColor,scheme:getComputedStyle(s).colorScheme};});})()`);
     assert.ok(optionColors.every(c=>c.scheme==='dark' && ((c.background==='rgb(28, 34, 44)' && c.foreground==='rgb(233, 237, 243)') || (c.background==='rgb(53, 71, 41)' && c.foreground==='rgb(216, 247, 183)'))),JSON.stringify(optionColors));
-    const selectScale = async key => {
-      await click(`${el('preview-scale')}.shadowRoot.querySelector('select')`);
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:key==='Home'?36:40});
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key,code:key,windowsVirtualKeyCode:key==='Home'?36:40});
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    // macOS headless Chrome does not route CDP keys through the native select
+    // popup (also reproduced with a plain HTML select). Exercise the native
+    // control's input/change contract here; physical popup keyboard is a device gate.
+    const selectScale = async value => {
+      await evaluate(`(() => {
+        const select = ${el('preview-scale')}.shadowRoot.querySelector('select');
+        if (!Array.from(select.options).some(option => option.value === ${JSON.stringify(value)} && !option.disabled)) throw new Error('Missing enabled scale option');
+        select.focus(); select.value = ${JSON.stringify(value)};
+        select.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      })()`);
     };
-    await selectScale('ArrowDown');
+    await selectScale('0.75');
+    await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.75 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select includes the 75 percent render scale');
+    await selectScale('0.5');
     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.5 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select changes render scale and renders');
     const halfWidth = (await pixels()).width;
-    await selectScale('Home');
+    await selectScale('1');
     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===1 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'UI select restores full scale and renders');
     assert.ok(Math.abs((await pixels()).width-halfWidth*2)<=2);
     await click(`${el('auto-run')}.shadowRoot.querySelector('label')`);
@@ -255,8 +267,8 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
     const sourceInput = async value => {
       await evaluate('document.getElementById("glsl-source").scrollIntoView({block:"center"})');
       await click('document.querySelector("#glsl-source .cm-scroller")');
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});
-      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',modifiers:2,windowsVirtualKeyCode:65});
+      await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',modifiers:isMac?4:2,windowsVirtualKeyCode:65});
+      await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',modifiers:isMac?4:2,windowsVirtualKeyCode:65});
       await cdp.call('Input.insertText',{text:value}); await nextPaint();
     };
     await sourceInput('#define F(a,b) a+b\nvoid mainImage(out vec4 c,in vec2 p){c=vec4(F(1.0));}');
@@ -282,14 +294,14 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
     await sourceInput(macroSource+'\n// changed'); assert.equal(await evaluate(`${el('apply-glsl')}.disabled`),true);
     assert.match(await evaluate(`${el('glsl-messages')}.textContent`),/重新翻译/);
     assert.equal(await evaluate('document.querySelector("#glsl-result .cm-content").textContent.trim()'),'');
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'z',code:'KeyZ',modifiers:2,windowsVirtualKeyCode:90});
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'z',code:'KeyZ',modifiers:2,windowsVirtualKeyCode:90});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'z',code:'KeyZ',modifiers:isMac?4:2,windowsVirtualKeyCode:90});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'z',code:'KeyZ',modifiers:isMac?4:2,windowsVirtualKeyCode:90});
     assert.equal(await evaluate('document.querySelector("#glsl-source .cm-content").textContent.includes("// changed")'),false,'undo restores the previous GLSL source');
     await evaluate('document.querySelector("#glsl-dialog .dialog-header").scrollIntoView({block:"nearest"})');
     await click('document.querySelector("#glsl-dialog .dialog-header button")'); await click(el('glsl-button'));
     assert.ok(await evaluate('document.querySelector("#glsl-source .cm-content").textContent.includes("#define BASE")'));
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',modifiers:2,windowsVirtualKeyCode:13});
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',modifiers:2,windowsVirtualKeyCode:13});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',modifiers:isMac?4:2,windowsVirtualKeyCode:13});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',modifiers:isMac?4:2,windowsVirtualKeyCode:13});
     assert.equal(await evaluate(`${el('apply-glsl')}.disabled`),false,'Ctrl+Enter translates after reopening');
     await click(el('apply-glsl'));
     await waitFor(()=>evaluate(`!${el('compile')}.disabled && !${el('glsl-dialog')}.open`),'macro shader applied and compiled');
@@ -419,10 +431,10 @@ const report = await runEditorBrowserScenario({root, route:'web/app-dist/index.h
       return w;
     };
     const coordFullWidth=await checkCoordinates();
-    await selectScale('ArrowDown');
+    await selectScale('0.5');
     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===0.5 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'gl_FragCoord at half resolution');
     const coordHalfWidth=await checkCoordinates();assert.ok(Math.abs(coordHalfWidth*2-coordFullWidth)<=2);
-    await selectScale('Home');
+    await selectScale('1');
     await waitFor(()=>evaluate('shaderEditor.getProject().preview.scale===1 && !document.getElementById("compile").disabled && shaderEditor.getStatus().frame>0'),'gl_FragCoord restores full resolution');
     assert.equal(await checkCoordinates(),coordFullWidth);
     checks.push('gl_FragCoord translates through API/UI, resolves in helpers and globals before user initialization, stays independent of a mutated mainImage argument, matches pixel centers at two resolutions, and preserves image/Buffer sampling orientation');
@@ -658,8 +670,8 @@ fn mainImage(p: vec2f) -> vec4f {
     assert.deepEqual(await savedProjects(),firstSaved,'edits and returning home do not overwrite a saved project');
     await click(el('nav-editor'));
     assert.equal(await evaluate('shaderEditor.getProject().passes[4].code'),editedCode);
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'s',code:'KeyS',modifiers:2,windowsVirtualKeyCode:83});
-    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'s',code:'KeyS',modifiers:2,windowsVirtualKeyCode:83});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyDown',key:'s',code:'KeyS',modifiers:isMac?4:2,windowsVirtualKeyCode:83});
+    await cdp.call('Input.dispatchKeyEvent',{type:'keyUp',key:'s',code:'KeyS',modifiers:isMac?4:2,windowsVirtualKeyCode:83});
     await waitFor(()=>evaluate(`${el('save-state')}.textContent==='已保存到此浏览器'`),'keyboard save');
     const resaved=await savedProjects();assert.equal(resaved.length,1);assert.equal(resaved[0].project.passes[4].code,editedCode);
     await call('shader.code.set',{pass:'image',code:translated.code});
@@ -734,7 +746,7 @@ fn mainImage(p: vec2f) -> vec4f {
     checks.push('trash icon has tooltip and accessible name; cancel keeps the project, confirm deletes it, and navigation cannot recreate it');
     driver.assertNoBrowserErrors();
     return {schemaVersion:1,status:'passed',generatedAt:new Date().toISOString(),checks,browser:await evaluate('navigator.userAgent'),adapter:await evaluate('(async()=>{const a=await navigator.gpu.requestAdapter();const i=a.info;return {vendor:i.vendor,architecture:i.architecture,device:i.device,description:i.description,isFallbackAdapter:i.isFallbackAdapter};})()'),
-      revision:(()=>{try{return execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();}catch{return 'uncommitted-migration';}})(),dirty:Boolean(execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim()),buildHash:JSON.parse(readFileSync(resolve(root,'web/app-dist/app-manifest.json'))).buildHash,
+      revision:(()=>{try{return execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();}catch{return 'uncommitted-migration';}})(),dirty:Boolean(execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim()),buildHash:JSON.parse(readFileSync(resolve(root,buildPath,'app-manifest.json'))).buildHash,
       fixtureHash:createHash('sha256').update(readFileSync(fixture)).digest('hex')};
   }
 });

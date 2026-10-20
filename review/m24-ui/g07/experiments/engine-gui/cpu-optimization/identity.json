@@ -1,0 +1,74 @@
+{
+  "candidate": "cpu-opt4",
+  "artifactSha256": "f99875d5a092699c136dfcbf23d1ec059f01f3509e71b738321793b0a9a4be4c",
+  "engineBase": "0.2.0",
+  "enginePatch": {
+    "baseVersion": "0.2.0",
+    "originalHash": "73e59fd3be0b6dc953af547e7429048416b158ffbb3d1a32eba8ee8a68b140bf",
+    "sources": {
+      "GuiBatch": "3002ead6461ea44314b12613f591feec866b71a9912cac6c0f3409aa067667d1",
+      "GuiTextBatch": "454151b2b3bc8f6349b2d37dbf0e3cc74da46c318ee647910a7ef9a6a17eb470",
+      "GuiImageBatch": "73be26ede15a165cd7d5628aac750572169509d7f9c4de6f7486fcdf55feea46",
+      "GuiShapeRenderer": "7d586496146d5c86e24c7da1a9e78b5945e0a7867c33e441a97dac25f0db09da",
+      "GuiTextRenderer": "a74c8f0e33a8edee5f9e1651660f7330e6bda4f844bd48249ac93bce2fc0b9ac",
+      "GuiImageRenderer": "ff2ba0fa41893bf425bc35166eeeed304a793312c6438bbf77a58a877c3d7598",
+      "GuiCommandCache": "72fdf124ff0525ba2657c2c95c462011c8798ed98afeb50fef9ec29d3c435e39"
+    },
+    "outputHash": "6e636dd9414829d441309e754a79ce57f7a18b8284c07ce969e68c07fe65b5a1"
+  },
+  "engineSourceBaseCommit": "e932ef91df917a2d1856155573743f0528035785",
+  "dependencies": {
+    "@haiyue/engine": "0.2.0",
+    "@haiyue/native": "0.1.4-m24.15",
+    "@haiyue/ui": "0.2.0-m24.4",
+    "@nativescript/canvas": "2.1.18",
+    "@nativescript/core": "9.1.1"
+  },
+  "sourceSha256": {
+    "mobile/src/experiments/gui-ui/page.ts": "cb1fe2b81442704cd2e1def1e7d113717ef1b633ba133452e944e12dfd89a731",
+    "mobile/src/experiments/gui-ui/view.ts": "869b77c4232de9bac02e3b80967f849a6258f24d94087043abc0f6e2ece75d0f",
+    "mobile/src/experiments/gui-ui/sampling.ts": "8333d4895005dadd614b16d2da747a675b3134a324b8adbe9ee75e0f21e84bbb",
+    "mobile/src/experiments/gui-ui/profile.ts": "4307787ecd5773eae7e2af8a606e049d1e75280eceb08b12ea15b2da9c8b4221",
+    "mobile/scripts/gui-engine-experiment-loader.cjs": "e843539c94a411e8bd559a6c321cb75ced5ff5afc8882a079a4e3b2dcad27eaf",
+    "mobile/webpack.config.js": "43619a0d7c940afa42e991cfa13ffb778065b1d3ad6e97e700fcf608129b8b45",
+    "mobile/test/gui-cpu-comparison.mjs": "95ccd79eb7cb17ff725a4886a596162ba3f7c61c3bbf046bc43ca3c916fc9bcb",
+    "mobile/test/ios/GuiExperimentSmoke.swift": "ebf5048e238e1b63cb31227bd473759d8772c4af6c9f8bcb5a2d3fbe02ca72d9",
+    "mobile/src/gpu-runtime.ts": "5dc77bc7d9828ce967ecaa0d2f72307533575953982815c9ca52770110c326f9",
+    "mobile/src/pages.ts": "0594be8684fa362b6b46efe67435f7d4a4bb30fa8306ed4b91b0d91d92345501",
+    "mobile/src/app.ts": "66247d2fecbc0e301f6760e2e4fb925353a64100c9905a873b4a0aa4e48cd329"
+  },
+  "testProtocol": {
+    "arms": [
+      "shared",
+      "baseline",
+      "optimized"
+    ],
+    "rounds": 3,
+    "operationsPerRound": 100,
+    "warmupFrames": 30,
+    "idleFrames": 150,
+    "idleRecordedFrames": 120,
+    "shaderBasePixels": [
+      512,
+      288
+    ],
+    "order": [
+      [
+        "shared",
+        "baseline",
+        "optimized"
+      ],
+      [
+        "optimized",
+        "shared",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "optimized",
+        "shared"
+      ]
+    ],
+    "instrumentedFormalRuns": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "nativeTests": 29,
+  "uiTests": 98,
+  "webAdapterChromiumWebKit": 42,
+  "webTests": 225,
+  "sharedViewTests": 5,
+  "mobileRegressionReference": "../optimized11/mobile-tests.log",
+  "mobileTypecheck": "passed",
+  "uiTypecheckAndBuild": "passed",
+  "publicUIEntrypoints": 39,
+  "diagnosticHooks": "absent",
+  "publicVersionsChanged": false,
+  "externalSourceHashes": {
+    "UI/src/portable/page.ts": "92281fbbe1276be45eec27ccb94fac0b3130f7d36ec8bb8e186ab204cfb09ed4",
+    "UI/test/portable/page.test.mjs": "1ed9d2c99bb00fe59514be875df4be5e175645aaea040864c2ac30bfb38581be",
+    "Native/bridge/ui/nativescript/platform.ios.ts": "74674be71a5682a0c6a29d7a3e2f1131c4a5041f697b8fec8e8fad08c418d8d3",
+    "Native/bridge/ui/nativescript/controls.ts": "adfb64365fdec6e6fbf4a180e2b9ce400e628ba08c0755eeda25ae9dd45e5670",
+    "Native/test/ui/nativescript/selection-text.test.mjs": "4260ad52e141a75edebc0608d77a996e8978ebc57da9adc5d455b5f3a64fc4a0"
+  }
+}

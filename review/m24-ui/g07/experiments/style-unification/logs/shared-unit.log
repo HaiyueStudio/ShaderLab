@@ -1,0 +1,21 @@
+
+> @haiyue/shaderlab@0.1.0 test:shared-ui
+> npm run build:shared && node --test test/shared-ui/*.test.mjs
+
+
+> @haiyue/shaderlab@0.1.0 build:shared
+> tsc -p shared/tsconfig.json && tsc -p shared/tsconfig.views.json && node scripts/build-presentation.mjs
+
+✔ shared controls commit one scale action, retain special views and preserve preview on failure (18.010846ms)
+✔ save flushes uncommitted name and editor content; composition cannot silently save an earlier draft (5.379804ms)
+✔ late preview initialization and save completion cannot overwrite a newly opened project (3.660551ms)
+✔ cancel and failed save remain retryable with the same shared document (0.859112ms)
+✔ 50 page mounts release subscriptions and late events without disposing the application (40.583877ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 195.701469

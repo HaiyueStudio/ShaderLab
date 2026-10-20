@@ -1,16 +1,19 @@
 /** Shadertoy: 256 keys, rows held / pressed this frame / toggle, bottom-left origin. */
 export class KeyboardState {
+  private revision = 0;
+  /** Changes whenever the uploaded held/pressed/toggle state changes. */
+  get version() { return this.revision; }
   private held = new Uint8Array(256);
   private pressed = new Uint8Array(256);
   private toggled = new Uint8Array(256);
   down(key: number) {
     if (!Number.isInteger(key) || key < 0 || key > 255 || this.held[key]) return false;
-    this.held[key] = 1; this.pressed[key] = 1; this.toggled[key] = this.toggled[key]! ^ 1; return true;
+    this.held[key] = 1; this.pressed[key] = 1; this.toggled[key] = this.toggled[key]! ^ 1; this.revision++; return true;
   }
-  up(key: number) { if (!this.held[key]) return false; this.held[key] = 0; return true; }
-  release() { this.held.fill(0); this.pressed.fill(0); }
+  up(key: number) { if (!this.held[key]) return false; this.held[key] = 0; this.revision++; return true; }
+  release() { this.held.fill(0); this.pressed.fill(0); this.revision++; }
   reset() { this.release(); this.toggled.fill(0); }
-  endFrame() { const pending = this.pressed.some(Boolean); this.pressed.fill(0); return pending; }
+  endFrame() { const pending = this.pressed.some(Boolean); this.pressed.fill(0); if (pending) this.revision++; return pending; }
   pixels() {
     const data = new Uint8Array(256 * 3 * 4);
     // GPU uploads start at the top; channel() and translated texelFetch use bottom-left.

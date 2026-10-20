@@ -1,0 +1,100 @@
+{
+  "status": "experiment-completed",
+  "scope": [
+    "gallery",
+    "editor shell",
+    "settings/modal",
+    "native code input retained"
+  ],
+  "platform": "iPhone 15 Plus",
+  "fixture": "mobile/src/assets/g07/project.hyshader",
+  "shaderSurfacePixels": [
+    512,
+    288
+  ],
+  "samplePlan": {
+    "rounds": 3,
+    "samplesPerModePerRound": 100,
+    "order": [
+      "shared",
+      "gui",
+      "gui",
+      "shared",
+      "shared",
+      "gui"
+    ],
+    "warmupFrames": 30,
+    "idleMeasuredFrames": 120,
+    "stabilityMaxMinLimit": 1.1
+  },
+  "localChecks": {
+    "typecheck": "passed",
+    "boundaries": "passed",
+    "mobileTests": 42
+  },
+  "candidateHistory": [
+    {
+      "candidate": 1,
+      "result": "init failed with optional Engine debug tracking of Canvas empty bind group; disabled debug tracking symmetrically"
+    },
+    {
+      "candidate": 2,
+      "result": "superseded before device test: embedded compilation must preserve caller GUI scene"
+    },
+    {
+      "candidate": 3,
+      "result": "100 sample smoke completed; physical UI failed rotation because canvas retained old bounds; fixed using stretching GridLayout"
+    },
+    {
+      "candidate": 4,
+      "result": "superseded before device test: settings custom child needs explicit modal layout; missing glyphs added"
+    },
+    {
+      "candidate": 5,
+      "result": "first physical UI attempt failed final scale tap; video shows system app-card transition during that tap, root cause not established; failure preserved; test runner now uses normalized canvas coordinates; subsequent normalized-coordinate GUI UI and same-package native regression both passed after user confirmed readiness; all 6 formal runs completed with 600 samples and normal entry restored"
+    }
+  ],
+  "pending": [],
+  "limits": [
+    "GUI has direct retained bindings; native uses portable UI reconciliation. Same application/controller and shader runtime, not a renderer-only microbenchmark.",
+    "Native UIKit layout/compositor CPU and whole-process energy are not measured.",
+    "Engine GUI adds a full-screen GPU surface; native preview surface is smaller. Equal shader target pixels, intentionally different UI rendering cost.",
+    "Draw counters/GPU timestamps unavailable with this native debug-tracker compatibility; queue completion wall time is not GPU execution time.",
+    "No full accessibility/IME/tutorial/import/export/media parity or 50-page-release certification."
+  ],
+  "functional": {
+    "gui": {
+      "status": "passed",
+      "durationSeconds": 56.502,
+      "flows": [
+        "new from gallery",
+        "preview scale 75/50/25/100/75",
+        "play/pause",
+        "settings scale selection",
+        "modal close/reopen",
+        "portrait/landscape",
+        "background/foreground",
+        "code keyboard/edit/dismiss",
+        "save/reopen exact edited code"
+      ]
+    },
+    "native": {
+      "status": "passed",
+      "durationSeconds": 62.859,
+      "runner": "existing SharedPageSmoke on same candidate5 IPA"
+    }
+  },
+  "completedAt": "2026-10-19T04:58:08.458342+00:00",
+  "performance": {
+    "status": "measured",
+    "completedRuns": 6,
+    "samples": 600,
+    "allForegroundContinuous": true,
+    "allReadbackColored": true,
+    "report": "comparison.json",
+    "reportSha256": "13aad740a0d9f434d36bda18ce4bdb6e347133206dec15183cffcee607dbee17",
+    "overallStabilityGate": "not-passed; frame CPU varies by more than 10% in both implementations",
+    "conclusion": "GUI synchronous handler is faster and more stable in this sample, but measured handler plus settling engine-frame CPU is about 1.97x native; median settling/cadence is similar. Does not justify replacing the complete native app UI."
+  },
+  "normalEntryRestored": true
+}

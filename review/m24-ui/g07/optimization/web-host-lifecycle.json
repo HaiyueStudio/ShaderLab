@@ -1,0 +1,7078 @@
+{
+  "status": "passed",
+  "capturedAt": "2026-10-17T03:53:37.071Z",
+  "kind": "50 real G07 Web host lifetimes with CodeMirror + ShaderRuntime; not NativeScript or native GPU memory acceptance",
+  "bundleSha256": "f38020cdaca79c3be06494516b0f5e4218b340bc7d9764b20b2c8ebfd01a8b1b",
+  "before": {
+    "timers": 0,
+    "frames": 0,
+    "globalListeners": 0,
+    "gpuDevices": 0,
+    "gpuBuffersAndTextures": 0,
+    "portableRoots": 0
+  },
+  "cycles": [
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    },
+    {
+      "active": {
+        "resources": {
+          "timers": 1,
+          "frames": 1,
+          "globalListeners": 17,
+          "gpuDevices": 1,
+          "gpuBuffersAndTextures": 8,
+          "portableRoots": 4
+        },
+        "shared": {
+          "surfaceMounts": 1,
+          "editorMounts": 1,
+          "controller": {
+            "subscriptions": 4,
+            "disposed": false
+          },
+          "parts": [
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 16,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 80,
+              "activeNodes": 16,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 3,
+              "created": 7,
+              "updated": 2,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 0,
+              "activeListeners": 38,
+              "activeNodes": 7,
+              "activeResources": 0
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            },
+            {
+              "status": "mounted",
+              "commits": 1,
+              "created": 1,
+              "updated": 0,
+              "moved": 0,
+              "removed": 0,
+              "measurements": 3,
+              "activeListeners": 9,
+              "activeNodes": 1,
+              "activeResources": 1
+            }
+          ]
+        },
+        "dimensions": [
+          640,
+          360
+        ]
+      },
+      "released": {
+        "timers": 0,
+        "frames": 0,
+        "globalListeners": 0,
+        "gpuDevices": 0,
+        "gpuBuffersAndTextures": 0,
+        "portableRoots": 0
+      },
+      "shared": {
+        "surfaceMounts": 1,
+        "editorMounts": 1,
+        "controller": {
+          "subscriptions": 0,
+          "disposed": true
+        },
+        "parts": [
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 16,
+            "updated": 0,
+            "moved": 0,
+            "removed": 16,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 3,
+            "created": 7,
+            "updated": 2,
+            "moved": 0,
+            "removed": 7,
+            "measurements": 0,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          },
+          {
+            "status": "disposed",
+            "commits": 1,
+            "created": 1,
+            "updated": 0,
+            "moved": 0,
+            "removed": 1,
+            "measurements": 3,
+            "activeListeners": 0,
+            "activeNodes": 0,
+            "activeResources": 0
+          }
+        ]
+      }
+    }
+  ],
+  "heap": [
+    {
+      "cycle": 5,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 5585732
+    },
+    {
+      "cycle": 10,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6189640
+    },
+    {
+      "cycle": 15,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6278880
+    },
+    {
+      "cycle": 20,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6308492
+    },
+    {
+      "cycle": 25,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6325996
+    },
+    {
+      "cycle": 30,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6346952
+    },
+    {
+      "cycle": 35,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6363732
+    },
+    {
+      "cycle": 40,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6395036
+    },
+    {
+      "cycle": 45,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6407852
+    },
+    {
+      "cycle": 50,
+      "Documents": 1,
+      "Nodes": 8,
+      "JSHeapUsedSize": 6421040
+    }
+  ]
+}

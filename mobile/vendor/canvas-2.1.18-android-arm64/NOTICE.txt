@@ -1,0 +1,5 @@
+NativeScript Canvas 2.1.18, upstream commit 1fd6ef470dfdfd43b3385fa7ef43feddd1debd06.
+Source: https://github.com/NativeScript/canvas
+Modified by Haiyue: release ContextReadBack textures, shader-module registry entries and finished command encoders.
+The exact source patch and locked build are in ../../patches and ../../scripts/build-canvas-android.mjs.
+Candidate Android arm64 library; other ABIs retain upstream binaries.

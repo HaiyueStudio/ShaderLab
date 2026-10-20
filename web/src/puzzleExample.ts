@@ -4,7 +4,7 @@ import { createProject, passOf, type ShaderProject } from './model.js';
 export function puzzleExample(): ShaderProject {
   const p = createProject('Sliding city');
   p.id = 'example-puzzle';
-  p.description = '滑块拼图：先点击画布，方向键 / WASD 移动图片块，R 重新打乱，按住空格查看原图。Common 调整行列数，Buffer A 可替换图片。';
+  p.description = '滑块拼图：在画布上左右、上下滑动移动图片块，也可点击画布后用方向键 / WASD 操作。R 重新打乱，按住空格查看原图。Common 调整行列数，Buffer A 可替换图片。';
   p.tabs = ['image', 'common', 'buffer-a', 'buffer-b', 'buffer-c'];
   p.common = PUZZLE_COMMON;
   const a = passOf(p, 'buffer-a'), b = passOf(p, 'buffer-b'), c = passOf(p, 'buffer-c'), image = passOf(p, 'image');
@@ -54,24 +54,50 @@ fn mainImage(fragCoord: vec2f) -> vec4f {
   return vec4f(channel0(fragCoord / iResolution.xy).rgb, 1.0);
 }`;
 
-export const PUZZLE_INPUT = `// C：iChannel0 键盘，iChannel1 自身上一帧。
-// 首个像素 RGBA = (指令, 序号, 空格是否按住, 有效标记)。
-// 序号只在按下时递增；B 只消费一次。B 在 C 之前渲染，
-// 因此读取上一帧 C，固定延迟一帧而不丢按键。
+export const PUZZLE_INPUT = `// C：iChannel0 键盘，iChannel1 自身上一帧；iMouse 接收鼠标或触摸。
+// 像素 0 = (指令, 序号, 空格是否按住, 有效标记)。
+// 像素 1 = (归一化手势起点 xy, 是否按住, 是否已消费滑动)。
+// 序号只在新按键或滑动越过阈值时递增；B 只消费一次。
+// B 在 C 之前渲染，因此读取上一帧 C，固定延迟一帧。
 fn pressed(key: i32) -> bool {
   // 原始键盘纹理从上往下为 toggle / pressed / held。
   return textureLoad(iChannel0, vec2i(key, 1), 0).r > 0.5;
 }
 fn mainImage(fragCoord: vec2f) -> vec4f {
-  if (dataIndex(fragCoord) != 0) { return vec4f(0.0); }
+  let index = dataIndex(fragCoord);
+  if (index > 1) { return vec4f(0.0); }
   var previous = dataAt(iChannel1, 0);
-  if (iFrame == 0) { previous = vec4f(0.0); }
+  var gesture = dataAt(iChannel1, 1);
+  let start = abs(iMouse.zw);
+  let origin = start / iResolution.xy;
+  let down = iMouse.z > 0.0;
+  if (iFrame == 0) {
+    previous = vec4f(0.0);
+    // 忽略编译前已结束的手势，按住时仍可开始一次滑动。
+    gesture = vec4f(origin, select(0.0, 1.0, down), select(1.0, 0.0, down));
+  } else {
+    // 同一起点再次按下也算新手势；松手后仍保留已消费标记。
+    // 容差覆盖 RGBA16F 的起点舍入，避免长按时被误判为新手势。
+    if ((down && gesture.z < 0.5) || any(abs(origin - gesture.xy) > vec2f(0.001))) { gesture.w = 0.0; }
+    gesture = vec4f(origin, select(0.0, 1.0, down), gesture.w);
+  }
   var command = 0;
   if (pressed(37) || pressed(65)) { command = 1; }
   else if (pressed(39) || pressed(68)) { command = 2; }
   else if (pressed(38) || pressed(87)) { command = 3; }
   else if (pressed(40) || pressed(83)) { command = 4; }
   else if (pressed(82)) { command = 5; } // R：新的可解棋盘
+  // 以短边的 4% 过滤点击抖动，渲染分辨率变化不影响手感。
+  // iMouse 的 Y 轴向上；按主要位移方向移动图片块，每次手势最多一步。
+  let delta = (iMouse.xy - start) / min(iResolution.x, iResolution.y);
+  if (gesture.w < 0.5 && start.x > 0.0 && max(abs(delta.x), abs(delta.y)) >= 0.04) {
+    if (command == 0) {
+      if (abs(delta.x) >= abs(delta.y)) { command = select(1, 2, delta.x > 0.0); }
+      else { command = select(4, 3, delta.y > 0.0); }
+    }
+    gesture.w = 1.0;
+  }
+  if (index == 1) { return gesture; }
   var sequence = i32(previous.y);
   if (command != 0) { sequence = (sequence + 1) % 1024; }
   else { command = i32(previous.x); }
@@ -143,10 +169,10 @@ fn mainImage(fragCoord: vec2f) -> vec4f {
 // Fixed glyph arrays keep all text rendering inside the Image shader.
 const text = (name: string, value: string) => `const ${name} = array<u32, 32>(${Array.from({ length: 32 }, (_, i) => String(value.charCodeAt(i) || 0) + 'u').join(', ')});`;
 export const PUZZLE_IMAGE = `// Image：A 原图 / B 棋盘 / C 输入 / 内置 MSDF。
-// 点击画布后，方向键 / WASD 移动图片块，R 打乱，按住空格查看原图。
+// 左右、上下滑动移动图片块，也支持方向键 / WASD；R 打乱，空格查看原图。
 ${text('TITLE', 'SLIDING CITY')}
 ${text('SUBTITLE', 'A PICTURE. ONE MISSING PIECE.')}
-${text('CONTROLS', 'ARROWS / WASD : SLIDE TILES')}
+${text('CONTROLS', 'SWIPE / ARROWS / WASD : SLIDE')}
 ${text('SHORTCUTS', 'R : SHUFFLE   SPACE : PEEK')}
 ${text('REFERENCE', 'REFERENCE')}
 ${text('MOVES', 'MOVES')}
@@ -214,7 +240,7 @@ fn mainImage(fragCoord: vec2f) -> vec4f {
   }
   color = mix(color, vec3f(0.94, 0.96, 0.91), label(p, vec2f(left, 0.048), 0.047, TITLE, 12));
   color = mix(color, vec3f(0.44, 0.56, 0.60), label(p, vec2f(left, 0.109), 0.026, SUBTITLE, 29));
-  color = mix(color, vec3f(0.65, 0.73, 0.76), label(p, vec2f(left, 0.913), 0.028, CONTROLS, 27));
+  color = mix(color, vec3f(0.65, 0.73, 0.76), label(p, vec2f(left, 0.913), 0.028, CONTROLS, 29));
   color = mix(color, vec3f(0.44, 0.56, 0.60), label(p, vec2f(left, 0.948), 0.027, SHORTCUTS, 26));
   let right = left + side + 0.065;
   let miniUV = (p - vec2f(right, 0.245)) / 0.24;

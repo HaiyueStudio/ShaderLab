@@ -1,0 +1,171 @@
+{
+  "old": {
+    "shared": {
+      "bindInputs.calls": 120,
+      "bindInputs.ms": {
+        "p95": 0.01129150390625,
+        "mean": 0.007718054453531901
+      },
+      "bindOutput.calls": 120,
+      "bindOutput.ms": {
+        "p95": 0.0042498111724853516,
+        "mean": 0.0029826144377390544
+      },
+      "inputs.calls": 120,
+      "inputs.ms": {
+        "p95": 0.011749982833862305,
+        "mean": 0.007816678285598755
+      },
+      "keyboardPixels.calls": 120,
+      "keyboardPixels.ms": {
+        "p95": 0.1933748722076416,
+        "mean": 0.1579913099606832
+      },
+      "render.calls": 120,
+      "render.ms": {
+        "p95": 1.9097917079925537,
+        "mean": 1.310853471358617
+      },
+      "resize.calls": 120,
+      "resize.ms": {
+        "p95": 0.04566669464111328,
+        "mean": 0.032635068893432616
+      },
+      "submitCommands.calls": 240,
+      "submitCommands.ms": {
+        "p95": 0.6294584274291992,
+        "mean": 0.4669930338859558
+      },
+      "updatePresentSize.calls": 120,
+      "updatePresentSize.changed": 120,
+      "updatePresentSize.ms": {
+        "p95": 0.1454167366027832,
+        "mean": 0.08406908710797628
+      },
+      "uploadKeyboard.calls": 120,
+      "uploadKeyboard.changed": 120,
+      "uploadKeyboard.ms": {
+        "p95": 0.45225000381469727,
+        "mean": 0.35882396896680196
+      },
+      "frames": 120
+    },
+    "optimized": {
+      "bindInputs.calls": 120,
+      "bindInputs.ms": {
+        "p95": 0.012000083923339844,
+        "mean": 0.007796871662139893
+      },
+      "inputs.calls": 120,
+      "inputs.ms": {
+        "p95": 0.0123748779296875,
+        "mean": 0.008622560898462932
+      },
+      "keyboardPixels.calls": 120,
+      "keyboardPixels.ms": {
+        "p95": 0.24858331680297852,
+        "mean": 0.16723610560099283
+      },
+      "render.calls": 120,
+      "render.ms": {
+        "p95": 1.7255418300628662,
+        "mean": 1.1375305314858755
+      },
+      "resize.calls": 120,
+      "resize.ms": {
+        "p95": 0.203291654586792,
+        "mean": 0.13653473258018495
+      },
+      "submitCommands.calls": 120,
+      "submitCommands.ms": {
+        "p95": 0.39116668701171875,
+        "mean": 0.28151908715566
+      },
+      "uploadKeyboard.calls": 120,
+      "uploadKeyboard.changed": 120,
+      "uploadKeyboard.ms": {
+        "p95": 0.628166675567627,
+        "mean": 0.4323517064253489
+      },
+      "frames": 120
+    }
+  },
+  "new": {
+    "shared": {
+      "bindInputs.calls": 120,
+      "bindInputs.ms": {
+        "p95": 0.007166624069213867,
+        "mean": 0.004835063219070434
+      },
+      "bindOutput.calls": 120,
+      "bindOutput.ms": {
+        "p95": 0.0022084712982177734,
+        "mean": 0.0015805641810099284
+      },
+      "inputs.calls": 120,
+      "inputs.ms": {
+        "p95": 0.008083343505859375,
+        "mean": 0.005754152933756511
+      },
+      "render.calls": 120,
+      "render.ms": {
+        "p95": 0.7719581127166748,
+        "mean": 0.6100965023040772
+      },
+      "resize.calls": 120,
+      "resize.ms": {
+        "p95": 0.02987504005432129,
+        "mean": 0.02635207772254944
+      },
+      "submitCommands.calls": 120,
+      "submitCommands.ms": {
+        "p95": 0.32354140281677246,
+        "mean": 0.2698253631591797
+      },
+      "updatePresentSize.calls": 120,
+      "updatePresentSize.ms": {
+        "p95": 0.010083436965942383,
+        "mean": 0.005692712465922038
+      },
+      "uploadKeyboard.calls": 120,
+      "uploadKeyboard.ms": {
+        "p95": 0.003541707992553711,
+        "mean": 0.002635413408279419
+      },
+      "frames": 120
+    },
+    "optimized": {
+      "bindInputs.calls": 120,
+      "bindInputs.ms": {
+        "p95": 0.013416528701782227,
+        "mean": 0.009308673938115438
+      },
+      "inputs.calls": 120,
+      "inputs.ms": {
+        "p95": 0.018083572387695312,
+        "mean": 0.01135453184445699
+      },
+      "render.calls": 120,
+      "render.ms": {
+        "p95": 1.336916446685791,
+        "mean": 1.034574987490972
+      },
+      "resize.calls": 120,
+      "resize.ms": {
+        "p95": 0.22637486457824707,
+        "mean": 0.16526248653729755
+      },
+      "submitCommands.calls": 120,
+      "submitCommands.ms": {
+        "p95": 0.44870829582214355,
+        "mean": 0.31284998456637064
+      },
+      "uploadKeyboard.calls": 120,
+      "uploadKeyboard.ms": {
+        "p95": 0.00924992561340332,
+        "mean": 0.005757647752761841
+      },
+      "frames": 120
+    }
+  }
+}

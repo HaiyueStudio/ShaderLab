@@ -1,0 +1,401 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -xctestrun artifacts/m24-g07/apple-jitter/optimized9/fresh-ui-runner/Build/Products/Acceptance_iphoneos26.2-arm64.xctestrun -destination id=00008101-0006546C2263001E -resultBundlePath artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-overlay-cleared.xcresult
+
+2026-10-19 08:06:01.786 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Writing result bundle at path:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-overlay-cleared.xcresult
+
+2026-10-19 08:06:01.800 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:01.924 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, arch:arm64e, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64e, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+2026-10-19 08:06:02.406 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:02.921 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:06.397964+0800 Acceptance-Runner[2439:409181] [Default] Running tests...
+2026-10-19 08:06:06.413688+0800 Acceptance-Runner[2439:409181] [UIKit App Config] Update the Info.plist: Launch screens will soon be required.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-19 08:06:06.849.
+Test Suite 'Acceptance.xctest' started at 2026-10-19 08:06:06.850.
+Test Suite 'SharedPageSmoke' started at 2026-10-19 08:06:06.850.
+Test Case '-[Acceptance.SharedPageSmoke testSharedEditor]' started.
+    t =     0.00s Start Test at 2026-10-19 08:06:06.851
+    t =     0.01s Set Up
+    t =     0.01s Getting device orientation
+    t =     0.02s Open studio.haiyue.shaderlab
+    t =     0.02s     Launch studio.haiyue.shaderlab
+    t =     0.02s         Terminate studio.haiyue.shaderlab:2431
+2026-10-19 08:06:06.110 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     1.14s         Setting up automation session
+    t =     2.02s         Wait for studio.haiyue.shaderlab to idle
+    t =     3.18s Waiting 20.0s for "＋ 新建" Button to exist
+    t =     4.22s     Checking `Expect predicate `existsNoRetry == 1` for object "＋ 新建" Button`
+    t =     4.22s         Checking existence of `"＋ 新建" Button`
+    t =     4.32s Tap "＋ 新建" Button
+    t =     4.32s     Wait for studio.haiyue.shaderlab to idle
+    t =     4.33s     Find the "＋ 新建" Button
+    t =     4.37s     Check for interrupting elements affecting "＋ 新建" Button
+    t =     4.41s     Synthesize event
+    t =     4.70s     Wait for studio.haiyue.shaderlab to idle
+    t =     6.85s Waiting 20.0s for "/shader-project/actions/save" Button to exist
+    t =     7.89s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =     7.89s         Checking existence of `"/shader-project/actions/save" Button`
+    t =     8.00s Waiting 20.0s for "/shader-toolbar/controls/scale" Button to exist
+2026-10-19 08:06:14.142 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:14.446 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:14.599 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     9.04s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-toolbar/controls/scale" Button`
+    t =     9.04s         Checking existence of `"/shader-toolbar/controls/scale" Button`
+    t =     9.13s Find the "/shader-toolbar/controls/scale" Button
+    t =     9.20s Tap "/shader-toolbar/controls/scale" Button
+    t =     9.20s     Wait for studio.haiyue.shaderlab to idle
+    t =     9.21s     Find the "/shader-toolbar/controls/scale" Button
+    t =     9.25s     Check for interrupting elements affecting "/shader-toolbar/controls/scale" Button
+    t =     9.30s     Synthesize event
+    t =     9.59s     Wait for studio.haiyue.shaderlab to idle
+    t =     9.65s Waiting 5.0s for "75%" Button to exist
+2026-10-19 08:06:16.597 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    10.69s     Checking `Expect predicate `existsNoRetry == 1` for object "75%" Button`
+    t =    10.69s         Checking existence of `"75%" Button`
+    t =    10.75s Tap "75%" Button
+    t =    10.75s     Wait for studio.haiyue.shaderlab to idle
+    t =    10.76s     Find the "75%" Button
+    t =    10.79s     Check for interrupting elements affecting "75%" Button
+    t =    10.86s     Synthesize event
+    t =    11.17s     Wait for studio.haiyue.shaderlab to idle
+    t =    11.20s Waiting 20.0s for StaticText (First Match) to exist
+    t =    12.24s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    12.24s         Checking existence of `StaticText (First Match)`
+    t =    12.29s Checking existence of `"/shader-toolbar/controls/play" Button`
+    t =    12.36s Find the "/shader-toolbar/controls/scale" Button
+    t =    12.43s Tap "/shader-toolbar/controls/scale" Button
+    t =    12.43s     Wait for studio.haiyue.shaderlab to idle
+    t =    12.44s     Find the "/shader-toolbar/controls/scale" Button
+    t =    12.48s     Check for interrupting elements affecting "/shader-toolbar/controls/scale" Button
+    t =    12.53s     Synthesize event
+    t =    12.82s     Wait for studio.haiyue.shaderlab to idle
+    t =    12.87s Waiting 5.0s for "50%" Button to exist
+    t =    13.90s     Checking `Expect predicate `existsNoRetry == 1` for object "50%" Button`
+    t =    13.90s         Checking existence of `"50%" Button`
+    t =    13.96s Tap "50%" Button
+    t =    13.96s     Wait for studio.haiyue.shaderlab to idle
+    t =    13.97s     Find the "50%" Button
+    t =    14.01s     Check for interrupting elements affecting "50%" Button
+    t =    14.08s     Synthesize event
+    t =    14.39s     Wait for studio.haiyue.shaderlab to idle
+    t =    14.42s Waiting 20.0s for StaticText (First Match) to exist
+    t =    15.45s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    15.45s         Checking existence of `StaticText (First Match)`
+    t =    15.50s Checking existence of `"/shader-toolbar/controls/play" Button`
+    t =    15.57s Find the "/shader-toolbar/controls/scale" Button
+    t =    15.65s Tap "/shader-toolbar/controls/scale" Button
+    t =    15.65s     Wait for studio.haiyue.shaderlab to idle
+    t =    15.66s     Find the "/shader-toolbar/controls/scale" Button
+    t =    15.71s     Check for interrupting elements affecting "/shader-toolbar/controls/scale" Button
+    t =    15.76s     Synthesize event
+    t =    16.05s     Wait for studio.haiyue.shaderlab to idle
+    t =    16.10s Waiting 5.0s for "25%" Button to exist
+    t =    17.14s     Checking `Expect predicate `existsNoRetry == 1` for object "25%" Button`
+    t =    17.14s         Checking existence of `"25%" Button`
+    t =    17.20s Tap "25%" Button
+    t =    17.21s     Wait for studio.haiyue.shaderlab to idle
+    t =    17.21s     Find the "25%" Button
+    t =    17.25s     Check for interrupting elements affecting "25%" Button
+    t =    17.32s     Synthesize event
+    t =    17.61s     Wait for studio.haiyue.shaderlab to idle
+    t =    17.67s Waiting 20.0s for StaticText (First Match) to exist
+    t =    18.69s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    18.69s         Checking existence of `StaticText (First Match)`
+    t =    18.74s Checking existence of `"/shader-toolbar/controls/play" Button`
+    t =    18.81s Find the "/shader-toolbar/controls/scale" Button
+    t =    18.88s Tap "/shader-toolbar/controls/scale" Button
+    t =    18.88s     Wait for studio.haiyue.shaderlab to idle
+    t =    18.89s     Find the "/shader-toolbar/controls/scale" Button
+    t =    18.93s     Check for interrupting elements affecting "/shader-toolbar/controls/scale" Button
+    t =    19.10s     Synthesize event
+    t =    19.41s     Wait for studio.haiyue.shaderlab to idle
+    t =    19.47s Waiting 5.0s for "100%" Button to exist
+    t =    20.51s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =    20.51s         Checking existence of `"100%" Button`
+    t =    20.56s Tap "100%" Button
+    t =    20.56s     Wait for studio.haiyue.shaderlab to idle
+    t =    20.57s     Find the "100%" Button
+    t =    20.61s     Check for interrupting elements affecting "100%" Button
+    t =    20.67s     Synthesize event
+    t =    21.10s     Wait for studio.haiyue.shaderlab to idle
+    t =    21.16s Waiting 20.0s for StaticText (First Match) to exist
+    t =    22.19s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    22.19s         Checking existence of `StaticText (First Match)`
+    t =    22.24s Checking existence of `"/shader-toolbar/controls/play" Button`
+    t =    22.31s Find the "/shader-toolbar/controls/scale" Button
+    t =    22.38s Tap "/shader-toolbar/controls/scale" Button
+    t =    22.38s     Wait for studio.haiyue.shaderlab to idle
+    t =    22.38s     Find the "/shader-toolbar/controls/scale" Button
+    t =    22.44s     Check for interrupting elements affecting "/shader-toolbar/controls/scale" Button
+    t =    22.53s     Synthesize event
+    t =    22.83s     Wait for studio.haiyue.shaderlab to idle
+    t =    22.87s Waiting 5.0s for "75%" Button to exist
+    t =    23.91s     Checking `Expect predicate `existsNoRetry == 1` for object "75%" Button`
+    t =    23.91s         Checking existence of `"75%" Button`
+    t =    23.97s Tap "75%" Button
+    t =    23.97s     Wait for studio.haiyue.shaderlab to idle
+    t =    23.98s     Find the "75%" Button
+    t =    24.01s     Check for interrupting elements affecting "75%" Button
+    t =    24.09s     Synthesize event
+    t =    24.39s     Wait for studio.haiyue.shaderlab to idle
+    t =    24.43s Waiting 20.0s for StaticText (First Match) to exist
+    t =    25.46s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    25.46s         Checking existence of `StaticText (First Match)`
+    t =    25.50s Checking existence of `"/shader-toolbar/controls/play" Button`
+    t =    25.73s Added attachment named 'shared-preview-75'
+    t =    25.73s Tap "/shader-toolbar/controls/play" Button
+    t =    25.73s     Wait for studio.haiyue.shaderlab to idle
+    t =    25.74s     Find the "/shader-toolbar/controls/play" Button
+    t =    25.81s     Check for interrupting elements affecting "/shader-toolbar/controls/play" Button
+    t =    25.84s     Synthesize event
+    t =    26.13s     Wait for studio.haiyue.shaderlab to idle
+    t =    26.44s Find the "/shader-toolbar/controls/play" Button
+    t =    26.54s Tap "/shader-toolbar/controls/play" Button
+    t =    26.54s     Wait for studio.haiyue.shaderlab to idle
+    t =    26.55s     Find the "/shader-toolbar/controls/play" Button
+    t =    26.61s     Check for interrupting elements affecting "/shader-toolbar/controls/play" Button
+    t =    26.80s     Synthesize event
+    t =    27.11s     Wait for studio.haiyue.shaderlab to idle
+    t =    27.14s Find the "/shader-toolbar/controls/play" Button
+    t =    27.22s Tap "/shader-project/actions/information" Button
+    t =    27.22s     Wait for studio.haiyue.shaderlab to idle
+    t =    27.47s     Find the "/shader-project/actions/information" Button
+    t =    27.57s     Check for interrupting elements affecting "/shader-project/actions/information" Button
+    t =    27.64s     Synthesize event
+    t =    27.98s     Wait for studio.haiyue.shaderlab to idle
+    t =    28.03s Waiting 5.0s for "/shader-project/information/close" Button to exist
+    t =    29.07s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/information/close" Button`
+    t =    29.07s         Checking existence of `"/shader-project/information/close" Button`
+    t =    29.11s Setting device orientation to Landscape Left
+    t =    29.13s     Device orientation changed to Landscape Left
+    t =    29.26s     Interface orientation changed to Landscape Right
+    t =    29.27s     Wait for studio.haiyue.shaderlab to idle
+    t =    29.28s Waiting 5.0s for "/shader-project/information/close" Button to exist
+2026-10-19 08:06:35.199 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:35.371 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    30.31s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/information/close" Button`
+    t =    30.31s         Checking existence of `"/shader-project/information/close" Button`
+    t =    30.53s Added attachment named 'settings-landscape'
+    t =    30.53s Pressing Home button
+    t =    30.99s Open studio.haiyue.shaderlab
+    t =    30.99s     Activate studio.haiyue.shaderlab
+    t =    31.86s         Wait for studio.haiyue.shaderlab to idle
+    t =    31.88s Waiting 15.0s for "/shader-project/information/close" Button to exist
+    t =    32.90s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/information/close" Button`
+    t =    32.91s         Checking existence of `"/shader-project/information/close" Button`
+    t =    32.94s Tap "/shader-project/information/close" Button
+    t =    32.94s     Wait for studio.haiyue.shaderlab to idle
+    t =    32.95s     Find the "/shader-project/information/close" Button
+    t =    32.98s     Check for interrupting elements affecting "/shader-project/information/close" Button
+    t =    33.02s     Synthesize event
+    t =    33.33s     Wait for studio.haiyue.shaderlab to idle
+    t =    33.34s Tap "/shader-project/actions/information" Button
+    t =    33.34s     Wait for studio.haiyue.shaderlab to idle
+    t =    33.35s     Find the "/shader-project/actions/information" Button
+    t =    33.41s     Check for interrupting elements affecting "/shader-project/actions/information" Button
+    t =    33.46s     Synthesize event
+    t =    33.76s     Wait for studio.haiyue.shaderlab to idle
+    t =    33.78s Waiting 5.0s for "/shader-project/information/close" Button to exist
+    t =    34.81s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/information/close" Button`
+    t =    34.81s         Checking existence of `"/shader-project/information/close" Button`
+    t =    34.84s Tap "/shader-project/information/close" Button
+    t =    34.84s     Wait for studio.haiyue.shaderlab to idle
+    t =    34.85s     Find the "/shader-project/information/close" Button
+    t =    34.88s     Check for interrupting elements affecting "/shader-project/information/close" Button
+    t =    34.92s     Synthesize event
+    t =    35.23s     Wait for studio.haiyue.shaderlab to idle
+    t =    36.03s Setting device orientation to Portrait
+    t =    36.04s     Device orientation changed to Portrait
+    t =    36.17s     Interface orientation changed to Portrait
+    t =    36.18s     Wait for studio.haiyue.shaderlab to idle
+2026-10-19 08:06:42.155 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:06:42.271 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =    36.77s Waiting 5.0s for "/shader-project/name/field" TextField to exist
+    t =    37.80s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/name/field" TextField`
+    t =    37.80s         Checking existence of `"/shader-project/name/field" TextField`
+    t =    37.89s Tap "/shader-project/name/field" TextField
+    t =    37.90s     Wait for studio.haiyue.shaderlab to idle
+    t =    37.91s     Find the "/shader-project/name/field" TextField
+    t =    37.95s     Check for interrupting elements affecting "/shader-project/name/field" TextField
+    t =    38.01s     Synthesize event
+    t =    38.42s     Wait for studio.haiyue.shaderlab to idle
+    t =    38.68s Type ' G07 1792368405' into "/shader-project/name/field" TextField
+    t =    38.68s     Wait for studio.haiyue.shaderlab to idle
+    t =    39.08s     Find the "/shader-project/name/field" TextField
+    t =    39.18s     Check for interrupting elements affecting "/shader-project/name/field" TextField
+    t =    39.24s     Synthesize event
+    t =    39.70s     Wait for studio.haiyue.shaderlab to idle
+    t =    39.71s Waiting 5.0s for "完成" Button to exist
+    t =    40.74s     Checking `Expect predicate `existsNoRetry == 1` for object "完成" Button`
+    t =    40.74s         Checking existence of `"完成" Button`
+    t =    40.78s Tap "完成" Button
+    t =    40.78s     Wait for studio.haiyue.shaderlab to idle
+    t =    40.79s     Find the "完成" Button
+    t =    40.80s     Check for interrupting elements affecting "haiyue.keyboard.done" Button
+    t =    40.89s     Synthesize event
+    t =    41.20s     Wait for studio.haiyue.shaderlab to idle
+    t =    41.47s Checking existence of `Keyboard (First Match)`
+    t =    41.52s Tap "代码" Button
+    t =    41.52s     Wait for studio.haiyue.shaderlab to idle
+    t =    41.53s     Find the "代码" Button
+    t =    41.58s     Check for interrupting elements affecting "代码" Button
+    t =    41.63s     Synthesize event
+    t =    41.93s     Wait for studio.haiyue.shaderlab to idle
+    t =    42.22s Waiting 5.0s for TextView (First Match) to exist
+    t =    43.24s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    43.24s         Checking existence of `TextView (First Match)`
+    t =    43.31s Tap TextView (First Match)
+    t =    43.31s     Wait for studio.haiyue.shaderlab to idle
+    t =    43.32s     Find the TextView (First Match)
+    t =    43.37s     Check for interrupting elements affecting "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    43.43s     Synthesize event
+    t =    43.73s     Wait for studio.haiyue.shaderlab to idle
+    t =    44.02s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    45.04s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    45.04s         Checking existence of `Keyboard (First Match)`
+    t =    45.07s Find the "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    45.14s Waiting 5.0s for Key (First Match) to exist
+    t =    46.15s     Checking `Expect predicate `existsNoRetry == 1` for object Key (First Match)`
+    t =    46.16s         Checking existence of `Key (First Match)`
+    t =    46.21s Tap Key (First Match)
+    t =    46.21s     Wait for studio.haiyue.shaderlab to idle
+    t =    46.22s     Find the Key (First Match)
+    t =    46.24s     Check for interrupting elements affecting " " Key
+    t =    46.32s     Synthesize event
+    t =    46.74s     Wait for studio.haiyue.shaderlab to idle
+    t =    46.76s Tap "收起键盘" Button
+    t =    46.76s     Wait for studio.haiyue.shaderlab to idle
+    t =    46.78s     Find the "收起键盘" Button
+    t =    46.88s     Check for interrupting elements affecting "收起键盘" Button
+    t =    46.94s     Synthesize event
+    t =    47.25s     Wait for studio.haiyue.shaderlab to idle
+    t =    47.48s Checking existence of `Keyboard (First Match)`
+    t =    47.54s Find the "// fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(0" TextView
+    t =    47.57s Tap "生成代码" Button
+    t =    47.57s     Wait for studio.haiyue.shaderlab to idle
+    t =    47.58s     Find the "生成代码" Button
+    t =    47.66s     Check for interrupting elements affecting "生成代码" Button
+    t =    47.74s     Synthesize event
+    t =    48.05s     Wait for studio.haiyue.shaderlab to idle
+    t =    48.06s Waiting 30.0s for TextView (First Match) to exist
+    t =    49.09s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    49.09s         Checking existence of `TextView (First Match)`
+    t =    49.15s         Capturing element debug description
+    t =    50.07s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    50.07s         Checking existence of `TextView (First Match)`
+    t =    50.13s Tap "关闭" Button
+    t =    50.13s     Wait for studio.haiyue.shaderlab to idle
+    t =    50.14s     Find the "关闭" Button
+    t =    50.23s     Check for interrupting elements affecting "关闭" Button
+    t =    50.27s     Synthesize event
+    t =    50.57s     Wait for studio.haiyue.shaderlab to idle
+    t =    51.55s Find the " // fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(" TextView
+    t =    51.63s Tap "生成代码" Button
+    t =    51.63s     Wait for studio.haiyue.shaderlab to idle
+    t =    51.64s     Find the "生成代码" Button
+    t =    51.72s     Check for interrupting elements affecting "生成代码" Button
+    t =    51.78s     Synthesize event
+    t =    52.08s     Wait for studio.haiyue.shaderlab to idle
+    t =    52.46s Waiting 30.0s for TextView (First Match) to exist
+    t =    53.49s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    53.49s         Checking existence of `TextView (First Match)`
+    t =    53.53s Tap "关闭" Button
+    t =    53.53s     Wait for studio.haiyue.shaderlab to idle
+    t =    53.54s     Find the "关闭" Button
+    t =    53.62s     Check for interrupting elements affecting "关闭" Button
+    t =    53.66s     Synthesize event
+    t =    53.95s     Wait for studio.haiyue.shaderlab to idle
+    t =    54.80s Find the " // fragCoord: 像素坐标，原点在左下角
+fn mainImage(fragCoord: vec2f) -> vec4f {
+  let uv = fragCoord / iResolution.xy;
+  let color = vec3f(" TextView
+    t =    54.88s Tap "/shader-project/actions/save" Button
+    t =    54.88s     Wait for studio.haiyue.shaderlab to idle
+    t =    54.89s     Find the "/shader-project/actions/save" Button
+    t =    54.96s     Check for interrupting elements affecting "/shader-project/actions/save" Button
+    t =    55.02s     Synthesize event
+    t =    55.31s     Wait for studio.haiyue.shaderlab to idle
+    t =    55.66s Waiting 10.0s for "作品已保存" StaticText to exist
+    t =    56.68s     Checking `Expect predicate `existsNoRetry == 1` for object "作品已保存" StaticText`
+    t =    56.68s         Checking existence of `"作品已保存" StaticText`
+    t =    56.79s Find the "/shader-project/name/field" TextField
+    t =    56.85s Tap Button (First Match)
+    t =    56.86s     Wait for studio.haiyue.shaderlab to idle
+    t =    56.86s     Find the Button (First Match)
+    t =    56.88s     Check for interrupting elements affecting "BackButton" Button
+    t =    56.93s     Synthesize event
+    t =    57.23s     Wait for studio.haiyue.shaderlab to idle
+    t =    57.58s Checking existence of `"Untitled shader G07 1792368405" Button`
+    t =    57.61s Swipe up ScrollView (First Match)
+    t =    57.61s     Wait for studio.haiyue.shaderlab to idle
+    t =    57.62s     Find the ScrollView (First Match)
+    t =    57.64s     Check for interrupting elements affecting ScrollView
+    t =    57.68s     Synthesize event
+    t =    58.14s     Wait for studio.haiyue.shaderlab to idle
+    t =    60.21s Checking existence of `"Untitled shader G07 1792368405" Button`
+    t =    60.27s Find the "Untitled shader G07 1792368405" Button
+    t =    60.33s Waiting 10.0s for "Untitled shader G07 1792368405" Button to exist
+    t =    61.36s     Checking `Expect predicate `existsNoRetry == 1` for object "Untitled shader G07 1792368405" Button`
+    t =    61.36s         Checking existence of `"Untitled shader G07 1792368405" Button`
+    t =    61.42s Tap "Untitled shader G07 1792368405" Button
+    t =    61.42s     Wait for studio.haiyue.shaderlab to idle
+    t =    61.46s     Find the "Untitled shader G07 1792368405" Button
+    t =    61.50s     Check for interrupting elements affecting "Untitled shader G07 1792368405" Button
+    t =    61.57s     Synthesize event
+    t =    61.88s     Wait for studio.haiyue.shaderlab to idle
+    t =    64.01s Find the "/shader-project/name/field" TextField
+    t =    64.11s Tap "代码" Button
+    t =    64.11s     Wait for studio.haiyue.shaderlab to idle
+    t =    64.12s     Find the "代码" Button
+    t =    64.16s     Check for interrupting elements affecting "代码" Button
+    t =    64.21s     Synthesize event
+    t =    64.55s     Wait for studio.haiyue.shaderlab to idle
+    t =    64.90s Find the TextView (First Match)
+    t =    65.16s Added attachment named 'saved-reopened'
+    t =    65.16s Tap "预览" Button
+    t =    65.16s     Wait for studio.haiyue.shaderlab to idle
+    t =    65.16s     Find the "预览" Button
+    t =    65.24s     Check for interrupting elements affecting "预览" Button
+    t =    65.28s     Synthesize event
+    t =    65.56s     Wait for studio.haiyue.shaderlab to idle
+    t =    65.92s Setting device orientation to Face Up
+    t =    65.93s     Device orientation changed to Face Up
+    t =    65.95s     Wait for studio.haiyue.shaderlab to idle
+    t =    65.98s Tear Down
+2026-10-19 08:07:12.005 xcodebuild[54448:4629304] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Test Case '-[Acceptance.SharedPageSmoke testSharedEditor]' passed (66.450 seconds).
+Test Suite 'SharedPageSmoke' passed at 2026-10-19 08:07:13.303.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.450 (66.453) seconds
+Test Suite 'Acceptance.xctest' passed at 2026-10-19 08:07:13.307.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.450 (66.457) seconds
+Test Suite 'All tests' passed at 2026-10-19 08:07:13.310.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.450 (66.461) seconds
+2026-10-19 08:07:12.714 xcodebuild[54448:4629304] [MT] IDETestOperationsObserverDebug: 70.304 elapsed -- Testing started completed.
+2026-10-19 08:07:12.714 xcodebuild[54448:4629304] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 08:07:12.714 xcodebuild[54448:4629304] [MT] IDETestOperationsObserverDebug: 70.304 sec, +70.304 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-overlay-cleared.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

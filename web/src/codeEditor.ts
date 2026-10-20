@@ -9,6 +9,7 @@ import { autocompletion } from '@codemirror/autocomplete';
 import type { CodeId, ShaderDiagnostic, ShaderLanguage } from './model.js';
 import { detectShaderLanguage } from './sourceLanguage.js';
 import { glslParser } from './glslLanguage.js';
+import { hlslParser } from './hlslLanguage.js';
 
 export const BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3', 'iSampler', 'channel0', 'channel1', 'channel2', 'channel3'];
 const keywords = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable requires diagnostic true false'.split(' '));
@@ -43,7 +44,7 @@ const languageState = StateField.define<ShaderLanguage>({ create: () => 'wgsl', 
   return value;
 } });
 const languageExtensions = (language: ShaderLanguage) => [
-  language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser),
+  language === 'hlsl' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser),
   EditorView.contentAttributes.of({ 'aria-label': language.toUpperCase() + ' 代码编辑器', spellcheck: 'false' }),
 ];
 export class CodeEditor {
@@ -70,10 +71,10 @@ export class CodeEditor {
       ] : []),
       EditorState.transactionExtender.of(tr => {
         if (!this.autoDetect || !tr.docChanged || !tr.isUserEvent('input.paste')) return null;
-        const detected = detectShaderLanguage(tr.newDoc.toString());
+        const detected = detectShaderLanguage(tr.newDoc.toString(), tr.startState.field(languageState));
         return detected && detected !== tr.startState.field(languageState) ? { effects: [languageEffect.of(detected), this.languageConfig.reconfigure(languageExtensions(detected))] } : null;
       }),
-      autocompletion({ override: [context => { const word = context.matchBefore(/\w*/); return !word || word.from === word.to && !context.explicit ? null : { from: word.from, options: [...BUILTINS, ...(context.state.field(languageState) === 'glsl' ? ['vec2', 'vec3', 'vec4', 'float', 'int', 'texture', 'void'] : ['vec2f', 'vec3f', 'vec4f', 'textureSampleLevel']), 'mainImage', 'mainSound', 'sin', 'cos', 'tanh', 'mix', 'smoothstep', 'length', 'normalize', 'dot'].map(label => ({ label, type: label.startsWith('i') ? 'variable' : 'function' })) }; }] }),
+      autocompletion({ override: [context => { const word = context.matchBefore(/\w*/); return !word || word.from === word.to && !context.explicit ? null : { from: word.from, options: [...BUILTINS, ...(context.state.field(languageState) === 'hlsl' ? ['float2', 'float3', 'float4', 'float', 'int', 'mul', 'lerp', 'saturate', 'frac', 'Texture2D', 'SampleLevel'] : context.state.field(languageState) === 'glsl' ? ['vec2', 'vec3', 'vec4', 'float', 'int', 'texture', 'void', 'mix'] : ['vec2f', 'vec3f', 'vec4f', 'textureSampleLevel', 'mix']), 'mainImage', 'mainSound', 'sin', 'cos', 'tanh', 'smoothstep', 'length', 'normalize', 'dot'].map(label => ({ label, type: label.startsWith('i') ? 'variable' : 'function' })) }; }] }),
       Prec.highest(keymap.of([{ key: 'Mod-Enter', run: () => { compile(); return true; } }])),
       EditorView.updateListener.of(update => { if (update.docChanged && !this.replacing) onChange(this.pass, update.state.doc.toString(), update.state.field(languageState)); }),
       editorTheme] });

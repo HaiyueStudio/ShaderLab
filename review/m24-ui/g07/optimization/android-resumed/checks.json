@@ -1,0 +1,12 @@
+{
+  "mobileTests": {
+    "status": "passed",
+    "count": 16
+  },
+  "mobileTypecheck": "passed",
+  "androidSdkBuild": "passed",
+  "scope": "No new iOS installation/build claim; packaged source hashes bind Android evidence to exact candidate.",
+  "testLogSha256": "a00b82b492b86beeda6bc5287adde0ecc50783365a2c4d612e385c38ce7cafdb",
+  "typecheckLogSha256": "81cef39b906d5c2f54951eb28cd42513d1b96fa7118a940b059b5e2aa1669049",
+  "buildLogSha256": "4ff682bfb6bba8eee1338de61e25f5d97064cc7f924a7d8e6f71c425f858f3e6"
+}

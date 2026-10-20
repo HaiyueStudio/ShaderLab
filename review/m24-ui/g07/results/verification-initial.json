@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "goal": "m24-native-ui/g07-shaderlab-slice",
+  "status": "validating",
+  "capturedAt": "2026-10-17T03:17:44.230531+00:00",
+  "implementation": "implemented",
+  "identity": "results/identity.json",
+  "matrix": [
+    {
+      "check": "unit and domain/UI race regressions",
+      "status": "passed",
+      "evidence": "results/checks.json"
+    },
+    {
+      "check": "clean source-only installation and Web/iOS/Android JS bundle builds",
+      "status": "passed",
+      "evidence": "results/fresh-build.json"
+    },
+    {
+      "check": "Chromium shared page, real GPU, save/reopen, 50 route suspend/resume cycles",
+      "status": "passed",
+      "evidence": "results/web.json"
+    },
+    {
+      "check": "explicit legacy Web full editor regression",
+      "status": "passed",
+      "evidence": "results/legacy-web.json"
+    },
+    {
+      "check": "Android actual UI interactions",
+      "status": "passed",
+      "evidence": "results/android-ui.json"
+    },
+    {
+      "check": "iPad actual UI interactions",
+      "status": "passed",
+      "evidence": "results/ipad-ui.json"
+    },
+    {
+      "check": "android current package GPU/storage replay",
+      "status": "passed",
+      "evidence": "results/android-gpu-storage.json"
+    },
+    {
+      "check": "ipad current package GPU/storage replay",
+      "status": "passed",
+      "evidence": "results/ipad-gpu-storage.json"
+    },
+    {
+      "check": "iphone current package GPU/storage replay",
+      "status": "passed",
+      "evidence": "results/iphone-gpu-storage.json"
+    },
+    {
+      "check": "same-host old/new Web p95 <= 1.10",
+      "status": "regression",
+      "evidence": "results/performance.json"
+    },
+    {
+      "check": "iPhone actual UI interactions",
+      "status": "passed",
+      "evidence": "results/iphone-ui.json"
+    },
+    {
+      "check": "physical Chinese IME, candidate selection, emoji/paste and screen readers",
+      "status": "pending-device"
+    },
+    {
+      "check": "Safari application physical interaction",
+      "status": "pending-device"
+    },
+    {
+      "check": "same-device old/new native UI/GPU performance",
+      "status": "pending-device"
+    },
+    {
+      "check": "50 full host mount/unmount cycles with heap/native GPU resources",
+      "status": "pending-device",
+      "reason": "Unit renderer disposal and Web route suspension passed; they do not prove native host or GPU resource cleanup."
+    }
+  ],
+  "published": false,
+  "g06Status": "validating",
+  "limitations": [
+    "No desktop claim.",
+    "Synthetic Unicode replay does not prove physical IME.",
+    "rAF is pacing, not GPU timestamp.",
+    "Retain legacy rollback until all required gates pass."
+  ]
+}

@@ -1,9 +1,9 @@
 export interface StreamSink {
     readonly played: number;
-    enqueue(audio: import('../../web/dist/sound.js').StereoSound): Promise<void>;
+    enqueue(audio: import('../../web/src/sound.js').StereoSound): Promise<void>;
     dispose(): void;
 }
-import type { StereoSound } from '../../web/dist/sound.js';
+import type { StereoSound } from '../../web/src/sound.js';
 /** Continuous bounded scheduling. Project duration is only an export length. */
 export class SoundTransport {
     private sink?: StreamSink;

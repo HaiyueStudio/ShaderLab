@@ -1,0 +1,51 @@
+file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/scripts/editor-e2e/browserDriver.mjs:211
+      throw new Error(`${error instanceof Error ? error.message : String(error)}${detail}\nChrome stderr:\n${stderr}`);
+            ^
+
+Error: Error: Keyboard GPU pixel mismatch 0,0,0 vs 255,255,255
+    at check (<anonymous>:8:182)
+    at async <anonymous>:9:45
+Chrome stderr:
+
+DevTools listening on ws://127.0.0.1:64580/devtools/browser/6bccae99-c2d2-43ab-89f8-665cdb2e18fc
+Trying to load the allocator multiple times. This is *not* supported.
+[97652:5506026:1020/090941.738382:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.739198:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090941.740294:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.740394:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090941.740733:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.740838:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090941.741175:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.741241:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090941.741535:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.741626:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090941.757165:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090941.757266:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090943.857675:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090943.857767:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.041147:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.041259:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.135313:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.135438:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.260192:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.260300:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.341079:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.341193:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.458662:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.458788:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506026:1020/090944.576929:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97652:5506184:1020/090944.577039:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[97660:5506276:1020/090948.854242:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.857130:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.858286:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.859240:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.860235:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.861250:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.862231:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.863583:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+[97660:5506276:1020/090948.864779:ERROR:third_party/blink/renderer/modules/webgpu/gpu_device.cc:357] GPUDevice: "Destroyed texture [Texture \"IOSurface(Gles2Read|RasterRead|DisplayRead|Scanout|WebgpuRead|WebgpuSwapChainTexture|WebgpuWrite)\"] used in a submit.\n - While calling [Queue].Submit([[CommandBuffer]])\n"
+
+    at runEditorBrowserScenario (file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/scripts/editor-e2e/browserDriver.mjs:211:13)
+    at async file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/test/gpu-browser.mjs:11:14
+
+Node.js v24.19.0

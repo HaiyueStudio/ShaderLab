@@ -1,0 +1,6 @@
+{
+  "diagnosticOnly": true,
+  "base": "7400b155137358eaee59f49a11ca0e68a47c00180630f4115c267f15db45fdc6",
+  "artifactSha256": "0d734a06fba12540642e4d42f5b01636031fea95dbbebe9a963b8974565822c5",
+  "method": "Synchronous nested phase timings; original source maps; no acceptance claims"
+}

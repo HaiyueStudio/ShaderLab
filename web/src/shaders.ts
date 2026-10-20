@@ -40,6 +40,12 @@ fn channel2(uv: vec2f) -> vec4f { return textureSampleLevel(iChannel2, iSampler,
 fn channel3(uv: vec2f) -> vec4f { return textureSampleLevel(iChannel3, iSampler, vec2f(uv.x, 1.0 - uv.y), 0.0); }
 `;
 export function wrapShader(pass: RenderPass, common = '') {
+  // Slang already emitted the fragment entry and the product resource ABI.
+  // Keep the generated module intact and add the shared fullscreen vertex.
+  if (pass.code.startsWith('// @haiyue-hlsl-module\n')) return {
+    code: pass.code + VERTEX, lineOffset: 0, lines: pass.code.split('\n').length,
+    sourceLocation: (line: number) => ({ pass: pass.id as CodeId, line: Math.max(1, line) }),
+  };
   common = passCommon(pass, common);
   const commonInit = /^\s*(?:\/\/[^\n]*\n)*\/\/ @haiyue-common-library(?:\n|$)/.test(common) ? 'hy_common_library_init' : '';
   let header = HEADER;

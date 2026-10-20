@@ -39,7 +39,7 @@ test('matrix scalar operations, equality, builtins and global initializers gener
 
 test('matrix compound writes and indexed updates preserve each index and source evaluation once',()=>{
   const code=translated(main('mat2 m=mat2(1.0);int i=0,j=0;vec2 v=vec2(1.0);v*=m;m[i++][j++]+=2.0;float f=m[0][1]++;vec2 old=m[1].yx++;float value=1.0;mat2 next=mat2(value++);c=vec4(f,old,1.0);'));
-  assert.match(code,/hy_assign_\d+\(&v, m\)/);assert.match(code,/hy_assign_\d+\(&m, hy_update_post_inc_function_i32\(&i\), hy_update_post_inc_function_i32\(&j\), 2.0\)/);
+  assert.match(code,/hy_assign_\d+\(&v, m\)/);assert.match(code,/hy_assign_\d+\(&m, hy_update_post_inc_function_i32\(&i\), hy_update_post_inc_function_i32\(&j\), 2.0, m\)/);
   assert.match(code,/\(\*hy_value\)\[hy_column\]\[hy_index\] = hy_next/);
   assert.match(code,/\(\*hy_value\)\[hy_column\]\.y = hy_next.x/);
   assert.equal((code.match(/hy_update_post_inc_function_f32\(&value\)/g)??[]).length,1);

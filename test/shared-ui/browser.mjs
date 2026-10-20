@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {runEditorBrowserScenario} from '../../scripts/editor-e2e/browserDriver.mjs';
+const root=resolve(import.meta.dirname,'../..'),out=resolve(root,'artifacts/m24-g07/browser');mkdirSync(out,{recursive:true});
+const fixture=JSON.parse(readFileSync(resolve(root,'review/m24-ui/g01/project.hyshader')));
+const report=await runEditorBrowserScenario({root,route:(process.env.SHADERLAB_TEST_BUILD??'web/app-dist')+'/index.html?ui=shared',downloadDirectory:resolve(out,'downloads'),failureScreenshotPath:resolve(out,'failure.png'),timeoutMs:90000,
+ readinessExpression:'document.getElementById("app")?.getAttribute("aria-busy")==="false"',
+ scenario:async driver=>{
+  const {evaluate,click,waitFor,cdp,nextPaint}=driver,checks=[];
+  const node=key=>`document.querySelector('[data-hy-key="${key}"]')`;
+  await evaluate(`shaderEditor.open(${JSON.stringify(fixture)})`);
+  await waitFor(()=>evaluate('shaderEditor.getStatus()?.frame>2'),'GPU frame');
+  await evaluate('window.__g07={canvas:document.getElementById("shader-canvas"),editor:document.querySelector(".cm-editor"),before:shaderEditor.getSharedUI()}');
+  await evaluate(`(()=>{__g07.hostWrites=[];__g07.observer=new MutationObserver(records=>__g07.hostWrites.push(...records.map(r=>r.target.id)));for(const id of ['code-language','sound-duration','sound-volume'])__g07.observer.observe(document.getElementById(id),{attributes:true});})()`);
+  for(const scale of [.75,.5,.25,1,.75]){
+   await evaluate(`(()=>{const s=${node('/shader-toolbar/controls/scale')}.shadowRoot.querySelector('select');s.value='${scale}';s.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+   await waitFor(()=>evaluate(`shaderEditor.getApplicationState().compile.status==='ready' && shaderEditor.getProject().preview.scale===${scale} && shaderEditor.getStatus()?.frame>2`),'scale '+scale);
+   const state=await evaluate(`(()=>{const s=shaderEditor.getStatus(),c=__g07.canvas,w=c.width*${scale},h=c.height*${scale},cap=Math.min(1,2048/Math.max(w,h),Math.sqrt(1048576/(w*h)));return {selected:${node('/shader-toolbar/controls/scale')}.value,expected:[Math.max(1,Math.floor(w*cap)),Math.max(1,Math.floor(h*cap))],actual:[s.width,s.height],route:location.hash,identity:__g07.canvas===document.getElementById('shader-canvas')&&__g07.editor===document.querySelector('.cm-editor')};})()`);
+   assert.equal(state.selected,String(scale));assert.deepEqual(state.actual,state.expected);assert.equal(state.route,'#editor');assert.equal(state.identity,true);
+  }checks.push('100 → 75 → 50 → 25 → 100 → 75; UI, project and real GPU target agree; canvas/editor retained');
+  assert.deepEqual(await evaluate('(__g07.observer.disconnect(),__g07.hostWrites)'),[],'scale changes must not rewrite unrelated host selectors');
+  checks.push('scale changes cause zero property writes to unrelated language/sound selectors');
+  await click(node('/shader-toolbar/controls/play'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),false);
+  await click(node('/shader-toolbar/controls/play'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),true);
+  await click(node('/shader-project/actions/information'));
+  await waitFor(()=>evaluate(`${node('/shader-project/information')}.open`),'settings dialog');
+  await cdp.call('Emulation.setDeviceMetricsOverride',{width:1100,height:740,deviceScaleFactor:1,mobile:false});await nextPaint();
+  await click(node('/shader-project/information/close'));await click(node('/shader-project/actions/information'));await click(node('/shader-project/information/close'));
+  checks.push('playback and settings dialog close/reopen through shared semantics; resize with dialog open');
+  const code=fixture.passes.find(pass=>pass.id==='image').code+'\n// G07 共享页面验收 🌙\n';
+  const edited=await evaluate(`(async()=>{const d=haiyueEditor.listDocuments().documents[0];return haiyueEditor.execute({apiVersion:'1',requestId:crypto.randomUUID(),operation:'shader.code.set',documentId:d.identity.id,expectedRevision:d.revision,params:{pass:'image',code:${JSON.stringify(code)}}});})()`);
+  assert.equal(edited.status,'completed');
+  await evaluate(`(()=>{const input=${node('/shader-project/name/field')}.shadowRoot.querySelector('input');input.focus();input.select();})()`);
+  // CDP inserts Unicode text but is not a physical IME acceptance claim.
+  await cdp.call('Input.insertText',{text:'海月 G07 🌙'});
+  await evaluate('shaderEditor.save()');
+  const saved=await evaluate(`new Promise((resolve,reject)=>{const r=indexedDB.open('haiyue.shader-editor.v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,tx=db.transaction('projects','readonly'),q=tx.objectStore('projects').getAll();tx.oncomplete=()=>{db.close();resolve(q.result);};};})`);
+  const persisted=saved.find(record=>record.project.id===fixture.id)?.project;assert.ok(persisted);assert.equal(persisted.name,'海月 G07 🌙');assert.equal(persisted.preview.scale,.75);assert.equal(persisted.passes.find(pass=>pass.id==='image').code,code);
+  await evaluate(`shaderEditor.open(${JSON.stringify(persisted)})`);assert.deepEqual(await evaluate('shaderEditor.getProject()'),persisted);checks.push('save while name still focused, Unicode retained, persisted project reopens identically');
+  await waitFor(()=>evaluate("shaderEditor.getApplicationState().compile.status==='ready' && shaderEditor.getStatus()?.frame>3"),'reopened preview settled');await nextPaint();
+  const cycles=await evaluate(`(async()=>{const before=shaderEditor.getSharedUI(),listeners=__editorE2EListenerCount();for(let i=0;i<50;i++){document.getElementById('nav-gallery').click();await new Promise(requestAnimationFrame);document.getElementById('nav-editor').click();await new Promise(requestAnimationFrame);}return {before,after:shaderEditor.getSharedUI(),listenersBefore:listeners,listenersAfter:__editorE2EListenerCount()};})()`);
+  assert.equal(cycles.listenersAfter,cycles.listenersBefore,'settled window listeners after 50 route cycles');
+  assert.deepEqual(cycles.after.parts.map(p=>[p.created,p.activeNodes,p.activeResources,p.activeListeners]),cycles.before.parts.map(p=>[p.created,p.activeNodes,p.activeResources,p.activeListeners]));
+  checks.push('50 Gallery/editor suspend-resume cycles retain node/resource/listener counts (page disposal tested separately)');
+  const stable=await evaluate('shaderEditor.getSharedUI()');assert.equal(stable.surfaceMounts,1);assert.equal(stable.editorMounts,1);
+  const screenshot=await cdp.call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});writeFileSync(resolve(out,'shared-editor.png'),Buffer.from(screenshot.result.data,'base64'));
+  assert.deepEqual(driver.getBrowserErrors(),[]);
+  return {checks,persisted,cycles,diagnostics:stable,browserErrors:driver.getBrowserErrors(),agent:await evaluate('navigator.userAgent')};
+ }});
+writeFileSync(resolve(out,'report.json'),JSON.stringify({status:'passed',kind:'Chromium with synthetic input; not physical IME',...report},null,2)+'\n');console.log(JSON.stringify({status:'passed',checks:report.checks}));

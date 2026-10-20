@@ -1,0 +1,42 @@
+{
+  "upstream": "1fd6ef470dfdfd43b3385fa7ef43feddd1debd06",
+  "abi": "ios-arm64",
+  "minimumOS": "13.0",
+  "patchSha256": "2f2ef7959060771533b6633d4a858ef8b9a75b0da277f47ef03cb0f16e5c6574",
+  "applePatchSha256": "d473fc1fde6ec14328df86278622ff0abc02c63cd1ac48fc67df801c9f1b857f",
+  "cargoLockSha256": "0b6da55c01d519e7c1000471d47f93f35c0b28f165c2c4cc9b36b5b3641762ea",
+  "archiveSha256": "295c8956ac5611a44a8aba6c82ace609447c6b1cdfca2f10fcc6f6b740a76460",
+  "framework": {
+    "files": {
+      "CanvasNative": "30120298c9eedce57490d1bd92952bf8cf742f81bcc473985c58bd8418637bbe",
+      "Headers/CanvasNative-Swift.h": "69aa879ef17a20071f32a26ec4f654f8c46c8b5811d185b1368ac1340bbb737c",
+      "Headers/CanvasNative.h": "7d06f29045916e963ac33082ac43ae0f55aea527d54831c9b4d9f0bf972efe5c",
+      "Headers/NSCMTLView.h": "f8dd52ff91a6c6a2f186df256e62649f62c68feaa1c48d9f5d5520e0689de164",
+      "Headers/canvas_ios.h": "b2163e72fdbb8f3c7ce7ff583f6b080c5bcbecdb2652916cababb6c6db1e7e91",
+      "Headers/canvas_native.h": "fcd7a2764c589015b72bc44d07b7762a933676120a83cef241ada89072edf46d",
+      "Info.plist": "a04e6b088fd64703e0c9e4ed565876adea8c09e5ca0ef90afaa0001d191d0fa1",
+      "Modules/CanvasNative.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo": "692ac3cbf31b982eb59062d252b192db4d81adb19b1d127a8d84f1b7175675de",
+      "Modules/CanvasNative.swiftmodule/arm64-apple-ios.abi.json": "02d21e3931e5c0ca7e166dd0bad4572a18f0895996b93a591f4a151bf4d870b7",
+      "Modules/CanvasNative.swiftmodule/arm64-apple-ios.private.swiftinterface": "c9393cd83a937971162265be809ab34cf832501a0f22698a38df3cfed55af103",
+      "Modules/CanvasNative.swiftmodule/arm64-apple-ios.swiftdoc": "baa0305b8c578db056b9466a508e758b784d6068599a7f32161d81212735c81a",
+      "Modules/CanvasNative.swiftmodule/arm64-apple-ios.swiftinterface": "c9393cd83a937971162265be809ab34cf832501a0f22698a38df3cfed55af103",
+      "Modules/CanvasNative.swiftmodule/arm64-apple-ios.swiftmodule": "aae07b17851a4afead271f6304c633e45ecf5993f1052993162ab2ca4c0f78ef",
+      "Modules/module.modulemap": "5423d54feff9fec9bb3fdb107e07cd8260d37ec11c24ffee1d8ce82ee1ad9dce",
+      "NSCCanvas.nib": "4d01eea1c12be0cd6277b845cf36c778a36ed368c2aa242e7efa9b92a8a93d66",
+      "fonts/STIXTwoMath/STIXTwoMath-Regular.ttf": "49b22767985171bce579307b21d98f4d35012fa39e316acc4ffcab8644dfb69b",
+      "fonts/STIXTwoMath/STIXTwoText-Bold.ttf": "89adbb9907c40465e061f084598dbebd5a802e30c6e2d38612205b9c87281cae",
+      "fonts/STIXTwoMath/STIXTwoText-BoldItalic.ttf": "f11eced04bcd8919ad92ccc0251878be9a46fa45fa76c514e3abfbf605a3160f",
+      "fonts/STIXTwoMath/STIXTwoText-Italic.ttf": "5a0ed1c0c1d3d4f83f2d00bcd4a0a991a7b0755beacee0a57b26762327a84c22",
+      "fonts/STIXTwoMath/STIXTwoText-Medium.ttf": "b4e1e8e889ce42836b5d20dd75981b0f531cf43d93be3cd41ec5eb1b79584d04",
+      "fonts/STIXTwoMath/STIXTwoText-MediumItalic.ttf": "c25aec1b2b25dce4bb13dd1047384a736100786d4f89ad1a70644b5284aae537",
+      "fonts/STIXTwoMath/STIXTwoText-Regular.ttf": "0566a1be411c0b2463fad8563b33f1c299442b8882c7fce9ef95e079f43233da",
+      "fonts/STIXTwoMath/STIXTwoText-SemiBold.ttf": "242c7cfb1e8ffb0b52e85faf18e9b18bacc45ce8d4046dc47215b2cf06ac77e0",
+      "fonts/STIXTwoMath/STIXTwoText-SemiBoldItalic.ttf": "0aaa247dda367d751c8a5609b28bb5eb2a0f26833c3ee72a455fdc25989dffae"
+    },
+    "sha256": "8f5dbd29d613d5bcce1d994704c54f296910ad32addd5ac1a8e2a3096268fb75"
+  },
+  "librarySha256": "30120298c9eedce57490d1bd92952bf8cf742f81bcc473985c58bd8418637bbe",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "xcode": "Xcode 26.3\nBuild version 17C529",
+  "status": "built; requires device acceptance"
+}

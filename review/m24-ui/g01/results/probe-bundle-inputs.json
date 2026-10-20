@@ -1,0 +1,28 @@
+{
+  "node_modules/@haiyue/ui/dist/select.js": {
+    "bytes": 8569,
+    "imports": [],
+    "format": "esm"
+  },
+  "review/m24-ui/g01/vendor/contract/selection.mjs": {
+    "bytes": 2788,
+    "imports": [],
+    "format": "esm"
+  },
+  "review/m24-ui/g01/web-probe.mjs": {
+    "bytes": 1986,
+    "imports": [
+      {
+        "path": "node_modules/@haiyue/ui/dist/select.js",
+        "kind": "import-statement",
+        "original": "@haiyue/ui/select"
+      },
+      {
+        "path": "review/m24-ui/g01/vendor/contract/selection.mjs",
+        "kind": "import-statement",
+        "original": "./vendor/contract/selection.mjs"
+      }
+    ],
+    "format": "esm"
+  }
+}

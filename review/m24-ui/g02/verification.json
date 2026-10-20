@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "goal": "g02-shared-application",
+  "status": "passed",
+  "generatedAt": "2026-10-16T11:47:09.768Z",
+  "contract": "shaderlab-application/2",
+  "head": "d0ff65d54ed14c1c55a4391603aaac845d32341d",
+  "dirty": true,
+  "sourceFingerprint": "738f796daf21c38929b7a7d5eb23e7c4f2c29c98f72bc6f448efb487960a673a",
+  "sourceHashes": {
+    "config/rollup.shared.js": "05d4a0ecf1652d769b633f658c560b515483d1c4bed9574f0ed981b514bdaead",
+    "mobile/package.json": "8c519a61786a32574d2562b0b13ad49eb8f2c56acb8237cdef55b5420ca8ebb6",
+    "mobile/scripts/bundle.mjs": "c78baa462f97602e4cf788732ffeac25dd5764601c34cc9a42c3c9d0bccbddc8",
+    "mobile/scripts/prepare.mjs": "4ce70efe574dbff3f3148fd5a4b6f4f89d50e5349b15f564afbe93d0dc5b6bc6",
+    "mobile/src/app.ts": "e1a9694e8fa30ff1baeeefb96a75c9d684a1a73165c295135440b4345a1dbb43",
+    "mobile/src/assets.d.ts": "81ee4761e108562409185d2adc2b4e2d739863ceaf54cfa23c9ba10941ebefe6",
+    "mobile/src/audio-sink.android.ts": "87ecd8fc41e817102e5fd8a37a3acf9254f9db0ea8821a7ded3d0d421039142a",
+    "mobile/src/audio-sink.ios.ts": "41d7cb2dc2f65dd10de01cd6735c32837a3166fb3f85852537e841dffb695ef0",
+    "mobile/src/audio-sink.ts": "971228168802162e2cc3d333a6b8d822b3e070398ec9e1fbad29780488f554d6",
+    "mobile/src/audio-transport.ts": "51dfae117a6f0a97e5ebf5ddaf6426be436c8383d47b9986dd8d595dd6375abf",
+    "mobile/src/audio.ts": "7832b5f5eb8223194ce061ec02edbed7d2c3c0b17fea00dae3ff9a59fbfd6217",
+    "mobile/src/compiler.ts": "980cec2b408fbdbbd11cb3dd5390553bf8f070d806287c7a00722077518ef200",
+    "mobile/src/core-js-pure.d.ts": "7613376b62efaba10dc5a4448b16727be4a0e59ab399e57ce922808f66353ce6",
+    "mobile/src/files.android.ts": "4c87142a27688e08115eece40e37a820de273a4ca6a419229ffe00a4b33189d4",
+    "mobile/src/files.ios.ts": "a6100ded4c413742fa2314a58818adcb5e95f739b739412f7602f5a73d5456a8",
+    "mobile/src/files.ts": "05b3fc5a68e2b4a03ac4f2dd5b468d5a97d691038074cd7b8c111b5bac9da75c",
+    "mobile/src/gpu-runtime.ts": "94d1ed3e9ac74fd645e0a02648fb94d152f984f93f4c458f2abaa7a2b9f7d18a",
+    "mobile/src/highlight-tokens.ts": "8b655cd777b8c06fa7705d2c0e1d9f6356a4f1545c93819540c3aa42bd2cb2c1",
+    "mobile/src/highlight.ts": "ca7487a7f6be710639890d78e11ad71191f476660662b0cb2774278378027d08",
+    "mobile/src/layout.ts": "ee6f4ef79c1526d3e11188c068df6ba957e14c66d0f2e2e852343b0d34f34cf6",
+    "mobile/src/pages.ts": "02e8071695462785a476102ed09c7ae3a2eb3488d78d75afec9940708b796101",
+    "mobile/src/project.ts": "5a9c768c71fd30ff4e1aa854f4a25d7cec536f5f19c9ae1281f26de96ae4ea1c",
+    "mobile/src/runtime-init.ts": "54ad447cfc3556f9cb052643dd25814ff6bdc807353b450566c55a5c8922ee2a",
+    "mobile/src/session.ts": "17d56b0a5071f54384b2c618dfc952202483656a2fa4d603c0bd4782d8959f9d",
+    "mobile/src/storage.ts": "bdc782ed79c9764d0d780c7db4b7b2803f0d0165a5fa140fa7c6193124f3d515",
+    "mobile/src/video.android.ts": "535b233ddf8cba0ce345b7896234f6e0f296dcdf887097eae6499ca9a57c17bf",
+    "mobile/src/video.ios.ts": "aaeca5c1eb0cfcf163c8ef2874410c048dd68cd903e865e68f956a00608f024d",
+    "mobile/src/video.ts": "fbcea42ed42ae68cd2cee5dd6d527b5cfa6b4cf804f43dcd36adc80aa311e7ce",
+    "mobile/test/gpu-browser.mjs": "c958aff4082a3afe34ec3dd465a8b33177936402954e8c62b6b5df18ed9d6624",
+    "mobile/tsconfig.json": "e9d2f98ab9fc7e6b7fe83a5e1a10b88c935c1d6ff34e835f5c300474c6bfcc80",
+    "mobile/webpack.config.js": "b8d09f45b0b200da73b8c72391f92b0a8ded2a5d8db855f7ee4f2c5b7b5ad223",
+    "package-lock.json": "ad1a8e231ffd4fcd4874b8e56977cc16354e4cd6d29a9875eceba84cc1651b8f",
+    "package.json": "9ef49e19fd8f1031c58753f3369429f13c95fd8be3dfe84cbecce3968ca9304b",
+    "scripts/build-rollup-once.mjs": "895664056e98c5e577b59a170283024314de162018d805e3c19a1c642f6fd8c0",
+    "scripts/check-boundaries.mjs": "a90c5f33e60e40c5363b4b76d18d222273fc3e22ed69e1871c91b805a9579e23",
+    "scripts/editor-e2e/browserDriver.mjs": "d207f78e0e93661a44930a99263bba42b13f4909cadbd4b91d9cd876ccd93c93",
+    "scripts/editor-electron-layout.mjs": "26b0ab59a2ac4bf5eadbcf2396fb627a8cd5f3a157dcde0991d22582234e607e",
+    "scripts/rollup-build-options.mjs": "04281bd1509f8ad6c0fc6c8e5073502a1f85d3038fc8093e4782bbd43a2c5d12",
+    "scripts/rollup-plugin-wgsl.js": "464b7cb9fdb2668acc44d6ca51579f99588290c38ee3047e1d6a3ee8ea2af988",
+    "scripts/run-editor-app-kit.mjs": "14077a91e940bd5cf4e441419c783fe8c3a060289053b6105a803825b726bba4",
+    "scripts/shared-rollup-runner.mjs": "f9423d0ade01b9d6bc5e55d394cda4b9bad8ba4424ac7b3c76cd320c58baa952",
+    "scripts/webgpu-gate/chrome-runner.mjs": "f7b814e5c2d98ef15b4a998dbb5cf65fdf4f5dfd70529176d7e276530ae17f90",
+    "shared/application/application.ts": "d458c96633b4569c51f057d5e34fe3155eaf3d4655056a5ec6e6e7eb5dde0eb7",
+    "shared/application/cancellation.ts": "e7987c1f2973d877ed4ca6742d0cae5a09eded62f3d266b3c7140a5d53f00668",
+    "shared/application/state.ts": "4b3674285351a9d5874a107833d1452a842eec4af91d85ca3904417c249b6ab2",
+    "shared/domain/builtinTextures.ts": "ae726d2fc86f0f0d098494e35b065e744f944d72fb0e65d999a82206fdf62714",
+    "shared/domain/model.ts": "389944f719a457dd37e119f723f77bc345c5cc830cc6d15a061da5858d2d9223",
+    "shared/domain/sourceLanguage.ts": "0a58d5b41a79e61b818b5bd52178485434b23c62d9de55858123dd53cccef3dd",
+    "shared/domain/values.ts": "c9c9b52be316e13b467a8716d07e557b0034853251d8256a1fb1368033c3df48",
+    "shared/ports/preparedPreview.ts": "0e8d0aec028dbda0a34723a83f1f15899882c5d5abe0c009fc77c67ef948651e",
+    "shared/ports/services.ts": "5d0a48d6c719ee848e07de0f82f90d4c2c88ab356a4851acaac6c4b533cf29d4",
+    "shared/tsconfig.json": "7449efef430dada05f72c0aedd31c558ea1e34e8687b9d37b628cc1b04f577ac",
+    "test/shared-application/adapters.test.mjs": "eeb4460b3e69459f7752bca08433dc922b8f49ccff79091aae9f2e824585399f",
+    "test/shared-application/application.test.mjs": "865b5ebe7afd35e83a7a8436ab28af397e0e906023467ac3ce6af31ab636fbb8",
+    "test/shared-application/fresh-build.mjs": "d3b67819c6719a6bd26d544da4f251bde6bc328bedf130d77a0ba40c9cafa961",
+    "tsconfig.base.json": "a2cc1e244ac3bc6054695eacca737056a880fa3fc2a4fa3fa7a4eea95325ef4f",
+    "web/package.json": "8fa0c48b7abd5252b3aa57b7086c991e35713b0b062e3201a02a9b8b295f9929",
+    "web/rollup.config.js": "3c0927f53edd51eb107e412811e5a410eda42e6657762626ea64638d63d2a500",
+    "web/src/bufferPreviews.ts": "3b5061224c29074859aac7973389406dfeb904a0ec99fcc6321e1aafb276e367",
+    "web/src/builtinTextures.ts": "12b073eb75d26d62aeadc3631ff36f633748b99170671e53602b56d110a54693",
+    "web/src/channelBindings.ts": "cbfc4937831cdaf1d9a256c5d12dbe04b9b02d7d4f08c65b042cf6a6ead4c361",
+    "web/src/clockExample.ts": "0244d2a44146aa1bc8548c48e20687a238563e2a9aa74b245aa6462b96c76236",
+    "web/src/codeEditor.ts": "fadc6fa6c5106e5d72d4b91ea37b0dfbe53b48d9f86ef0336b1bc7ea135432f8",
+    "web/src/cubeUpload.ts": "e2322a37a71f06812a3fe3e60026464b9c9652896ede142d8bfcc05a82326041",
+    "web/src/examples.ts": "bf55a36cda17299858e152f629e1858d8b7248926e993a980cdb1b8b1c9e18e9",
+    "web/src/glsl.ts": "bc7b15c5f9f5b11b479164e1dd0e72beabec37c84bb8108bc012fd42938bc079",
+    "web/src/glslArrays.ts": "ea7275ed87427859a978e63635f374f1dcd973e4ec93036f07f5116da2f8c9f6",
+    "web/src/glslBitwise.ts": "47c6402f233afe7bb6d4ee7129d8c278e801e2484345409f7ccc22fdc97a74ed",
+    "web/src/glslChannels.ts": "be6b2c0763b39d0eb824befab37d7a06583a13f113f6f411865c4321f20d7cfe",
+    "web/src/glslConditionalCompilation.ts": "af1774f3fc931ed518719445601811260be813653643878a6a88fef6ec51bc53",
+    "web/src/glslConditionals.ts": "8a06c875e107b787cb64b2376919ecae88946895fd388f2354cb23902ce4e9bc",
+    "web/src/glslConstants.ts": "cbc77264141e3227a6220849b49ca22e5b53ba96a2e4700dd52e1d3b210c23d7",
+    "web/src/glslFunctions.ts": "2de1dee6580af453aeef0aa3ca31d7f2bc268e5cf2acefb6250d939ce1e64e7f",
+    "web/src/glslLanguage.ts": "6ccc224d00b60e0f228d23c50de00c323385eb294a5c71a1ad3126f375b9422b",
+    "web/src/glslMatrices.ts": "b281ff7a00ea417e352b6b1670576de93ec05459e6078aed27988a215079dfaf",
+    "web/src/glslNames.ts": "e2d6b26857a837cf75871a776a423bb642845a0bce59ea6eab23aff0e2ff8792",
+    "web/src/glslOutputs.ts": "dfb7947015d66333768b270a3c3f144f633285bca133011a937c56ccf3361cd3",
+    "web/src/glslPredicates.ts": "760b99244f19f2716ab1b30c1681411ac01f8d0fc10cef9cb157589427100574",
+    "web/src/glslPreprocessor.ts": "19506da5c3e9e3b44a50ea4f42e9a08e2e391f08ecf546abd4233c44e024e764",
+    "web/src/glslProject.ts": "0e205a8e343530db60ab82e6a341cc395a8789b98859b48ed6e184af5ac8a9ca",
+    "web/src/glslSource.ts": "55787fdc6ba1715beb0f21d3466d74ef18997b86a1d0491307b555562e441a2c",
+    "web/src/glslStructs.ts": "60f3050fd4197206aae1712737cd4be5e0081fbee0755081bf269615a3ba2a50",
+    "web/src/glslSwitches.ts": "73a9e3491e65edb6a95864e1d503a1236c06159eac6d917f762942f25d955073",
+    "web/src/glslTextures.ts": "5170d37782d0d58d40876e53f98fdb1f82b2196cfc60bc595d1b66b489cf97d7",
+    "web/src/glslUpdates.ts": "ecd3e8a2f47747488a155becb37ee52eb2df4175af21b6e85477f0a56279ba2c",
+    "web/src/gpuPrecision.ts": "097f9521c1264e91c3633a23b439f5df5aa46090b379358e2b8ef21b552f28bd",
+    "web/src/keyboardTexture.ts": "54a3d7faaa5e413f9d8388a87d297bb85ad27bace6184f5139b0ba26c9777bab",
+    "web/src/main.ts": "795acd66963f3bf5174a2ea48ae6dc97dada1df95dc9ff43cca9b6cc40a61a51",
+    "web/src/minesweeperExample.ts": "41e8fe0cc1e1822d16ed16782b97e0022cead5d406512b7516ef626e3d4f26d9",
+    "web/src/model.ts": "beda210567d3db72472b09114d818691862aaed7f47d9d9f8b5616228c4bf1c4",
+    "web/src/nagaAsset.d.ts": "81ee4761e108562409185d2adc2b4e2d739863ceaf54cfa23c9ba10941ebefe6",
+    "web/src/puzzleExample.ts": "67af4931c5e95bd4cd71c5c8ee6a4d0b2699c2a60bea8dced10896464e29c878",
+    "web/src/runtime.ts": "cfd72b76a830ce0cf1913b5185f25fc2269984886ac5a68eb9dbb6fa1161697b",
+    "web/src/shaders.ts": "7feba3afd6fe63a0af27b4c8f620a91a7b62dc43a8dcb473f5a8982b2d032c82",
+    "web/src/shadertoyExport.ts": "d2492f8bbcfe241d8bf4c7861ca095db391bdb14a1da4f954084f810b19baf24",
+    "web/src/sound.ts": "d13846a48cbce03112c31fc95b06c6979758b3a20a5f3d7f353c2728b8d9eef1",
+    "web/src/soundPlayer.ts": "7bf0c76d901000af0f26cc4a475d9a8b16c0ef6a657a02d532ed9d73a2a322b8",
+    "web/src/sourceLanguage.ts": "676dcc079ac4ded85319226cbcea782e9357b60775fe183f268d952b9e98a852",
+    "web/src/storage.ts": "4ddb8531d5769a09940b9e717c80bc53be47e0231a10ed574a0e571a53a054c3",
+    "web/src/textureUpload.ts": "96697cea0fbff0e07b272f925f4ece55102acbfe0970787cfb8895f255531ea5",
+    "web/src/tutorialContent.ts": "5c2b06b6340043162681b9dfcbf192796a03984b1b03d320482efd2fb8461378",
+    "web/src/tutorialDiff.ts": "52c208e33cb23f98d5b81ed5910927b06718bde36b74f842f3fd3fd39617b3e7",
+    "web/src/tutorialGeometry.ts": "358fa7b20086637f1a506e298e2931b84aa57cf8d4c7adb1b0d45bbe20d363d8",
+    "web/src/tutorialInput.ts": "b1ff1aff974ba0e3b6790f42fc2ac24b0db260e3ebd79a7d51fdba87fd71d26a",
+    "web/src/tutorialLabs.ts": "85219218248fb23ef972a9f5a226c69d80dc6e6f1db0a69339fad4f67babf203",
+    "web/src/tutorialNoise.ts": "c28a66e2e1119826df945236748b39eb5af4608a747a857b65da628fb8216664",
+    "web/src/tutorialPage.ts": "260d40ab985808f58fdd997e8f82025d4504736f7cc85cfefe41c3324ecf2ca3",
+    "web/src/tutorialRay.ts": "24f08c000edfad0a8eacdc60c28e5d8066557f18a8290b482a269e5b134c7bd8",
+    "web/src/tutorialVolume.ts": "c46ebdaaf684241597d0d9805aa5f0b0c98a557a48425f21e59b71b3be94726e",
+    "web/src/tutorialVoxel.ts": "581abaf05b5de4857cdf218589638e06dd71cfc16f71afd37feff94a628c2692",
+    "web/src/ui.ts": "589545594eb3eedb5dd46d4578f703e7cea94f2bf03480e10c2c016f8971fd3b",
+    "web/src/videoTexture.ts": "f269e43351566b4d6479c0184300bda83c42efce4d0f4a7b22c712ce856eb585",
+    "web/src/wgsl.ts": "bf3ae08711b98194a3725dd323457b6780f6316508f9077a6a1f43fba578dc1d",
+    "web/src/workspace.ts": "4e5dc07a1a2f0024b4bbd0a770bd2bf0acf67dc8e2268aa59e1f106f6698dde4",
+    "web/test/browser-smoke.mjs": "160ef3a92ca98d124729fcb8afb5914243f6bbd837146b51548a9cfdd1d3b406",
+    "web/tsconfig.json": "70516cacde8d04b887a592cbef5508a87ee38be1c0f53c4d6e06ffc5885d0c64",
+    "web/tsconfig.web.json": "0abfece1547303818dbcc7cadc4232884dd38efae611cc476e2294611c1c67a0"
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "platform": "darwin",
+    "arch": "x64",
+    "os": "26.6.2"
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "status": "passed",
+      "log": "results/typecheck.log"
+    },
+    {
+      "command": "npm test",
+      "status": "passed",
+      "sharedTests": 20,
+      "webTests": 221,
+      "mobileTests": 7,
+      "total": 248,
+      "log": "results/unit-tests.log"
+    },
+    {
+      "command": "npm run check:boundaries",
+      "status": "passed",
+      "log": "results/boundaries.log"
+    },
+    {
+      "command": "npm run test:shared:fresh",
+      "status": "passed",
+      "report": "results/fresh-build.json",
+      "scope": "source-only fresh directory using installed lock-version build tools; no Web directory, generated outputs or platform packages"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "buildHash": "62f144ba535c0f1704a9b4bfb8ef7f948bec5ac2e0257bd87e89746b39f0b493",
+      "log": "results/build.log"
+    },
+    {
+      "command": "node web/test/browser-smoke.mjs",
+      "status": "passed",
+      "checks": 32,
+      "report": "results/browser.json",
+      "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+      "adapter": {
+        "vendor": "amd",
+        "architecture": "rdna-1",
+        "device": "",
+        "description": "",
+        "isFallbackAdapter": false
+      }
+    },
+    {
+      "command": "node mobile/test/gpu-browser.mjs",
+      "status": "passed",
+      "report": "results/mobile-gpu.json",
+      "scope": "real Chrome WebGPU; actual mobile shader graph + shared application; platform IO test ports; not a phone test"
+    }
+  ],
+  "bundles": [
+    {
+      "platform": "ios",
+      "status": "passed",
+      "kind": "NativeScript Webpack JavaScript/resources (not IPA/APK)",
+      "matchesCurrentSharedApplication": true,
+      "webDistImports": [],
+      "files": [
+        {
+          "path": "mobile/artifacts/bundles/ios/mobile/app/bundle.mjs",
+          "sha256": "4bccc34eebd8fa699819fc89237858a2e61900cfb328bd59bc01cdef95f6a586"
+        },
+        {
+          "path": "mobile/artifacts/bundles/ios/mobile/app/vendor.mjs",
+          "sha256": "cd4a97f61d137430008fd3e3ca68d2b551367327d9d7de774dcb9e86ea089048"
+        },
+        {
+          "path": "mobile/artifacts/bundles/ios/mobile/app/runtime.mjs",
+          "sha256": "840c6c7b135b519ef47dc56c7b75d323ad7eb56c6107d052cfcbc55d30006566"
+        },
+        {
+          "path": "mobile/artifacts/bundles/ios/mobile/app/compiler/compiler.js",
+          "sha256": "af1284e3e545435d7eb023cae3c49a2e9108ab074a3123b1223eaa44dd4c0c80"
+        }
+      ],
+      "sharedSources": [
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/application.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/cancellation.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/state.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/builtinTextures.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/model.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/sourceLanguage.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/values.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/ports/preparedPreview.js"
+      ]
+    },
+    {
+      "platform": "android",
+      "status": "passed",
+      "kind": "NativeScript Webpack JavaScript/resources (not IPA/APK)",
+      "matchesCurrentSharedApplication": true,
+      "webDistImports": [],
+      "files": [
+        {
+          "path": "mobile/artifacts/bundles/android/app/src/main/assets/app/bundle.mjs",
+          "sha256": "dc96009d73ce0d4d5c8a1bca295d5f7090d0712966ddbd556a72c946c97ba4ff"
+        },
+        {
+          "path": "mobile/artifacts/bundles/android/app/src/main/assets/app/vendor.mjs",
+          "sha256": "d00667a310fad9529d043edf037a96d266b6cff32baa40f75c07b68b0f549120"
+        },
+        {
+          "path": "mobile/artifacts/bundles/android/app/src/main/assets/app/runtime.mjs",
+          "sha256": "840c6c7b135b519ef47dc56c7b75d323ad7eb56c6107d052cfcbc55d30006566"
+        },
+        {
+          "path": "mobile/artifacts/bundles/android/app/src/main/assets/app/compiler/compiler.js",
+          "sha256": "af1284e3e545435d7eb023cae3c49a2e9108ab074a3123b1223eaa44dd4c0c80"
+        }
+      ],
+      "sharedSources": [
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/application.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/cancellation.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/application/state.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/builtinTextures.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/model.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/sourceLanguage.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/domain/values.js",
+        "webpack://@haiyue/shaderlab-mobile/../shared/dist/ports/preparedPreview.js"
+      ]
+    }
+  ],
+  "handoff": [
+    {
+      "goal": "g07-shaderlab-slice",
+      "status": "pending-device",
+      "platforms": [
+        "iPhone",
+        "iPad",
+        "Android"
+      ],
+      "buildIdentity": "sourceFingerprint and bundle hashes in this record; no G02 IPA/APK installed",
+      "checks": [
+        "shared UI input/IME/accessibility",
+        "file picker cancel, save and reopen",
+        "100/75/50/25% preview",
+        "rotation, split screen, background recovery"
+      ]
+    },
+    {
+      "goal": "g07-shaderlab-slice",
+      "status": "pending",
+      "platforms": [
+        "Safari",
+        "same-device old/new UI"
+      ],
+      "checks": [
+        "browser behavior",
+        "G01 performance budgets"
+      ]
+    },
+    {
+      "goal": "g10-integration-candidate",
+      "status": "pending",
+      "checks": [
+        "fresh dependency install and complete candidate matrix"
+      ]
+    }
+  ],
+  "artifacts": {
+    "results/boundaries.log": "4b9a40ff7dceb290a3a0d0733a0905c87e2ab16dafc6f664d050c365f88cdfdb",
+    "results/browser-smoke.log": "3a53e933e27bf541e8fefb9512cec10d6ed7e62ea41f1ed05e961c413c9d63a4",
+    "results/browser.json": "3a53e933e27bf541e8fefb9512cec10d6ed7e62ea41f1ed05e961c413c9d63a4",
+    "results/build.log": "2fe90eead2264f902101dbdb1143ba17dee37b1f914dc078d9d3220a64497ede",
+    "results/bundle-android.log": "fbaef2eb4e0d29c3c3bc35156f9b0383201ee5462a01d6875d8ca1f129c958b2",
+    "results/bundle-ios.log": "785628306f64bf465ae0f333b2646a44c3cb3148577be2c058aadec43b60eaba",
+    "results/fresh-build.json": "80958aaa0f1051ad4e950b0bf62b5cc2c410d9c0752c32f85d4f82f8330ab2b8",
+    "results/fresh-build.log": "09f051bb94f889ff9d3bf4e1ab1488439935305d1885be5894d0c1bf329aa3f4",
+    "results/mobile-gpu-before-frame-wait.log": "b1b4955e92cef92f9eee67693406afc27cfec1043a0c47b833078f493f159574",
+    "results/mobile-gpu.json": "bc051c40553ca510d6ffe2831b0bb864077c6ad43c41567d72ca71c1e7fff89e",
+    "results/mobile-gpu.log": "e0d422af996cccc2ba8d55b38e438e4446d7b757b35916cfde68cf42c64ff02c",
+    "results/shared-tests.log": "5ac8cb3e4b10ae7dc2766b1c490b2a35753a4b8aa64328e4a510c2fbc22328c9",
+    "results/typecheck.log": "2e1c8fbe68457936e7faa3ed07f824f99ea6852ad31f31362f7333804b731809",
+    "results/unit-tests.log": "367bea6bebb24b5617f29cdcbf8e10e38a496e169af1ffc6da074e14e30363d2"
+  }
+}

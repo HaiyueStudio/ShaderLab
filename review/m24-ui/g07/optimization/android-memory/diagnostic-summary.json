@@ -1,0 +1,20 @@
+{
+  "status": "passed-diagnostic-build",
+  "artifactSha256": "973486045664933782f1f625045637f2dd0c86e050f745c2702ad6a8f137be35",
+  "cycles": 50,
+  "elapsedSeconds": 48.215,
+  "warmRangeCycles": [
+    21,
+    50
+  ],
+  "nativeHeapMiB": [
+    31.1640625,
+    37.64826965332031
+  ],
+  "totalPssMiB": [
+    169.8408203125,
+    179.2666015625
+  ],
+  "traceCapturedDeviceDestroyCount": 31,
+  "traceLimitation": "logcat ended unexpectedly; trace is partial, not a complete 50-cycle native allocation trace. Device report independently completed all 50 cycles."
+}

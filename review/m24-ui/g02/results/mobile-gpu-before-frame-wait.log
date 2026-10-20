@@ -1,0 +1,28 @@
+file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/scripts/editor-e2e/browserDriver.mjs:197
+      throw new Error(`${error instanceof Error ? error.message : String(error)}${detail}\nChrome stderr:\n${stderr}`);
+            ^
+
+Error: Error: 尚无渲染结果
+    at NativeShaderRuntime.readImage (http://127.0.0.1:52639/mobile/artifacts/gpu/test.js:60780:13)
+    at <anonymous>:1:265
+Chrome stderr:
+
+DevTools listening on ws://127.0.0.1:52659/devtools/browser/8210c7e8-8313-4e2e-acac-261569819419
+Trying to load the allocator multiple times. This is *not* supported.
+[45587:3179629:1016/194224.463209:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.473380:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179629:1016/194224.474182:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.474330:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179629:1016/194224.475481:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.475604:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179629:1016/194224.476214:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.476321:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179629:1016/194224.476773:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.476897:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179629:1016/194224.511404:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+[45587:3179706:1016/194224.511581:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+
+    at runEditorBrowserScenario (file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/scripts/editor-e2e/browserDriver.mjs:197:13)
+    at async file:///Users/qingque/Desktop/HaiyueStudio/ShaderLab/mobile/test/gpu-browser.mjs:11:14
+
+Node.js v24.19.0

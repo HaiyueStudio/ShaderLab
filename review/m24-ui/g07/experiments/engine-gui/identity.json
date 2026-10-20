@@ -1,0 +1,19 @@
+{
+  "capturedAt": "2026-10-19T04:40:06.736894+00:00",
+  "ipaSha256": "38b60b4ab08d39c1a8d8b362db57c489d56f3f984cb5041d2d01e7faeb5a712c",
+  "sources": {
+    "mobile/src/experiments/gui-ui/sampling.ts": "3228cdf7cafafc1a5ba1776be6aa42321edb1afe322c918d92d92bb8c853fe0c",
+    "mobile/src/experiments/gui-ui/view.ts": "95fe875f32817571354dedf01f248dc0a9da10eeb927819d7edefa0a6add0c16",
+    "mobile/src/experiments/gui-ui/page.ts": "eafe96524f45e707772eaf7f32255c435e2262bbe1d02790599d65acd992f2ae",
+    "mobile/src/experiments/gui-ui/flags.ts": "ed22b7657284eb4085c1a6e688a7fd2065a1c86821483723e353038f9e29929e",
+    "mobile/src/gpu-runtime.ts": "5dc77bc7d9828ce967ecaa0d2f72307533575953982815c9ca52770110c326f9",
+    "mobile/src/pages.ts": "0594be8684fa362b6b46efe67435f7d4a4bb30fa8306ed4b91b0d91d92345501",
+    "mobile/src/app.ts": "66247d2fecbc0e301f6760e2e4fb925353a64100c9905a873b4a0aa4e48cd329",
+    "mobile/src/platform/validation.ts": "e23ad137fee80fbc7c2162d8dc80bb91c8ff17d296a2f4bd5d44215ca7711fd6",
+    "mobile/package.json": "6ee25c52f166efe5c5cd5f083a2a5ff1a2c19ce698d2d01c788eede3cbb91f74",
+    "package-lock.json": "d4aabb8a6c17d440ef608ab2d602ceb5f7f8425d15bf26058b909b0532313d31",
+    "mobile/test/gui-comparison.mjs": "5bef9eab0311efe2a7a25230bdc614d3ba07652aa2bd7d8b578964aa35e99fe1",
+    "mobile/test/ios/GuiExperimentSmoke.swift": "713323fde310ede964d898b1512d3df0f999e37ddf703a6cfaf4d01a2b2f6fa0"
+  },
+  "testRunnerSourceSha256": "ebf5048e238e1b63cb31227bd473759d8772c4af6c9f8bcb5a2d3fbe02ca72d9"
+}

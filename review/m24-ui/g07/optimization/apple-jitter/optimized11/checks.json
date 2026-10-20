@@ -1,0 +1,17 @@
+{
+  "nativeTests": {
+    "passed": 28,
+    "failed": 0
+  },
+  "mobileTests": {
+    "passed": 37,
+    "failed": 0
+  },
+  "typecheck": "passed",
+  "boundaries": "passed",
+  "signedDeviceBuild": "passed",
+  "diagnosticHooks": "absent",
+  "nativePackageProvenanceFiles": 147,
+  "publicVersionsChanged": false,
+  "scope": "Private Native m24.11 changes only controls.ts and platform platform/ios/android files from m24.10; UI unchanged."
+}

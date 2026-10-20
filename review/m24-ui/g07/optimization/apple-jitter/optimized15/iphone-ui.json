@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "capturedAt": "2026-10-19T03:08:52.489741+00:00",
+  "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+  "device": {
+    "architecture": "arm64e",
+    "deviceId": "00008120-000948541182601E",
+    "deviceName": "Hypnos\u7684 iPhone",
+    "modelName": "iPhone 15 Plus",
+    "osBuildNumber": "24B5089g",
+    "osVersion": "27.2",
+    "platform": "iOS"
+  },
+  "test": "SharedPageSmoke/testSharedEditor",
+  "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+  "reason": "First full unchanged system UI run on final candidate 15 passed in 62.72 seconds. All screenshots inspected; normal launch restored.",
+  "attempts": [
+    {
+      "resultBundle": "artifacts/m24-g07/apple-jitter/optimized15/iphone-ui.xcresult",
+      "status": "passed",
+      "log": "iphone-ui.log",
+      "logSha256": "0113f2262ebb724ec948e3c73697755c5ddd7b59f284081eaea2e6f78f4a151c",
+      "testSourceSha256": "e9a8f83923ff89d1cf511bbb1201c7cc281b6c5ec32bd78696656a2020e36d7c",
+      "intendedTestExecuted": true,
+      "completed": true,
+      "passedTests": 1,
+      "failedTests": 0
+    }
+  ],
+  "checks": [
+    "75%, 50%, 25%, 100%, 75% actual native picker; preview remains active",
+    "pause/resume",
+    "settings modal landscape, background/foreground, close and reopen",
+    "single-line field keyboard Done dismiss; value retained",
+    "multiline editor actual space key and hide keyboard",
+    "GLSL conversion opened twice; source preserved",
+    "save and reopen; name and edited source preserved"
+  ],
+  "screenshots": [
+    {
+      "path": "screens/iphone-saved-reopened.png",
+      "sha256": "d8a7147d039e0abec586f90578cee28f8a3bfa1d45f057ae777e0a099907b356"
+    },
+    {
+      "path": "screens/iphone-settings-landscape.png",
+      "sha256": "db19fb550de96621ea651f2900ffe952ecbb0aa5c17990a0366385241c32e939"
+    },
+    {
+      "path": "screens/iphone-shared-preview-75.png",
+      "sha256": "22c6c36d3cf9af50492c75561ad3a32d5ff290cc1990567028f3d053d130f2f5"
+    }
+  ],
+  "normalLaunchRestored": true,
+  "limitations": [
+    "System UI automation does not replace physical Chinese IME or VoiceOver acceptance.",
+    "Functional UI pass does not override the inconclusive performance result."
+  ]
+}

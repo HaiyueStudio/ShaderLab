@@ -1,0 +1,14 @@
+{
+  "nativeTests": {
+    "passed": 29,
+    "failed": 0
+  },
+  "mobileRegressionReference": "../optimized11/mobile-tests.log",
+  "mobileRegressionReason": "37 mobile tests passed on unchanged ShaderLab source; candidate 12 only changes iOS text-cache internals, covered by native tests, fresh typecheck and device tests.",
+  "typecheck": "passed",
+  "boundariesReference": "../optimized11/boundaries.log",
+  "signedDeviceBuild": "passed",
+  "diagnosticHooks": "absent",
+  "nativePackageProvenanceFiles": 147,
+  "publicVersionsChanged": false
+}

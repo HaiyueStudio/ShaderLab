@@ -1,0 +1,27 @@
+{
+  "device": "171CC23C-9BDA-54B0-9C39-34EABE16ED10",
+  "artifact": "/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/style-unification/candidate4/ShaderLab.ipa",
+  "artifactSha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168",
+  "instrumented": false,
+  "schedule": [
+    [
+      "shared",
+      "optimized"
+    ],
+    [
+      "optimized",
+      "shared"
+    ],
+    [
+      "shared",
+      "optimized"
+    ],
+    [
+      "optimized",
+      "shared"
+    ]
+  ],
+  "samplesPerRun": 100,
+  "stabilitySpreadThreshold": 1.1,
+  "startedAt": "2026-10-19T12:41:52.850Z"
+}

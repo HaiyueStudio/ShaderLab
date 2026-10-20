@@ -43,6 +43,16 @@ test('swizzles and indexed matrix columns/elements copy back through the origina
   assert.doesNotMatch(code,/&m\[/);
 });
 
+test('matrix inout snapshots are taken after index effects and before later arguments',()=>{
+  const code=translated('struct S{mat2 m[2];};void f(inout float x,float ignored){x+=1.0;}'+
+    main('S s;int a=0,b=0,cnt=1;f(s.m[a++][b++][cnt--],s.m[0][0][1]++);c=vec4(s.m[0][0][1]);'));
+  assert.match(code,/hy_call_0_capture_0\(hy_update_post_inc_function_i32\(&a\), hy_update_post_inc_function_i32\(&b\), hy_update_post_dec_function_i32\(&cnt\), s\), hy_update_/);
+  assert.match(code,/fn hy_call_0_capture_0\(path_1: i32, column: i32, index: i32, hy_value: hy_struct_0_S\)/);
+  assert.match(code,/return hy_call_0_capture_0_value\(hy_value.m\[path_1\]\[column\]\[index\], path_1, column, index\)/);
+  assert.match(code,/\(\*hy_root_0\)\.m\[hy_arg_0.path_1\]\[hy_arg_0.column\]\[hy_arg_0.index\] = hy_result.out_0/);
+  for(const name of ['a','b','cnt'])assert.equal((code.match(new RegExp('hy_update_post_(?:inc|dec)_function_i32\\(&'+name+'\\)','g'))??[]).length,1);
+});
+
 test('parameter shadows, unnamed arguments, prototypes and overloads retain the output binding',()=>{
   const code=translated('void f(out float);void f(out vec2 x){x=vec2(1.0);}void f(out float real){real=2.0;{float real=9.0;return;}}void keep(inout float){}'+main('float x;vec2 y;f(x);f(y);keep(x);c=vec4(x,y,1.0);'));
   assert.match(code,/var real: f32 = 9.0;\n\s+return hy_fn_f_1_f32_result\(hy_param_0\)/);

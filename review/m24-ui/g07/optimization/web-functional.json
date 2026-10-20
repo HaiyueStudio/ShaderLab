@@ -1,0 +1,330 @@
+{
+  "status": "passed",
+  "kind": "Chromium with synthetic input; not physical IME",
+  "checks": [
+    "100 → 75 → 50 → 25 → 100 → 75; UI, project and real GPU target agree; canvas/editor retained",
+    "scale changes cause zero property writes to unrelated language/sound selectors",
+    "playback and settings dialog close/reopen through shared semantics; resize with dialog open",
+    "save while name still focused, Unicode retained, persisted project reopens identically",
+    "50 Gallery/editor suspend-resume cycles retain node/resource/listener counts (page disposal tested separately)"
+  ],
+  "persisted": {
+    "format": "haiyue-shader",
+    "version": 1,
+    "id": "m24-g01-preview",
+    "name": "海月 G07 🌙",
+    "description": "",
+    "updatedAt": "2026-10-17T03:57:46.347Z",
+    "tabs": [
+      "image"
+    ],
+    "common": "",
+    "sound": {
+      "id": "sound",
+      "enabled": false,
+      "code": "// 左右声道范围 -1 到 1；时间单位为秒。\nfn mainSound(sampleIndex: i32, time: f32) -> vec2f {\n  let beat = floor(time * 4.0);\n  let note = select(select(60.0, 64.0, beat % 4.0 == 1.0), select(67.0, 72.0, beat % 4.0 == 3.0), beat % 4.0 >= 2.0);\n  let frequency = 440.0 * pow(2.0, (note - 69.0) / 12.0);\n  let phase = fract(time * 4.0);\n  let envelope = smoothstep(0.0, 0.02, phase) * exp(-phase * 5.0);\n  let tone = sin(6.2831853 * frequency * time) * envelope * 0.3;\n  return vec2f(tone, tone);\n}",
+      "channels": [
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        },
+        {
+          "kind": "none"
+        }
+      ],
+      "duration": 60,
+      "volume": 0.25
+    },
+    "passes": [
+      {
+        "id": "buffer-a",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-b",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-c",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "buffer-d",
+        "enabled": false,
+        "code": "fn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  return vec4f(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      },
+      {
+        "id": "image",
+        "enabled": true,
+        "code": "// fragCoord: 像素坐标，原点在左下角\nfn mainImage(fragCoord: vec2f) -> vec4f {\n  let uv = fragCoord / iResolution.xy;\n  let color = vec3f(0.5) + 0.5 * cos(vec3f(iTime) + uv.xyx + vec3f(0.0, 2.0, 4.0));\n  return vec4f(color, 1.0);\n}\n// G07 共享页面验收 🌙\n",
+        "channels": [
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          },
+          {
+            "kind": "none"
+          }
+        ]
+      }
+    ],
+    "assets": [],
+    "preview": {
+      "mode": "canvas",
+      "mesh": "sphere",
+      "scale": 0.75
+    },
+    "editorLanguages": {
+      "image": "wgsl"
+    }
+  },
+  "cycles": {
+    "before": {
+      "surfaceMounts": 1,
+      "editorMounts": 1,
+      "controller": {
+        "subscriptions": 4,
+        "disposed": false
+      },
+      "parts": [
+        {
+          "status": "mounted",
+          "commits": 12,
+          "created": 16,
+          "updated": 22,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 0,
+          "activeListeners": 80,
+          "activeNodes": 16,
+          "activeResources": 0
+        },
+        {
+          "status": "mounted",
+          "commits": 22,
+          "created": 7,
+          "updated": 21,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 0,
+          "activeListeners": 38,
+          "activeNodes": 7,
+          "activeResources": 0
+        },
+        {
+          "status": "mounted",
+          "commits": 3,
+          "created": 1,
+          "updated": 2,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 11,
+          "activeListeners": 9,
+          "activeNodes": 1,
+          "activeResources": 1
+        },
+        {
+          "status": "mounted",
+          "commits": 3,
+          "created": 1,
+          "updated": 2,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 10,
+          "activeListeners": 9,
+          "activeNodes": 1,
+          "activeResources": 1
+        }
+      ]
+    },
+    "after": {
+      "surfaceMounts": 1,
+      "editorMounts": 1,
+      "controller": {
+        "subscriptions": 4,
+        "disposed": false
+      },
+      "parts": [
+        {
+          "status": "mounted",
+          "commits": 12,
+          "created": 16,
+          "updated": 22,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 0,
+          "activeListeners": 80,
+          "activeNodes": 16,
+          "activeResources": 0
+        },
+        {
+          "status": "mounted",
+          "commits": 22,
+          "created": 7,
+          "updated": 21,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 0,
+          "activeListeners": 38,
+          "activeNodes": 7,
+          "activeResources": 0
+        },
+        {
+          "status": "mounted",
+          "commits": 3,
+          "created": 1,
+          "updated": 2,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 61,
+          "activeListeners": 9,
+          "activeNodes": 1,
+          "activeResources": 1
+        },
+        {
+          "status": "mounted",
+          "commits": 3,
+          "created": 1,
+          "updated": 2,
+          "moved": 0,
+          "removed": 0,
+          "measurements": 60,
+          "activeListeners": 9,
+          "activeNodes": 1,
+          "activeResources": 1
+        }
+      ]
+    },
+    "listenersBefore": 34,
+    "listenersAfter": 34
+  },
+  "diagnostics": {
+    "surfaceMounts": 1,
+    "editorMounts": 1,
+    "controller": {
+      "subscriptions": 4,
+      "disposed": false
+    },
+    "parts": [
+      {
+        "status": "mounted",
+        "commits": 12,
+        "created": 16,
+        "updated": 22,
+        "moved": 0,
+        "removed": 0,
+        "measurements": 0,
+        "activeListeners": 80,
+        "activeNodes": 16,
+        "activeResources": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 22,
+        "created": 7,
+        "updated": 21,
+        "moved": 0,
+        "removed": 0,
+        "measurements": 0,
+        "activeListeners": 38,
+        "activeNodes": 7,
+        "activeResources": 0
+      },
+      {
+        "status": "mounted",
+        "commits": 3,
+        "created": 1,
+        "updated": 2,
+        "moved": 0,
+        "removed": 0,
+        "measurements": 62,
+        "activeListeners": 9,
+        "activeNodes": 1,
+        "activeResources": 1
+      },
+      {
+        "status": "mounted",
+        "commits": 3,
+        "created": 1,
+        "updated": 2,
+        "moved": 0,
+        "removed": 0,
+        "measurements": 61,
+        "activeListeners": 9,
+        "activeNodes": 1,
+        "activeResources": 1
+      }
+    ]
+  },
+  "browserErrors": [],
+  "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+}

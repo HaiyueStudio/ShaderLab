@@ -1,0 +1,20 @@
+{
+  "status": "passed-local-and-functional",
+  "artifactSha256": "5f84984bcf66d7922baddf16b8699293aaea0f8710661e827bf19c963f3b55ec",
+  "runtimeChecks": "../optimized14/checks.json",
+  "packageProvenance": "native-provenance.json",
+  "runtimeEquivalence": "runtime-equivalence.json",
+  "performance": {
+    "status": "inconclusive",
+    "evidence": "../optimized14/iphone-performance.json",
+    "note": "Retain original full collection; final payload differs only by code signatures."
+  },
+  "lifecycle": "../optimized14/iphone-lifecycle.json",
+  "gpuStorage": "../optimized14/iphone-gpu-storage.json",
+  "systemUI": "iphone-ui.json",
+  "normalLaunchRestored": true,
+  "publicVersionsChanged": false,
+  "milestonesCheck": "passed",
+  "packageHashesAndEvidenceLinks": "verified",
+  "screenshotsInspected": true
+}

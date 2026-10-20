@@ -1,5 +1,5 @@
-import type { ShaderLanguage } from '../../web/dist/model.js';
-const words = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable true false void in out inout uniform precision highp mediump lowp'.split(' '));
+import type { ShaderLanguage } from './project';
+const words = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable true false void in out inout uniform precision highp mediump lowp static cbuffer tbuffer register packoffset groupshared row_major column_major nointerpolation typedef namespace using'.split(' '));
 export function shaderSpans(text: string, _language: ShaderLanguage) {
     const spans: {
         start: number;
@@ -16,7 +16,7 @@ export function shaderSpans(text: string, _language: ShaderLanguage) {
             color = '#e6a0b5';
         else if (words.has(w))
             color = '#c4a5fa';
-        else if (/^(?:bool|float|int|uint|[fiu]32|[biu]?vec[234](?:[fiu])?|mat[234](?:x[234]f)?|sampler2D|samplerCube|array|texture_\w+)$/.test(w))
+        else if (/^(?:(?:bool|float|int|uint|half|double)(?:[1-4](?:x[1-4])?)?|Texture\w*|SamplerState|ConstantBuffer|[fiu]32|[biu]?vec[234](?:[fiu])?|mat[234](?:x[234]f)?|sampler2D|samplerCube|array|texture_\w+)$/.test(w))
             color = '#8ad9cd';
         else if (/^i(?:Time|Resolution|Frame|Mouse|Date|Channel|SampleRate)/.test(w) || /^channel[0-3]$/.test(w))
             color = '#aee879';

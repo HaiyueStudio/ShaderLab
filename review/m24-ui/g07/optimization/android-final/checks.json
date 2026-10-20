@@ -1,0 +1,42 @@
+{
+  "capturedAt": "2026-10-17T23:03:58.912303+00:00",
+  "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+  "checks": [
+    {
+      "command": "npm test -w ./mobile",
+      "status": "passed",
+      "tests": 25
+    },
+    {
+      "command": "npm run typecheck -w ./mobile",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:shared-ui",
+      "status": "passed",
+      "tests": 5
+    },
+    {
+      "command": "npm run check:boundaries",
+      "status": "passed"
+    },
+    {
+      "command": "Native: npm run verify:ui -- --profile core",
+      "status": "passed",
+      "tests": 20
+    },
+    {
+      "command": "npm run build:android",
+      "status": "passed"
+    },
+    {
+      "command": "Canvas arm64 C ABI, dependencies, 16 KiB LOAD alignment and AAR contents",
+      "status": "passed"
+    }
+  ],
+  "nativeAdapterSha256": "8e01b4aa2fad257174fdd53cbbe4f855110d5e8b805f0e08696742d2dfe98464",
+  "nativeAdapterTestsSha256": "de8f0aaf67dc0a3574c5c12ab07a8660ef9e511296c4062ddaddaa22b36b105c",
+  "limitations": [
+    "Native core gate includes fresh staged package identity, 20 adapter tests and component consumer typecheck. No new G06 physical device acceptance is claimed."
+  ]
+}

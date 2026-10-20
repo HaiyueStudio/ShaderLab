@@ -28,6 +28,7 @@ export async function runEditorBrowserScenario({
   headless = true,
   gpuTestFlags = true,
   crossOriginIsolated = true,
+  chromeFlags = [],
   readinessExpression,
   scenario,
 }) {
@@ -45,13 +46,17 @@ export async function runEditorBrowserScenario({
   const profile = mkdtempSync(resolve(tmpdir(), 'haiyue-editor-e2e-profile-'));
   const address = server.address();
   if (!address || typeof address === 'string') throw new Error('Could not allocate the editor E2E server port.');
-  const url = `http://127.0.0.1:${address.port}/${route.replace(/^\/+/, '')}`;
+  const target = new URL(`http://127.0.0.1:${address.port}/${route.replace(/^\/+/, '')}`);
+  // Legacy regression suites remain explicit while G07 tests default to shared UI.
+  if (process.env.SHADERLAB_TEST_UI) target.searchParams.set('ui', process.env.SHADERLAB_TEST_UI);
+  const url = target.href;
   const angleBackend = process.env.WEBGPU_ANGLE_BACKEND ?? defaultWebGpuAngleBackend();
   const child = spawn(chrome, [
     ...(headless ? ['--headless=new'] : []),
     '--no-sandbox',
     '--disable-gpu-sandbox',
     ...(gpuTestFlags ? ['--enable-unsafe-webgpu', `--use-angle=${angleBackend}`] : []),
+    ...chromeFlags,
     '--window-size=1440,1000',
     ...(headless ? ['--force-device-scale-factor=1'] : []),
     '--remote-debugging-port=0',
@@ -122,13 +127,21 @@ export async function runEditorBrowserScenario({
               return { type, listener, capture };
             };
             EventTarget.prototype.addEventListener = function(type, listener, options) {
-              if (this === window && listener) {
+              if (this === window && listener && !options?.signal?.aborted) {
                 const key = keyFor(type, listener, options);
                 if (!listeners.some(entry => entry.type === key.type
                   && entry.listener === key.listener
                   && entry.capture === key.capture)) {
                   listeners.push(key);
                   activeListenerCount++;
+                  if (options?.signal) {
+                    const forget = () => {
+                      const index = listeners.indexOf(key);
+                      if (index >= 0) { listeners.splice(index, 1); activeListenerCount--; }
+                    };
+                    add.call(options.signal, 'abort', forget, { once: true });
+                    key.cleanup = () => remove.call(options.signal, 'abort', forget);
+                  }
                 }
               }
               return add.call(this, type, listener, options);
@@ -140,6 +153,7 @@ export async function runEditorBrowserScenario({
                   && entry.listener === key.listener
                   && entry.capture === key.capture);
                 if (index >= 0) {
+                  listeners[index].cleanup?.();
                   listeners.splice(index, 1);
                   activeListenerCount--;
                 }

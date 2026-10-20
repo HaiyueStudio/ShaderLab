@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "goal": "m24-native-ui/g07-shaderlab-slice",
+  "status": "validating",
+  "capturedAt": "2026-10-17T23:08:08.075593+00:00",
+  "implementation": "optimized and implemented",
+  "identity": "optimization/identity.json",
+  "historicalBaseline": "results/verification-initial.json",
+  "matrix": [
+    {
+      "check": "unit, UI compatibility, typecheck and boundaries",
+      "status": "passed",
+      "evidence": "optimization/checks.json"
+    },
+    {
+      "check": "clean source-only install and Web/iOS/Android JS builds",
+      "status": "passed",
+      "evidence": "optimization/fresh-build.json",
+      "reason": "Applies to its sourceHashes, not later unrelated camera edits."
+    },
+    {
+      "check": "Chromium shared page, GPU, persistence and 50 route cycles",
+      "status": "passed",
+      "evidence": "optimization/web-functional.json"
+    },
+    {
+      "check": "legacy Web full editor regression",
+      "status": "passed",
+      "evidence": "optimization/legacy-web-functional.json"
+    },
+    {
+      "check": "50 real Web host lifetimes and heap observations",
+      "status": "passed",
+      "evidence": "optimization/web-host-lifecycle.json"
+    },
+    {
+      "check": "iPad actual system UI interactions on final IPA",
+      "status": "passed",
+      "evidence": "optimization/ipad-ui.json"
+    },
+    {
+      "check": "iPad final IPA GPU/storage replay",
+      "status": "passed",
+      "evidence": "optimization/ipad-gpu-storage.json"
+    },
+    {
+      "check": "Web/iPad business persistence equality",
+      "status": "passed",
+      "evidence": "optimization/ipad-persistence-comparison.json",
+      "reason": "Only updatedAt normalized."
+    },
+    {
+      "check": "50 real iPad host lifetimes; adapter and frame resource cleanup",
+      "status": "passed",
+      "evidence": "optimization/ipad-lifecycle.json",
+      "reason": "No native GPU heap accounting."
+    },
+    {
+      "check": "Android same-device UI CPU performance",
+      "status": "passed",
+      "evidence": "optimization/android-final/performance.json",
+      "reason": "Final m24.5: handler median ratio 1.050; both spreads <=1.10. Settled/cadence pass. Fixed surface 113x64; no GPU timestamp claim.",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4"
+    },
+    {
+      "check": "iPhone same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/iphone-performance.json",
+      "reason": "Final IPA installed and all six runs collected; baseline spread exceeds 10%."
+    },
+    {
+      "check": "iPad same-device UI CPU performance",
+      "status": "inconclusive",
+      "evidence": "optimization/ipad-performance-confirmation.json",
+      "reason": "Both final-candidate attempts retained; shared spread exceeds 10%."
+    },
+    {
+      "check": "same-host old/new Web p95 <= 1.10",
+      "status": "pending-retest",
+      "evidence": "optimization/web-performance-noisy.json",
+      "reason": "User explicitly deferred while other high-load browser/GPU work continues."
+    },
+    {
+      "check": "iPhone final system UI, GPU/storage and 50 host lifetimes",
+      "status": "pending-device",
+      "reason": "USB connection disappeared after completed performance run; launch returned CoreDevice device unavailable."
+    },
+    {
+      "check": "Android current candidate system UI and lazy converter",
+      "status": "passed",
+      "evidence": "optimization/android-final/ui.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 actual picker, hidden editor clipping, keyboard, rotation, background, save/reopen and two GLSL conversions passed."
+    },
+    {
+      "check": "Android current candidate GPU/storage and Web business parity",
+      "status": "passed",
+      "evidence": "optimization/android-final/gpu-storage.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5 persisted equality permits only updatedAt normalization."
+    },
+    {
+      "check": "Android current candidate 50 full host lifetimes",
+      "status": "passed",
+      "evidence": "optimization/android-final/lifecycle.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "Final m24.5: 50 real same-process editor/GPU lifetimes, native views detached and counters zero; post-warmup native heap 31.2-37.7 MiB without previous per-cycle loss. Not complete GPU heap accounting.",
+      "memory": "optimization/android-final/memory.json"
+    },
+    {
+      "check": "Android follow-up mobile unit/typecheck/SDK build",
+      "status": "passed",
+      "evidence": "optimization/android-final/checks.json",
+      "identity": "optimization/android-final/identity.json",
+      "artifactSha256": "c2fe33e316326cf8de04b0d98712f0157af328d27dd7bf853ee89bff3351d6b4",
+      "reason": "25 mobile tests, 20 native adapter tests, 5 shared UI tests, core consumer/typecheck/boundaries and Android SDK build."
+    },
+    {
+      "check": "physical Chinese IME, emoji/paste, screen readers and iPad split view",
+      "status": "pending-device",
+      "reason": "Synthetic input and automated keyboard tests do not replace physical acceptance."
+    },
+    {
+      "check": "Safari application physical interaction",
+      "status": "pending-device"
+    },
+    {
+      "check": "same-size GPU timestamps and native GPU heap accounting",
+      "status": "pending-device",
+      "reason": "Frame cadence and resource disposal counters are distinct evidence; no GPU timing/heap claim."
+    },
+    {
+      "check": "Apple device regression for Android follow-up shared source and Canvas fixes",
+      "status": "pending-device",
+      "reason": "Compiler ownership, GPU cleanup, Canvas JS callbacks and Native renderer changed after earlier IPA; Apple native library is not patched and no new Apple install is claimed."
+    }
+  ],
+  "published": false,
+  "g06Status": "validating",
+  "limitations": [
+    "No desktop claim.",
+    "Web performance deferred by user.",
+    "Every accepted result is tied to its recorded binary/source snapshot; unrelated later workspace changes are not automatically accepted.",
+    "Synthetic Unicode is not physical IME; cadence is not GPU timestamp.",
+    "Legacy rollback retained until required gates pass."
+  ],
+  "androidFollowUpIdentity": "optimization/android-final/identity.json",
+  "androidIntermediateCandidate": "optimization/android-m24.4-intermediate/README.md"
+}

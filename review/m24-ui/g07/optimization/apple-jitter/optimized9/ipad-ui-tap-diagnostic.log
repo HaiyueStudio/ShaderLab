@@ -1,0 +1,262 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -xctestrun artifacts/m24-g07/apple-jitter/optimized9/tap-diagnostic-runner/Build/Products/Acceptance_iphoneos26.2-arm64.xctestrun -destination id=00008101-0006546C2263001E -resultBundlePath artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult
+
+2026-10-19 08:02:15.985 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Writing result bundle at path:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult
+
+2026-10-19 08:02:15.999 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:16.121 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, arch:arm64e, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64e, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+{ platform:iOS, arch:arm64, variant:DriverKit, id:00008101-0006546C2263001E, name:iPad (4) }
+2026-10-19 08:02:17.020 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:17.621 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:17.738 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:21.052757+0800 Acceptance-Runner[2429:407477] [Default] Running tests...
+2026-10-19 08:02:21.068593+0800 Acceptance-Runner[2429:407477] [UIKit App Config] Update the Info.plist: Launch screens will soon be required.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-19 08:02:21.487.
+Test Suite 'Acceptance.xctest' started at 2026-10-19 08:02:21.488.
+Test Suite 'SharedPageSmoke' started at 2026-10-19 08:02:21.488.
+Test Case '-[Acceptance.SharedPageSmoke testSharedEditor]' started.
+    t =     0.00s Start Test at 2026-10-19 08:02:21.489
+    t =     0.01s Set Up
+    t =     0.01s Getting device orientation
+    t =     0.01s Open studio.haiyue.shaderlab
+    t =     0.01s     Launch studio.haiyue.shaderlab
+    t =     0.01s         Terminate studio.haiyue.shaderlab:2420
+2026-10-19 08:02:20.662 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     1.09s         Setting up automation session
+    t =     2.00s         Wait for studio.haiyue.shaderlab to idle
+2026-10-19 08:02:23.207 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:23.316 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+2026-10-19 08:02:23.648 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     3.18s Waiting 20.0s for "＋ 新建" Button to exist
+    t =     4.21s     Checking `Expect predicate `existsNoRetry == 1` for object "＋ 新建" Button`
+    t =     4.21s         Checking existence of `"＋ 新建" Button`
+    t =     4.51s Added attachment named 'gallery-before-new'
+    t =     4.51s Tap "＋ 新建" Button
+    t =     4.51s     Wait for studio.haiyue.shaderlab to idle
+    t =     4.51s     Find the "＋ 新建" Button
+    t =     4.56s     Check for interrupting elements affecting "＋ 新建" Button
+    t =     4.60s     Synthesize event
+2026-10-19 08:02:25.080 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     4.88s     Wait for studio.haiyue.shaderlab to idle
+    t =     5.09s Added attachment named 'gallery-after-new'
+    t =     5.09s Waiting 20.0s for "/shader-project/actions/save" Button to exist
+2026-10-19 08:02:25.988 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+    t =     6.11s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =     6.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =     6.19s         Capturing element debug description
+    t =     7.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =     7.10s         Checking existence of `"/shader-project/actions/save" Button`
+    t =     7.17s         Capturing element debug description
+    t =     8.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =     8.10s         Checking existence of `"/shader-project/actions/save" Button`
+    t =     8.17s         Capturing element debug description
+    t =     9.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =     9.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =     9.18s         Capturing element debug description
+    t =    10.11s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    10.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    10.19s         Capturing element debug description
+    t =    11.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    11.12s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    11.19s         Capturing element debug description
+    t =    12.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    12.12s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    12.19s         Capturing element debug description
+    t =    13.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    13.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    13.18s         Capturing element debug description
+    t =    14.11s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    14.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    14.18s         Capturing element debug description
+    t =    15.13s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    15.13s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    15.21s         Capturing element debug description
+    t =    16.11s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    16.12s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    16.19s         Capturing element debug description
+    t =    17.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    17.13s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    17.20s         Capturing element debug description
+    t =    18.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    18.13s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    18.19s         Capturing element debug description
+    t =    19.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    19.13s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    19.20s         Capturing element debug description
+    t =    20.12s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    20.12s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    20.19s         Capturing element debug description
+    t =    21.11s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    21.12s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    21.19s         Capturing element debug description
+    t =    22.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    22.10s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    22.17s         Capturing element debug description
+    t =    23.09s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    23.10s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    23.17s         Capturing element debug description
+    t =    24.18s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    24.18s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    24.25s         Capturing element debug description
+    t =    25.10s     Checking `Expect predicate `existsNoRetry == 1` for object "/shader-project/actions/save" Button`
+    t =    25.11s         Checking existence of `"/shader-project/actions/save" Button`
+    t =    25.18s         Capturing element debug description
+    t =    25.19s     Checking existence of `"/shader-project/actions/save" Button`
+    t =    25.23s Collecting debug information to assist test failure triage
+    t =    25.23s     Requesting snapshot of accessibility hierarchy for app with pid 2431
+    t =    25.51s Added attachment named 'gallery-or-editor-after-wait'
+    t =    25.52s Requesting snapshot of accessibility hierarchy for app with pid 2431
+    t =    25.74s Requesting snapshot of accessibility hierarchy for app with pid 2431
+/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ui-tap-diagnostic/Acceptance.swift:23: error: -[Acceptance.SharedPageSmoke testSharedEditor] : XCTAssertTrue failed - Attributes: Application, 0x145683200, pid: 2431, label: 'ShaderLab'
+Element subtree:
+ →Application, 0x145683200, pid: 2431, label: 'ShaderLab'
+    Window (Main), 0x145683340, {{0.0, 0.0}, {820.0, 1180.0}}
+      Other, 0x145683480, {{0.0, 0.0}, {820.0, 1180.0}}
+        Other, 0x1456835c0, {{0.0, 0.0}, {820.0, 1180.0}}
+          Other, 0x145683700, {{0.0, 0.0}, {820.0, 1180.0}}
+            Other, 0x145683840, {{0.0, 0.0}, {820.0, 1180.0}}
+              NavigationBar, 0x145683980, {{0.0, 32.0}, {820.0, 54.0}}, identifier: 'haiyue / ShaderLab'
+                StaticText, 0x145683ac0, {{334.0, 43.5}, {152.0, 21.0}}, label: 'haiyue / ShaderLab'
+              Other, 0x145683c00, {{0.0, 0.0}, {820.0, 1180.0}}
+                Other, 0x145683d40, {{0.0, 0.0}, {820.0, 1180.0}}
+                  Other, 0x145683e80, {{0.0, 0.0}, {820.0, 1180.0}}
+                    ScrollView, 0x1456f0000, {{0.0, 0.0}, {820.0, 1180.0}}
+                      Other, 0x1456f0140, {{0.0, 0.0}, {820.0, 1180.0}}
+                        Other, 0x1456f0280, {{0.0, 0.0}, {820.0, 140.8}}
+                      Other, 0x1456f03c0, {{0.0, 0.0}, {820.0, 1180.0}}
+                        Other, 0x1456f0500, {{0.0, 0.0}, {820.0, 140.8}}
+                          Other, 0x1456f0640, {{0.0, 0.0}, {820.0, 64.5}}
+                          Other, 0x1456f0780, {{0.0, 0.0}, {820.0, 140.8}}
+                            Other, 0x1456f08c0, {{0.0, 0.0}, {820.0, 140.8}}
+                          Other, 0x1456f0a00, {{0.0, 0.0}, {820.0, 140.8}}
+                            Other, 0x1456f0b40, {{0.0, 0.0}, {820.0, 140.8}}
+                          Other, 0x1456f0c80, {{0.0, 0.0}, {820.0, 140.8}}
+                            Other, 0x1456f0dc0, {{0.0, 0.0}, {820.0, 140.8}}
+                            Other, 0x1456f0f00, {{0.0, 0.0}, {820.0, 140.8}}
+                      Other, 0x1456f1040, {{0.0, 0.0}, {820.0, 1864.0}}
+                        StaticText, 0x1456f1180, {{12.0, 110.0}, {796.0, 30.0}}, label: '从灵感开始'
+                        StaticText, 0x1456f12c0, {{12.0, 152.0}, {796.0, 14.5}}, label: '编写 GLSL / WGSL / HLSL，用原生 WebGPU 看见想法。'
+                        Other, 0x1456f1400, {{12.0, 166.5}, {796.0, 50.0}}
+                          Button, 0x1456f1540, {{15.0, 169.5}, {67.0, 44.0}}, label: '＋ 新建'
+                            StaticText, 0x1456f1680, {{27.0, 183.5}, {43.0, 16.0}}, label: '＋ 新建'
+                          Button, 0x1456f17c0, {{88.0, 169.5}, {50.0, 44.0}}, label: '导入'
+                            StaticText, 0x1456f1900, {{100.0, 183.5}, {26.0, 16.0}}, label: '导入'
+                          Button, 0x1456f1a40, {{144.0, 169.5}, {50.0, 44.0}}, label: '教程'
+                            StaticText, 0x1456f1b80, {{156.0, 183.5}, {26.0, 16.0}}, label: '教程'
+                        Button, 0x1456f1cc0, {{15.0, 219.5}, {790.0, 44.0}}, label: '恢复上次草稿'
+                          StaticText, 0x1456f1e00, {{371.0, 233.5}, {78.0, 16.0}}, label: '恢复上次草稿'
+                        StaticText, 0x1456f1f40, {{12.0, 284.5}, {796.0, 20.5}}, label: '示例 · 8 个 · 打开即可编辑'
+                        Other, 0x1456f2080, {{12.0, 315.0}, {796.0, 1095.5}}
+                          Other, 0x1456f21c0, {{18.0, 321.0}, {386.0, 247.5}}
+                            Button, 0x1456f2300, {{19.0, 322.0}, {384.0, 245.5}}, identifier: 'example-aurora', label: 'Aurora ribbons'
+                              StaticText, 0x1456f2440, {{19.0, 322.0}, {0.0, 0.0}}
+                          Other, 0x1456f2580, {{416.0, 321.0}, {386.0, 247.5}}
+                            Button, 0x1456f26c0, {{417.0, 322.0}, {384.0, 245.5}}, identifier: 'example-marble', label: 'Liquid chrome'
+                              StaticText, 0x1456f2800, {{417.0, 322.0}, {0.0, 0.0}}
+                          Other, 0x1456f2940, {{18.0, 580.5}, {386.0, 262.0}}
+                            Button, 0x1456f2a80, {{19.0, 581.5}, {384.0, 245.5}}, identifier: 'example-tunnel', label: 'Neon passage'
+                              StaticText, 0x1456f2bc0, {{19.0, 581.5}, {0.0, 0.0}}
+                          Other, 0x1456f2d00, {{416.0, 580.5}, {386.0, 262.0}}
+                            Button, 0x1456f2e40, {{417.0, 581.5}, {384.0, 260.0}}, identifier: 'example-feedback', label: 'Afterglow'
+                              StaticText, 0x1456f2f80, {{417.0, 581.5}, {0.0, 0.0}}
+                          Other, 0x1456f30c0, {{18.0, 854.5}, {386.0, 276.0}}
+                            Button, 0x1456f3200, {{19.0, 855.5}, {384.0, 260.0}}, identifier: 'example-keyboard', label: 'Key light'
+                              StaticText, 0x1456f3340, {{19.0, 855.5}, {0.0, 0.0}}
+                          Other, 0x1456f3480, {{416.0, 854.5}, {386.0, 276.0}}
+                            Button, 0x1456f35c0, {{417.0, 855.5}, {384.0, 274.0}}, identifier: 'example-puzzle', label: 'Sliding city'
+                              StaticText, 0x1456f3700, {{417.0, 855.5}, {0.0, 0.0}}
+                          Other, 0x1456f3840, {{18.0, 1142.5}, {386.0, 262.0}}
+                            Button, 0x1456f3980, {{19.0, 1143.5}, {384.0, 260.0}}, identifier: 'example-minesweeper', label: 'Minefield'
+                              StaticText, 0x1456f3ac0, {{19.0, 1143.5}, {0.0, 0.0}}
+                          Other, 0x1456f3c00, {{416.0, 1142.5}, {386.0, 262.0}}
+                            Button, 0x1456f3d40, {{417.0, 1143.5}, {384.0, 260.0}}, identifier: 'example-clock', label: 'Local time · 时钟'
+                              StaticText, 0x1456f3e80, {{417.0, 1143.5}, {0.0, 0.0}}
+                        StaticText, 0x1456f4000, {{12.0, 1428.5}, {796.0, 20.5}}, label: '我的作品'
+                        Other, 0x1456f4140, {{12.0, 1459.0}, {796.0, 368.0}}
+                          Other, 0x1456f4280, {{18.0, 1465.0}, {784.0, 80.0}}
+                            Button, 0x1456f43c0, {{36.0, 1483.0}, {699.0, 44.0}}, label: 'Untitled shader G07 1792332182'
+                              StaticText, 0x1456f4500, {{285.5, 1497.0}, {200.0, 16.0}}, label: 'Untitled shader G07 1792332182'
+                            Button, 0x1456f4640, {{741.0, 1483.0}, {43.0, 44.0}}, label: '删除 Untitled shader G07 1792332182'
+                              StaticText, 0x1456f4780, {{753.0, 1497.0}, {19.0, 16.0}}, label: '🗑'
+                          Other, 0x1456f48c0, {{18.0, 1557.0}, {784.0, 80.0}}
+                            Button, 0x1456f4a00, {{36.0, 1575.0}, {699.0, 44.0}}, label: 'Untitled shader G07 1792209996'
+                              StaticText, 0x1456f4b40, {{284.0, 1589.0}, {203.0, 16.0}}, label: 'Untitled shader G07 1792209996'
+                            Button, 0x1456f4c80, {{741.0, 1575.0}, {43.0, 44.0}}, label: '删除 Untitled shader G07 1792209996'
+                              StaticText, 0x1456f4dc0, {{753.0, 1589.0}, {19.0, 16.0}}, label: '🗑'
+                          Other, 0x1456f4f00, {{18.0, 1649.0}, {784.0, 80.0}}
+                            Button, 0x1456f5040, {{36.0, 1667.0}, {699.0, 44.0}}, label: 'Untitled shader G07 1792200806'
+                              StaticText, 0x1456f5180, {{284.0, 1681.0}, {203.0, 16.0}}, label: 'Untitled shader G07 1792200806'
+                            Button, 0x1456f52c0, {{741.0, 1667.0}, {43.0, 44.0}}, label: '删除 Untitled shader G07 1792200806'
+                              StaticText, 0x1456f5400, {{753.0, 1681.0}, {19.0, 16.0}}, label: '🗑'
+                          Other, 0x1456f5540, {{18.0, 1741.0}, {784.0, 80.0}}
+                            Button, 0x1456f5680, {{36.0, 1759.0}, {699.0, 44.0}}, label: 'Untitled shader G07 1792200548'
+                              StaticText, 0x1456f57c0, {{284.0, 1773.0}, {203.0, 16.0}}, label: 'Untitled shader G07 1792200548'
+                            Button, 0x1456f5900, {{741.0, 1759.0}, {43.0, 44.0}}, label: '删除 Untitled shader G07 1792200548'
+                              StaticText, 0x1456f5a40, {{753.0, 1773.0}, {19.0, 16.0}}, label: '🗑'
+                      Other, 0x1456f5b80, {{787.0, 86.0}, {30.0, 1076.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                        Other, 0x1456f5cc0, {{814.0, 1158.0}, {3.0, 7.0}}
+                      Other, 0x1456f5e00, {{18.0, 1147.0}, {784.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                        Other, 0x1456f5f40, {{798.5, 1174.0}, {7.0, 3.0}}
+                      Other, 0x1456f6080, {{787.0, 86.0}, {30.0, 1076.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                        Other, 0x1456f61c0, {{814.0, 1158.0}, {3.0, 7.0}}
+                      Other, 0x1456f6300, {{18.0, 1147.0}, {784.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                        Other, 0x1456f6440, {{798.5, 1174.0}, {7.0, 3.0}}
+              Other, 0x1456f6580, {{0.0, 0.0}, {820.0, 1180.0}}
+                Other, 0x1456f66c0, {{0.0, 0.0}, {820.0, 1180.0}}
+    Window, 0x1456f6800, {{0.0, 0.0}, {820.0, 1180.0}}
+      Other, 0x1456f6940, {{0.0, 0.0}, {820.0, 1180.0}}
+        Other, 0x1456f6a80, {{0.0, 0.0}, {820.0, 1180.0}}
+Path to element:
+ →Application, 0x145683200, pid: 2431, label: 'ShaderLab'
+Query chain:
+ →Find: Application 'studio.haiyue.shaderlab'
+  Output: {
+    Application, 0x1456f6bc0, pid: 2431, label: 'ShaderLab'
+  }
+
+    t =    25.88s Tear Down
+2026-10-19 08:02:46.515 xcodebuild[53612:4622612] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+Test Case '-[Acceptance.SharedPageSmoke testSharedEditor]' failed (26.109 seconds).
+Test Suite 'SharedPageSmoke' failed at 2026-10-19 08:02:47.599.
+	 Executed 1 test, with 1 failure (0 unexpected) in 26.109 (26.111) seconds
+Test Suite 'Acceptance.xctest' failed at 2026-10-19 08:02:47.603.
+	 Executed 1 test, with 1 failure (0 unexpected) in 26.109 (26.116) seconds
+Test Suite 'All tests' failed at 2026-10-19 08:02:47.607.
+	 Executed 1 test, with 1 failure (0 unexpected) in 26.109 (26.119) seconds
+2026-10-19 08:02:49.123 xcodebuild[53612:4622674]  IDETestOperationsObserverDebug: Failure collecting diagnostics from devices: Process exited with error 1:
+ ERROR: The operation couldn?t be completed. (CoreDeviceCLISupport.DiagnoseError error 0.)
+This tool generates files that allow Apple to investigate issues with your
+computer and help improve Apple products. The files might contain personal
+information found on your device or associated with your Apple Account(s),
+including but not limited to your name, serial numbers of your device,
+your device name, your device's location over the last one to two days,
+your attached peripheral devices, your user name, your email address and
+email settings, file paths, file names, Siri suggestions, your computer's
+IP addresses, and network connection information.
+
+This information is used by Apple in accordance with its privacy policy
+(www.apple.com/privacy) and is not shared with any other company. By using
+this tool and sending the results to Apple, you consent to Apple using the
+contents of these files to improve Apple products.
+
+An error occurred while running devicectl diagnose. Will archive the diagnostics collected thus far.
+Wrote file to /Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+Partial devicectl diagnose bundle located here: /Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+
+2026-10-19 08:02:49.134 xcodebuild[53612:4622612] [MT] IDETestOperationsObserverDebug: 32.109 elapsed -- Testing started completed.
+2026-10-19 08:02:49.134 xcodebuild[53612:4622612] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 08:02:49.134 xcodebuild[53612:4622612] [MT] IDETestOperationsObserverDebug: 32.110 sec, +32.110 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/apple-jitter/optimized9/ipad-ui-tap-diagnostic.xcresult
+
+** TEST EXECUTE FAILED **
+
+Testing started

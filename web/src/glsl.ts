@@ -318,7 +318,10 @@ class Parser {
     if (this.is('case') || this.is('default')) this.fail('case / default 必须直接位于 switch 的语句块中。');
     if (this.eat('for')) {
       const saved = new Map(this.locals); this.structures.enter(); this.expect('('); const init = this.is(';') ? [] : this.simple(); this.expect(';'); const condition = this.is(';') ? { code: 'true' } : this.expression(); this.expect(';'); const update = this.is(')') ? [] : this.simple(); this.expect(')'); const body = this.loopBody(); this.locals = saved; this.structures.leave();
-      if (update.length > 1) return `{\n${init.map(s => s + ';').join('\n')}\nloop {\nif (!(${condition.code})) { break; }\n${body}\ncontinuing {\n${update.map(s => s + ';').join('\n')}\n}\n}\n}`;
+      // A guarded loop with a bottom break-if retains the final continuing
+      // update on Chrome/Metal when the body contains continue. Evaluate the
+      // condition once before entry, then once after each complete update list.
+      if (update.length > 1) return `{\n${init.map(s => s + ';').join('\n')}\nif (${condition.code}) {\nloop {\n${body}\ncontinuing {\n${update.map(s => s + ';').join('\n')}\nbreak if !(${condition.code});\n}\n}\n}\n}`;
       const loop = `for (${init.length === 1 ? init[0] : ''}; ${condition.code}; ${update[0] ?? ''}) ${body}`;
       return init.length > 1 ? `{\n${init.map(s => s + ';').join('\n')}\n${loop}\n}` : loop;
     }

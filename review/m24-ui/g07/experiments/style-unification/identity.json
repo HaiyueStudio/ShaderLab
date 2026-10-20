@@ -1,0 +1,36 @@
+{
+  "capturedAt": "2026-10-19T12:26:32.371903+00:00",
+  "scope": "ShaderLab shared UI presentation; private validation only",
+  "ipa": {
+    "path": "artifacts/m24-g07/style-unification/candidate4/ShaderLab.ipa",
+    "sha256": "4e55f08d2df54cba5d6d53c8b0f19fa2dfe8bafe2649dbdec7fd4aa1af63b168"
+  },
+  "packages": {
+    "haiyue-native-0.1.4-m24.21.tgz": "a3282fa07045154c190597112283b1493a7ccfbcc3e74a5648e9c95cd7b0643f",
+    "haiyue-ui-0.2.0-m24.6.tgz": "1b864b070284912ddc281226626817ceb15fd002f1f1389df7bd090c33440cfa"
+  },
+  "sources": {
+    "ShaderLab/shared/views/presentation.ts": "e4696f8bde57429738c30e1231d7e93cfe2e1f01f4ddc126a34e93b061f788da",
+    "ShaderLab/shared/views/editor-page.ts": "79aea6858ab389fcd4fc6f7acc3b8dfbd84f0c5914df8c38449d3a550c26f287",
+    "ShaderLab/scripts/build-presentation.mjs": "e710f7f8a1a37865b192b8febef6d970f62954ce8d9d60ecadc175abfc58c5ec",
+    "ShaderLab/mobile/src/app.css": "4d936e211da52f55a4febe20e5d25949a47cb93ae1061e3852d1722d716cbba0",
+    "ShaderLab/mobile/src/pages.ts": "1d00876c98b2dc39aed2b736f7628a67e9d622177f7a1551ba35c8edb46e2a9c",
+    "ShaderLab/mobile/src/platform/shared-editor.ts": "ba92396f92308234649ba291870440ff2897aa4ef4423872a8823a343f5719f5",
+    "ShaderLab/mobile/src/experiments/gui-ui/view.ts": "ad4c64eddf0222b56eb9dc61f672fd242bc4583e29725430170d6dfb080562bc",
+    "ShaderLab/mobile/src/experiments/gui-ui/page.ts": "0cfbdb72e2906aff336b93d6543e66362d8f24480836863158b5f3630ea34a19",
+    "ShaderLab/web/styles.css": "2683e53d16bd74af7d0b571ef9a5604c36e8dd763cb98a524d62183ab0f73718",
+    "ShaderLab/package-lock.json": "9038405fb284bb3a286b0a86907e586dc92eb0c5a43a7eb020915cb9aee92878",
+    "UI/src/adapters/web/styles.ts": "3317f4c100b124049367e68303f4658e4403970900f5846bba49623bf808c994",
+    "Native/bridge/ui/nativescript/data.ts": "1590bde24af8ccec1949d50f51a047c0c274dbb15a38c7c9ab6901ab65955b8e",
+    "Native/bridge/ui/nativescript/native-callback.ts": "6685f69022d26bca9ee675d07b13a73d660211d1f9045f1a238bb429900fd8f0",
+    "Native/bridge/ui/nativescript/platform.ts": "f47ba4bf29a2cb0fa663e33fcf9a65ad49456c6228c810cf8ae6b85c6895153e",
+    "Native/bridge/ui/nativescript/types.ts": "c635e7023c3c9378dd44046e1e762d1d3ac5af301f63f9a18028c7b632ab9e68",
+    "Native/bridge/ui/nativescript/platform.ios.ts": "bae8e177b84191d897434320f71a97852f4634895e21568f1372cd5ea820b49c",
+    "Native/bridge/ui/nativescript/renderer.ts": "ad120f3c98f407babb6fda7a0dfee4b412896ba468fb672c2a9ae4da465dfea3",
+    "Native/bridge/ui/nativescript/platform.android.ts": "5c02673f34db9483d41ef250eba9baaa1778b41e3f905513ed8cdaa49ccbc1a5",
+    "Native/bridge/ui/nativescript/controls.ts": "b9f8aad98f0b568c93b6005749c7cae85dd7813b25395c6da28357ffc7f1045e",
+    "Native/bridge/ui/nativescript/modal.ts": "bdda9bdd6f122ecd326d82a5a9b226641175b17ea4c9dd8a675bda9b6d275c37"
+  },
+  "engine": "0.2.0 plus the existing explicit GUI optimization patch; no engine source changes in this task",
+  "performance": "Previous pre-style timing results are historical; this candidate needs a new timing comparison."
+}

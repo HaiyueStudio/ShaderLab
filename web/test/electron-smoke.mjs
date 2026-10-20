@@ -49,9 +49,15 @@ try {
   await call('shader.playback.step');
   const image=await call('shader.image.read'), pixels=await client.download(image);await client.release(image.resourceId);
   assert.equal(pixels.byteLength,image.width*image.height*4);assert.deepEqual([...pixels.subarray(0,4)],[0,255,0,255]);
+  await call('shader.source.set',{pass:'image',language:'hlsl',code:'float4 mainImage(float2 p){return float4(0.2,0.4,0.6,1.0);}'});
+  assert.equal((await call('shader.compile')).compiled,true);
+  await call('shader.playback.step');
+  const hlslImage=await call('shader.image.read'), hlslPixels=await client.download(hlslImage);await client.release(hlslImage.resourceId);
+  [...hlslPixels.subarray(0,4)].forEach((v,i)=>assert.ok(Math.abs(v-[51,102,153,255][i])<3));
   const output=await call('shader.project.export'), bytes=await client.download(output);await client.release(output.resourceId);
   assert.equal(JSON.parse(bytes.toString('utf8')).name,'IPC pixel test');
-  console.log('[shader-electron] sandboxed IPC discovery + authenticated local RPC upload/open/compile/step/pixel readback/export passed.');
+  assert.equal(JSON.parse(bytes.toString('utf8')).editorLanguages.image,'hlsl');
+  console.log('[shader-electron] sandboxed IPC discovery + authenticated local RPC + offline WGSL/HLSL compile/step/pixel readback/export passed.');
 } finally {
   await client?.close().catch(()=>{});cdp?.close();if(child.exitCode===null)child.kill('SIGKILL');await exited;
   if(dirname(resolve(profile))!==parent||!basename(profile).startsWith('haiyue-shader-rpc-'))throw Error('Unsafe temporary cleanup path.');
