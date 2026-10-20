@@ -1,5 +1,7 @@
 # Haiyue ShaderLab
 
+[在线页面](https://haiyuestudio.github.io/ShaderLab/)
+
 独立的 Shader 创作工具，包含 Web / PWA / Electron 编辑器和使用 Native 能力的 iOS / Android 应用。
 
 - `web/`：从 Editor/shaderEditor 迁移的完整 Gallery、双语言编辑器、65 章教程、8 个示例、API / IPC。
