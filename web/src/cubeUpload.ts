@@ -1,6 +1,7 @@
 import { CUBE_FACES, CUBE_FACE_LABELS, LIMITS, type CubeFace, type RenderPassId } from './model.js';
 import type { ShaderWorkspace } from './workspace.js';
 import type { FaceUpload } from './textureUpload.js';
+import { localizeStaticUI } from './settings.js';
 
 export function createCubeUploader(workspace: ShaderWorkspace, onBound: (pass:RenderPassId,index:number) => Promise<unknown>) {
   const dialog = document.createElement('dialog'); dialog.id = 'cubemap-dialog';
@@ -33,6 +34,7 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: (pass:Re
     inputs.set(face, input); label.append(heading, preview, input); grid.append(label);
   }
   document.body.append(dialog);
+  const localeOff=localizeStaticUI(dialog);
   cancel.onclick = () => dialog.close();
   dialog.addEventListener('cancel', event => { if (busy) event.preventDefault(); });
   dialog.addEventListener('close', clear);
@@ -66,9 +68,10 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: (pass:Re
       }
     })();
   };
-  return (pass: RenderPassId, index: number) => {
+  const open = (pass: RenderPassId, index: number) => {
     if (busy) return;
     target = { pass, index, session:workspace.application.state.session }; clear(); form.reset(); error.textContent = '';
     dialog.showModal(); name.focus();
   };
+  return Object.assign(open,{dispose(){localeOff();clear();dialog.remove();}});
 }

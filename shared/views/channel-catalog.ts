@@ -1,4 +1,5 @@
 import { BUILTIN_TEXTURES } from '../domain/builtinTextures.js';
+import { t } from './i18n.js';
 import { PASS_IDS, PASS_LABELS, type Channel, type RenderPassId, type ShaderProject, type CubeAsset } from '../domain/model.js';
 
 export const channelCategories = [
@@ -33,10 +34,10 @@ export function channelChoices(project:Readonly<ShaderProject>,pass:RenderPassId
   });
 }
 export function channelName(project:Readonly<ShaderProject>,channel:Channel):string {
-  if(channel.kind==='none')return '选择素材';
+  if(channel.kind==='none')return t('选择素材');
   if(channel.kind==='builtin')return BUILTIN_TEXTURES.find(asset=>asset.id===channel.texture)?.name??'内置纹理';
   if(channel.kind==='buffer')return PASS_LABELS[channel.pass];
-  if(channel.kind==='keyboard')return '键盘';
-  if(channel.kind==='camera')return channel.facing==='user'?'前置相机':'后置相机';
+  if(channel.kind==='keyboard')return t('键盘');
+  if(channel.kind==='camera')return t(channel.facing==='user'?'前置相机':'后置相机');
   return project.assets.find(asset=>asset.id===channel.assetId)?.name??'素材';
 }

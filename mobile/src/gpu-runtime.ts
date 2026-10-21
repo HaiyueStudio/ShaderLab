@@ -425,6 +425,7 @@ export class NativeShaderRuntime {
         if(this.embedded){this.mode='canvas';this.requestFrame();return;}
         this.mode = mode; this.orbit?.dispose(); this.orbit = undefined; this.mesh.geometry = this.geometry[mesh]; this.engine.switchScene(mode === 'scene' ? this.scene : null); if (mode === 'scene')
         this.orbit = new OrbitControl(this.orbitTarget, this.camera, { minRadius: 1.8, maxRadius: 12, enablePan: false }); this.requestFrame(); }
+    setMSAA(value:boolean) { const samples=value?4:1;this.engine.msaaSamples=samples;this.scene.renderView.sampleCount=samples;this.requestFrame(); }
     touch(action: string, id: number, x: number, y: number, w: number, h: number) { if (action === 'down' && this.touchId === null) {
         this.touchId = id;
         this.mouse = [x / w * this.width, (1 - y / h) * this.height, Math.max(.001, x / w * this.width), Math.max(.001, (1 - y / h) * this.height)];
@@ -451,6 +452,8 @@ export class NativeShaderRuntime {
         capture: { active: this.cameraInput.active, width: this.cameraTexture?.width ?? 0, height: this.cameraTexture?.height ?? 0, time: this.cameraTime } }; }
     async sound(start: number, count: number) { if (!this.active?.sound)
         throw Error('请启用并编译 Sound'); const p = this.active; p.soundInputs?.splice(0, 4, ...this.inputs(p, p.project.sound, this.current, resolveChannelBindings(p.project.sound, p.project.common).dimensions)); return p.sound!.render(start, count, () => !this.dead && this.active === p); }
+    /** A deterministic first frame for practice judging; the host keeps owning presentation. */
+    renderStill() { this.setPlaying(false); this.reset(); this.render(0); }
     async readImage(id: PassId = 'image') { const output = this.targets.get(id)?.[this.current]; if (!output)
         throw Error('尚无渲染结果'); if (id !== 'image')
         throw Error('请切换 Image 后导出截图'); const stride = Math.ceil(output.width * 4 / 256) * 256, buffer = this.device.createBuffer({ size: stride * output.height, usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ }); try {

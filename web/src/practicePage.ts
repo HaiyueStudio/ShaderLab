@@ -1,0 +1,93 @@
+import {PRACTICE_CHALLENGES,PRACTICE_HELPERS,PRACTICE_SIZE,PRACTICE_STORAGE,findPractice,practiceStarter,practiceProject,comparePractice,parsePracticeRecords,type PracticeChallenge,type PracticePixels,type PracticeText,type PracticeRecords} from '../../shared/dist/domain/practice.js';
+import {getLocale,onLocaleChange} from '../../shared/dist/views/i18n.js';
+import type {ShaderLanguage,ShaderProject} from './model.js';
+import {preferences} from './preferences.js';
+import {CodeEditor} from './codeEditor.js';
+import {ShaderRuntime} from './runtime.js';
+import {createSourceConverter} from './sourceConversion.js';
+import {translateWgsl} from './wgsl.js';
+import {translateHlsl} from './hlsl.js';
+const L=(zh:string,en:string)=>getLocale()==='en'?en:zh;
+const text=(pair:PracticeText)=>pair[getLocale()==='en'?1:0];
+function el<K extends keyof HTMLElementTagNameMap>(tag:K,cls='',content=''){const n=document.createElement(tag);n.className=cls;n.textContent=content;return n;}
+function action(label:string,run:()=>void,cls='secondary'){const b=el('button',cls,label);b.type='button';b.onclick=run;return b;}
+export function practiceImage(image:PracticePixels){const c=el('canvas');c.width=image.width;c.height=image.height;c.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(image.pixels),image.width,image.height),0,0);return c.toDataURL('image/png');}
+/** One GPU device and a serialized render queue for targets and submissions. */
+export class PracticeRenderer {
+  private canvas?:HTMLCanvasElement;private runtime:ShaderRuntime|undefined;private queue:Promise<unknown>=Promise.resolve();private dead=false;
+  private refs=new Map<string,Promise<PracticePixels>>();
+  render(project:ShaderProject,size=PRACTICE_SIZE):Promise<PracticePixels>{
+    const task=this.queue.then(async()=>{
+      if(this.dead)throw Error('Practice renderer disposed');
+      if(!this.runtime){this.canvas=el('canvas','practice-render-surface');document.body.append(this.canvas);this.runtime=new ShaderRuntime(this.canvas);try{await this.runtime.initialize();this.runtime.setVisible(false);this.runtime.setPlaying(false);}catch(error){await this.runtime.dispose().catch(()=>{});this.runtime=undefined;this.canvas.remove();throw error;}}
+      this.canvas!.style.width=size+'px';this.canvas!.style.height=size+'px';
+      const prepared=await this.runtime.prepare(project);this.runtime.commit(prepared);this.runtime.setPlaying(false);this.runtime.step();
+      const image=await this.runtime.readImage();if(image.width!==size||image.height!==size)throw Error('Unexpected practice render resolution');return image;
+    });this.queue=task.catch(()=>{});return task;
+  }
+  reference(challenge:PracticeChallenge,size=PRACTICE_SIZE){const key=challenge.id+':'+size;let cached=this.refs.get(key);if(!cached){cached=this.render(practiceProject(challenge,challenge.reference,'wgsl'),size);this.refs.set(key,cached);void cached.catch(()=>this.refs.delete(key));}return cached;}
+  async dispose(){this.dead=true;await this.queue;await this.runtime?.dispose();this.canvas?.remove();this.refs.clear();}
+}
+export class PracticePage {
+  private root=document.getElementById('practice')!;
+  readonly renderer=new PracticeRenderer();private editor:CodeEditor|undefined;private records:PracticeRecords={};private id='';private visible=false;private generation=0;private busy=false;private dead=false;
+  private filter='all';private search='';private topic='all';private urls=new Map<string,string>();private previewJob:Promise<void>|undefined;private storageError=false;
+  private comparisons=new Map<string,{source:string;language:ShaderLanguage;scores:ReturnType<typeof comparePractice>[];actual:PracticePixels;target:PracticePixels}>();
+  private off=onLocaleChange(()=>{if(this.visible)this.show(this.id);});
+  constructor(private navigate:(id?:string)=>void,private openProject:(p:ShaderProject)=>void){try{this.records=parsePracticeRecords(localStorage.getItem(PRACTICE_STORAGE));}catch{this.storageError=true;}}
+  get currentId(){return this.id;}
+  setVisible(value:boolean){this.visible=value;if(!value)this.generation++;}
+  private persist(){try{localStorage.setItem(PRACTICE_STORAGE,JSON.stringify(this.records));this.storageError=false;}catch{this.storageError=true;}this.updateStorage();}
+  private updateStorage(){const n=this.root.querySelector('#practice-storage');if(n)n.textContent=this.storageError?L('本机存储不可用，请复制代码或保存为作品。','Local storage unavailable. Copy your code or save it as a project.'):L('草稿与进度自动保存在本机','Drafts and progress are saved on this device');}
+  private draft(c:PracticeChallenge){return this.records[c.id]??(this.records[c.id]={source:practiceStarter(preferences().shaderLanguage),language:preferences().shaderLanguage,best:0,passed:false});}
+  show(id=''){
+    this.visible=true;this.id=findPractice(id)?.id??'';this.generation++;this.editor?.destroy();this.editor=undefined;this.busy=false;this.root.replaceChildren();
+    if(this.id)this.detail(findPractice(this.id)!);else this.catalogue();
+  }
+  private catalogue(){
+    const heading=el('div','practice-heading'),copy=el('div');copy.append(el('span','eyebrow','GPU PRACTICE'),el('h1','',L('用代码画出答案','Draw your answer in code')),el('p','muted',L('36 道绘画题 · 从第一个像素到程序化图案','36 drawing challenges · From your first pixel to procedural art')));
+    heading.append(copy,el('span','practice-progress',`${PRACTICE_CHALLENGES.filter(c=>this.records[c.id]?.passed).length} / 36 `+L('已完成','completed')));this.root.append(heading);
+    const filters=el('div','practice-filters'),search=el('input');search.type='search';search.placeholder=L('搜索题目或知识点','Search challenges or topics');search.setAttribute('aria-label',search.placeholder);search.value=this.search;search.oninput=()=>{this.search=search.value;draw();};
+    const level=el('select');level.setAttribute('aria-label',L('题目难度','Difficulty'));for(const [v,label] of [['all',L('全部难度','All difficulties')],['1',L('入门','Easy')],['2',L('进阶','Medium')],['3',L('挑战','Hard')],['passed',L('已完成','Completed')],['todo',L('未完成','Unsolved')]]){const o=el('option','',label);o.value=v!;level.append(o);}level.value=this.filter;level.onchange=()=>{this.filter=level.value;draw();};
+    const topics=el('select');topics.setAttribute('aria-label',L('知识点','Topic'));for(const pair of [['all',L('全部知识点','All topics')],...Array.from(new Map(PRACTICE_CHALLENGES.map(c=>[c.topic[1],text(c.topic)])).entries())]){const o=el('option','',pair[1]);o.value=pair[0]!;topics.append(o);}topics.value=this.topic;topics.onchange=()=>{this.topic=topics.value;draw();};filters.append(search,level,topics);this.root.append(filters);
+    const grid=el('div','practice-grid');this.root.append(grid);
+    const draw=()=>{grid.replaceChildren();for(const [i,c] of PRACTICE_CHALLENGES.entries()){
+      const record=this.records[c.id];if(this.filter==='passed'&&!record?.passed||this.filter==='todo'&&record?.passed||/^[123]$/.test(this.filter)&&c.level!==Number(this.filter)||this.topic!=='all'&&c.topic[1]!==this.topic||!(c.title.join(' ')+c.topic.join(' ')).toLowerCase().includes(this.search.toLowerCase().trim()))continue;
+      const card=el('button','practice-card');card.type='button';card.dataset.challenge=c.id;card.onclick=()=>this.navigate(c.id);
+      const preview=el('div','practice-card-image'),img=el('img');img.alt=text(c.title)+L('参考效果',' reference');img.width=256;img.height=256;img.loading='lazy';const url=this.urls.get(c.id);if(url)img.src=url;else img.hidden=true;preview.append(img,el('span','practice-thumbnail-state',url?'':L('生成参考图…','Rendering target…')));card.append(preview);
+      const body=el('div','practice-card-body');body.append(el('span','practice-card-meta',`${String(i+1).padStart(2,'0')} · ${text(c.topic)} · ${this.level(c)}`),el('h2','',text(c.title)),el('span',record?.passed?'practice-solved':'muted',record?.passed?'✓ '+L('已完成','Completed'):record?.best?L('最佳 ','Best ')+record.best.toFixed(1)+'%':L('开始挑战 →','Start challenge →')));card.append(body);grid.append(card);
+    }if(!grid.childElementCount)grid.append(el('p','muted',L('没有匹配的题目','No matching challenges')));};draw();
+    const storage=el('p','muted');storage.id='practice-storage';this.root.append(storage);this.updateStorage();void this.generatePreviews();
+  }
+  private level(c:PracticeChallenge){return [L('入门','Easy'),L('进阶','Medium'),L('挑战','Hard')][c.level-1]!;}
+  private async generatePreviews(){if(this.previewJob)return;this.previewJob=(async()=>{for(const c of PRACTICE_CHALLENGES){if(!this.visible||this.id||this.dead)break;if(this.urls.has(c.id))continue;try{const url=practiceImage(await this.renderer.reference(c));this.urls.set(c.id,url);const card=this.root.querySelector(`[data-challenge="${c.id}"]`);const img=card?.querySelector('img');if(img){img.src=url;img.hidden=false;}const state=card?.querySelector('.practice-thumbnail-state');if(state)state.textContent='';}catch(error){const state=this.root.querySelector(`[data-challenge="${c.id}"] .practice-thumbnail-state`);if(state)state.textContent=L('参考图暂不可用，打开后重试','Target unavailable; open to retry');}}})().finally(()=>{this.previewJob=undefined;});await this.previewJob;}
+  private detail(c:PracticeChallenge){
+    const record=this.draft(c),header=el('div','practice-heading'),title=el('div');title.append(action('← '+L('全部题目','All challenges'),()=>this.navigate(), 'quiet'),el('h1','',text(c.title)),el('span','muted',`${this.level(c)} · ${text(c.topic)} · ${PRACTICE_CHALLENGES.findIndex(p=>p.id===c.id)+1} / 36`));
+    const next=PRACTICE_CHALLENGES[PRACTICE_CHALLENGES.indexOf(c)+1];header.append(title,action(L('下一题 →','Next challenge →'),()=>this.navigate((next??PRACTICE_CHALLENGES[0]!).id),'quiet'));this.root.append(header);
+    const layout=el('div','practice-layout'),brief=el('section','practice-brief'),coding=el('section','practice-coding');brief.append(el('h2','',L('目标','Goal')),el('p','practice-goal',text(c.goal)),el('p','muted',L('除题目特别指定，背景为 BG，图形为 INK；距离场使用 mask(d) 混色，Alpha 为 1。','Unless specified, use BG for the background, INK for shapes, mask(d) for distance-field coverage, and alpha 1.')));
+    const contract=el('details','practice-help');contract.append(el('summary','',L('坐标、颜色与评测规则','Coordinates, colors and judging')));contract.append(el('p','',L('uv=fragCoord/iResolution.xy；p=(2fragCoord−iResolution.xy)/iResolution.y，原点在左下角。BG=(0.03,0.04,0.08)，INK=(0.24,0.83,0.69)，GOLD=(1,0.55,0.28)。','uv=fragCoord/iResolution.xy; p=(2fragCoord−iResolution.xy)/iResolution.y, origin at bottom-left. BG=(0.03,0.04,0.08), INK=(0.24,0.83,0.69), GOLD=(1,0.55,0.28).')),el('p','',L('在 128×128 与 256×256 下，以时间 0、鼠标 0 的首帧分别对比。两次均需匹配分数 ≥98%，且任一通道相差超过 12/255 的像素不超过 2%。差异图亮度放大 4 倍。不同实现只比较画面，不比较源码。','Compare the first frame at time 0 and mouse 0 at 128×128 and 256×256. Both must score ≥98% with at most 2% of pixels differing by more than 12/255 in any channel. Differences are amplified 4×. Judging compares pixels, not source code.')),el('pre','',PRACTICE_HELPERS));
+    const hints=el('details','practice-help');hints.append(el('summary','',L('需要一点提示','Need a hint?')),el('p','',text(c.hint)));brief.append(contract,hints);
+    const comparisons=el('div','practice-comparisons');for(const [key,label] of [['target',L('参考效果','Target')],['actual',L('我的画面','Your output')],['diff',L('差异 ×4','Difference ×4')]]){const f=el('figure'),img=el('img');img.id='practice-'+key;img.width=256;img.height=256;img.alt=label!;img.hidden=true;f.append(el('figcaption','',label!),img,el('span','practice-image-placeholder',key==='target'?L('生成参考图…','Rendering target…'):L('运行后显示','Run to preview')));comparisons.append(f);}brief.append(comparisons);this.root.append(layout);layout.append(brief,coding);
+    const bar=el('div','practice-code-bar'),language=el('select');language.id='practice-language';language.setAttribute('aria-label',L('代码语言','Code language'));for(const value of ['wgsl','glsl','hlsl']){const o=el('option','',value.toUpperCase());o.value=value;language.append(o);}language.value=record.language;
+    const run=action('▶ '+L('运行并对比','Run & compare'),()=>void this.run(), 'primary');run.id='practice-run';bar.append(language,run);coding.append(bar);
+    const host=el('div','practice-editor');host.id='practice-code';coding.append(host);this.editor=new CodeEditor(host,(_pass,source,lang)=>{record.source=source;record.language=lang;language.value=lang;this.persist();const state=this.root.querySelector('#practice-result');if(state){state.textContent=L('代码已修改，运行以更新对比','Code changed. Run to update the comparison.');state.classList.remove('passed');}},()=>void this.run());this.editor.autoDetect=true;this.editor.show('image',record.source,record.language);
+    language.onchange=()=>void this.changeLanguage(c,language.value as ShaderLanguage);
+    const result=el('p','practice-result',record.passed?'✓ '+L('已完成 · 最佳 ','Completed · Best ')+record.best.toFixed(2)+'%':L('编写代码后点击运行，或按 Ctrl / ⌘ + Enter','Write your shader, then run or press Ctrl / ⌘ + Enter'));result.id='practice-result';result.setAttribute('role','status');coding.append(result);
+    const output=el('pre','practice-output');output.id='practice-output';output.setAttribute('role','log');coding.append(output);
+    const actions=el('div','practice-bottom-actions');actions.append(action(L('重置起始代码','Reset starter'),()=>{if(this.busy)return;if(!confirm(L('重置当前题目的代码？完成记录会保留。','Reset this draft? Your completion record will remain.')))return;record.source=practiceStarter(record.language);this.editor?.reset();this.editor?.show('image',record.source,record.language);this.persist();result.classList.remove('passed');result.textContent=L('已重置，请重新运行','Reset. Run to compare.');}),action(L('保存为作品 ↗','Save as project ↗'),()=>{const p=practiceProject(c,record.source,record.language);p.id=crypto.randomUUID();p.updatedAt=new Date().toISOString();this.openProject(p);}));coding.append(actions);
+    const solution=el('details','practice-help');solution.id='practice-solution';solution.append(el('summary','',L('查看参考解法 · WGSL','View reference solution · WGSL')));solution.ontoggle=()=>{if(solution.open){record.reviewed=true;this.persist();}};solution.append(el('p','muted',L('建议先独立完成。参考解法只是其中一种实现。','Try solving it first. This is one possible implementation.')),el('pre','',c.reference));coding.append(solution);
+    const storage=el('p','muted');storage.id='practice-storage';coding.append(storage);this.updateStorage();const generation=this.generation;this.showComparison(c);
+    void this.renderer.reference(c).then(image=>{if(generation===this.generation)this.display('target',image);}).catch(error=>{if(generation===this.generation)output.textContent=L('参考图生成失败：','Could not render target: ')+String(error);});
+  }
+  private showComparison(c:PracticeChallenge){const last=this.comparisons.get(c.id);if(!last)return;const record=this.draft(c),passed=last.scores.every(s=>s.passed),score=Math.min(...last.scores.map(s=>s.score)),stale=record.source!==last.source||record.language!==last.language;this.display('target',last.target);this.display('actual',last.actual);this.display('diff',last.scores[last.scores.length-1]!.diff);const result=this.root.querySelector('#practice-result')!;result.textContent=(passed?'✓ '+L('通过','Accepted'):L('继续加油','Keep going'))+` · ${score.toFixed(2)}%`+(stale?' · '+L('代码已修改，请重新运行','Code changed; run again'):'');result.classList.toggle('passed',passed&&!stale);this.root.querySelector('#practice-output')!.textContent=last.scores.map((s,i)=>`${[128,PRACTICE_SIZE][i]} × ${[128,PRACTICE_SIZE][i]}  ${s.score.toFixed(2)}%  · ${L('差异像素','Differing pixels')} ${(s.mismatch*100).toFixed(2)}%`).join('\n');}
+  private display(key:string,image:PracticePixels){const img=this.root.querySelector<HTMLImageElement>('#practice-'+key);if(img){img.src=practiceImage(image);img.hidden=false;const p=img.parentElement?.querySelector<HTMLElement>('.practice-image-placeholder');if(p)p.hidden=true;}}
+  private lock(value:boolean){this.busy=value;for(const key of ['practice-run','practice-language']){const n=this.root.querySelector<HTMLButtonElement|HTMLSelectElement>('#'+key);if(n)n.disabled=value;}}
+  private async changeLanguage(c:PracticeChallenge,target:ShaderLanguage){const record=this.draft(c),generation=this.generation,original=record.source,from=record.language;if(this.busy||record.language===target)return;this.lock(true);try{const source=await createSourceConverter({wgsl:translateWgsl,hlsl:translateHlsl})(practiceProject(c,record.source,record.language),'image',target);if(generation!==this.generation)return;if(record.source!==original||record.language!==from)throw Error(L('转换期间代码已修改，请重试；已保留当前代码。','Code changed during conversion. Your edits are preserved; try again.'));record.source=source;record.language=target;this.editor?.show('image',source,target);this.persist();this.showComparison(c);}catch(error){if(generation===this.generation){this.root.querySelector('#practice-output')!.textContent=String(error);(this.root.querySelector('#practice-language') as HTMLSelectElement).value=record.language;}}finally{if(generation===this.generation)this.lock(false);}}
+  async run(){if(this.busy||!this.id||!this.editor)return;const c=findPractice(this.id)!,record=this.draft(c),source=record.source,language=record.language,generation=this.generation;this.lock(true);const result=this.root.querySelector('#practice-result')!,output=this.root.querySelector('#practice-output')!;result.textContent=L('正在编译并对比两个分辨率…','Compiling and comparing at two resolutions…');output.textContent='';result.classList.remove('passed');output.classList.remove('error');
+    try{const scores=[];for(const size of [128,PRACTICE_SIZE]){const target=await this.renderer.reference(c,size),actual=await this.renderer.render(practiceProject(c,source,language),size),comparison=comparePractice(actual,target);scores.push(comparison);if(generation!==this.generation)return;if(size===PRACTICE_SIZE){this.display('target',target);this.display('actual',actual);this.display('diff',comparison.diff);this.comparisons.set(c.id,{source,language,scores,actual,target});}}
+      const score=Math.min(...scores.map(s=>s.score)),passed=scores.every(s=>s.passed);record.best=Math.max(record.best,score);record.passed ||=passed;this.persist();this.showComparison(c);
+    }catch(error){if(generation===this.generation){result.textContent=L('编译或运行失败，请修改后重试','Compile or render failed. Edit and try again.');output.classList.add('error');output.textContent=error instanceof Error?error.message:String(error);}}
+    finally{if(generation===this.generation)this.lock(false);}
+  }
+  dispose(){this.dead=true;this.visible=false;this.generation++;this.off();this.editor?.destroy();void this.renderer.dispose();}
+}

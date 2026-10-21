@@ -1,9 +1,14 @@
+import {practiceIndex} from './practice';
 import {shaderPreviewModes} from '../../shared/dist/views/presentation.js';
 import {shaderAppearance} from '../../shared/dist/views/presentation.js';
 import {editorIcons} from '../../shared/dist/views/editor-icons.js';
 import {shaderReference} from '../../shared/dist/views/shader-reference.js';
 import {saveIndicator,saveMessage} from '../../shared/dist/views/editor-controller.js';
 import {openNativeChannelDrawer} from './platform/channel-drawer';
+import {preferences} from './preferences';
+import {installNativeSettings,localizedNativeText} from './platform/settings';
+import {t,onLocaleChange} from '../../shared/dist/views/i18n.js';
+import {preferredProject,preferredSource} from '../../shared/dist/domain/preferences.js';
 import {guiComparisonRequested} from './experiments/gui-ui/flags';
 import {configurePreviewExperiment, previewProfileSnapshot} from './experiments/gui-ui/preview-profile';
 import {installFrameProbe,measureGuiComparison,type FrameProbe} from './experiments/gui-ui/sampling';
@@ -39,14 +44,14 @@ import { NativeSoundStream } from './audio';
 import { MobileCompiler } from './compiler';
 import { pickFile, shareFile, dataUrl, writeBytes } from './files';
 let projects = new MobileProjects();
-function label(text: string, cls = '', wrap = true) { const v = new Label(); v.text = text; v.className = cls; v.textWrap = wrap; return v; }
-function button(text: string, fn: () => void | Promise<void>, cls = '') { const b = new Button(); b.text = text; b.className = cls; b.accessibilityLabel = text; b.on('tap', () => void perform(fn)); return b; }
-function iconButton(icon:string, name:string, fn:()=>void|Promise<void>, cls='') { const b=button(icon,fn,'editor-icon '+cls);b.accessibilityLabel=name;b.width=44;b.height=44;return b; }
+function label(text: string, cls = '', wrap = true) { const v = localizedNativeText(new Label(),text); v.className = cls; v.textWrap = wrap; return v; }
+function button(text: string, fn: () => void | Promise<void>, cls = '',translate=true) { const b = translate?localizedNativeText(new Button(),text):new Button();if(!translate)b.text=text;b.className = cls; b.accessibilityLabel = translate?t(text):text; b.on('tap', () => void perform(fn)); return b; }
+function iconButton(icon:string, name:string, fn:()=>void|Promise<void>, cls='') { const b=localizedNativeText(button(icon,fn,'editor-icon '+cls),icon,name);b.accessibilityLabel=t(name);b.width=44;b.height=44;return b; }
 async function perform(fn: () => unknown | Promise<unknown>) { try {
     await fn();
 }
 catch (error) {
-    await Dialogs.alert({ title: 'ShaderLab', message: String(error instanceof Error ? error.message : error), okButtonText: '知道了' });
+    await Dialogs.alert({ title: 'ShaderLab', message: String(error instanceof Error ? error.message : error), okButtonText: t('知道了') });
 } }
 function scroll(content: View, horizontal = false) { const v = new ScrollView(); v.orientation = horizontal ? 'horizontal' : 'vertical'; v.content = content; return v; }
 function row(...children: View[]) { const v = new StackLayout(); v.orientation = 'horizontal'; for (const child of children)
@@ -63,12 +68,14 @@ function navigate(create: () => Page) { Frame.topmost().navigate({ create }); }
 async function imported() { const file = await pickFile('project'); return file ? parseProject(await File.fromPath(file).readText()) : null; }
 export function galleryPage() {
     const p = page('haiyue / ShaderLab', false), content = new StackLayout();
+    installNativeSettings(p);
     content.className = 'body';
     p.content = scroll(content);
     content.addChild(label('从灵感开始', 'title'));
     content.addChild(label('编写 GLSL / WGSL / HLSL，用原生 WebGPU 看见想法。', 'muted'));
-    content.addChild(row(button('＋ 新建', () => navigate(() => editorPage(createProject())), 'primary'), button('导入', async () => { const value = await imported(); if (value)
+    content.addChild(row(button('＋ 新建', () => navigate(() => editorPage(preferredProject(preferences().shaderLanguage,{ids:{next:()=>crypto.randomUUID()},clock:{nowISO:()=>new Date().toISOString()}}))), 'primary'), button('导入', async () => { const value = await imported(); if (value)
         navigate(() => editorPage(value)); }), button('教程', () => navigate(tutorialIndex))));
+    content.addChild(button('练习场',()=>navigate(()=>practiceIndex(project=>editorPage(project))), 'primary'));
     const draft = button('恢复上次草稿', async () => { const draft = await projects.restoreDraft(); if (draft)
         navigate(() => editorPage(draft.project, false, draft.pass as CodeId));
     else
@@ -140,9 +147,9 @@ export function galleryPage() {
         const card = new GridLayout();
         card.className = 'card';
         card.columns = '*,auto';
-        const open = button(project.name, () => navigate(() => editorPage(project)));
+        const open = button(project.name, () => navigate(() => editorPage(project)),'',false);
         card.addChild(open);
-        const remove = button('🗑', async () => { if (await Dialogs.confirm({ title: '删除作品', message: project.name, okButtonText: '删除', cancelButtonText: '取消' })) {
+        const remove = button('🗑', async () => { if (await Dialogs.confirm({ title: t('删除作品'), message: project.name, okButtonText: t('删除'), cancelButtonText: t('取消') })) {
             await projects.remove(project.id);
             await refresh();
         } }, 'danger');
@@ -254,6 +261,7 @@ class MobileEditor {
             compiled: () => this.presentCompileResult(),
             exportProject: async () => { await shareFile(await projects.export(this.session.project)); },
         });
+        installNativeSettings(this.page,value=>this.runtime?.setMSAA(value));
         this.page.actionBar.title = project.name;
         this.root.rows = 'auto,auto,*,auto,1';
         this.root.iosOverflowSafeArea = false;
@@ -326,8 +334,10 @@ class MobileEditor {
             title: name => { this.page.actionBar.title = name; }, draft: () => this.draft(),
         }) : () => {};
         const saveOff=this.shared?this.shared.controller.subscribe(state=>saveIndicator(state)+':'+saveMessage(state),()=>this.syncTabSaveState()):this.session.application.subscribe(()=>this.syncTabSaveState());
-        const compileOff=this.session.application.select(state=>state.compile.status,status=>{this.compileState.text=status==='ready'?'已编译':status==='compiling'?'正在编译…':status==='failed'?'编译失败':'代码已修改';});
-        this.unlisten = () => { compileOff();saveOff();stateOff(); Application.off(Application.suspendEvent, suspend); Application.off(Application.resumeEvent, resume); };
+        const compileLabel=()=>{const status=this.session.application.state.compile.status;this.compileState.text=t(status==='ready'?'已编译':status==='compiling'?'正在编译…':status==='failed'?'编译失败':'代码已修改');};
+        const compileOff=this.session.application.select(state=>state.compile.status,compileLabel);
+        const localeOff=onLocaleChange(()=>{compileLabel();this.renderChannels();this.syncTabSaveState();});
+        this.unlisten = () => { localeOff();compileOff();saveOff();stateOff(); Application.off(Application.suspendEvent, suspend); Application.off(Application.resumeEvent, resume); };
         this.layout();
     }
     private createPreview() {
@@ -337,13 +347,13 @@ class MobileEditor {
         const surface = new GridLayout(); this.preview.addChild(surface);
         this.shared.mount('preview',surface,this.canvas,value => { if (!value) this.runtime?.releaseInput(); this.runtime?.setCaptureVisible(value && this.foreground && this.previewVisible); });
         const extras = row(button('渲染方式',async()=>{
-            const choice=await Dialogs.action({title:'渲染方式',cancelButtonText:'取消',actions:shaderPreviewModes.map(option=>option.label)});
-            const selected=shaderPreviewModes.find(option=>option.label===choice);if(!selected||this.disposed)return;
+            const choice=await Dialogs.action({title:t('渲染方式'),cancelButtonText:t('取消'),actions:shaderPreviewModes.map(option=>t(option.label))});
+            const selected=shaderPreviewModes.find(option=>t(option.label)===choice);if(!selected||this.disposed)return;
             const mesh=selected.value==='canvas'?this.session.project.preview.mesh:selected.value as typeof this.session.project.preview.mesh;
             this.session.application.dispatch({type:'preview.mode',mode:selected.value==='canvas'?'canvas':'scene',mesh});this.runtime?.setMode(this.session.project.preview.mode,mesh);this.draft();
         }),this.fps,button('查看通道',async () => {
             const ids=this.session.project.passes.filter(p=>p.enabled).map(p=>p.id);
-            const choice=await Dialogs.action({title:'预览输出',cancelButtonText:'取消',actions:ids.map(id=>PASS_LABELS[id])});
+            const choice=await Dialogs.action({title:t('预览输出'),cancelButtonText:t('取消'),actions:ids.map(id=>PASS_LABELS[id])});
             const id=ids.find(id=>PASS_LABELS[id]===choice);if(id&&this.runtime){this.runtime.viewed=id;this.host?.requestFrame();}
         }),button('键盘',()=>this.keyboard()));
         const extrasScroll=scroll(extras,true);GridLayout.setRow(extrasScroll,2);this.preview.addChild(extrasScroll);
@@ -362,11 +372,11 @@ class MobileEditor {
         this.preview.addChild(scroll(bar, true));
         GridLayout.setRow(this.canvas, 1);
         this.preview.addChild(this.canvas);
-        const options = row(button('Canvas / 3D', async () => { const value = await Dialogs.action({ title: '渲染方式', cancelButtonText: '取消', actions: ['Canvas', '球体', '立方体', '圆环'] }); if (value === '取消')
-            return; this.session.application.dispatch({ type: 'preview.mode', mode: value === 'Canvas' ? 'canvas' : 'scene', mesh: value === '立方体' ? 'box' : value === '圆环' ? 'torus' : 'sphere' }); this.runtime?.setMode(this.session.project.preview.mode, this.session.project.preview.mesh); this.draft(); }), button('查看通道', async () => { const ids = this.session.project.passes.filter(p => p.enabled).map(p => p.id); const choice = await Dialogs.action({ title: '预览输出', cancelButtonText: '取消', actions: ids.map(id => PASS_LABELS[id]) }); const id = ids.find(id => PASS_LABELS[id] === choice); if (id && this.runtime) {
+        const options = row(button('Canvas / 3D', async () => { const value = await Dialogs.action({ title: t('渲染方式'), cancelButtonText: t('取消'), actions: ['Canvas', '球体', '立方体', '圆环'] }); if (value === '取消')
+            return; this.session.application.dispatch({ type: 'preview.mode', mode: value === 'Canvas' ? 'canvas' : 'scene', mesh: value === '立方体' ? 'box' : value === '圆环' ? 'torus' : 'sphere' }); this.runtime?.setMode(this.session.project.preview.mode, this.session.project.preview.mesh); this.draft(); }), button('查看通道', async () => { const ids = this.session.project.passes.filter(p => p.enabled).map(p => p.id); const choice = await Dialogs.action({ title: t('预览输出'), cancelButtonText: t('取消'), actions: ids.map(id => PASS_LABELS[id]) }); const id = ids.find(id => PASS_LABELS[id] === choice); if (id && this.runtime) {
             this.runtime.viewed = id;
             this.host?.requestFrame();
-        } }), button('分辨率', async () => { const choice = await Dialogs.action({ title: '渲染比例', cancelButtonText: '取消', actions: PREVIEW_SCALES.map(s => s * 100 + '%') }); const scale = PREVIEW_SCALES.find(s => s * 100 + '%' === choice); if (scale) {
+        } }), button('分辨率', async () => { const choice = await Dialogs.action({ title: t('渲染比例'), cancelButtonText: t('取消'), actions: PREVIEW_SCALES.map(s => s * 100 + '%') }); const scale = PREVIEW_SCALES.find(s => s * 100 + '%' === choice); if (scale) {
             await this.legacyScale(scale);
         } }), button('键盘', () => this.keyboard()));
         const optionsScroll = scroll(options, true);
@@ -393,7 +403,7 @@ class MobileEditor {
             hlsl: (code, options) => this.compiler.hlsl(code, options),
         }) });
         this.language = button('WGSL', async () => {
-            const choice = await Dialogs.action({ title: '转换代码语言', cancelButtonText: '取消', actions: ['WGSL', 'GLSL', 'HLSL'] });
+            const choice = await Dialogs.action({ title: t('转换代码语言'), cancelButtonText: t('取消'), actions: ['WGSL', 'GLSL', 'HLSL'] });
             if (this.disposed || !['WGSL', 'GLSL', 'HLSL'].includes(choice) || choice.toLowerCase() === this.session.language) return;
             this.language.isEnabled = false;
             this.message('正在转换代码…');
@@ -498,7 +508,7 @@ class MobileEditor {
             return;
         } const size = this.canvas.getActualSize(); for (const point of event.points)
             this.runtime?.touch(event.action, point.id, point.x, point.y, size.width, size.height); }, { pinchZoom: true });
-        this.host = new NativeRenderHost(this.canvas, text => this.message(text), { diagnosticName: 'shaderlab', diagnosticIntervalFrames: 0, canvasInput: this.touch.target as unknown as HTMLCanvasElement, needsAnimationFrame: () => this.previewVisible && (this.runtime?.playing ?? false), prepareScene: async (engine) => { if(guiComparisonRequested())this.guiFrameProbe=installFrameProbe(engine); this.runtime = new NativeShaderRuntime(engine, () => this.host?.requestFrame(), (this.touch!.orbitTarget ?? this.touch!.target) as unknown as HTMLCanvasElement, (code, options) => this.compiler.hlsl(code, options), undefined, this.wgslCompiler); this.runtime.onCameraError = message => { this.message(message); this.shared?.controller.report(message); }; this.runtime.setCaptureVisible(this.foreground && this.previewVisible); configurePreviewExperiment(this.runtime, engine); await this.runtime.initialize(); this.runtime.onFrame=()=>{const state=this.runtime!.status(),text=state.playing&&!state.fps?'— FPS':`${Math.round(state.fps)} FPS`;if(this.fps.text!==text)this.fps.text=text;}; this.audio = new NativeSoundStream((start, count) => this.runtime!.sound(start, count), message => this.message(message)); try {
+        this.host = new NativeRenderHost(this.canvas, text => this.message(text), { diagnosticName: 'shaderlab', diagnosticIntervalFrames: 0, canvasInput: this.touch.target as unknown as HTMLCanvasElement, needsAnimationFrame: () => this.previewVisible && (this.runtime?.playing ?? false), prepareScene: async (engine) => { if(guiComparisonRequested())this.guiFrameProbe=installFrameProbe(engine); this.runtime = new NativeShaderRuntime(engine, () => this.host?.requestFrame(), (this.touch!.orbitTarget ?? this.touch!.target) as unknown as HTMLCanvasElement, (code, options) => this.compiler.hlsl(code, options), undefined, this.wgslCompiler); this.runtime.onCameraError = message => { this.message(message); this.shared?.controller.report(message); }; this.runtime.setCaptureVisible(this.foreground && this.previewVisible); configurePreviewExperiment(this.runtime, engine); await this.runtime.initialize();this.runtime.setMSAA(preferences().msaa); this.runtime.onFrame=()=>{const state=this.runtime!.status(),text=state.playing&&!state.fps?'— FPS':`${Math.round(state.fps)} FPS`;if(this.fps.text!==text)this.fps.text=text;}; this.audio = new NativeSoundStream((start, count) => this.runtime!.sound(start, count), message => this.message(message)); try {
                 await this.compile();
             }
             catch (error) {
@@ -531,7 +541,7 @@ class MobileEditor {
         this.layout();
     }
     private message(text: string) { if (this.disposed)
-        return; this.status.text = text;this.status.visibility='visible'; }
+        return; this.status.text = t(text);this.status.visibility='visible'; }
     private startSound() { if (this.foreground && this.runtime?.playing && this.session.project.sound.enabled)
         this.audio?.start(this.session.project.sound.volume); }
     private async legacyScale(scale:typeof PREVIEW_SCALES[number]) {
@@ -568,8 +578,8 @@ class MobileEditor {
         if(result.status==='ready')this.startSound();
     }
     private async addPass() { const ids: CodeId[] = ['common', 'buffer-a', 'buffer-b', 'buffer-c', 'buffer-d', 'sound']; const available = ids.filter(id => !this.session.tabs.includes(id)); if (!available.length)
-        return; const choice = await Dialogs.action({ title: '添加页签', cancelButtonText: '取消', actions: available.map(id => PASS_LABELS[id]) }), id = available.find(id => PASS_LABELS[id] === choice); if (!id)
-        return; this.session.add(id); this.showSource(); this.renderChannels(); this.draft(); if (id === 'sound')
+        return; const choice = await Dialogs.action({ title: t('添加页签'), cancelButtonText: t('取消'), actions: available.map(id => PASS_LABELS[id]) }), id = available.find(id => PASS_LABELS[id] === choice); if (!id)
+        return; this.session.add(id);this.session.setSource(preferredSource(id,preferences().shaderLanguage),preferences().shaderLanguage); this.showSource(); this.renderChannels(); this.draft(); if (id === 'sound')
         await this.compile(); }
     private renderChannels() { this.channels.removeChildren(); this.channels.className = 'body'; this.channels.addChild(label(PASS_LABELS[this.session.pass] + ' · 通道', 'title')); if (this.session.pass === 'common') {
         this.channels.addChild(label('Common 的函数和常量可供所有 Buffer、Image 和 Sound 共用；通道在各个渲染页签里绑定。'));
@@ -687,8 +697,8 @@ class MobileEditor {
         }
         body.addChild(line);
     } body.addChild(button('关闭', () => modal.closeModal())); modal.content = scroll(body); this.page.showModal(modal, { fullscreen: false, closeCallback: () => { this.runtime?.releaseInput(); this.host?.requestFrame(); } }); }
-    private async tools() { const choice = await Dialogs.action({ title: '作品操作', cancelButtonText: '取消', actions: ['重命名', '导出作品', '导入作品', '保存截图到照片', '分享截图', '导出 Sound WAV'] }); if (choice === '重命名') {
-        const result = await Dialogs.prompt({ title: '作品名称', defaultText: this.session.project.name, okButtonText: '确定', cancelButtonText: '取消' });
+    private async tools() { const choice = await Dialogs.action({ title: t('作品操作'), cancelButtonText: t('取消'), actions: ['重命名', '导出作品', '导入作品', '保存截图到照片', '分享截图', '导出 Sound WAV'] }); if (choice === '重命名') {
+        const result = await Dialogs.prompt({ title: t('作品名称'), defaultText: this.session.project.name, okButtonText: t('确定'), cancelButtonText: t('取消') });
         if (result.result) { this.session.application.dispatch({type:'project.rename',name:result.text.trim()||'Untitled shader'}); if(!this.shared)this.title.text=result.text; }
     }
     else if (choice === '导出作品')
@@ -704,7 +714,7 @@ class MobileEditor {
     else if (choice === '导出 Sound WAV') {
         if (!this.runtime)
             throw Error('预览尚未就绪');
-        const result = await Dialogs.prompt({ title: 'WAV 导出时长（秒）', defaultText: String(this.session.project.sound.duration), okButtonText: '导出', cancelButtonText: '取消' });
+        const result = await Dialogs.prompt({ title: t('WAV 导出时长（秒）'), defaultText: String(this.session.project.sound.duration), okButtonText: t('导出'), cancelButtonText: t('取消') });
         if (!result.result)
             return;
         const seconds = Number(result.text);

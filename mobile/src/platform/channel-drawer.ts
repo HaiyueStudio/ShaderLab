@@ -1,3 +1,4 @@
+import {t} from '../../../shared/dist/views/i18n.js';
 import { Page, GridLayout, StackLayout, LayoutBase, ScrollView, Button, Label, Image, ImageSource, WebView, Color, isIOS } from '@nativescript/core';
 import { categoriesFor, categoryOf, channelChoices, channelName, type ChannelCategory } from '../../../shared/dist/views/channel-catalog.js';
 import { shaderAppearance } from '../../../shared/dist/views/presentation.js';
@@ -14,14 +15,14 @@ export function openNativeChannelDrawer(owner:Page,ports:{
   const c=shaderAppearance.color;let closed=false,busy=false,epoch=0,player:WebView|undefined;
   drawer.actionBarHidden=true;drawer.backgroundColor=new Color(c.backdrop);drawer.content=root;
   panel.rows='auto,auto,*,auto';panel.width='94%';panel.maxWidth=590;panel.horizontalAlignment='right';panel.backgroundColor=new Color(c.surface);panel.padding=12;
-  const text=(value:string,small=false)=>{const label=new Label();label.text=value;label.textWrap=true;label.className=small?'muted':'';return label;};
+  const text=(value:string,small=false)=>{const label=new Label();label.text=t(value);label.textWrap=true;label.className=small?'muted':'';return label;};
   const cards:{card:GridLayout;channel:Channel;button:Button;name:string}[]=[];
   const stopVideo=()=>{if(player){player.src='about:blank';if(player.parent instanceof LayoutBase)player.parent.removeChild(player);player=undefined;}};
   const release=()=>{closed=true;epoch++;stopVideo();};
   const close=()=>{if(closed)return;release();drawer.closeModal();};
   const valid=()=>!closed&&session===ports.session();
-  const button=(name:string,action:()=>void|Promise<void>,primary=false)=>{const b=new Button();b.text=name;b.accessibilityLabel=name;b.className=primary?'primary':'';b.on('tap',()=>{if(action===close){close();return;}if(!valid()||busy)return;void Promise.resolve().then(action).catch(error=>{if(valid())feedback.text=error instanceof Error?error.message:String(error);});});return b;};
-  const syncSelection=()=>{const current=passOf(ports.project() as ShaderProject,ports.pass).channels[ports.index]!;description.text='当前输入：'+(current.kind==='none'?'未绑定':channelName(ports.project(),current));for(const entry of cards){const selected=JSON.stringify(entry.channel)===JSON.stringify(current);entry.card.borderColor=new Color(selected?c.accent:c.border);entry.button.accessibilityLabel='使用 '+entry.name+(selected?'，已选':'');}};
+  const button=(name:string,action:()=>void|Promise<void>,primary=false)=>{const b=new Button();b.text=t(name);b.accessibilityLabel=t(name);b.className=primary?'primary':'';b.on('tap',()=>{if(action===close){close();return;}if(!valid()||busy)return;void Promise.resolve().then(action).catch(error=>{if(valid())feedback.text=error instanceof Error?error.message:String(error);});});return b;};
+  const syncSelection=()=>{const current=passOf(ports.project() as ShaderProject,ports.pass).channels[ports.index]!;description.text=t('当前输入：{name}',{name:current.kind==='none'?t('未绑定'):channelName(ports.project(),current)});for(const entry of cards){const selected=JSON.stringify(entry.channel)===JSON.stringify(current);entry.card.borderColor=new Color(selected?c.accent:c.border);entry.button.accessibilityLabel='使用 '+entry.name+(selected?'，已选':'');}};
   const select=async(channel:Channel)=>{if(!valid()||busy)return;busy=true;feedback.text='';try{await ports.bind(channel);if(valid())syncSelection();}finally{busy=false;}};
   const mask=new Button();mask.text='';mask.accessibilityLabel='关闭素材抽屉';mask.backgroundColor=new Color('transparent');mask.borderWidth=0;mask.margin=0;mask.on('tap',close);root.addChild(mask);root.addChild(panel);
   const heading=new GridLayout();heading.columns='*,auto';heading.addChild(text(PASS_LABELS[ports.pass]+' · iChannel'+ports.index));const dismiss=button('关闭',close);GridLayout.setColumn(dismiss,1);heading.addChild(dismiss);panel.addChild(heading);
@@ -49,7 +50,7 @@ export function openNativeChannelDrawer(owner:Page,ports:{
         const preview=new Image();preview.height=110;preview.stretch='aspectFit';preview.accessibilityLabel=choice.name+' 预览';contents.addChild(preview);
         void ports.bufferPreview(choice.channel.pass).then(source=>{if(valid()&&epoch===version&&source)preview.imageSource=source;}).catch(()=>{});
       }else{const symbol=text(choice.symbol??'');symbol.fontSize=32;symbol.textAlignment='center';symbol.height=80;contents.addChild(symbol);}
-      contents.addChild(text(choice.name));contents.addChild(text(choice.detail,true));card.insertChild(choose,1);
+      const nameLabel=new Label();nameLabel.text=['image','video','cubemap'].includes(choice.channel.kind)?choice.name:t(choice.name);contents.addChild(nameLabel);contents.addChild(text(choice.detail,true));card.insertChild(choose,1);
     });
     syncSelection();
   };

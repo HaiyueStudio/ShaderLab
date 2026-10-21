@@ -3,6 +3,7 @@ import type { HYPlatformView } from '@haiyue/ui/core';
 import { ShaderEditorController, type ShaderEditorPorts } from '../../../shared/dist/views/editor-controller.js';
 import { mountShaderEditorPart, shaderTheme, type ShaderEditorPart } from '../../../shared/dist/views/editor-page.js';
 import type { ShaderApplication } from '../../../shared/dist/application/application.js';
+import { t, onLocaleChange } from '../../../shared/dist/views/i18n.js';
 
 export function mountWebSharedEditor(application: ShaderApplication, ports: ShaderEditorPorts, special: {
   canvas: HTMLCanvasElement; editor: HTMLElement; focusEditor():void; measureEditor():void; previewVisible(value:boolean):void;
@@ -32,7 +33,7 @@ export function mountWebSharedEditor(application: ShaderApplication, ports: Shad
   special.canvas.before(preview);mount('preview',preview);
   const editor=document.getElementById('code-editor')!;mount('editor',editor);
   for(const id of ['project-name','project-name-label','save-state','save-project','export-project','compile','play-pause','reset-time','step-frame','preview-scale','mode-canvas','mode-scene','mesh-select'])document.getElementById(id)!.hidden=true;
-  for(const host of [project,toolbar])for(const button of host.querySelectorAll<HTMLElement>('[data-hy-kind="Button"]'))button.title=button.dataset.hyKey?.endsWith('/play')?'暂停 / 播放':button.getAttribute('aria-label')??'';
+  const titles=()=>{for(const host of [project,toolbar])for(const button of host.querySelectorAll<HTMLElement>('[data-hy-kind="Button"]'))button.title=button.dataset.hyKey?.endsWith('/play')?t('暂停 / 播放'):button.getAttribute('aria-label')??'';};titles();const localeOff=onLocaleChange(titles);
   document.getElementById('workspace')!.classList.add('shared-editor');
   let visible=true;
   const visibility=()=>{ for(const {page} of owned) document.hidden||!visible?page.suspend():page.resume(); };
@@ -40,6 +41,6 @@ export function mountWebSharedEditor(application: ShaderApplication, ports: Shad
   return {controller,
     setVisible(value:boolean){visible=value;visibility();},
     diagnostics:()=>({surfaceMounts,editorMounts,controller:controller.diagnostics,parts:owned.map(({renderer,page})=>({status:page.status,...renderer.diagnostics}))}),
-    dispose(){document.removeEventListener('visibilitychange',visibility);for(const {page} of owned)page.dispose();controller.dispose();},
+    dispose(){localeOff();document.removeEventListener('visibilitychange',visibility);for(const {page} of owned)page.dispose();controller.dispose();},
   };
 }

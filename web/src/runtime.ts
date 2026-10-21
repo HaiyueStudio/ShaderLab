@@ -261,6 +261,13 @@ export class ShaderRuntime {
     if (mode === 'scene') this.orbit = new OrbitControl(this.canvas, this.camera, { minRadius: 1.8, maxRadius: 12 });
   }
   setMesh(mesh: PreviewMesh) { this.mesh.geometry = this.geometries[mesh]; }
+  setMSAA(enabled:boolean) {
+    const samples=enabled?4:1;
+    this.engine.msaaSamples=samples;
+    // A scene snapshots its sample count when created; engine defaults alone
+    // do not update the view used to record its actual render passes.
+    this.scene.renderView.sampleCount=samples;
+  }
   resetCamera() { this.camera.set(3.6, 0.45, 1.25).setTarget(0, 0, 0); }
   private syncVideos() {
     const enabled = this.playing && this.visible && !document.hidden && !this.failed && !this.dead;
@@ -273,7 +280,7 @@ export class ShaderRuntime {
   reset() { this.frameRate.reset();this.keyboard.reset(); this.active?.videos.forEach(source => source.reset()); this.syncVideos(); this.bufferPreviews?.invalidate(); this.time = 0; this.sound.pause(); this.syncSound(); this.frame = 0; this.delta = 0; this.clearTargets(); this.dirty = true; }
   // Offscreen passes can advance immediately; the surface is presented only inside Haiyue's frame loop.
   step() { this.setPlaying(false); this.active?.videos.forEach(source => source.step(1 / 60)); this.render(1 / 60, true); }
-  status() { return { ready: Boolean(this.active) && !this.failed, frame: this.frame, time: this.time, fps: this.frameRate.value, playing: this.playing, width: this.width, height: this.height, mode: this.mode, sound: { ready: !!this.active?.audio, audible: this.sound.armed, playing: this.sound.playing, continuous: true, bufferedUntil: this.sound.bufferedUntil, exportDuration: this.soundExportDuration, sampleRate: SOUND_RATE }, bufferFormat: this.bufferFormat, camera: { theta: this.camera.theta, phi: this.camera.phi, radius: this.camera.radius } }; }
+  status() { return { ready: Boolean(this.active) && !this.failed, frame: this.frame, time: this.time, fps: this.frameRate.value, msaaSamples:this.engine.msaaSamples, playing: this.playing, width: this.width, height: this.height, mode: this.mode, sound: { ready: !!this.active?.audio, audible: this.sound.armed, playing: this.sound.playing, continuous: true, bufferedUntil: this.sound.bufferedUntil, exportDuration: this.soundExportDuration, sampleRate: SOUND_RATE }, bufferFormat: this.bufferFormat, camera: { theta: this.camera.theta, phi: this.camera.phi, radius: this.camera.radius } }; }
   private texture(width: number, height: number, format: GPUTextureFormat, label: string, cube = false): Texture {
     const texture = this.engine.device.createTexture({ label: `ShaderEditor.${label}`, size: [width, height, cube ? 6 : 1], format,
       usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC });

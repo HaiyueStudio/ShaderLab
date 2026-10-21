@@ -7,6 +7,7 @@ export type ShaderEditorPart = 'project' | 'toolbar' | 'preview' | 'editor';
 export { shaderTheme } from './presentation.js';
 import { shaderControlLayout, shaderPreviewModes } from './presentation.js';
 import { editorIcons, editorIconLayout } from './editor-icons.js';
+import { localizeProps } from './i18n.js';
 const scales = PREVIEW_SCALES.map(value => ({value:String(value),label: `${value*100}%`}));
 const modes = shaderPreviewModes;
 const controlLayout = shaderControlLayout;
@@ -21,8 +22,9 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
   const root = `shader-${part}`, bindings: HYBinding<ShaderEditorViewState>[] = [];
   const initial = controller.getSnapshot();
   function bind<K extends HYComponentKind>(kind:K,path:readonly string[],select:(s:ShaderEditorViewState)=>HYComponentProps[K],children?:readonly HYNode[],slots?:Readonly<Record<string,readonly HYNode[]>>):HYNode {
-    bindings.push({key:hyKey(root,...path),kind,select} as HYBinding<ShaderEditorViewState>);
-    return hyNode(kind,path.at(-1)??root,select(initial),{...(children?{children}:{}),...(slots?{slots}:{}),source:{file:'shared/views/editor-page.ts'}});
+    const localized=(state:ShaderEditorViewState)=>localizeProps(select(state));
+    bindings.push({key:hyKey(root,...path),kind,select:localized} as HYBinding<ShaderEditorViewState>);
+    return hyNode(kind,path.at(-1)??root,localized(initial),{...(children?{children}:{}),...(slots?{slots}:{}),source:{file:'shared/views/editor-page.ts'}});
   }
   // Closed dialog controls consume their initial snapshot until opened. Changing
   // the toolbar must not rebuild an invisible settings form on every selection.
@@ -39,7 +41,7 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
   if (part === 'project') {
     tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:8,padding:[4,8,4,8]}},{children:[
       hyNode('Row','name',{layout:{gap:8,align:'center',maxWidth:320}},{children:[
-        hyNode('Text','label',{text:'作品名称',wrap:false,layout:{width:56,minWidth:56}}),
+        bind('Text',['name','label'],()=>({text:'作品名称',wrap:false,layout:{width:56,minWidth:56}})),
         bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:180,minWidth:80,maxWidth:240,grow:1},a11y:{label:'作品名称'}}))),
       ]}),
       hyNode('Row','actions',{layout:{column:1,gap:6,align:'center'}},{children:[

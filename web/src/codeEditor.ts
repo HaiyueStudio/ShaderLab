@@ -1,3 +1,4 @@
+import {shaderCodeMenu} from './codeContextMenu.js';
 import { basicSetup } from 'codemirror';
 import { invertedEffects } from '@codemirror/commands';
 import { EditorState, Prec, Compartment, StateField, StateEffect } from '@codemirror/state';
@@ -6,6 +7,7 @@ import { StreamLanguage, HighlightStyle, syntaxHighlighting, type StreamParser }
 import { tags } from '@lezer/highlight';
 import { setDiagnostics } from '@codemirror/lint';
 import { autocompletion } from '@codemirror/autocomplete';
+import { t, onLocaleChange } from '../../shared/dist/views/i18n.js';
 import type { CodeId, ShaderDiagnostic, ShaderLanguage } from './model.js';
 import { detectShaderLanguage } from './sourceLanguage.js';
 import { glslParser } from './glslLanguage.js';
@@ -45,7 +47,7 @@ const languageState = StateField.define<ShaderLanguage>({ create: () => 'wgsl', 
 } });
 const languageExtensions = (language: ShaderLanguage) => [
   language === 'hlsl' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser),
-  EditorView.contentAttributes.of({ 'aria-label': language.toUpperCase() + ' 代码编辑器', spellcheck: 'false' }),
+  EditorView.contentAttributes.of({ 'aria-label': t('{language} 代码编辑器',{language:language.toUpperCase()}), spellcheck: 'false' }),
 ];
 export class CodeEditor {
   readonly view: EditorView;
@@ -55,16 +57,18 @@ export class CodeEditor {
   autoDetect = true;
   get language() { return this.view.state.field(languageState); }
   private replacing = false;
+  private localeOff:()=>void;
   constructor(parent: HTMLElement, onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void, compile: () => void) {
     // Split panes use slots. Mount styles in the actual DOM root, not the split's
     // composed ShadowRoot, whose styles cannot reach slotted editor descendants.
     this.view = new EditorView({ parent, root: parent.getRootNode() as Document | ShadowRoot, state: this.createState('', onChange, compile) });
     this.onChange = onChange; this.compile = compile;
+    this.localeOff=onLocaleChange(()=>this.view.dispatch({effects:this.languageConfig.reconfigure(languageExtensions(this.language))}));
   }
   private readonly onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void;
   private readonly compile: () => void;
   private createState(code: string, onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void, compile: () => void, language: ShaderLanguage = 'wgsl') {
-    return EditorState.create({ doc: code, extensions: [basicSetup, languageState.init(() => language), this.languageConfig.of(languageExtensions(language)), syntaxHighlighting(colors),
+    return EditorState.create({ doc: code, extensions: [basicSetup, languageState.init(() => language), this.languageConfig.of(languageExtensions(language)), syntaxHighlighting(colors), shaderCodeMenu(()=>this.language),
       invertedEffects.of(tr => tr.effects.some(effect => effect.is(languageEffect)) ? [
         languageEffect.of(tr.startState.field(languageState)),
         this.languageConfig.reconfigure(languageExtensions(tr.startState.field(languageState))),
@@ -94,14 +98,14 @@ export class CodeEditor {
     })));
   }
   focusLine(line: number) { const position = this.view.state.doc.line(Math.max(1, Math.min(line, this.view.state.doc.lines))).from; this.view.dispatch({ selection: { anchor: position }, effects: EditorView.scrollIntoView(position, { y: 'center' }) }); this.view.focus(); }
-  destroy() { this.view.destroy(); }
+  destroy() { this.localeOff();this.view.destroy(); }
 }
 
 export class GlslEditor {
   readonly view: EditorView;
   constructor(parent: HTMLElement, onChange: () => void, translate: () => void) {
     this.view = new EditorView({ parent, root: parent.getRootNode() as Document | ShadowRoot,
-      state: EditorState.create({ extensions: [basicSetup, StreamLanguage.define(glslParser), syntaxHighlighting(colors), editorTheme,
+      state: EditorState.create({ extensions: [basicSetup, StreamLanguage.define(glslParser), syntaxHighlighting(colors), editorTheme, shaderCodeMenu(()=>'glsl'),
         placeholder('void mainImage(out vec4 fragColor, in vec2 fragCoord) { ... }'),
         EditorView.contentAttributes.of({ 'aria-label': 'Shadertoy GLSL 源码', spellcheck: 'false' }),
         Prec.highest(keymap.of([{ key: 'Mod-Enter', run: () => { translate(); return true; } }])),

@@ -1,14 +1,16 @@
-import { defineSelectComponents, defineSplitComponents, defineCheckboxComponents, defineDropdownComponents, defineNotificationComponents, type HYSplit } from '@haiyue/ui';
+import { defineContextMenuComponents, defineSelectComponents, defineSplitComponents, defineCheckboxComponents, defineDropdownComponents, defineNotificationComponents, type HYSplit } from '@haiyue/ui';
 import { shaderReference } from '../../shared/dist/views/shader-reference.js';
+import { localizeStaticUI } from './settings.js';
 
 /** Use the installed UI package's public components and theme tokens. */
 export function initializeUI(): () => void {
-  defineSelectComponents(); defineSplitComponents(); defineCheckboxComponents(); defineDropdownComponents();
+  defineContextMenuComponents(); defineSelectComponents(); defineSplitComponents(); defineCheckboxComponents(); defineDropdownComponents();
   defineNotificationComponents();
   const reference=document.getElementById('builtin-variables')!,referenceButton=document.getElementById('builtin-variables-button')!,list=reference.querySelector('dl')!;
   for(const [name,description] of shaderReference){const term=document.createElement('dt'),detail=document.createElement('dd');term.textContent=name;detail.textContent=description;list.append(term,detail);}
   const placeReference=(event:Event)=>{if((event as ToggleEvent).newState!=='open')return;const rect=referenceButton.getBoundingClientRect(),width=Math.min(500,innerWidth-24),top=Math.max(12,Math.min(rect.bottom+8,innerHeight-160));reference.style.width=width+'px';reference.style.left=Math.max(12,Math.min(rect.right-width,innerWidth-width-12))+'px';reference.style.top=top+'px';reference.style.maxHeight=(innerHeight-top-12)+'px';};
   reference.addEventListener('beforetoggle',placeReference);
+  const localeOff=localizeStaticUI();
   const menu = document.getElementById('add-pass-menu')!, trigger = document.getElementById('add-pass')!;
   const syncExpanded = () => trigger.setAttribute('aria-expanded', String(menu.hasAttribute('open')));
   const menuObserver = new MutationObserver(syncExpanded); menuObserver.observe(menu, { attributes: true, attributeFilter: ['open'] }); syncExpanded();
@@ -44,6 +46,7 @@ export function initializeUI(): () => void {
     split.addEventListener('ratio-change', remember);
   }
   return () => {
+    localeOff();
     reference.removeEventListener('beforetoggle',placeReference);
     menuObserver.disconnect();
     mobile.removeEventListener('change', updateDirection);

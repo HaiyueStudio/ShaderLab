@@ -2,6 +2,7 @@ import type { HYStore, HYUIEvent } from '@haiyue/ui/core';
 import { ShaderApplication, selectors } from '../application/application.js';
 import type { ShaderApplicationState } from '../application/state.js';
 import { PREVIEW_SCALES, type PreviewScale } from '../domain/model.js';
+import { getLocale, onLocaleChange, type Locale } from './i18n.js';
 
 /** Host mechanisms only. Document commands and their ordering live here. */
 export interface ShaderEditorPorts {
@@ -13,6 +14,7 @@ export interface ShaderEditorPorts {
   exportProject(): void | Promise<unknown>;
 }
 export interface ShaderEditorViewState {
+  readonly locale:Locale;
   readonly application: ShaderApplicationState;
   readonly name: string;
   readonly composing: boolean;
@@ -25,11 +27,13 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
   private current: ShaderEditorViewState;
   private readonly listeners = new Set<() => void>();
   private readonly unlisten: () => void;
+  private readonly unlistenLocale:()=>void;
   private depth = 0;
   private pending = false;
   private dead = false;
   constructor(readonly application: ShaderApplication, private readonly ports: ShaderEditorPorts) {
-    this.current = { application: application.state, name: application.state.project.name, composing: false, informationOpen: false, message: '' };
+    this.current = { locale:getLocale(),application: application.state, name: application.state.project.name, composing: false, informationOpen: false, message: '' };
+    this.unlistenLocale=onLocaleChange(()=>{this.current={...this.current,locale:getLocale()};this.notify();});
     this.unlisten = application.subscribe(() => {
       const previous = this.current.application, next = application.state;
       const opened = previous.session !== next.session;
@@ -127,7 +131,7 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
     };
     void execute().catch(error => { if (!this.dead && session === this.application.state.session) this.report(error instanceof Error ? error.message : String(error)); });
   }
-  dispose() { if (this.dead) return; this.dead = true; this.unlisten(); this.listeners.clear(); }
+  dispose() { if (this.dead) return; this.dead = true; this.unlisten();this.unlistenLocale(); this.listeners.clear(); }
 }
 
 export function saveMessage(state: ShaderEditorViewState): string {

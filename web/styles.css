@@ -255,8 +255,8 @@ hy-select, hy-checkbox { color-scheme:dark; }
 .editor-action-icon::before,.shared-project [data-hy-key^="/shader-project/actions/"] [data-hy-button-label]::before,.shared-toolbar [data-hy-kind="Button"] [data-hy-button-label]::before{content:"";display:block;width:20px;height:20px;background:currentColor;mask:var(--editor-icon) center / contain no-repeat}
 #save-project,[data-hy-key="/shader-project/actions/save"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12l4 4v12a2 2 0 0 1-2 2Z M7 3v6h10V3 M7 21v-8h10v8'/%3E%3C/svg%3E")}
 #export-project,[data-hy-key="/shader-project/actions/export"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V3 m-4 4 4-4 4 4 M5 11H3v10h18V11h-2'/%3E%3C/svg%3E")}
-#compile,[data-hy-key="/shader-toolbar/controls/run"],[data-hy-key="/shader-toolbar/controls/play"][aria-label="播放"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 3 14 9-14 9Z'/%3E%3C/svg%3E")}
-[data-hy-key="/shader-toolbar/controls/play"][aria-label="暂停"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'%3E%3Cpath d='M5 4h4v16H5z M15 4h4v16h-4z'/%3E%3C/svg%3E")}
+#compile,[data-hy-key="/shader-toolbar/controls/run"],[data-hy-key="/shader-toolbar/controls/play"][aria-label="播放"],[data-hy-key="/shader-toolbar/controls/play"][aria-label="Play"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 3 14 9-14 9Z'/%3E%3C/svg%3E")}
+[data-hy-key="/shader-toolbar/controls/play"][aria-label="暂停"],[data-hy-key="/shader-toolbar/controls/play"][aria-label="Pause"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'%3E%3Cpath d='M5 4h4v16H5z M15 4h4v16h-4z'/%3E%3C/svg%3E")}
 [data-hy-key="/shader-toolbar/controls/reset"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10a9 9 0 1 1 2.7 8.4 M3 4v6h6'/%3E%3C/svg%3E")}
 [data-hy-key="/shader-toolbar/controls/step"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 4 12 8-12 8Z M20 4v16'/%3E%3C/svg%3E")}
 @media(max-width:600px){.shared-editor .project-bar{padding:8px 4px;gap:0}.shared-editor .project-name{gap:0}.shared-editor #back-gallery{padding-inline:4px}.project-name input{width:140px}}
@@ -317,6 +317,50 @@ hy-select, hy-checkbox { color-scheme:dark; }
 #builtin-variables dt{font-family:Consolas,monospace;color:var(--lime);overflow-wrap:anywhere}
 #builtin-variables dd{margin:0;color:var(--muted);overflow-wrap:anywhere}
 @media(max-width:600px){.playback-bar{padding-inline:12px}#builtin-variables dl{grid-template-columns:1fr;gap:3px}#builtin-variables dd{margin-bottom:9px}}
+
+#settings-button{display:inline-grid;place-items:center;width:36px;height:36px;flex:0 0 36px;padding:6px}
+#settings-button svg{display:block;width:20px;height:20px;flex-shrink:0;aspect-ratio:1}
+#settings-dialog{width:min(460px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:22px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:12px}
+#settings-dialog::backdrop{background:#030414b8;backdrop-filter:blur(3px)}
+#settings-dialog h2{font-size:18px;margin:0}
+#settings-dialog .dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.settings-fields{display:grid;gap:20px;margin:24px 0}
+.settings-fields>label{display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:14px;align-items:center}
+.settings-fields p{margin:8px 0 0;line-height:1.7}
+#settings-message{min-height:18px;font-size:12px;color:var(--save-saved);margin-bottom:0}
+html[lang=en] .code-column>.panel-title{height:auto;min-height:54px;flex-wrap:wrap;gap:8px;padding-block:8px}
+@media(max-width:650px){.topbar-right{display:flex!important;margin-left:auto;gap:0}.topbar-right .engine-pill,.topbar-right #help-button{display:none}.topbar{gap:12px}.settings-fields>label{grid-template-columns:1fr 110px}html[lang=en] .shared-project [data-hy-key="/shader-project/name/label"]{font-size:10px}}
+@media(max-width:420px){.topbar{padding-inline:12px;gap:10px}.topbar .brand>span{display:none}.topbar nav{gap:12px;min-width:0}.topbar-right{flex:0 0 36px}html[lang=en] .topbar nav{gap:9px}}
+
+/* GPU drawing practice */
+#practice{max-width:1480px;margin:auto;padding:36px 32px 60px}
+.practice-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px}
+.practice-heading h1{font-size:28px;margin:12px 0;letter-spacing:-.8px}
+.practice-heading p{line-height:1.8}.practice-progress{padding:10px 16px;border:1px solid var(--line);border-radius:24px;white-space:nowrap;color:#88dfbd}
+.practice-filters{display:flex;gap:12px;margin:24px 0}.practice-filters input{flex:1;min-width:100px}
+#practice select,#practice input{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 12px;color:var(--text);font:inherit}
+.practice-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.practice-card{padding:0;text-align:left;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:12px;overflow:hidden;transition:transform .15s,border-color .15s;color:var(--text)}
+.practice-card:hover{transform:translateY(-3px);border-color:var(--lime)}.practice-card:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+.practice-card-image{aspect-ratio:1.6;position:relative;display:grid;place-items:center;background:#080a14;overflow:hidden}
+.practice-card-image img{width:100%;height:100%;object-fit:contain;position:absolute}.practice-thumbnail-state{font-size:11px;color:var(--muted);padding:12px}
+.practice-card-body{padding:18px}.practice-card h2{font-size:17px;margin:10px 0 18px}.practice-card-meta{color:var(--muted);font-size:11px}.practice-solved{color:#88dfbd}
+.practice-layout{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.practice-brief,.practice-coding{min-width:0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.practice-brief h2{font-size:17px;margin:0 0 14px}.practice-brief p{line-height:1.85;overflow-wrap:anywhere}.practice-goal{font-size:15px}
+.practice-help{margin:18px 0;border-top:1px solid var(--line);padding-top:14px}.practice-help summary{cursor:pointer;color:var(--muted);line-height:1.7}.practice-help pre{max-height:400px;overflow:auto;white-space:pre;font-size:11px;line-height:1.7}
+.practice-comparisons{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.practice-comparisons figure{margin:0;min-width:0;aspect-ratio:1;position:relative;background:#080a14;border:1px solid var(--line);border-radius:9px;overflow:hidden;padding-top:28px;display:grid;place-items:center}
+.practice-comparisons figcaption{position:absolute;top:0;left:0;width:100%;height:28px;padding:6px 10px;background:#ffffff08;font-size:11px;color:var(--muted)}
+.practice-comparisons img{width:100%;height:100%;object-fit:contain;min-height:0}.practice-comparisons figure:last-child{grid-column:1/-1;aspect-ratio:2.1}.practice-image-placeholder{font-size:11px;color:var(--muted)}
+.practice-code-bar{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px}.practice-code-bar button{min-height:42px}.practice-editor{height:480px;border:1px solid var(--line);border-radius:8px;overflow:hidden}.practice-editor .cm-editor{height:100%}.practice-editor .cm-scroller{overflow:auto}
+.practice-result{line-height:1.8;overflow-wrap:anywhere}.practice-result.passed{color:#88dfbd}.practice-output{white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;font-size:11px;line-height:1.8;color:var(--muted)}.practice-output:empty{display:none}.practice-output.error{color:#ff9ba9}
+.practice-bottom-actions{display:flex;gap:10px;flex-wrap:wrap}.practice-bottom-actions button{font-size:12px}
+.practice-render-surface{position:fixed!important;left:-10000px;top:0;width:256px;height:256px;pointer-events:none}
+@media(max-width:1050px){.practice-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.practice-layout{grid-template-columns:minmax(0,1fr)}.practice-comparisons{grid-template-columns:repeat(3,minmax(0,1fr))}.practice-comparisons figure:last-child{grid-column:auto;aspect-ratio:1}}
+@media(max-width:700px){#practice{padding:24px 16px 40px}.practice-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.practice-heading{align-items:flex-start;flex-wrap:wrap}.practice-heading h1{font-size:24px}.practice-filters{flex-wrap:wrap}.practice-filters input{flex-basis:100%}.practice-filters select{flex:1;min-width:0}.practice-brief,.practice-coding{padding:16px}.practice-card-body{padding:12px}.practice-card h2{font-size:15px}.practice-card-meta{font-size:10px}.practice-progress{font-size:12px}}
+@media(max-width:420px){.topbar nav{gap:10px;flex:1;overflow-x:auto;scrollbar-width:none}.topbar nav .nav{white-space:nowrap;flex-shrink:0;font-size:11px}html[lang=en] .topbar nav{gap:8px}.practice-comparisons{gap:8px}.practice-comparisons figcaption{font-size:10px;padding-inline:5px}.practice-code-bar{gap:8px}.practice-code-bar button{font-size:12px}.practice-code-bar select{max-width:100px}.practice-image-placeholder{font-size:10px;text-align:center;padding:4px}}
+
+.shader-code-menu{--hy-text-color:var(--text);--hy-border-color:var(--line);--hy-menu-bg-color:var(--surface)}
 
 /* ShaderLab shared presentation — generated by scripts/build-presentation.mjs. */
 :root {
