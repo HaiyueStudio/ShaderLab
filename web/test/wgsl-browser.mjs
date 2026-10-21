@@ -93,6 +93,15 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint})=>{
   const restored=await compare(texture);native.forEach((v,i)=>v.forEach((x,c)=>assert.ok(Math.abs(x-restored[i][c])<=2,JSON.stringify({native,restored}))));
  };
  await open(p);await roundtrip(false);
+ // A read-only builtin needs no copy; a writable one must preserve the old
+ // value captured before mutation, including mutation through a pointer.
+ for(const body of [
+  'let before=iResolution.xy; iResolution.x=0.25; return vec4f(p/before,iResolution.x,1.0);',
+  'let before=iResolution.xy; let ptr=&iResolution; (*ptr).x=0.25; return vec4f(p/before,iResolution.x,1.0);',
+ ]){
+  passOf(p,'image').code='fn mainImage(p:vec2f)->vec4f{'+body+'}';
+  await open(p);await roundtrip(false);
+ }
  passOf(p,'buffer-a').enabled=true;passOf(p,'buffer-a').code='fn mainImage(p:vec2f)->vec4f{return vec4f(p/iResolution.xy,.25,1.);}';passOf(p,'image').channels[0]={kind:'buffer',pass:'buffer-a'};
  passOf(p,'image').code=`fn mainImage(p:vec2f)->vec4f {
   let uv=p/iResolution.xy;let a=channel0(uv).r;
@@ -101,7 +110,7 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint})=>{
   return vec4f(a,b,(c+dpdy(p.y)+2.)*.25,1.);
  }`;
  await open(p);await roundtrip(true);
- const sound='fn mainSound(s:i32,t:f32)->vec2f{return vec2f(f32(s%2)*.5,t*44100./16.);}';
+ const sound='fn sampleTime()->f32{return iTime;} fn mainSound(s:i32,t:f32)->vec2f{return vec2f(f32(s%2)*.5,sampleTime()*iSampleRate/16.);}';
  const sr=await call('shader.wgsl.translate',{code:sound,pass:'sound'});assert.ok(sr.code,JSON.stringify(sr));
  await evaluate('exportGlTest.check('+JSON.stringify(sr.code)+',undefined,true)');
  const sp=await evaluate('exportGlTest.render('+JSON.stringify(sr.code)+',8,1,[[0,0],[1,0],[7,0]],{sound:true})');

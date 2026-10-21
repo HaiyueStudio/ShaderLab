@@ -1,33 +1,48 @@
 import { languageOf, sourceOf } from './sourceLanguage.js';
 import { refreshProjectGlsl } from './glslProject.js';
-import { channelTypes, passOf, type ShaderProject, type ShaderDiagnostic, type CodeId } from './model.js';
+import { passOf, type ShaderProject, type ShaderDiagnostic, type CodeId } from './model.js';
 import type { HlslTranslator, HlslTranslationOptions } from './hlslTypes.js';
-import { passCommon } from './channelBindings.js';
+import { passCommon, resolveChannelBindings } from './channelBindings.js';
+import { externalCommon, glslCommon, hlslCommon, type WgslTranslator } from './sourceCommon.js';
 
-export function projectHlslOptions(project: ShaderProject, pass: CodeId): HlslTranslationOptions {
+export async function projectHlslOptions(project: ShaderProject, pass: CodeId, wgsl?: WgslTranslator): Promise<HlslTranslationOptions> {
   if (pass === 'common') return { entryPoint: 'common' };
-  return { entryPoint: pass === 'sound' ? 'sound' : 'image', common: languageOf(project, 'common') === 'hlsl' ? sourceOf(project, 'common') : '', channelTypes: channelTypes(passOf(project, pass).channels) };
+  const common=sourceOf(project,'common');
+  if(common.trim()&&languageOf(project,'common')!=='hlsl'&&!wgsl)throw Error('转换当前 Common 为 HLSL 需要本地转换服务。');
+  const library=await hlslCommon(project,pass,wgsl);
+  return { entryPoint: pass === 'sound' ? 'sound' : 'image', common: library, channelTypes: resolveChannelBindings({...passOf(project,pass),code:sourceOf(project,pass)},library).dimensions };
 }
 
 /** Work only on a renderer/export snapshot; authored drafts are never replaced
  * by generated WGSL or by another language's Common cache. */
-export async function refreshProjectSources(project: ShaderProject, hlsl?: HlslTranslator): Promise<ShaderDiagnostic[]> {
+export async function refreshProjectSources(project: ShaderProject, hlsl?: HlslTranslator, wgsl?: WgslTranslator): Promise<ShaderDiagnostic[]> {
   const diagnostics: ShaderDiagnostic[] = [];
   const commonLanguage = languageOf(project, 'common'), common = sourceOf(project, 'common');
   const enabled = [...project.passes, project.sound].filter(p => p.enabled);
   for (const pass of enabled) {
     const language = languageOf(project, pass.id);
-    if (common.trim() && !(language === 'wgsl' && !passCommon(pass, common))
-      && ((language === 'hlsl') !== (commonLanguage === 'hlsl'))) diagnostics.push({ pass: pass.id, language, severity: 'error', line: 1, column: 1, message: 'HLSL Pass 和非空 Common 必须同时选择 HLSL；请切换 Common 语言，或清空当前 Common。' });
+    if (common.trim() && !((language === 'wgsl' || language === 'glsl') && !passCommon({...pass,code:sourceOf(project,pass.id)}, common))
+      && ((language !== 'hlsl' && commonLanguage === 'hlsl') || (language === 'hlsl' && commonLanguage !== 'hlsl' && !wgsl))) diagnostics.push({ pass: pass.id, language, severity: 'error', line: 1, column: 1, message: 'HLSL Common 需要搭配 HLSL Pass；跨语言 Common 需要本地转换服务。' });
   }
   if (diagnostics.length) return diagnostics;
   if (commonLanguage === 'hlsl') project.common = '';
-  diagnostics.push(...refreshProjectGlsl(project));
+  const libraries = new Map<CodeId, string>();
+  for (const pass of [...project.passes, project.sound]) {
+    if (languageOf(project, pass.id) !== 'glsl' || !externalCommon(pass.glsl ?? '')) continue;
+    if (!wgsl) continue;
+    try { libraries.set(pass.id, await glslCommon(project, pass.id, wgsl)); }
+    catch (error) { if (pass.enabled) diagnostics.push({pass:'common', severity:'error', line:1,column:1,message:String(error)}); }
+  }
+  if (diagnostics.length) return diagnostics;
+  diagnostics.push(...refreshProjectGlsl(project, libraries));
   if (diagnostics.length) return diagnostics;
   for (const pass of [...project.passes, project.sound]) {
     if (languageOf(project, pass.id) !== 'hlsl' || !pass.enabled) continue;
     if (!hlsl) { diagnostics.push({ pass: pass.id, language: 'hlsl', severity: 'error', line: 1, column: 1, message: 'HLSL 编译器尚未就绪，请重新运行。' }); continue; }
-    const result = await hlsl(pass.hlsl ?? '', { entryPoint: pass.id === 'sound' ? 'sound' : 'image', common: commonLanguage === 'hlsl' ? common : '', channelTypes: channelTypes(pass.channels) });
+    let options:HlslTranslationOptions;
+    try {options=await projectHlslOptions(project,pass.id,wgsl);}
+    catch(error){diagnostics.push({pass:'common',language:commonLanguage,severity:'error',line:1,column:1,message:String(error instanceof Error?error.message:error)});continue;}
+    const result = await hlsl(pass.hlsl ?? '', options);
     if (result.code !== null) pass.code = result.code;
     else diagnostics.push(...result.diagnostics.map(d => ({ pass: d.source === 'common' ? 'common' as const : pass.id, language: 'hlsl' as const, severity: 'error' as const, line: d.line, column: d.column, message: 'HLSL: ' + d.message })));
   }

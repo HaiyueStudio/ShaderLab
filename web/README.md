@@ -36,7 +36,7 @@ npm run app:check -w ./web
   默认在粘贴时识别语言；注释、短片段或混合语法无法明确判断时保持当前语言，也可关闭自动识别。
   Ctrl/⌘+Enter 编译所有已启用 Pass；GLSL 在运行时自动转换为 WGSL，保留原始 GLSL。转换错误定位到原文。
   「查看 WGSL」提供带高亮的只读转换结果；GPU 报错可跳转到该预览对应行。可以选择自动编译。
-  手动切换语言时转换当前页签的最新源码，成功后覆盖目标语言旧稿并切换编辑器；失败时保留原语言和代码。支持 GLSL → WGSL、Image/Buffer/Sound 的 WGSL → GLSL、HLSL Pass → WGSL。尚不支持生成 HLSL、HLSL → GLSL、单独 WGSL/HLSL Common 的反向转换；这些操作会提示原因。转换期间继续编辑或打开其他工程，不会被迟到的结果覆盖。已合并到 Pass 的 Common 是转换时的快照，后续修改 Common 不会自动更新该副本。
+  手动切换语言时转换当前页签的最新源码，成功后覆盖目标语言旧稿并切换编辑器；失败时保留原语言和代码。支持 GLSL → WGSL、Image/Buffer/Sound 的 WGSL → GLSL、HLSL Pass → WGSL。尚不支持生成 HLSL、HLSL → GLSL、单独 WGSL/HLSL Common 的反向转换；这些操作会提示原因。转换期间继续编辑或打开其他工程，不会被迟到的结果覆盖。转换为 GLSL 时 Common 保持独立，Pass 只保留引用；编译时链接当前 Common。修改 Common 后重新运行即可生效，不必重新转换各个 Pass。单文件 Shadertoy 导出仍按独立文件需求显式链接 Common。 Web 的转换结果通过 UI notification 提示，不占用顶部 notice。往返切换时，只有保留源码在当前 Common/通道配置下重新转换与当前源码逐字一致，才复用保留源码（包括注释与格式）；已编辑的代码始终重新转换，避免反复转换累加入口包装与中间代码。
   选择 WGSL 恢复该页签已有 WGSL；需要继续修改转换结果时，可从「查看 WGSL」复制后粘贴到编辑器。
   工程保存/导出保留 `editorLanguages`；旧工程有 GLSL 原文时优先显示 GLSL。
   API `shader.source.set({pass, code, language})` 写入当前源码，`shader.query` 返回各页签语言。
@@ -73,7 +73,9 @@ GLSL 转换支持 `tanh(float/vec2/vec3/vec4)`，直接映射为 WGSL 同名内�
 
 ## 内置图片、视频与键盘
 
-通道菜单包含 8 张可直接使用的图片：两种尺寸的 Noise、两种尺寸的 RGBA Noise、Blue Noise、
+点击通道卡片打开素材抽屉，按内置纹理、图片、视频、Cubemap、Buffer、设备分类。可预览并绑定素材，在对应页签上传图片、视频或立方体六面；视频支持播放预览，Buffer 显示实时输出。Sound 仅显示内置纹理、图片和 Cubemap。语言选择与粘贴识别开关位于同一行，编译状态位于「编译输出」标题旁。
+
+内置纹理页签包含 8 张可直接使用的图片：两种尺寸的 Noise、两种尺寸的 RGBA Noise、Blue Noise、
 MSDF 字符图集，以及 512×512 的未来城市、WebGPU 原创图标。
 内置图片只保存稳定 ID，随 Web/PWA/Electron 一起打包，离线可用；不会复制进每个工程。
 两张新增图由内置 image_gen 生成并缩至 512×512，完整提示词见 [生成记录](assets/generated-images.json)。
@@ -124,7 +126,7 @@ Image 使用所提供 msdf.png 的 Alpha 有符号距离绘制字形（小于 0.
 原生 `textureSampleLevel(iChannel0, iSampler, uv, 0.0)` 使用 WebGPU 左上角 UV 原点。
 二维通道的 `channel0(uv)` 等辅助函数负责翻转 Y。上传图片和 framebuffer 使用相同约定。
 
-通道卡片的「上传立方体贴图」分别选择 **+X、−X、+Y、−Y、+Z、−Z** 六个面。
+素材抽屉 Cubemap 页签的「上传立方体六面」分别选择 **+X、−X、+Y、−Y、+Z、−Z** 六个面。
 它们必须是尺寸相同的正方形；上传失败不添加部分资源，成功后绑定当前通道。
 通道缩略图显示六个面，其他 Pass 可从同一来源列表复用，保存/导出包含全部面图片。
 Cubemap 按原图方向上传、不翻转 Y；方向向量直接交给 GPU，不应用二维 UV 翻转。
@@ -546,6 +548,10 @@ R 使用下一局种子并清空状态；重新运行、重置时间、改变渲
 ## WGSL → GLSL / Shadertoy 导出
 
 作品工具栏的「导出 GLSL」打开带语法高亮的只读预览。可选择 Image、Buffer A–D 或 Sound，复制代码、下载当前 .glsl，或下载包含全部已启用页签和通道清单的 JSON。当前选中的禁用页签也可单独导出。转换读取打开窗口时的源码快照，不保存作品或修改任何语言草稿。
+
+WGSL ↔ GLSL 转换保留作者注释，文件头说明保留在头部；编译器重排语句时，函数内部注释归并到对应声明前。Common 与 Pass 的注释分别保留，无法可靠匹配声明时保存在文件头。生成代码不再添加统一的 Shadertoy 说明头。
+
+只读内置量（如 `iResolution`、`iTime` 和通道数组）直接引用 GLSL 的内置 uniform，不再生成额外的别名、复制循环或简单读取临时变量。源码需要写入内置量时保留可写副本；Sound 的逐采样时间等独立语义仍保留必要适配。
 
 WGSL 使用 [Naga 的 WebAssembly 编译器](https://github.com/kekkon-nexus/naga-wasm) 解析、校验类型并生成 GLSL ES 3.00，再适配 Shadertoy 的入口及内置量。支持数组、结构体、矩阵、循环、分支、位转换和常用纹理采样；编译器按需加载并随应用本地打包。Image/Buffer 导出 mainImage(out vec4, in vec2)，Sound 导出 vec2 mainSound(int, float)。
 

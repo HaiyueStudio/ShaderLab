@@ -24,12 +24,15 @@ export function mountWebSharedEditor(application: ShaderApplication, ports: Shad
   };
   const project=document.createElement('div');project.className='shared-project';
   document.querySelector('.project-bar')!.prepend(project);mount('project',project);
+  const back=document.getElementById('back-gallery');if(back)project.querySelector('[data-hy-key="/shader-project/actions"]')!.prepend(back);
   const toolbar=document.createElement('div');toolbar.className='shared-toolbar';
-  document.querySelector('.playback-bar')!.before(toolbar);mount('toolbar',toolbar);
+  document.getElementById('time-label')!.before(toolbar);mount('toolbar',toolbar);
+  for(const control of toolbar.querySelectorAll<HTMLElement>('[data-hy-kind="Button"], [data-hy-kind="Select"]'))control.shadowRoot?.querySelector('button,select')?.setAttribute('part','playback-control');
   const preview=document.createElement('div');preview.className='shared-preview-slot';
   special.canvas.before(preview);mount('preview',preview);
   const editor=document.getElementById('code-editor')!;mount('editor',editor);
-  for(const id of ['project-name','save-state','save-project','compile','play-pause','reset-time','step-frame','preview-scale','mode-canvas','mode-scene','mesh-select'])document.getElementById(id)!.hidden=true;
+  for(const id of ['project-name','project-name-label','save-state','save-project','export-project','compile','play-pause','reset-time','step-frame','preview-scale','mode-canvas','mode-scene','mesh-select'])document.getElementById(id)!.hidden=true;
+  for(const host of [project,toolbar])for(const button of host.querySelectorAll<HTMLElement>('[data-hy-kind="Button"]'))button.title=button.dataset.hyKey?.endsWith('/play')?'暂停 / 播放':button.getAttribute('aria-label')??'';
   document.getElementById('workspace')!.classList.add('shared-editor');
   let visible=true;
   const visibility=()=>{ for(const {page} of owned) document.hidden||!visible?page.suspend():page.resume(); };

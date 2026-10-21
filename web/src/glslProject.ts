@@ -15,7 +15,7 @@ export function translationDiagnostics(result: TranslationResult, pass: CodeId):
     language: 'glsl', severity: 'error', message: 'GLSL: ' + d.message }));
 }
 /** Rebuild linked GLSL modules from saved originals, never from stale generated WGSL. */
-export function refreshProjectGlsl(project: ShaderProject): ShaderDiagnostic[] {
+export function refreshProjectGlsl(project: ShaderProject, libraries: ReadonlyMap<CodeId, string> = new Map()): ShaderDiagnostic[] {
   const diagnostics: ShaderDiagnostic[] = [];
   if (project.commonGlsl !== undefined && languageOf(project, 'common') === 'glsl') {
     const common = translateGlsl(project.commonGlsl, { entryPoint: 'common' });
@@ -24,7 +24,11 @@ export function refreshProjectGlsl(project: ShaderProject): ShaderDiagnostic[] {
   }
   for (const pass of [...project.passes, project.sound]) {
     if (pass.glsl === undefined || languageOf(project, pass.id) !== 'glsl') continue;
-    const result = translateGlsl(pass.glsl, projectTranslationOptions(project, pass.id));
+    if (/^\s*\/\/ @haiyue-common-external(?:\r?\n|$)/.test(pass.glsl) && !libraries.has(pass.id)) {
+      if (pass.enabled) diagnostics.push({pass:pass.id, language:'glsl', severity:'error', line:1, column:1, message:'此 Pass 引用独立 Common，请通过工程编译服务链接。'});
+      continue;
+    }
+    const result = translateGlsl(pass.glsl, { ...projectTranslationOptions(project, pass.id), ...(libraries.has(pass.id) ? {common:libraries.get(pass.id)!} : {}) });
     if (result.code !== null) pass.code = result.code;
     else if (pass.enabled) diagnostics.push(...translationDiagnostics(result, pass.id));
   }

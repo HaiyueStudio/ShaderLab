@@ -17,13 +17,20 @@ const report=await runEditorBrowserScenario({root,route:'web/app-dist/index.html
   await evaluate(`shaderEditor.open(${JSON.stringify(fixture)})`);
   await waitFor(()=>evaluate("shaderEditor.getApplicationState().compile.status==='ready'"),'compiled');
   const metrics=await evaluate(`Array.from(document.querySelectorAll('.shared-toolbar [data-hy-kind="Button"],.shared-toolbar [data-hy-kind="Select"]')).map(el=>{const inner=el.shadowRoot.querySelector('select')??el.shadowRoot.querySelector('button'),r=inner.getBoundingClientRect();return {key:el.dataset.hyKey,height:r.height,color:getComputedStyle(inner).color,radius:getComputedStyle(inner).borderRadius};})`);
-  assert.equal(metrics.length,5);for(const metric of metrics){assert.ok(metric.height>=44,JSON.stringify(metric));assert.equal(metric.radius,'8px');}
-  await shot('editor');await click(node('/shader-project/actions/information'));
-  await waitFor(()=>evaluate(`${node('/shader-project/information')}.open`),'settings');await shot('settings');
-  await click(node('/shader-project/information/close'));await click(node('/shader-project/actions/information'));await shot('dialog-reopened');
-  await cdp.call('Emulation.setDeviceMetricsOverride',{width:932,height:430,deviceScaleFactor:1,mobile:false});await shot('settings-landscape');
-  await click(node('/shader-project/information/close'));
+  assert.equal(metrics.length,5);for(const metric of metrics){assert.ok(metric.height>=32,JSON.stringify(metric));assert.equal(metric.radius,'4px');}
+  const layouts=[];
+  for(const [width,height] of [[1440,1000],[430,932],[320,740],[932,430]]){
+   await cdp.call('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});await nextPaint();
+   const layout=await evaluate(`(()=>{const r=key=>{const el=document.querySelector('[data-hy-key="'+key+'"]'),b=el.getBoundingClientRect();return {left:b.left,right:b.right,top:b.top,height:b.height,width:b.width};};return {name:r('/shader-project/name/label'),input:r('/shader-project/name/field'),save:r('/shader-project/actions/save'),export:r('/shader-project/actions/export'),back:(()=>{const b=document.getElementById('back-gallery').getBoundingClientRect();return {left:b.left,right:b.right,top:b.top,height:b.height};})(),icons:[...document.querySelectorAll('.shared-project [data-hy-key^="/shader-project/actions/"],.shared-toolbar [data-hy-kind="Button"]')].map(el=>({label:el.getAttribute('aria-label'),mask:getComputedStyle(el.querySelector('[data-hy-button-label]'),'::before').maskImage,font:getComputedStyle(el.querySelector('[data-hy-button-label]')).fontSize}))};})()`);
+   assert.ok(Math.abs(layout.name.top+layout.name.height/2-layout.input.top-layout.input.height/2)<2,'name stays inline');
+   assert.ok(layout.input.width<=240&&layout.input.width>=80,JSON.stringify(layout));
+   assert.ok(layout.save.left-layout.back.right<=8&&layout.save.left>=layout.back.right,JSON.stringify(layout));assert.ok(Math.abs(layout.back.top-layout.save.top)<2,JSON.stringify(layout));
+   assert.ok(layout.export.left-layout.save.right<=8);assert.ok(layout.export.right<=width,JSON.stringify(layout));
+   assert.equal(layout.icons.length,6);for(const icon of layout.icons){assert.ok(icon.label);assert.notEqual(icon.mask,'none');assert.equal(icon.font,'0px');}
+   const preview=await evaluate(`(()=>{const a=document.getElementById('preview-mode').getBoundingClientRect(),b=document.getElementById('viewport').getBoundingClientRect(),fps=document.getElementById('fps-label').getBoundingClientRect();return {visible:a.width>0&&a.height>0,inside:a.left>=b.left&&a.right<=b.right,fpsRight:fps.right};})()`);assert.ok(preview.visible&&preview.inside&&preview.fpsRight<=width,JSON.stringify(preview));
+   layouts.push({width,height,...layout});await shot('editor-'+width);
+  }
   assert.deepEqual(getBrowserErrors(),[]);
-  return {palette,metrics,checks:['Nightfall shared palette','44px visible controls','8px control corners','settings close/reopen','landscape settings'],browserErrors:getBrowserErrors()};
+  return {palette,metrics,layouts,checks:['Nightfall shared palette','32px inline playback controls','4px playback corners','six accessible SVG icons','inline compact name and adjacent save/export at 320–1440px'],browserErrors:getBrowserErrors()};
  }});
 writeFileSync(resolve(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

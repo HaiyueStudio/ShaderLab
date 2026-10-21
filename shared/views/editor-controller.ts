@@ -10,6 +10,7 @@ export interface ShaderEditorPorts {
   previewModeChanged(): void;
   playbackChanged(action:'play'|'step'|'reset'): void;
   compiled(): void;
+  exportProject(): void | Promise<unknown>;
 }
 export interface ShaderEditorViewState {
   readonly application: ShaderApplicationState;
@@ -86,6 +87,7 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
       ? (selectors.dirty(this.application.state) ? '已保存；仍有新的修改' : '作品已保存') : '已取消保存');
     return saved;
   }
+  async exportProject(): Promise<void> { this.flush(); await this.ports.exportProject(); }
   async scale(value: string): Promise<boolean> {
     const scale = Number(value);
     if (!PREVIEW_SCALES.includes(scale as PreviewScale)) throw Error('不支持的预览比例。');
@@ -118,6 +120,7 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
       if (key === 'information') this.update({ informationOpen: true });
       else if (key === 'close') this.update({ informationOpen: false });
       else if (key === 'save') await this.save();
+      else if (key === 'export') await this.exportProject();
       else if (key === 'run') await this.compile();
       else if (key === 'play') { this.application.dispatch({ type:'preview.play',value:!this.application.state.playing }); this.ports.playbackChanged('play'); }
       else if (key === 'step' || key === 'reset') { this.application.dispatch({ type:key==='step'?'preview.step':'preview.reset' }); this.ports.playbackChanged(key); }
@@ -133,4 +136,14 @@ export function saveMessage(state: ShaderEditorViewState): string {
   if (app.save.status === 'failed') return '保存失败：' + app.save.error;
   if (state.message) return state.message;
   return selectors.dirty(app) || state.name !== app.project.name ? '有未保存的修改' : '无未保存修改';
+}
+
+export function saveIndicator(state: ShaderEditorViewState): 'modified' | 'saved' {
+  return selectors.dirty(state.application) || state.name !== state.application.project.name || state.application.save.status === 'failed' ? 'modified' : 'saved';
+}
+
+/** Routine persistence state lives on the active code tab; keep actionable feedback visible. */
+export function saveFeedback(state: ShaderEditorViewState): string {
+  if (state.application.save.status === 'saving' || state.application.save.status === 'failed') return saveMessage(state);
+  return ['作品已保存','已保存；仍有新的修改'].includes(state.message) ? '' : state.message;
 }

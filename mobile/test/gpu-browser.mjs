@@ -3,7 +3,7 @@ const root=resolve(import.meta.dirname,'../..'),out=resolve(root,'mobile/artifac
 // Only the platform IO adapters are replaced. The mobile shader graph, Engine,
 // WGSL compilation, ping-pong textures and readback execute on a real GPU.
 await build({stdin:{resolveDir:root,loader:'ts',contents:
-'import {HaiyueEngine} from "@haiyue/engine";import {NativeShaderRuntime} from "./mobile/src/gpu-runtime";import {createProject,passOf} from "./mobile/src/project.ts";import {examples} from "./web/src/examples.js";import {MobileSession} from "./mobile/src/session.ts";import {preparedPreview} from "./shared/dist/ports/preparedPreview.js";const canvas=document.querySelector("canvas");const engine=new HaiyueEngine({canvas,renderProfile:"simple",msaaSamples:1,timestampQuery:false});await engine.init();const runtime=new NativeShaderRuntime(engine,()=>{},canvas,(code,options)=>window.__translateNativeHlsl(code,options));await runtime.initialize();const session=new MobileSession();session.application.connect({preview:preparedPreview(()=>({prepare:p=>runtime.prepare(p),commit:p=>runtime.commit(p),release:p=>runtime.releasePrepared(p),play:v=>runtime.setPlaying(v),step:()=>runtime.step(),reset:()=>runtime.reset()}))});Object.assign(window,{nativeGraph:{runtime,engine,session,createProject,passOf,examples,compile:async p=>{session.open(p);if(!await session.application.compile())throw Error(JSON.stringify(session.application.state.compile));}}});'},bundle:true,format:'esm',platform:'browser',target:'es2022',outfile:resolve(out,'test.js'),plugins:[{name:'browser-io-port',setup(b){
+'import {HaiyueEngine} from "@haiyue/engine";import {NativeShaderRuntime} from "./mobile/src/gpu-runtime";import {createProject,passOf} from "./mobile/src/project.ts";import {examples} from "./web/src/examples.js";import {MobileSession} from "./mobile/src/session.ts";import {preparedPreview} from "./shared/dist/ports/preparedPreview.js";import {createSourceConverter} from "./web/src/sourceConversion.js";const canvas=document.querySelector("canvas");const engine=new HaiyueEngine({canvas,renderProfile:"simple",msaaSamples:1,timestampQuery:false});await engine.init();const runtime=new NativeShaderRuntime(engine,()=>{},canvas,(code,options)=>window.__translateNativeHlsl(code,options),undefined,(code,options)=>window.__translateNativeWgsl(code,options));await runtime.initialize();const session=new MobileSession();session.application.connect({convertSource:createSourceConverter({wgsl:(c,o)=>window.__translateNativeWgsl(c,o),hlsl:(c,o)=>window.__translateNativeHlsl(c,o)}),preview:preparedPreview(()=>({prepare:p=>runtime.prepare(p),commit:p=>runtime.commit(p),release:p=>runtime.releasePrepared(p),play:v=>runtime.setPlaying(v),step:()=>runtime.step(),reset:()=>runtime.reset()}))});Object.assign(window,{nativeGraph:{runtime,engine,session,createProject,passOf,examples,compile:async p=>{session.open(p);if(!await session.application.compile())throw Error(JSON.stringify(session.application.state.compile));}}});'},bundle:true,format:'esm',platform:'browser',target:'es2022',outfile:resolve(out,'test.js'),plugins:[{name:'browser-io-port',setup(b){
  b.onResolve({filter:/^@nativescript\/core$/},()=>({path:'core',namespace:'ports'}));b.onResolve({filter:/^@nativescript\/canvas$/},()=>({path:'canvas',namespace:'ports'}));b.onResolve({filter:/^@haiyue\/native\/engine$/},()=>({path:'native',namespace:'ports'}));b.onResolve({filter:/^\.\/video$/},()=>({path:'video',namespace:'ports'}));b.onResolve({filter:/^\.\/camera$/},()=>({path:'camera',namespace:'ports'}));
  b.onLoad({filter:/.*/,namespace:'ports'},args=>({loader:'js',contents:args.path==='core'?'export const ImageSource={fromBase64Sync(){throw Error("fixture does not use native image bytes")}};export const knownFolders={currentApp:()=>({path:"/web/app-dist"})};export const path={join:(...p)=>p.join("/")};':args.path==='canvas'?'export class ImageAsset{async fromFile(url){this.image=new Image();this.image.src=url;await this.image.decode();}get width(){return this.image.width;}get height(){return this.image.height;}}':args.path==='camera'?'export const openCamera=(...args)=>window.__openNativeCamera?window.__openNativeCamera(...args):Promise.reject(Error("Native camera requires a device"));':args.path==='video'?'export class NativeVideo{constructor(){throw Error("Native decoder needs a real device")}}':'export class NativeCanvasTextures{createCanvas2D(w,h){const c=document.createElement("canvas");c.width=w;c.height=h;const context=c.getContext("2d"),draw=context.drawImage.bind(context);context.drawImage=(image,...rest)=>draw(image.image??image,...rest);return c;}readAtlasPixels(c){return new Uint8Array(c.getContext("2d").getImageData(0,0,c.width,c.height).data);}dispose(){}}'}));
 }}]});
@@ -88,11 +88,12 @@ const report=await runEditorBrowserScenario({root,route:'mobile/artifacts/gpu/in
   const iframe=document.createElement('iframe');iframe.src='/mobile/generated/compiler/index.html';
   await new Promise((resolve,reject)=>{iframe.onload=resolve;iframe.onerror=reject;document.body.append(iframe);});
   const compiler=iframe.contentWindow.nativeShaderCompiler;let id=0;
-  window.__translateNativeHlsl=async(code,options)=>{
-   const token='gpu-'+(++id);compiler.hlsl(token,code,options);
+  const translate=async(method,code,options)=>{
+   const token='gpu-'+(++id);compiler[method](token,code,options);
    for(let i=0;i<300;i++){const result=compiler.take(token);if(result)return JSON.parse(result);await new Promise(r=>setTimeout(r,100));}
-   throw Error('Local HLSL compiler timed out');
+   throw Error('Local shader compiler timed out');
   };
+  window.__translateNativeHlsl=(c,o)=>translate('hlsl',c,o);window.__translateNativeWgsl=(c,o)=>translate('start',c,o);
   const p=g.createProject(),image=g.passOf(p,'image'),buffer=g.passOf(p,'buffer-a');
   p.commonHlsl='float gain(float x){return x*.5;}';
   p.editorLanguages={common:'hlsl',image:'hlsl','buffer-a':'hlsl',sound:'hlsl'};
@@ -104,12 +105,23 @@ const report=await runEditorBrowserScenario({root,route:'mobile/artifacts/gpu/in
   g.runtime.setPlaying(false);const read=await g.runtime.readImage(),index=((read.height>>1)*read.width+(read.width>>1))*4,pixel=Array.from(read.pixels.slice(index,index+4));
   check(pixel.every((v,i)=>Math.abs(v-[102,51,153,255][i])<3),'Native HLSL Buffer pixels');
   const audio=await g.runtime.sound(0,2048);check(audio.left.some(v=>Math.abs(v)>.01),'Native HLSL Sound PCM');
+  const converted=g.createProject(),ca=g.passOf(converted,'buffer-a'),ci=g.passOf(converted,'image');
+  converted.common='fn gain(x:f32)->f32{return x*.5;}';ca.enabled=true;ca.code='fn mainImage(p:vec2f)->vec4f{return vec4f(gain(.8),.2,.6,1.0);}';ci.code='fn mainImage(p:vec2f)->vec4f{return channel0(p/iResolution.xy);}';ci.channels[0]={kind:'buffer',pass:'buffer-a'};
+  converted.sound.enabled=true;converted.sound.code='fn mainSound(s:i32,t:f32)->vec2f{return vec2f(gain(sin(t*440.0*6.2831853)));}';
+  await g.compile(converted);
+  for(const pass of ['buffer-a','image','sound'])await g.session.application.switchLanguage(pass,'hlsl');
+  check(await g.session.application.compile(),'Converted HLSL graph compiles through native ports');
+  const center=async()=>{g.runtime.setPlaying(true);await new Promise(resolve=>{const wait=()=>g.runtime.status().frame>3?resolve():requestAnimationFrame(wait);requestAnimationFrame(wait);});g.runtime.setPlaying(false);const r=await g.runtime.readImage(),i=((r.height>>1)*r.width+(r.width>>1))*4;return Array.from(r.pixels.slice(i,i+4));};
+  const first=await center();check(first.every((v,i)=>Math.abs(v-[102,51,153,255][i])<3),'WGSL to HLSL native GPU color');
+  g.session.application.setSource('common','fn gain(x:f32)->f32{return x*.75;}','wgsl');check(await g.session.application.compile(),'Changed Common relinks converted HLSL');
+  const edited=await center();check(edited.every((v,i)=>Math.abs(v-[153,51,153,255][i])<3),'HLSL native pixels follow current Common');
+  const convertedHlsl={status:'passed',first,edited};
   g.session.setSource('float4 mainImage(float2 p){\nreturn missing;\n}','hlsl');
   check(!await g.session.application.compile(),'Invalid HLSL must fail');
   check(g.session.application.state.compile.diagnostics.some(d=>d.language==='hlsl'&&d.line===2),'HLSL source line must cross the mobile compiler bridge');
   check(g.runtime.status().ready,'Invalid HLSL retains the native graph');
-  await g.compile(g.createProject());iframe.remove();delete window.__translateNativeHlsl;
-  return {status:'passed',compiler:'bundled Slang WASM through the isolated mobile compiler page',pixel,soundSamples:audio.left.length};
+  await g.compile(g.createProject());iframe.remove();delete window.__translateNativeHlsl;delete window.__translateNativeWgsl;
+  return {status:'passed',compiler:'bundled Slang WASM through the isolated mobile compiler page',pixel,soundSamples:audio.left.length,convertedHlsl};
  }).toString()+')(nativeGraph)');
  // The old mobile page now uses shared actions with the two-phase GPU port.
  const scales=await evaluate('(async()=>{const g=nativeGraph,rows=[];for(const value of [1,.75,.5,.25,1,.75]){g.session.application.dispatch({type:"preview.scale",value});if(!await g.session.application.compile())throw Error("scale compile failed");g.runtime.step();await new Promise(resolve=>{const wait=()=>g.runtime.status().frame>0?resolve():requestAnimationFrame(wait);requestAnimationFrame(wait);});const image=await g.runtime.readImage();rows.push({value,width:image.width,height:image.height});}return rows;})()');

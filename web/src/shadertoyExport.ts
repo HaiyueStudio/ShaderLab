@@ -3,6 +3,7 @@ import { translateGlsl } from './glsl.js';
 import { projectTranslationOptions } from './glslProject.js';
 import { languageOf, sourceOf } from './sourceLanguage.js';
 import { builtinTexture } from './builtinTextures.js';
+import { externalCommon, glslCommon } from './sourceCommon.js';
 import { passOf, PASS_LABELS, type Channel, type RenderPassId, type ShaderProject } from './model.js';
 
 export interface ShadertoyPassExport extends WgslTranslationResult {
@@ -28,6 +29,10 @@ export async function exportShadertoyPass(project: Readonly<ShaderProject>, id: 
     channel.kind === 'none' ? '无纹理' : channel.kind === 'camera' ? (channel.facing === 'user' ? '前置相机 · Webcam' : '后置相机 · Webcam') : channel.kind === 'buffer' ? PASS_LABELS[channel.pass] : channel.kind === 'keyboard' ? 'Keyboard · 256 × 3' : channel.kind === 'builtin' ? builtinTexture(channel.texture).name : project.assets.find(a => a.id === channel.assetId)?.name ?? channel.assetId,
   }));
   const meta = { pass: id, label: PASS_LABELS[id], channels };
+  if (languageOf(project, id) === 'glsl' && externalCommon(sourceOf(project, id))) {
+    try { return { ...meta, code: (await glslCommon(project, id, translateWgsl)) + '\n' + sourceOf(project,id), diagnostics:[], warnings:['此独立导出文件已链接当前 Common；编辑器中的 Common 仍保持独立。'] }; }
+    catch(error) { return {...meta,code:null,diagnostics:[{line:1,column:1,message:String(error)}],warnings:[]}; }
+  }
   if (languageOf(project, id) === 'hlsl') return { ...meta, code: null, diagnostics: [{ line: 1, column: 1, message: 'HLSL 暂不支持导出 Shadertoy GLSL；请导出工程或查看运行用 WGSL。' }], warnings: [] };
   const commonGlsl = languageOf(project, 'common') === 'glsl';
   if (languageOf(project, id) === 'glsl' && (commonGlsl || !project.common.trim())) {

@@ -27,6 +27,7 @@ Button.example-card-target { background-color:transparent; border-width:0; paddi
 write('web/styles.css',`
 :root {
  --bg:${c.canvas}; --surface:${c.surface}; --line:${c.border}; --muted:${c.muted}; --text:${c.text}; --lime:${c.accent};
+ --save-saved:${c.saved}; --save-modified:${c.unsaved};
  --hy-text-color:${c.text}; --hy-secondary-text-color:${c.muted}; --hy-surface-color:${c.surface}; --hy-surface-elevated-color:${c.elevated};
  --hy-input-bg-color:${c.input}; --hy-menu-bg-color:${c.surface}; --hy-border-color:${c.border}; --hy-border-strong-color:${c.border};
  --hy-accent-color:${c.accent}; --hy-accent-strong-color:${c.selected}; --hy-selected-bg-color:${c.selected}; --hy-selected-text-color:${c.text};

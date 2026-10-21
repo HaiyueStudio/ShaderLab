@@ -7,6 +7,50 @@ import {TUTORIAL_LABS,tutorialProject} from '../dist/tutorialLabs.js';
 import {createProject,passOf,emptyChannels} from '../dist/model.js';
 import {ShaderWorkspace} from '../dist/workspace.js';
 import {translateGlsl} from '../dist/glsl.js';
+import {writtenWgslBuiltins} from '../dist/wgslBuiltins.js';
+
+test('read-only builtins use GLSL uniforms directly, without alias globals, loads or array copies', async()=>{
+ const source=`fn mainImage(p:vec2f)->vec4f{
+  let a=iResolution.x+iTime+iTimeDelta+f32(iFrame)+iFrameRate+iMouse.x+iDate.x+iSampleRate+iChannelResolution[0].x+iChannelTime[0];
+  return vec4f(a,p/iResolution.xy,1.0);
+ }`;
+ for(const options of [{},{common:'fn value()->f32{return iResolution.x+iTime;}',commonMode:'separate'}]){
+  const result=await translateWgsl(source,options);
+  assert.ok(result.code,JSON.stringify(result.diagnostics));
+  for(const part of [result.code,result.common??'']){
+   assert.doesNotMatch(part,/\b(?:stExport|slLink)i(?:Resolution|Time|TimeDelta|Frame|FrameRate|Mouse|Date|SampleRate|ChannelResolution|ChannelTime)\b/);
+   assert.doesNotMatch(part,/\b_e\d+\s*=\s*i(?:Resolution|Time)\s*;/);
+  }
+  assert.match(result.code,/p \/ iResolution\.xy/);
+  assert.ok(translateGlsl(result.code,{common:result.common??''}).code);
+ }
+});
+
+test('builtin writes, component/array writes and pointers retain writable copies and load snapshots',async()=>{
+ assert.deepEqual(writtenWgslBuiltins('/* iTime=3.; */ let x=iTime==2.; // &iResolution'),[]);
+ assert.deepEqual(writtenWgslBuiltins('(iResolution).x += 1.; iChannelResolution[f(0)].y=2.; let ptr=&((iMouse));'),['iResolution','iChannelResolution','iMouse']);
+ for(const body of [
+  'let before=iResolution.x; iResolution.x=0.25; return vec4f(before,iResolution.x,0.0,1.0);',
+  'let ptr=&iResolution; (*ptr).x=0.25; return vec4f(iResolution,1.0);',
+  '(iResolution).x=0.25; return vec4f(iResolution,1.0);',
+  'iChannelResolution[0].x=0.25; return vec4f(iChannelResolution[0],1.0);',
+ ]){
+  const result=await translateWgsl('fn mainImage(p:vec2f)->vec4f{'+body+'}');
+  assert.ok(result.code,JSON.stringify(result.diagnostics));
+  assert.match(result.code,/stExporti(?:Resolution|ChannelResolution)/);
+  assert.doesNotMatch(result.code,/(?<!\w)iResolution(?:\.x)?\s*=(?!=)/);
+  assert.ok(translateGlsl(result.code).code);
+ }
+});
+
+test('Sound keeps per-sample time but directly reads shared sample-rate/channel uniforms',async()=>{
+ const result=await translateWgsl('fn mainSound(s:i32,t:f32)->vec2f{return vec2f(iTime+iResolution.x,iSampleRate+iChannelResolution[0].x);}',{entryPoint:'sound'});
+ assert.ok(result.code,JSON.stringify(result.diagnostics));
+ assert.match(result.code,/stExportiTime\s*=\s*t/);
+ assert.match(result.code,/stExportiResolution\s*=\s*vec3\(1024/);
+ assert.doesNotMatch(result.code,/stExporti(?:SampleRate|ChannelResolution)/);
+ assert.ok(translateGlsl(result.code,{entryPoint:'sound'}).code);
+});
 
 test('all Gallery and tutorial WGSL modules compile to Shadertoy entries',async()=>{
  for(const p of [...examples().map(e=>e.project),...TUTORIAL_LABS.map(l=>tutorialProject(l.id))]){

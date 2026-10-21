@@ -6,9 +6,11 @@ import { LiveCamera } from '../../shared/dist/ports/liveCamera.js';
 import { ImageAsset } from '@nativescript/canvas';
 import { ImageSource, knownFolders, path } from '@nativescript/core';
 import { NativeCanvasTextures } from '@haiyue/native/engine';
+import { FrameRate } from '../../shared/dist/views/frame-rate.js';
 import { validateProject, usesCurrentFrame, CUBE_FACES, cameraFacing, type ShaderProject, type ShaderPass, type BufferId, type PassId, type ShaderDiagnostic, type PreviewMode, type PreviewMesh } from './project';
 import { refreshProjectSources } from '../../web/src/sourceProject.js';
 import type { HlslTranslator } from '../../web/src/hlslTypes.js';
+import type { WgslTranslator } from '../../web/src/sourceCommon.js';
 import { resolveChannelBindings } from '../../web/src/channelBindings.js';
 import { PRESENT, wrapShader } from '../../web/src/shaders.js';
 import { builtinTexture } from '../../shared/dist/domain/builtinTextures.js';
@@ -102,6 +104,7 @@ export class NativeShaderRuntime {
     viewed: PassId = 'image';
     readonly bufferFormat: 'rgba32float' | 'rgba16float';
     onFrame?: () => void;
+    private frameRate = new FrameRate();
     /** Baseline switch for controlled experiments; production keeps reuse enabled. */
     optimizeFrameWork = true;
     private keyboardVersion = -1;
@@ -124,7 +127,7 @@ export class NativeShaderRuntime {
     }
     private submitCommands(encoder: GPUCommandEncoder) { this.device.queue.submit([encoder.finish()]); }
 
-    constructor(readonly engine: HaiyueEngine, readonly requestFrame: () => void, private readonly orbitTarget: HTMLCanvasElement, private readonly hlsl?: HlslTranslator, private readonly embedded?: EmbeddedShaderPreview) { this.bufferFormat = engine.device.features.has('float32-filterable') ? 'rgba32float' : 'rgba16float'; }
+    constructor(readonly engine: HaiyueEngine, readonly requestFrame: () => void, private readonly orbitTarget: HTMLCanvasElement, private readonly hlsl?: HlslTranslator, private readonly embedded?: EmbeddedShaderPreview, private readonly wgsl?: WgslTranslator) { this.bufferFormat = engine.device.features.has('float32-filterable') ? 'rgba32float' : 'rgba16float'; }
     private get device() { return this.engine.device; }
     async initialize() {
         const d = this.device;
@@ -192,7 +195,7 @@ export class NativeShaderRuntime {
      * External/imported projects must use prepare(), which validates and copies. */
     async prepareOwnedSnapshot(snapshot: ShaderProject): Promise<Prepared> {
         const generation = ++this.generation;
-        const next: Prepared = { generation, project: snapshot, passes: [], images: new Map(), videos: new Map(), diagnostics: await refreshProjectSources(snapshot, this.hlsl) };
+        const next: Prepared = { generation, project: snapshot, passes: [], images: new Map(), videos: new Map(), diagnostics: await refreshProjectSources(snapshot, this.hlsl, this.wgsl) };
         if (next.diagnostics.length)
             throw new NativeCompileError(next.diagnostics);
         try {
@@ -413,6 +416,7 @@ export class NativeShaderRuntime {
             pass.end();
             this.submitCommands(encoder);
         }
+        if(advance && this.playing && this.captureVisible)this.frameRate.tick(typeof performance==='undefined'?Date.now():performance.now());
         this.onFrame?.();
     }
     setMode(mode: PreviewMode, mesh: PreviewMesh = 'sphere') {
@@ -436,14 +440,14 @@ export class NativeShaderRuntime {
     } this.dirty = true; this.requestFrame(); }
     releaseInput() { this.touchId = null; this.mouse[2] = -Math.abs(this.mouse[2]!); this.mouse[3] = -Math.abs(this.mouse[3]!); this.keyboard.release(); this.dirty = true; }
     private syncCamera() { this.cameraInput.configure(this.active ? cameraFacing(this.active.project) : null, this.playing && this.captureVisible && !this.dead); }
-    setCaptureVisible(value: boolean) { this.captureVisible = value; this.syncCamera(); }
-    setPlaying(value: boolean) { this.playing = value; this.syncCamera(); this.requestFrame(); }
+    setCaptureVisible(value: boolean) { if(value!==this.captureVisible)this.frameRate.reset();this.captureVisible = value; this.syncCamera(); }
+    setPlaying(value: boolean) { if(value!==this.playing)this.frameRate.reset();this.playing = value; this.syncCamera(); this.requestFrame(); }
     step() { this.setPlaying(false); this.stepPending = true; this.requestFrame(); }
-    reset() { this.frame = 0; this.time = 0; this.keyboard.reset(); this.dirty = true; this.clearTargets(); this.requestFrame(); }
+    reset() { this.frameRate.reset();this.frame = 0; this.time = 0; this.keyboard.reset(); this.dirty = true; this.clearTargets(); this.requestFrame(); }
     private clearTargets(immediate = false) { this.inputBindings = new WeakMap(); this.presentBindings = new WeakMap(); const old = [...this.targets.values()].flat().map(t => t.texture); this.targets.clear(); const release = () => old.forEach(t => t.destroy()); if (immediate) release(); else void this.device.queue.onSubmittedWorkDone().then(release); }
     private release(prepared: Prepared, immediate = false) { prepared.sound?.dispose(); for (const video of prepared.videos.values())
         video.dispose(); const buffers = prepared.passes.map(p => p.uniform), textures = [...prepared.images.values()].map(t => t.texture); const release = () => { buffers.forEach(b => b.destroy()); textures.forEach(t => t.destroy()); }; if (immediate) release(); else void this.device.queue.onSubmittedWorkDone().then(release); }
-    status() { return { ready: !!this.active, frame: this.frame, time: this.time, width: this.width, height: this.height, playing: this.playing, mode: this.mode, bufferFormat: this.bufferFormat,
+    status() { return { ready: !!this.active, frame: this.frame, time: this.time, fps: this.frameRate.value, width: this.width, height: this.height, playing: this.playing, mode: this.mode, bufferFormat: this.bufferFormat,
         capture: { active: this.cameraInput.active, width: this.cameraTexture?.width ?? 0, height: this.cameraTexture?.height ?? 0, time: this.cameraTime } }; }
     async sound(start: number, count: number) { if (!this.active?.sound)
         throw Error('请启用并编译 Sound'); const p = this.active; p.soundInputs?.splice(0, 4, ...this.inputs(p, p.project.sound, this.current, resolveChannelBindings(p.project.sound, p.project.common).dimensions)); return p.sound!.render(start, count, () => !this.dead && this.active === p); }

@@ -26,6 +26,8 @@ npm run preview
 
 手机在预览、代码、通道间切换；可用宽度至少 720、可用高度至少 420 时并排显示预览与代码。依据当前窗口实际尺寸响应旋转、软键盘和 iPad 分屏。iPhone / iPad 均启用横竖屏，Android 不锁定方向。
 
+通道选择使用分类素材抽屉，支持图片、视频、立方体贴图和 Buffer 预览及对应文件上传；Web 与移动端共用素材分类及 Sound 输入限制。粘贴语言识别开关与语言选择同排，编译状态位于编译输出标题行。
+
 GLSL 和 WGSL 使用原生 TextView 高亮；粘贴按钮自动识别语言，独立保留两份源码。可添加 Common / Buffer A–D / Sound，选择四个图片、立方体、视频、内置纹理或键盘输入。Buffer 可以切换为实际画面预览。支持原生图片/视频文件选择、工程导入导出、截图保存/分享、持续 Sound 播放和 WAV 导出。示例封面来自实际 Shader 渲染。
 
 首页与 Web 共用全部 8 个示例：Aurora ribbons、Liquid chrome、Neon passage、Afterglow、Key light、Sliding city、Minefield、Local time · 时钟。卡片显示名称、分类和封面，按窗口宽度排列为 1–3 列，点击卡片任意位置即可进入示例并编辑。
@@ -34,7 +36,7 @@ Sliding city 支持在画布上向左、右、上、下滑动来移动图片块�
 
 Buffer A–D 和 Image 的通道支持“后置相机 / 前置相机 · 实时视频”。选中后运行并授权，可用 `channel0(fragCoord / iResolution.xy)` 采样 iChannel0 的相机画面；Image 也可接入 Buffer 的输出继续处理。`iChannelResolution` 和 `iChannelTime` 提供视频尺寸和采集时间。同一股相机流可供多个 Buffer 共用，同一作品使用一个方向的相机。暂停、隐藏预览、切后台或退出时会停止采集，播放或返回预览后恢复；不采集麦克风，工程仅保存相机选择。Web 需 HTTPS 或 localhost，移动端使用原生相机。
 
-语言菜单支持 WGSL / GLSL / HLSL。手动切换会转换当前页签的最新代码，成功后一起更新语言和代码；失败或转换期间发生编辑时保留原内容，不再恢复旧草稿或填入模板。支持 GLSL → WGSL、Image/Buffer/Sound 的 WGSL → GLSL，以及 HLSL Pass → WGSL；生成 HLSL、HLSL → GLSL 和单独 WGSL/HLSL Common 的反向转换尚不支持，会提示原因。转换后的 Pass 可能包含 Common 的快照，后续修改 Common 不会自动更新已合并的副本。HLSL 使用随包的 Slang 2026.19 离线转换为 WGSL，用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
+语言菜单支持 WGSL / GLSL / HLSL。手动切换会转换当前页签的最新代码，成功后一起更新语言和代码；失败或转换期间发生编辑时保留原内容，不再恢复旧草稿或填入模板。Image/Buffer/Sound 支持三种语言互转，WGSL/GLSL Common 也可转换为 HLSL；单独 WGSL Common → GLSL 及 HLSL Common 的反向转换尚不支持，会提示原因。转换为 GLSL 或 HLSL 时，Common 保持独立，Pass 只保留引用；编译时链接当前 Common，并按内容和通道类型缓存派生库。修改 Common 后重新运行即可生效。HLSL 生成由随包 Naga 完成，再用 Slang 2026.19 验证并转换为运行用 WGSL，整个过程可离线进行。用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
 
 只有点击保存才进入“我的作品”。自动恢复草稿存放在独立文件里。教程示例返回时沿导航栈回到对应章节。
 

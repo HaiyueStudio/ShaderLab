@@ -223,18 +223,105 @@ hy-select, hy-checkbox { color-scheme:dark; }
 @media(max-width:600px) { #shadertoy-channels { grid-template-columns:1fr; } }
 
 /* G07: the shared fragments keep the existing split panes and GPU/editor owners. */
-.shared-editor .project-bar{height:auto;min-height:66px;align-items:flex-end;padding:8px 18px;flex-wrap:wrap}
-.shared-project{flex:1 1 460px;min-width:260px}.shared-toolbar{min-width:0}.shared-preview-slot{position:absolute;inset:0}
+.shared-editor .project-bar{height:auto;min-height:66px;align-items:flex-start;padding:8px 18px;flex-wrap:nowrap;gap:8px}
+.shared-project{flex:1;min-width:0}.shared-toolbar{min-width:0}.shared-preview-slot{position:absolute;inset:0}
 .shared-project>[data-hy-portable-root]{height:auto}
-.shared-editor .project-name{order:-1;flex:0 0 auto}
-.shared-editor .project-actions{margin-left:auto}
+.shared-editor .project-name{order:-1;flex:0 0 auto;padding-top:4px}
+.shared-editor .project-actions{display:none}
+.shared-editor .project-name{display:none}
+#back-gallery{flex:0 0 44px}
+#back-gallery::before{content:"";display:block;width:20px;height:20px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 5-7 7 7 7 M5 12h15'/%3E%3C/svg%3E") center / contain no-repeat}
+.preview-options{position:absolute;top:12px;right:12px;z-index:3;display:flex;align-items:center}
+#preview-mode{width:105px;font-size:12px;--hy-select-bg-color:#10132fe8}
+.shared-editor #scene-controls label{display:none}
+#fps-label{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:43px;text-align:right}
 .shared-preview-slot>[data-hy-portable-root],#code-editor>[data-hy-portable-root]{height:100%;display:flex;flex-direction:column;min-height:0}
 .shared-preview-slot [data-hy-kind="PlatformView"],#code-editor [data-hy-kind="PlatformView"]{position:relative;min-height:0;flex:1}
 #code-editor [data-hy-kind="PlatformView"]>.cm-editor{height:100%}.shared-editor .project-name{align-self:flex-start}
+.project-name label{white-space:nowrap;color:var(--muted);font-size:12px}
+.project-name input{width:180px;max-width:240px;min-width:80px}
+.project-actions{gap:6px}
+#pass-tabs button.enabled::before{display:none}
+#pass-tabs button[aria-selected=true]{display:inline-flex;align-items:center;gap:8px}
+.tab-save-indicator{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--save-saved)}
+[data-save-state=modified] .tab-save-indicator{background:var(--save-modified)}
+.shared-project [data-hy-key="/shader-project/status"]{font-size:11px;color:var(--muted)}
+.shared-project [data-hy-key="/shader-project/name/label"]{color:var(--muted);font-size:12px}
+.shared-project [data-hy-key="/shader-project/actions/save"]{--hy-surface-color:var(--hy-selected-bg-color);--hy-border-color:var(--hy-accent-color)}
+/* SVG masks provide consistent line icons; native controls use the shared symbols. */
+.editor-action-icon{width:44px;height:44px;min-width:44px;padding:0;display:inline-grid;place-items:center}
+.editor-action-icon,.shared-project [data-hy-key^="/shader-project/actions/"] [data-hy-button-label],.shared-toolbar [data-hy-kind="Button"] [data-hy-button-label]{font-size:0}
+.shared-project [data-hy-key^="/shader-project/actions/"] [data-hy-button-label],.shared-toolbar [data-hy-kind="Button"] [data-hy-button-label]{display:inline-flex;align-items:center;justify-content:center;height:100%;vertical-align:middle}
+.editor-action-icon::before,.shared-project [data-hy-key^="/shader-project/actions/"] [data-hy-button-label]::before,.shared-toolbar [data-hy-kind="Button"] [data-hy-button-label]::before{content:"";display:block;width:20px;height:20px;background:currentColor;mask:var(--editor-icon) center / contain no-repeat}
+#save-project,[data-hy-key="/shader-project/actions/save"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12l4 4v12a2 2 0 0 1-2 2Z M7 3v6h10V3 M7 21v-8h10v8'/%3E%3C/svg%3E")}
+#export-project,[data-hy-key="/shader-project/actions/export"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V3 m-4 4 4-4 4 4 M5 11H3v10h18V11h-2'/%3E%3C/svg%3E")}
+#compile,[data-hy-key="/shader-toolbar/controls/run"],[data-hy-key="/shader-toolbar/controls/play"][aria-label="播放"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 3 14 9-14 9Z'/%3E%3C/svg%3E")}
+[data-hy-key="/shader-toolbar/controls/play"][aria-label="暂停"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'%3E%3Cpath d='M5 4h4v16H5z M15 4h4v16h-4z'/%3E%3C/svg%3E")}
+[data-hy-key="/shader-toolbar/controls/reset"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10a9 9 0 1 1 2.7 8.4 M3 4v6h6'/%3E%3C/svg%3E")}
+[data-hy-key="/shader-toolbar/controls/step"]{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 4 12 8-12 8Z M20 4v16'/%3E%3C/svg%3E")}
+@media(max-width:600px){.shared-editor .project-bar{padding:8px 4px;gap:0}.shared-editor .project-name{gap:0}.shared-editor #back-gallery{padding-inline:4px}.project-name input{width:140px}}
+.code-language-controls{flex-wrap:nowrap;gap:10px;min-width:0}
+#code-language{flex:0 0 86px}
+#detect-language{white-space:nowrap;font-size:12px}
+.code-heading-actions{margin-left:auto;flex-wrap:wrap}
+.diagnostics-title{align-items:center;gap:12px;flex-wrap:wrap}
+.diagnostics-title>div{display:flex;align-items:center;gap:14px;min-width:0;flex-wrap:wrap}
+#compile-state{color:var(--save-saved);font-size:10px}
+.channel-body .channel-preview-target{position:absolute;inset:0;width:100%;height:100%;padding:0;z-index:2;background:transparent}
+.choose-channel{width:100%;border-top:1px solid var(--line);padding:10px 6px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);text-align:left}
+#channel-drawer{--hy-drawer-width:590px;--hy-drawer-bg-color:var(--surface);--hy-drawer-mask-color:#030414ad;--hy-drawer-body-padding:18px;--hy-drawer-footer-bg-color:var(--surface)}
+.channel-picker-description{margin:0 0 18px;color:var(--muted);font-size:12px}
+#channel-source-tabs{--hy-panel-bg-color:var(--surface);--hy-tabs-bar-bg-color:var(--surface);height:32px;margin-bottom:16px}
+.channel-picker-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+.channel-picker-actions:empty{display:none}
+.channel-picker-actions span{color:var(--muted);font-size:11px}
+.channel-picker-upload{min-height:36px;font-size:12px}
+.channel-picker-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.channel-source-card{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.channel-source-card.selected{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime)}
+.channel-source-preview{height:145px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:repeating-conic-gradient(#ffffff07 0% 25%,transparent 0% 50%) 50% / 18px 18px}
+.channel-source-preview>img,.channel-source-preview>video{display:block;width:100%;height:100%;object-fit:contain}
+.channel-source-name{display:block;padding:12px 12px 5px;font-size:12px;color:var(--text);font-weight:550}
+.channel-source-select{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:transparent;border-radius:9px}
+.channel-source-card:has(.channel-source-select:hover){border-color:var(--lime)}
+.channel-source-select:focus-visible{outline:2px solid var(--lime);outline-offset:-4px}
+.channel-source-preview>video{position:relative;z-index:2}
+.channel-source-card p{padding:0 12px 12px;margin:0;color:var(--muted);font-size:10px;line-height:1.6}
+.channel-cube-faces{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:6px}
+.channel-cube-faces>img{min-height:0;object-fit:contain}
+.channel-source-symbol{font-size:40px;color:var(--muted)}
+.channel-buffer-placeholder{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;color:var(--muted)}
+.channel-source-preview canvas[data-preview-state=ready]+.channel-buffer-placeholder{display:none}
+.channel-picker-empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 16px;border:1px dashed var(--line);border-radius:10px;font-size:12px;line-height:1.8}
+.channel-picker-error{color:#ffb4bd;font-size:12px;white-space:pre-wrap}
+.channel-picker-error:empty{display:none}
+@media(max-width:600px){.shader-code-title{display:none}.code-column>.panel-title{padding:10px 12px;gap:8px}.code-heading-actions{margin-left:0}.channel-source-preview{height:105px}#channel-drawer{--hy-drawer-body-padding:12px}.channel-picker-grid{gap:10px}}
+
+.shared-editor .preview-column>.panel-title{display:none}
+.shared-editor #viewport{margin-top:18px}
+.playback-bar{flex-wrap:wrap}
+.playback-bar>div{gap:6px;min-width:0}
+.playback-bar .shared-toolbar{flex:0 0 auto;width:max-content;background:transparent}
+.playback-bar .shared-toolbar>[data-hy-portable-root]{background:transparent}
+.playback-bar .shared-toolbar [data-hy-key="/shader-toolbar"]{height:32px!important;min-height:32px!important}
+.playback-bar .shared-toolbar [data-hy-key="/shader-toolbar/controls"]{padding:0!important;gap:4px!important}
+.playback-bar .shared-toolbar [data-hy-kind="Button"]{width:32px!important;min-width:32px!important;max-width:32px!important;height:32px!important;min-height:32px!important;--hy-text-color:#aeb8c6}
+.playback-bar .shared-toolbar [data-hy-kind="Select"]{width:64px!important;min-width:64px!important;max-width:64px!important;height:32px!important;min-height:32px!important}
+.playback-bar .shared-toolbar ::part(playback-control){padding-inline:0;border:0;background:transparent;border-radius:4px}
+.playback-bar .shared-toolbar ::part(playback-control):hover{background:#ffffff0a}
+#time-label{white-space:nowrap;font-variant-numeric:tabular-nums}
+#builtin-variables-button{flex-shrink:0;white-space:nowrap;font-size:11px;padding:8px;margin-left:6px}
+#builtin-variables{position:fixed;inset:auto;margin:0;padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);overflow:auto;box-shadow:0 12px 40px #0005}
+#builtin-variables h2{font-size:13px;margin:0 0 16px}
+#builtin-variables dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:11px;line-height:1.7;margin:0}
+#builtin-variables dt{font-family:Consolas,monospace;color:var(--lime);overflow-wrap:anywhere}
+#builtin-variables dd{margin:0;color:var(--muted);overflow-wrap:anywhere}
+@media(max-width:600px){.playback-bar{padding-inline:12px}#builtin-variables dl{grid-template-columns:1fr;gap:3px}#builtin-variables dd{margin-bottom:9px}}
 
 /* ShaderLab shared presentation — generated by scripts/build-presentation.mjs. */
 :root {
  --bg:#080b21; --surface:#10132f; --line:#343765; --muted:#a9add4; --text:#eef0ff; --lime:#8177f2;
+ --save-saved:#7ddc92; --save-modified:#ff7e8b;
  --hy-text-color:#eef0ff; --hy-secondary-text-color:#a9add4; --hy-surface-color:#10132f; --hy-surface-elevated-color:#181a40;
  --hy-input-bg-color:#0c1029; --hy-menu-bg-color:#10132f; --hy-border-color:#343765; --hy-border-strong-color:#343765;
  --hy-accent-color:#8177f2; --hy-accent-strong-color:#554cc6; --hy-selected-bg-color:#554cc6; --hy-selected-text-color:#eef0ff;

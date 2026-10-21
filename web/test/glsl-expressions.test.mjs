@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { translateGlsl } from '../dist/glsl.js';
+import { maskComments } from '../dist/wgslModules.js';
 
 const main = body => `void mainImage(out vec4 c, in vec2 p) { ${body} }`;
 const translated = source => {
@@ -104,7 +105,8 @@ test('the GPU fixture combines prefix/postfix values, lazy conditions, vector up
 test('redundant semicolons disappear without losing empty branches or for separators', () => {
   const plain='float g=1.0;\n'+main('float x=0.0; ++x; c=vec4(x+g);');
   const redundant=';;;float g=1.0;;\n'+main(';float x=0.0;;; ++x; /* empty */ ; c=vec4(x+g);;;')+';;';
-  assert.equal(translated(redundant),translated(plain));
+  assert.equal(maskComments(translated(redundant)).replace(/\s+/g,' '),maskComments(translated(plain)).replace(/\s+/g,' '));
+  assert.match(translated(redundant),/\/\* empty \*\//);
   const code=translated(main('float x=0.0; for(;x<2.0;++x);; if(x==2.0);else x=0.0; while(x++<3.0); for(;;){break;} c=vec4(x);'));
   assert.match(code,/for \(; \(x < 2.0\); x \+= 1.0\) \{\}/);
   assert.match(code,/if \(\(x == 2.0\)\) \{\} else \{ x = 0.0; \}/);

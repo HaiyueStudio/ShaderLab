@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {preprocessGlsl,TranslationError} from '../dist/glslPreprocessor.js';
 import {translateGlsl} from '../dist/glsl.js';
+import {maskComments} from '../dist/wgslModules.js';
 import {readFileSync} from 'node:fs';
 const tokens=source=>preprocessGlsl(source).slice(0,-1).map(t=>t.value).join(' ');
 const choose=condition=>tokens(`#if ${condition}\nYES\n#else\nNO\n#endif`);
@@ -95,5 +96,5 @@ test('integer macro literals keep the same value in conditional and shader expre
 
 test('full conditional-compilation GPU fixture translates only selected functions and shader branches',()=>{
   const result=translateGlsl(readFileSync(new URL('./fixtures/preprocessor-conditions.glsl',import.meta.url),'utf8'));
-  assert.deepEqual(result.diagnostics,[]);assert.doesNotMatch(result.code,/unsupported|missing|struct Wrong|#if/);
+  assert.deepEqual(result.diagnostics,[]);assert.doesNotMatch(maskComments(result.code),/unsupported|missing|struct Wrong|#if/);
 });

@@ -6,6 +6,7 @@ export const shaderAppearance = Object.freeze({
     text:'#eef0ff', muted:'#a9add4', accent:'#8177f2', selected:'#554cc6',
     border:'#343765', hover:'#242752', hoverBorder:'#6468aa', focus:'#9c8fff',
     danger:'#dd6f91', disabled:'#656b96', backdrop:'#030414b8',
+    saved:'#7ddc92', unsaved:'#ff7e8b',
   }),
   size: Object.freeze({font:14, line:20, gap:8, radius:8, control:44, padding:12, cardRadius:12, dialogPadding:20, dialogTitle:20, dialogWidth:460}),
 });

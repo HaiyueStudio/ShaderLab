@@ -121,6 +121,8 @@ iOS / Android 真机功能验收清单：
 
 最终包已安装到 XREAL X4000 / Android 14、iPad Air 4 和 iPhone 15 Plus。三台设备均通过本地 HLSL Common / Buffer / Image / Sound 编译、原生 WebGPU 像素读回 `[102, 51, 153, 255]`、工程保存重开、WGSL / GLSL / HLSL 菜单与独立源码保留，以及后台返回后继续操作。语言按钮的无障碍标签随当前语言更新；隔离验收脚本也改为读取当前语言的源码，并要求重开后实际编译成功。测试未替换普通作品或草稿。iPhone 在用户确认解锁并保持亮屏后完成复测，先前运行器未能建立连接的记录保留供排查。构建、最终 APK、源码哈希、三台设备报告及两台 iOS 设备通过的 XCTest 记录见 `artifacts/hlsl-2026-10-17/summary.json`。
 
+2026-10-20 修复语言菜单拒绝 WGSL / GLSL → HLSL：共享转换器使用 Naga 生成可编辑 HLSL，并由 Slang 验证后再更新文档。Common 保持独立，修改后由当前编译桥重新派生；兼容常量依赖、常量数组初始化、整数绝对值、旧工程中的完整 WGSL 模块，以及 Image / Buffer / Sound 往返转换。八个 Gallery 示例的所有启用 Pass 均通过真实语言菜单转换与 WebGPU 渲染，矩阵、Buffer 采样、PCM、错误保护及工程重开通过。移动渲染器通过随包编译页面实际验证转换后像素和 Common 更新；本地 file 页面离线转换、全量单元测试、类型、边界检查与 Android / iOS 资源包构建通过。此次验证使用浏览器及平台 IO 测试适配器，未重复真机安装验收。记录见 `artifacts/hlsl-conversion-2026-10-20/summary.json`。
+
 ## 2026-10-18 Android Canvas 资源释放补丁
 
 Android build/prepare 会验证并应用仓库内的 Canvas 2.1.18 ARM64 修补库，释放回读纹理、着色器模块和已完成的命令编码器，避免反复打开编辑页时保留旧 GPU 设备。普通 APK 构建直接使用 `mobile/vendor/canvas-2.1.18-android-arm64`，不需要自行安装 Rust；只有重建该原生库才需要 Rust、NDK 与 Skia 构建工具。上游提交、源码补丁、锁文件、重建方式和适用范围见 [补丁说明](../mobile/patches/README.md)。构建脚本会拒绝版本或校验值不符的 Canvas 包。

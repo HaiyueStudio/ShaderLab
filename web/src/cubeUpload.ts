@@ -2,7 +2,7 @@ import { CUBE_FACES, CUBE_FACE_LABELS, LIMITS, type CubeFace, type RenderPassId 
 import type { ShaderWorkspace } from './workspace.js';
 import type { FaceUpload } from './textureUpload.js';
 
-export function createCubeUploader(workspace: ShaderWorkspace, onBound: () => Promise<unknown>) {
+export function createCubeUploader(workspace: ShaderWorkspace, onBound: (pass:RenderPassId,index:number) => Promise<unknown>) {
   const dialog = document.createElement('dialog'); dialog.id = 'cubemap-dialog';
   dialog.setAttribute('aria-labelledby', 'cubemap-title');
   dialog.innerHTML = `<form id="cubemap-form">
@@ -17,7 +17,7 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: () => Pr
   const error = dialog.querySelector<HTMLElement>('#cubemap-error')!, submit = dialog.querySelector<HTMLButtonElement>('#cubemap-submit')!;
   const cancel = dialog.querySelector<HTMLButtonElement>('#cubemap-cancel')!, name = dialog.querySelector<HTMLInputElement>('#cubemap-name')!;
   const inputs = new Map<CubeFace, HTMLInputElement>(), urls = new Map<CubeFace, string>();
-  let target: { pass: RenderPassId; index: number } | undefined, busy = false;
+  let target: { pass: RenderPassId; index: number; session:string } | undefined, busy = false;
   const clear = () => { for (const url of urls.values()) URL.revokeObjectURL(url); urls.clear(); grid.querySelectorAll('img').forEach(img => img.removeAttribute('src')); };
   for (const face of CUBE_FACES) {
     const label = document.createElement('label'); label.className = 'cubemap-face';
@@ -44,6 +44,7 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: () => Pr
     busy = true; submit.disabled = cancel.disabled = true; error.textContent = '正在校验并上传六个面…';
     void (async () => {
       try {
+        if(selected.session!==workspace.application.state.session)throw Error('作品已切换，请重新上传立方体贴图。');
         const faces = {} as Record<CubeFace, FaceUpload>;
         for (const { face, file } of files) {
           if (!file || file.size > LIMITS.imageBytes || !['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('每个面请选择不超过 8 MB 的 PNG、JPEG 或 WebP。');
@@ -53,8 +54,9 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: () => Pr
         const response = await workspace.api.execute({ apiVersion: '1', requestId: crypto.randomUUID(), operation: 'shader.cubemap.upload',
           documentId, expectedRevision: revision, params: { name: assetName, faces } });
         if (response.status !== 'completed') throw new Error(response.error.message);
+        if(selected.session!==workspace.application.state.session)throw Error('作品已切换，请重新上传立方体贴图。');
         workspace.setChannel(selected.pass, selected.index, { kind: 'cubemap', assetId: (response.value as { assetId: string }).assetId });
-        dialog.close(); await onBound();
+        dialog.close(); await onBound(selected.pass,selected.index);
       } catch (cause) {
         if (!dialog.open) dialog.showModal();
         error.textContent = cause instanceof Error ? cause.message : String(cause);
@@ -66,7 +68,7 @@ export function createCubeUploader(workspace: ShaderWorkspace, onBound: () => Pr
   };
   return (pass: RenderPassId, index: number) => {
     if (busy) return;
-    target = { pass, index }; clear(); form.reset(); error.textContent = '';
+    target = { pass, index, session:workspace.application.state.session }; clear(); form.reset(); error.textContent = '';
     dialog.showModal(); name.focus();
   };
 }

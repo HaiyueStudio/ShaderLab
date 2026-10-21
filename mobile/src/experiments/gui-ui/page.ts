@@ -1,4 +1,5 @@
 import {configurePreviewExperiment, previewProfileSnapshot} from './preview-profile';
+import { shareFile } from '../../files';
 import {shaderAppearance} from '../../../../shared/dist/views/presentation.js';
 import {
   GridLayout,
@@ -158,6 +159,7 @@ export class GuiExperimentPage {
       previewModeChanged: () =>
         this.controller.report("实验只比较 Canvas 预览；3D 模式不属于本轮。"),
       playbackChanged: () => {},
+      exportProject: async () => { await shareFile(await this.projects.export(this.session.project)); },
       compiled: () => {
         if (this.session.application.state.compile.status === "failed")
           this.controller.report("编译失败");
@@ -289,6 +291,7 @@ export class GuiExperimentPage {
                     },
               output: (texture) => this.gui?.output(texture),
             },
+            (code, options) => this.compiler.translate(code, options),
           );
           configurePreviewExperiment(this.runtime, engine);
           await this.runtime.initialize();

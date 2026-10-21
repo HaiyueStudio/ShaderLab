@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {mkdirSync,readFileSync,writeFileSync,existsSync,rmSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {runEditorBrowserScenario} from '../../scripts/editor-e2e/browserDriver.mjs';
 const root=resolve(import.meta.dirname,'../..'),out=resolve(root,'artifacts/m24-g07/browser');mkdirSync(out,{recursive:true});
@@ -11,6 +11,8 @@ const report=await runEditorBrowserScenario({root,route:(process.env.SHADERLAB_T
   const node=key=>`document.querySelector('[data-hy-key="${key}"]')`;
   await evaluate(`shaderEditor.open(${JSON.stringify(fixture)})`);
   await waitFor(()=>evaluate('shaderEditor.getStatus()?.frame>2'),'GPU frame');
+  const lamp=()=>evaluate(`(()=>{const tab=document.querySelector('#pass-tabs [aria-selected="true"]');return {state:tab.dataset.saveState,color:getComputedStyle(tab.querySelector('.tab-save-indicator')).backgroundColor,label:tab.getAttribute('aria-label'),statusVisible:!!${node('/shader-project/status')}.getClientRects().length};})()`);
+  const clean=await lamp();assert.equal(clean.state,'saved');assert.equal(clean.color,'rgb(125, 220, 146)');assert.equal(clean.statusVisible,false);
   await evaluate('window.__g07={canvas:document.getElementById("shader-canvas"),editor:document.querySelector(".cm-editor"),before:shaderEditor.getSharedUI()}');
   await evaluate(`(()=>{__g07.hostWrites=[];__g07.observer=new MutationObserver(records=>__g07.hostWrites.push(...records.map(r=>r.target.id)));for(const id of ['code-language','sound-duration','sound-volume'])__g07.observer.observe(document.getElementById(id),{attributes:true});})()`);
   for(const scale of [.75,.5,.25,1,.75]){
@@ -21,29 +23,57 @@ const report=await runEditorBrowserScenario({root,route:(process.env.SHADERLAB_T
   }checks.push('100 → 75 → 50 → 25 → 100 → 75; UI, project and real GPU target agree; canvas/editor retained');
   assert.deepEqual(await evaluate('(__g07.observer.disconnect(),__g07.hostWrites)'),[],'scale changes must not rewrite unrelated host selectors');
   checks.push('scale changes cause zero property writes to unrelated language/sound selectors');
+  const modified=await lamp();assert.equal(modified.state,'modified');assert.equal(modified.color,'rgb(255, 126, 139)');
   await click(node('/shader-toolbar/controls/play'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),false);
   await click(node('/shader-toolbar/controls/play'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),true);
-  await click(node('/shader-project/actions/information'));
-  await waitFor(()=>evaluate(`${node('/shader-project/information')}.open`),'settings dialog');
+  assert.equal(await evaluate(`!!${node('/shader-project/actions/information')}`),false);
+  assert.equal(await evaluate(`!!document.getElementById('glsl-button')||!!document.getElementById('shadertoy-button')`),false);
   await cdp.call('Emulation.setDeviceMetricsOverride',{width:1100,height:740,deviceScaleFactor:1,mobile:false});await nextPaint();
-  await click(node('/shader-project/information/close'));await click(node('/shader-project/actions/information'));await click(node('/shader-project/information/close'));
-  checks.push('playback and settings dialog close/reopen through shared semantics; resize with dialog open');
+  assert.deepEqual(await evaluate('document.getElementById("preview-mode").options.map(o=>o.value)'),['canvas','sphere','box','torus']);
+  for(const value of ['sphere','box','torus','canvas']){
+   const before=await evaluate('shaderEditor.getStatus().frame');
+   await evaluate(`(()=>{const s=document.getElementById('preview-mode').shadowRoot.querySelector('select');s.value='${value}';s.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+   await waitFor(()=>evaluate(`shaderEditor.getStatus().mode==='${value==='canvas'?'canvas':'scene'}'&&shaderEditor.getStatus().frame>${before}`),'render '+value);
+   const preview=await evaluate('shaderEditor.getProject().preview');assert.equal(preview.mode,value==='canvas'?'canvas':'scene');if(value!=='canvas')assert.equal(preview.mesh,value);
+   const shot=await cdp.call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});writeFileSync(resolve(out,'preview-'+value+'.png'),Buffer.from(shot.result.data,'base64'));
+  }
+  await waitFor(()=>evaluate('shaderEditor.getStatus().fps>0&&/^\\d+ FPS$/.test(document.getElementById("fps-label").textContent)'),'live FPS');
+  await click(node('/shader-toolbar/controls/play'));await waitFor(()=>evaluate('shaderEditor.getStatus().fps===0&&document.getElementById("fps-label").textContent==="0 FPS"'),'paused FPS');
+  checks.push('visible Canvas/sphere/box/torus selector updates the project and renders all four modes; FPS rises while rendering and returns to zero when paused');
+  await click(node('/shader-toolbar/controls/step'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),false);
+  await click(node('/shader-toolbar/controls/reset'));await click(node('/shader-toolbar/controls/run'));
+  await waitFor(()=>evaluate("shaderEditor.getApplicationState().compile.status==='ready'"),'run icon compiled');
+  await click(node('/shader-toolbar/controls/play'));assert.equal(await evaluate('shaderEditor.getApplicationState().playing'),true);
+  await waitFor(()=>evaluate('shaderEditor.getStatus().fps>0'),'FPS resumes');
+  checks.push('play, pause, single frame, reset and run icons; removed redundant settings/GLSL entries');
   const code=fixture.passes.find(pass=>pass.id==='image').code+'\n// G07 共享页面验收 🌙\n';
   const edited=await evaluate(`(async()=>{const d=haiyueEditor.listDocuments().documents[0];return haiyueEditor.execute({apiVersion:'1',requestId:crypto.randomUUID(),operation:'shader.code.set',documentId:d.identity.id,expectedRevision:d.revision,params:{pass:'image',code:${JSON.stringify(code)}}});})()`);
   assert.equal(edited.status,'completed');
   await evaluate(`(()=>{const input=${node('/shader-project/name/field')}.shadowRoot.querySelector('input');input.focus();input.select();})()`);
   // CDP inserts Unicode text but is not a physical IME acceptance claim.
   await cdp.call('Input.insertText',{text:'海月 G07 🌙'});
-  await evaluate('shaderEditor.save()');
+  const exported=resolve(out,'downloads','海月 G07 🌙.hyshader');rmSync(exported,{force:true});
+  await click(node('/shader-project/actions/export'));await waitFor(()=>existsSync(exported),'export project download');
+  const exportedProject=JSON.parse(readFileSync(exported,'utf8'));assert.equal(exportedProject.name,'海月 G07 🌙');assert.equal(exportedProject.passes.find(pass=>pass.id==='image').code,code);
+  await click(node('/shader-project/actions/save'));
+  await waitFor(()=>evaluate("shaderEditor.getApplicationState().save.status==='idle' && shaderEditor.getApplicationState().savedRevision===shaderEditor.getApplicationState().revision"),'save icon');
+  const cleanAgain=await lamp();assert.equal(cleanAgain.state,'saved');assert.equal(cleanAgain.statusVisible,false);assert.match(cleanAgain.label,/已保存/);
+  checks.push('active code tab changes green → red → green for edits and save; idle save text is hidden');
+  await evaluate(`(()=>{const input=${node('/shader-project/name/field')}.shadowRoot.querySelector('input');input.focus();input.value+=' draft';input.dispatchEvent(new Event('input',{bubbles:true,composed:true}));})()`);
+  assert.equal((await lamp()).state,'modified','focused name draft updates the lamp without committing the project');
+  await evaluate(`(()=>{const input=${node('/shader-project/name/field')}.shadowRoot.querySelector('input');input.value='海月 G07 🌙';input.dispatchEvent(new Event('input',{bubbles:true,composed:true}));})()`);
+  assert.equal((await lamp()).state,'saved');
   const saved=await evaluate(`new Promise((resolve,reject)=>{const r=indexedDB.open('haiyue.shader-editor.v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,tx=db.transaction('projects','readonly'),q=tx.objectStore('projects').getAll();tx.oncomplete=()=>{db.close();resolve(q.result);};};})`);
   const persisted=saved.find(record=>record.project.id===fixture.id)?.project;assert.ok(persisted);assert.equal(persisted.name,'海月 G07 🌙');assert.equal(persisted.preview.scale,.75);assert.equal(persisted.passes.find(pass=>pass.id==='image').code,code);
   await evaluate(`shaderEditor.open(${JSON.stringify(persisted)})`);assert.deepEqual(await evaluate('shaderEditor.getProject()'),persisted);checks.push('save while name still focused, Unicode retained, persisted project reopens identically');
   await waitFor(()=>evaluate("shaderEditor.getApplicationState().compile.status==='ready' && shaderEditor.getStatus()?.frame>3"),'reopened preview settled');await nextPaint();
+  await evaluate('document.getElementById("nav-editor").focus()');await nextPaint();
   const cycles=await evaluate(`(async()=>{const before=shaderEditor.getSharedUI(),listeners=__editorE2EListenerCount();for(let i=0;i<50;i++){document.getElementById('nav-gallery').click();await new Promise(requestAnimationFrame);document.getElementById('nav-editor').click();await new Promise(requestAnimationFrame);}return {before,after:shaderEditor.getSharedUI(),listenersBefore:listeners,listenersAfter:__editorE2EListenerCount()};})()`);
   assert.equal(cycles.listenersAfter,cycles.listenersBefore,'settled window listeners after 50 route cycles');
   assert.deepEqual(cycles.after.parts.map(p=>[p.created,p.activeNodes,p.activeResources,p.activeListeners]),cycles.before.parts.map(p=>[p.created,p.activeNodes,p.activeResources,p.activeListeners]));
   checks.push('50 Gallery/editor suspend-resume cycles retain node/resource/listener counts (page disposal tested separately)');
   const stable=await evaluate('shaderEditor.getSharedUI()');assert.equal(stable.surfaceMounts,1);assert.equal(stable.editorMounts,1);
+  await click('document.getElementById("back-gallery")');assert.equal(await evaluate('location.hash'),'#gallery');await click('document.getElementById("nav-editor")');await waitFor(()=>evaluate('shaderEditor.getStatus().fps>0'),'return to editor');checks.push('right-side return button remains beside save and navigates back to Gallery');
   const screenshot=await cdp.call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});writeFileSync(resolve(out,'shared-editor.png'),Buffer.from(screenshot.result.data,'base64'));
   assert.deepEqual(driver.getBrowserErrors(),[]);
   return {checks,persisted,cycles,diagnostics:stable,browserErrors:driver.getBrowserErrors(),agent:await evaluate('navigator.userAgent')};

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { HY_COMPONENTS } from '@haiyue/ui/core';
 import { ShaderApplication } from '../../shared/dist/application/application.js';
-import { ShaderEditorController, saveMessage } from '../../shared/dist/views/editor-controller.js';
+import { ShaderEditorController, saveMessage, saveIndicator, saveFeedback } from '../../shared/dist/views/editor-controller.js';
 import { mountShaderEditorPart } from '../../shared/dist/views/editor-page.js';
 
 const fixture=JSON.parse(readFileSync(new URL('../../review/m24-ui/g01/project.hyshader',import.meta.url)));
@@ -14,7 +14,7 @@ function setup(overrides={}) {
   const application=new ShaderApplication({ids:{next:()=>`id-${++next}`},clock:{nowISO:()=>fixture.updatedAt}},fixture);
   application.dispatch({type:'project.open',project:fixture,fork:false});
   application.connect({projects:{open:async()=>fixture,save:async project=>{writes.push(project);return 'saved';},saveDraft:async()=>{}},preview:{prepare:async()=>({handle:`handle-${++next}`,diagnostics:[]}),commit:handle=>{commits.push(handle);},release:handle=>released.push(handle),play(){},step(){},reset(){}}});
-  const controller=new ShaderEditorController(application,{ensurePreview:async()=>{},flushEditor(){},previewModeChanged(){},playbackChanged(){},compiled(){},...overrides});
+  const controller=new ShaderEditorController(application,{ensurePreview:async()=>{},flushEditor(){},previewModeChanged(){},playbackChanged(){},compiled(){},exportProject(){},...overrides});
   return {application,controller,writes,commits,released};
 }
 class Recorder {
@@ -49,13 +49,25 @@ test('shared controls commit one scale action, retain special views and preserve
 test('save flushes uncommitted name and editor content; composition cannot silently save an earlier draft',async()=>{
   let application;const x=setup({flushEditor(){application.setSource('image','// edited 🌙\n'+fixture.passes.find(p=>p.id==='image').code,'wgsl');}});application=x.application;
   const r=new Recorder(),page=mountShaderEditorPart(r,x.controller,'project');
+  assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');assert.equal(r.nodes.get('/shader-project/status').node.props.visible,false);
   r.event('/shader-project/name/field','valueChange','海月 🌙 未失焦');
+  assert.equal(saveIndicator(x.controller.getSnapshot()),'modified');
   assert.notEqual(application.state.project.name,'海月 🌙 未失焦');
   assert.equal(await x.controller.save(),true);assert.equal(x.writes[0].name,'海月 🌙 未失焦');assert.match(x.writes[0].passes.find(p=>p.id==='image').code,/edited 🌙/);
+  assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');assert.equal(saveFeedback(x.controller.getSnapshot()),'');assert.equal(r.nodes.get('/shader-project/status').node.props.visible,false);
   application.setSource('image','// later edit','wgsl');assert.equal(saveMessage(x.controller.getSnapshot()),'有未保存的修改');
   r.event('/shader-project/name/field','compositionStart');await assert.rejects(x.controller.save(),/候选/);assert.equal(x.writes.length,1);
   r.event('/shader-project/name/field','compositionEnd');r.event('/shader-project/name/field','valueChange','完成候选');await x.controller.save();assert.equal(x.writes[1].name,'完成候选');
   page.dispose();x.controller.dispose();application.dispose();
+});
+
+test('export flushes the focused name and editor, and rejects unconfirmed composition',async()=>{
+  let exported,application;const x=setup({flushEditor(){application.setSource('image','// export latest','wgsl');},exportProject(){exported=application.snapshot();}});application=x.application;
+  x.controller.dispatch({key:'/shader-project/name/field',type:'valueChange',value:'导出未失焦 🌙',reason:'keyboard',transaction:1});
+  await x.controller.exportProject();assert.equal(exported.name,'导出未失焦 🌙');assert.equal(exported.passes.find(p=>p.id==='image').code,'// export latest');assert.equal(x.writes.length,0);
+  exported=undefined;x.controller.dispatch({key:'/shader-project/name/field',type:'compositionStart',reason:'keyboard',transaction:2});
+  await assert.rejects(x.controller.exportProject(),/候选/);assert.equal(exported,undefined);
+  x.controller.dispose();application.dispose();
 });
 
 test('late preview initialization and save completion cannot overwrite a newly opened project',async()=>{
@@ -72,6 +84,7 @@ test('cancel and failed save remain retryable with the same shared document',asy
   x.controller.dispatch({key:'/shader-project/name/field',type:'valueChange',value:'retained',reason:'keyboard',transaction:1});
   assert.equal(await x.controller.save(),false);assert.equal(x.application.state.project.name,'retained');
   mode='failed';await assert.rejects(x.controller.save(),/disk full/);assert.equal(x.application.state.save.status,'failed');
+  assert.equal(saveIndicator(x.controller.getSnapshot()),'modified');assert.match(saveFeedback(x.controller.getSnapshot()),/disk full/);
   mode='saved';assert.equal(await x.controller.save(),true);assert.equal(x.application.state.savedRevision,x.application.state.revision);
   x.controller.dispose();x.application.dispose();
 });

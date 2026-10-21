@@ -1,11 +1,12 @@
 import { hyNode, hyKey, type HYRenderer, type HYNode, type HYComponentKind, type HYComponentProps } from '@haiyue/ui/core';
 import { HYPage, type HYBinding } from '@haiyue/ui/portable';
 import { PREVIEW_SCALES } from '../domain/model.js';
-import { ShaderEditorController, saveMessage, type ShaderEditorViewState } from './editor-controller.js';
+import { ShaderEditorController, saveFeedback, type ShaderEditorViewState } from './editor-controller.js';
 
 export type ShaderEditorPart = 'project' | 'toolbar' | 'preview' | 'editor';
 export { shaderTheme } from './presentation.js';
 import { shaderControlLayout, shaderPreviewModes } from './presentation.js';
+import { editorIcons, editorIconLayout } from './editor-icons.js';
 const scales = PREVIEW_SCALES.map(value => ({value:String(value),label: `${value*100}%`}));
 const modes = shaderPreviewModes;
 const controlLayout = shaderControlLayout;
@@ -36,13 +37,16 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
   const mode = (path:readonly string[]) => bind('Select',path,derive(s=>settings(s).application.project.preview.mode==='canvas'?'canvas':settings(s).application.project.preview.mesh,value=>({value,options:modes,layout:{...controlLayout,width:120},a11y:{label:'预览模式'}})));
   let tree: HYNode;
   if (part === 'project') {
-    tree=hyNode('Column',root,{layout:{gap:4,padding:[4,8,4,8]}},{children:[
-      hyNode('FormGroup','name',{label:'作品名称'},{children:[bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:controlLayout,a11y:{label:'作品名称'}})))]}),
-      hyNode('Row','actions',{layout:{gap:8}},{children:[
-        bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:flags&1?'正在保存…':'保存作品',busy:!!(flags&1),disabled:!!(flags&2),layout:controlLayout}))),
-        hyNode('Button','information',{text:'工程设置',layout:controlLayout}),
+    tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:8,padding:[4,8,4,8]}},{children:[
+      hyNode('Row','name',{layout:{gap:8,align:'center',maxWidth:320}},{children:[
+        hyNode('Text','label',{text:'作品名称',wrap:false,layout:{width:56,minWidth:56}}),
+        bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:180,minWidth:80,maxWidth:240,grow:1},a11y:{label:'作品名称'}}))),
       ]}),
-      bind('Text',['status'],derive(saveMessage,text=>({text,wrap:true}))),
+      hyNode('Row','actions',{layout:{column:1,gap:6,align:'center'}},{children:[
+        bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:editorIcons.save,busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'正在保存…':'保存作品'}}))),
+        bind('Button',['actions','export'],derive(s=>s.composing,disabled=>({text:editorIcons.export,disabled,layout:editorIconLayout,a11y:{label:'导出工程'}}))),
+      ]}),
+      bind('Text',['status'],derive(saveFeedback,text=>({text,visible:!!text,wrap:true,layout:{row:1}}))),
       bind('Dialog',['information'],derive(s=>s.informationOpen,open=>({open,title:'工程设置',dismissible:true,layout:{gap:12}})),[
         bind('Text',['information','identity'],derive(s=>`${settings(s).application.project.name}\n工程 ${settings(s).application.project.id}`,text=>({text,wrap:true}))),
         hyNode('Row','scale-row',{layout:{gap:8,align:'stretch'}},{children:[hyNode('Text','label',{text:'渲染分辨率',layout:{grow:1,align:'center'}}),scale(['information','scale-row','scale'])]}),
@@ -51,9 +55,9 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
     ]});
   } else if (part === 'toolbar') {
     tree=hyNode('Scroll',root,{axis:'horizontal',layout:{height:56}},{children:[hyNode('Row','controls',{layout:{gap:6,padding:[4,8,4,8],align:'center'}},{children:[
-      bind('Button',['controls','run'],derive(s=>(s.application.compile.status==='compiling'?1:0)+(s.composing?2:0),flags=>({text:flags&1?'编译中':'运行',busy:!!(flags&1),disabled:!!(flags&2),layout:{...controlLayout,width:80}}))),
-      bind('Button',['controls','play'],derive(s=>s.application.playing,playing=>({text:playing?'暂停':'播放',layout:{...controlLayout,width:64}}))),scale(['controls','scale']),
-      hyNode('Button','reset',{text:'重置',layout:{...controlLayout,width:64}}),hyNode('Button','step',{text:'单帧',layout:{...controlLayout,width:64}}),
+      bind('Button',['controls','run'],derive(s=>(s.application.compile.status==='compiling'?1:0)+(s.composing?2:0),flags=>({text:editorIcons.run,busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'编译中':'运行',description:'Ctrl / ⌘ + Enter'}}))),
+      bind('Button',['controls','play'],derive(s=>s.application.playing,playing=>({text:playing?editorIcons.pause:editorIcons.play,layout:editorIconLayout,a11y:{label:playing?'暂停':'播放'}}))),scale(['controls','scale']),
+      hyNode('Button','reset',{text:editorIcons.reset,layout:editorIconLayout,a11y:{label:'重置',description:'重置时间与 Buffer'}}),hyNode('Button','step',{text:editorIcons.step,layout:editorIconLayout,a11y:{label:'单帧',description:'暂停并前进一帧'}}),
     ]})]});
   } else {
     tree=bind('PlatformView',[],derive(s=>part==='preview'?s.application.session:`${s.application.session}:${s.application.activePass}`,resourceId=>({slot:part==='preview'?'gpu-preview':'code-editor',resourceId,layout:{grow:1,clip:true},a11y:{label:part==='preview'?'Shader 渲染画布':'代码编辑器'}})));

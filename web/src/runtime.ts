@@ -5,6 +5,8 @@ import { type PassId, type ShaderProject, type ShaderPass, type ShaderDiagnostic
 import { resolveChannelBindings, channelDiagnostic } from './channelBindings.js';
 import { refreshProjectSources } from './sourceProject.js';
 import { translateHlsl } from './hlsl.js';
+import { translateWgsl } from './wgsl.js';
+import { FrameRate } from '../../shared/dist/views/frame-rate.js';
 import { builtinTexture } from './builtinTextures.js';
 import { KeyboardState, keyboardCode } from './keyboardTexture.js';
 import { VideoSource } from './videoTexture.js';
@@ -79,6 +81,7 @@ export class ShaderRuntime {
   private failed = false;
   private generation = 0;
   private frame = 0;
+  private frameRate = new FrameRate();
   private time = 0;
   private delta = 0;
   private width = 0;
@@ -129,12 +132,12 @@ export class ShaderRuntime {
     });
     this.engine.run();
   }
-  private fail(message: string) { if (this.dead) return; this.failed = true; this.sound.mute(); this.syncVideos(); this.engine.stop(); this.onError?.(message); }
+  private fail(message: string) { if (this.dead) return; this.failed = true; this.frameRate.reset();this.sound.mute(); this.syncVideos(); this.engine.stop(); this.onError?.(message); }
 
   async prepare(project: ShaderProject): Promise<PreparedShader> {
     if (this.dead || this.failed) throw new Error('GPU 预览不可用，请重新加载。');
     const snapshot = validateProject(project), generation = ++this.generation;
-    const linked = await refreshProjectSources(snapshot, translateHlsl); if (linked.length) throw new CompileError(linked);
+    const linked = await refreshProjectSources(snapshot, translateHlsl, translateWgsl); if (linked.length) throw new CompileError(linked);
     const result: PreparedShader = { project: snapshot, passes: [], images: new Map(), videos: new Map(), diagnostics: [], generation };
     const device = this.engine.device;
     try {
@@ -264,13 +267,13 @@ export class ShaderRuntime {
     this.active?.videos.forEach(source => source.play(enabled));
     this.cameraInput.configure(this.active ? cameraFacing(this.active.project) : null, enabled);
   }
-  setPlaying(value: boolean) { this.playing = value; this.syncSound(); this.syncVideos(); }
-  setVisible(value: boolean) { this.visible = value; this.syncSound(); if (!value) { this.keyboard.release(); this.dirty = true; } this.syncVideos(); if (value && !this.failed) this.engine.run(); else this.engine.stop(); }
+  setPlaying(value: boolean) { if(value!==this.playing)this.frameRate.reset();this.playing = value; this.syncSound(); this.syncVideos(); }
+  setVisible(value: boolean) { if(value!==this.visible)this.frameRate.reset();this.visible = value; this.syncSound(); if (!value) { this.keyboard.release(); this.dirty = true; } this.syncVideos(); if (value && !this.failed) this.engine.run(); else this.engine.stop(); }
   setBufferPreviews(projectId: string, previews: readonly BufferPreview[]) { this.bufferPreviewProject = projectId; this.bufferPreviews?.set(previews); }
-  reset() { this.keyboard.reset(); this.active?.videos.forEach(source => source.reset()); this.syncVideos(); this.bufferPreviews?.invalidate(); this.time = 0; this.sound.pause(); this.syncSound(); this.frame = 0; this.delta = 0; this.clearTargets(); this.dirty = true; }
+  reset() { this.frameRate.reset();this.keyboard.reset(); this.active?.videos.forEach(source => source.reset()); this.syncVideos(); this.bufferPreviews?.invalidate(); this.time = 0; this.sound.pause(); this.syncSound(); this.frame = 0; this.delta = 0; this.clearTargets(); this.dirty = true; }
   // Offscreen passes can advance immediately; the surface is presented only inside Haiyue's frame loop.
   step() { this.setPlaying(false); this.active?.videos.forEach(source => source.step(1 / 60)); this.render(1 / 60, true); }
-  status() { return { ready: Boolean(this.active) && !this.failed, frame: this.frame, time: this.time, playing: this.playing, width: this.width, height: this.height, mode: this.mode, sound: { ready: !!this.active?.audio, audible: this.sound.armed, playing: this.sound.playing, continuous: true, bufferedUntil: this.sound.bufferedUntil, exportDuration: this.soundExportDuration, sampleRate: SOUND_RATE }, bufferFormat: this.bufferFormat, camera: { theta: this.camera.theta, phi: this.camera.phi, radius: this.camera.radius } }; }
+  status() { return { ready: Boolean(this.active) && !this.failed, frame: this.frame, time: this.time, fps: this.frameRate.value, playing: this.playing, width: this.width, height: this.height, mode: this.mode, sound: { ready: !!this.active?.audio, audible: this.sound.armed, playing: this.sound.playing, continuous: true, bufferedUntil: this.sound.bufferedUntil, exportDuration: this.soundExportDuration, sampleRate: SOUND_RATE }, bufferFormat: this.bufferFormat, camera: { theta: this.camera.theta, phi: this.camera.phi, radius: this.camera.radius } }; }
   private texture(width: number, height: number, format: GPUTextureFormat, label: string, cube = false): Texture {
     const texture = this.engine.device.createTexture({ label: `ShaderEditor.${label}`, size: [width, height, cube ? 6 : 1], format,
       usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC });
@@ -333,7 +336,7 @@ export class ShaderRuntime {
         const pass = encoder.beginRenderPass({ label: `ShaderEditor.${compiled.pass.id}`, colorAttachments: [{ view: this.targets.get(compiled.pass.id)![next]!.view, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 0] }] });
         pass.setPipeline(compiled.pipeline); pass.setBindGroup(0, compiled.group); pass.setBindGroup(1, this.emptyGroup); pass.setBindGroup(2, group); pass.draw(3); pass.end();
       }
-      device.queue.submit([encoder.finish()]); this.current = next; this.frame++; this.dirty = this.keyboard.endFrame();
+      device.queue.submit([encoder.finish()]); this.current = next; this.frame++; if(this.playing && this.visible && !document.hidden && !step)this.frameRate.tick(performance.now()); this.dirty = this.keyboard.endFrame();
     }
     const output = this.targets.get('image')![this.current]!;
     if (this.mode === 'canvas') { if (!step) this.present(output); }
@@ -400,7 +403,7 @@ export class ShaderRuntime {
     this.canvas.addEventListener('pointermove', move, options);
     const up = (event: PointerEvent) => { if (event.pointerId !== this.pointer) return; this.pressed = false; this.mouse[2] = -Math.abs(this.mouse[2]!); this.mouse[3] = -Math.abs(this.mouse[3]!); if (this.mode === 'canvas') this.dirty = true; };
     this.canvas.addEventListener('pointerup', up, options); this.canvas.addEventListener('pointercancel', up, options); this.canvas.addEventListener('lostpointercapture', up, options);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) releaseKeys(); this.syncSound(); this.syncVideos(); if (document.hidden) this.engine.stop(); else if (this.visible && !this.failed) this.engine.run(); }, options);
+    document.addEventListener('visibilitychange', () => { this.frameRate.reset();if (document.hidden) releaseKeys(); this.syncSound(); this.syncVideos(); if (document.hidden) this.engine.stop(); else if (this.visible && !this.failed) this.engine.run(); }, options);
   }
   async dispose() {
     if (this.dead) return; this.dead = true; this.cameraInput.dispose(); if (this.cameraTexture) this.retire([this.cameraTexture.texture]); await this.sound.dispose(); this.invalidate(); this.engine.stop(); this.lifecycle.abort(); this.orbit?.dispose();
