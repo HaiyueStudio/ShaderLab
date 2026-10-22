@@ -41,14 +41,14 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
   if (part === 'project') {
     tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:8,padding:[4,8,4,8]}},{children:[
       hyNode('Row','name',{layout:{gap:8,align:'center',maxWidth:320}},{children:[
-        bind('Text',['name','label'],()=>({text:'作品名称',wrap:false,layout:{width:56,minWidth:56}})),
+        bind('Text',['name','label'],()=>({text:'作品名称',textStyle:'caption',tone:'muted',wrap:false,layout:{width:56,minWidth:56}})),
         bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:180,minWidth:80,maxWidth:240,grow:1},a11y:{label:'作品名称'}}))),
       ]}),
       hyNode('Row','actions',{layout:{column:1,gap:6,align:'center'}},{children:[
-        bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:editorIcons.save,busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'正在保存…':'保存作品'}}))),
-        bind('Button',['actions','export'],derive(s=>s.composing,disabled=>({text:editorIcons.export,disabled,layout:editorIconLayout,a11y:{label:'导出工程'}}))),
+        bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:'',icon:editorIcons.save,variant:'primary',size:'compact',busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'正在保存…':'保存作品'}}))),
+        bind('Button',['actions','export'],derive(s=>s.composing,disabled=>({text:'',icon:editorIcons.export,variant:'quiet',size:'compact',disabled,layout:editorIconLayout,a11y:{label:'导出工程'}}))),
       ]}),
-      bind('Text',['status'],derive(saveFeedback,text=>({text,visible:!!text,wrap:true,layout:{row:1}}))),
+      bind('Text',['status'],derive(saveFeedback,text=>({text,textStyle:'caption',tone:'muted',visible:!!text,wrap:true,layout:{row:1}}))),
       bind('Dialog',['information'],derive(s=>s.informationOpen,open=>({open,title:'工程设置',dismissible:true,layout:{gap:12}})),[
         bind('Text',['information','identity'],derive(s=>`${settings(s).application.project.name}\n工程 ${settings(s).application.project.id}`,text=>({text,wrap:true}))),
         hyNode('Row','scale-row',{layout:{gap:8,align:'stretch'}},{children:[hyNode('Text','label',{text:'渲染分辨率',layout:{grow:1,align:'center'}}),scale(['information','scale-row','scale'])]}),
@@ -57,9 +57,9 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
     ]});
   } else if (part === 'toolbar') {
     tree=hyNode('Scroll',root,{axis:'horizontal',layout:{height:56}},{children:[hyNode('Row','controls',{layout:{gap:6,padding:[4,8,4,8],align:'center'}},{children:[
-      bind('Button',['controls','run'],derive(s=>(s.application.compile.status==='compiling'?1:0)+(s.composing?2:0),flags=>({text:editorIcons.run,busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'编译中':'运行',description:'Ctrl / ⌘ + Enter'}}))),
-      bind('Button',['controls','play'],derive(s=>s.application.playing,playing=>({text:playing?editorIcons.pause:editorIcons.play,layout:editorIconLayout,a11y:{label:playing?'暂停':'播放'}}))),scale(['controls','scale']),
-      hyNode('Button','reset',{text:editorIcons.reset,layout:editorIconLayout,a11y:{label:'重置',description:'重置时间与 Buffer'}}),hyNode('Button','step',{text:editorIcons.step,layout:editorIconLayout,a11y:{label:'单帧',description:'暂停并前进一帧'}}),
+      bind('Button',['controls','run'],derive(s=>(s.application.compile.status==='compiling'?1:0)+(s.composing?2:0),flags=>({text:'',icon:editorIcons.run,variant:'primary',size:'compact',busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'编译中':'运行',description:'Ctrl / ⌘ + Enter'}}))),
+      bind('Button',['controls','play'],derive(s=>s.application.playing,playing=>({text:'',icon:playing?editorIcons.pause:editorIcons.play,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:playing?'暂停':'播放'}}))),scale(['controls','scale']),
+      hyNode('Button','reset',{text:'',icon:editorIcons.reset,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:'重置',description:'重置时间与 Buffer'}}),hyNode('Button','step',{text:'',icon:editorIcons.step,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:'单帧',description:'暂停并前进一帧'}}),
     ]})]});
   } else {
     tree=bind('PlatformView',[],derive(s=>part==='preview'?s.application.session:`${s.application.session}:${s.application.activePass}`,resourceId=>({slot:part==='preview'?'gpu-preview':'code-editor',resourceId,layout:{grow:1,clip:true},a11y:{label:part==='preview'?'Shader 渲染画布':'代码编辑器'}})));

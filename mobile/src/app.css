@@ -26,7 +26,7 @@ Button.primary { background-color:#554cc6; color:#eef0ff; border-color:#8177f2; 
 Button.danger { color:#dd6f91; }
 Button.selected { background-color:#554cc6; border-color:#8177f2; }
 Label { color:#eef0ff; font-size:14; }
-Label.title { font-size:25; font-weight:bold; margin:12 0; }
+Label.title { font-size:24; font-weight:bold; margin:12 0; }
 Label.section { font-size:18; color:#eef0ff; margin:16 0 12; }
 Label.muted { color:#a9add4; font-size:12; }
 Label.status { color:#a9add4; background-color:#10132f; }

@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@haiyue/engine": "0.2.0",
-    "@haiyue/native": "0.1.4-m24.21",
-    "@haiyue/ui": "0.2.0-m24.6",
+    "@haiyue/native": "0.1.4-p1.5",
+    "@haiyue/ui": "0.2.1-p1.3",
     "@nativescript/canvas": "2.1.18",
     "@nativescript/core": "9.1.1",
     "core-js-pure": "3.50.0"

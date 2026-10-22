@@ -1,26 +1,31 @@
 import {createProject,passOf,type ShaderLanguage,type ShaderProject} from './model.js';
+import {legacyPracticeStarters} from './practice-legacy-starters.js';
 
 export type PracticeText = readonly [string,string];
 export interface PracticeChallenge {id:string;title:PracticeText;level:1|2|3;topic:PracticeText;goal:PracticeText;hint:PracticeText;reference:string}
 export const PRACTICE_SIZE=256;
-export const PRACTICE_HELPERS=`const BG = vec3f(0.03, 0.04, 0.08);
-const INK = vec3f(0.24, 0.83, 0.69);
-const GOLD = vec3f(1.0, 0.55, 0.28);
-const PI = 3.14159265359;
-fn mask(d: f32) -> f32 { return 1.0-smoothstep(-0.008,0.008,d); }
-fn box(p: vec2f,b: vec2f) -> f32 { let q=abs(p)-b; return length(max(q,vec2f(0.0)))+min(max(q.x,q.y),0.0); }
-fn segment(p: vec2f,a: vec2f,b: vec2f) -> f32 {let q=p-a; let v=b-a; return length(q-v*clamp(dot(q,v)/dot(v,v),0.0,1.0));}
-fn rotate(p: vec2f,a: f32) -> vec2f {return vec2f(cos(a)*p.x-sin(a)*p.y,sin(a)*p.x+cos(a)*p.y);}
-`;
-const wrap=(body:string)=>PRACTICE_HELPERS+`fn mainImage(fragCoord: vec2f) -> vec4f {
-  let uv = fragCoord / iResolution.xy;
-  let p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;
-  ${body}
-}`;
+const referenceDeclarations:Readonly<Record<string,string>>={
+  BG:'const BG = vec3f(0.03, 0.04, 0.08);',
+  INK:'const INK = vec3f(0.24, 0.83, 0.69);',
+  GOLD:'const GOLD = vec3f(1.0, 0.55, 0.28);',
+  PI:'const PI = 3.14159265359;',
+  mask:'fn mask(d: f32) -> f32 { return 1.0-smoothstep(-0.008,0.008,d); }',
+  box:'fn box(p: vec2f,b: vec2f) -> f32 { let q=abs(p)-b; return length(max(q,vec2f(0.0)))+min(max(q.x,q.y),0.0); }',
+  segment:'fn segment(p: vec2f,a: vec2f,b: vec2f) -> f32 {let q=p-a; let v=b-a; return length(q-v*clamp(dot(q,v)/dot(v,v),0.0,1.0));}',
+  rotate:'fn rotate(p: vec2f,a: f32) -> vec2f {return vec2f(cos(a)*p.x-sin(a)*p.y,sin(a)*p.x+cos(a)*p.y);}',
+};
+// These authored bodies use independent helpers. Include only referenced names;
+// local coordinates belong to mainImage, not to a shared starter template.
+const wrap=(body:string)=>{
+  const uses=(name:string)=>new RegExp('\\b'+name+'\\b').test(body);
+  const declarations=Object.entries(referenceDeclarations).filter(([name])=>uses(name)).map(([,code])=>code);
+  const coordinates=[...(uses('uv')?['  let uv = fragCoord / iResolution.xy;']:[]),...(uses('p')?['  let p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;']:[])];
+  return [...declarations,'fn mainImage(fragCoord: vec2f) -> vec4f {',...coordinates,'  '+body,'}'].join('\n');
+};
 const fill=(distance:string)=>`return vec4f(mix(BG, INK, mask(${distance})),1.0);`;
 const definitions: Array<[string,PracticeText,1|2|3,PracticeText,PracticeText,PracticeText,string]> = [
   ["first-color", ["第一抹颜色", "First color"], 1, ["颜色", "Color"], ["所有像素输出 INK，Alpha 为 1。", "Output INK at every pixel with alpha 1."], ["直接返回一个四维颜色。", "Return a four-component color."], "return vec4f(INK,1.0);"],
-  ["uv-map", ["坐标画布", "UV canvas"], 1, ["颜色", "Color"], ["输出 RGB = (uv.x, uv.y, 0.25)。", "Output RGB = (uv.x, uv.y, 0.25)."], ["uv 已按分辨率归一化。", "uv is already normalized."], "return vec4f(uv,0.25,1.0);"],
+  ["uv-map", ["坐标画布", "UV canvas"], 1, ["颜色", "Color"], ["输出 RGB = (uv.x, uv.y, 0.25)。", "Output RGB = (uv.x, uv.y, 0.25)."], ["先把像素坐标除以分辨率，得到 uv。", "Divide pixel coordinates by the resolution to get uv."], "return vec4f(uv,0.25,1.0);"],
   ["horizontal-gradient", ["水平渐变", "Horizontal gradient"], 1, ["颜色", "Color"], ["由 BG 向 GOLD 线性插值，权重为 uv.x。", "Linearly blend BG to GOLD using uv.x."], ["使用 mix，注意权重范围 0–1。", "Use mix with a weight from 0 to 1."], "return vec4f(mix(BG,GOLD,uv.x),1.0);"],
   ["vertical-gradient", ["垂直渐变", "Vertical gradient"], 1, ["颜色", "Color"], ["由 BG 向 GOLD 线性插值，权重为 uv.y。", "Linearly blend BG to GOLD using uv.y."], ["使用 mix，注意权重范围 0–1。", "Use mix with a weight from 0 to 1."], "return vec4f(mix(BG,GOLD,uv.y),1.0);"],
   ["diagonal-gradient", ["对角渐变", "Diagonal gradient"], 1, ["颜色", "Color"], ["由 BG 向 GOLD 线性插值，权重为 (uv.x + uv.y) / 2。", "Linearly blend BG to GOLD using (uv.x + uv.y) / 2."], ["使用 mix，注意权重范围 0–1。", "Use mix with a weight from 0 to 1."], "return vec4f(mix(BG,GOLD,(uv.x+uv.y)*0.5),1.0);"],
@@ -31,18 +36,18 @@ const definitions: Array<[string,PracticeText,1|2|3,PracticeText,PracticeText,Pr
   ["ring", ["圆环", "Ring"], 1, ["几何", "Geometry"], ["半径 0.55、半厚度 0.06 的圆环。", "A ring of radius 0.55 and half-thickness 0.06."], ["距离为负时在图形内部，用 mask(distance) 混合 BG 与 INK。", "Negative distances are inside; blend BG and INK with mask(distance)."], "@fill:abs(length(p)-0.55)-0.06"],
   ["rectangle", ["矩形", "Rectangle"], 1, ["几何", "Geometry"], ["半宽 0.65、半高 0.35 的矩形。", "A box with half-width 0.65 and half-height 0.35."], ["距离为负时在图形内部，用 mask(distance) 混合 BG 与 INK。", "Negative distances are inside; blend BG and INK with mask(distance)."], "@fill:box(p,vec2f(0.65,0.35))"],
   ["cross", ["十字", "Cross"], 1, ["几何", "Geometry"], ["两个矩形的并集，半尺寸分别为 (0.65,0.15) 和 (0.15,0.65)。", "Union of boxes with half-sizes (0.65,0.15) and (0.15,0.65)."], ["距离为负时在图形内部，用 mask(distance) 混合 BG 与 INK。", "Negative distances are inside; blend BG and INK with mask(distance)."], "@fill:min(box(p,vec2f(0.65,0.15)),box(p,vec2f(0.15,0.65)))"],
-  ["ellipse", ["椭圆", "Ellipse"], 2, ["几何", "Geometry"], ["椭圆半轴 (0.75,0.4)，使用缩放坐标后的圆距离。", "Ellipse axes (0.75,0.4), using the circle distance in scaled coordinates."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:length(p/vec2f(0.75,0.4))-1.0"],
-  ["rounded-box", ["圆角卡片", "Rounded card"], 2, ["几何", "Geometry"], ["矩形半尺寸 (0.5,0.3)，距离减去圆角半径 0.15。", "Box half-size (0.5,0.3), subtract radius 0.15 from its distance."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:box(p,vec2f(0.5,0.3))-0.15"],
-  ["capsule", ["胶囊", "Capsule"], 2, ["几何", "Geometry"], ["端点 (−0.5,−0.3) 与 (0.5,0.3)，半径 0.18。", "Endpoints (−0.5,−0.3), (0.5,0.3), radius 0.18."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:segment(p,vec2f(-0.5,-0.3),vec2f(0.5,0.3))-0.18"],
-  ["diamond", ["菱形", "Diamond"], 2, ["几何", "Geometry"], ["四个顶点在坐标轴 ±0.7，距离为 (|x|+|y|−0.7)/√2。", "Vertices at ±0.7 on each axis; distance (|x|+|y|−0.7)/√2."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:(abs(p.x)+abs(p.y)-0.7)/sqrt(2.0)"],
-  ["triangle", ["等边三角形", "Equilateral triangle"], 2, ["几何", "Geometry"], ["三条边的距离为 −y−0.35、0.8660254x+0.5y−0.35、−0.8660254x+0.5y−0.35；取最大值。", "Take the maximum of −y−0.35, 0.8660254x+0.5y−0.35, −0.8660254x+0.5y−0.35."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:max(-p.y-0.35,max(0.8660254*p.x+0.5*p.y-0.35,-0.8660254*p.x+0.5*p.y-0.35))"],
-  ["hexagon", ["蜂巢单元", "Hexagon"], 2, ["几何", "Geometry"], ["正六边形，距离 max(|y|,0.8660254|x|+0.5|y|)−0.55。", "Hexagon distance max(|y|,0.8660254|x|+0.5|y|)−0.55."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:max(abs(p.y),0.8660254*abs(p.x)+0.5*abs(p.y))-0.55"],
-  ["star", ["五角星光", "Five-point star"], 2, ["几何", "Geometry"], ["极坐标轮廓半径 r=0.5+0.18cos(5θ)，θ=atan2(y,x)。", "Polar radius r=0.5+0.18cos(5θ), θ=atan2(y,x)."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:length(p)-(0.5+0.18*cos(5.0*atan2(p.y,p.x)))"],
-  ["union", ["两个圆的并集", "Circle union"], 2, ["几何", "Geometry"], ["两个半径 0.4 的圆，圆心 (±0.25,0)，取并集。", "Union of radius-0.4 circles centered at (±0.25,0)."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:min(length(p+vec2f(0.25,0.0))-0.4,length(p-vec2f(0.25,0.0))-0.4)"],
-  ["intersection", ["两个圆的交集", "Circle intersection"], 2, ["几何", "Geometry"], ["两个半径 0.5 的圆，圆心 (±0.25,0)，取交集。", "Intersection of radius-0.5 circles centered at (±0.25,0)."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:max(length(p+vec2f(0.25,0.0))-0.5,length(p-vec2f(0.25,0.0))-0.5)"],
-  ["cutout", ["月牙", "Crescent"], 2, ["几何", "Geometry"], ["从原点半径 0.6 的圆减去圆心 (0.28,0.12)、半径 0.5 的圆。", "Subtract the circle at (0.28,0.12), radius 0.5, from the centered circle of radius 0.6."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:max(length(p)-0.6,-(length(p-vec2f(0.28,0.12))-0.5))"],
-  ["rotation", ["旋转方块", "Rotated box"], 2, ["几何", "Geometry"], ["半尺寸 (0.5,0.3) 的矩形逆时针旋转 π/4。", "Rotate a box of half-size (0.5,0.3) counterclockwise by π/4."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:box(rotate(p,-PI/4.0),vec2f(0.5,0.3))"],
-  ["tiles", ["重复圆点", "Repeated discs"], 2, ["图案", "Patterns"], ["5×5 单元，每格局部坐标 fract(uv×5)−0.5，圆半径 0.3；mask 用局部距离。", "5×5 cells; local coordinates fract(uv×5)−0.5, radius 0.3; apply mask to the local distance."], ["组合距离场，最后用统一的 mask 函数绘制。", "Combine distance fields, then use the supplied mask function."], "@fill:length(fract(uv*5.0)-vec2f(0.5))-0.3"],
+  ["ellipse", ["椭圆", "Ellipse"], 2, ["几何", "Geometry"], ["椭圆半轴 (0.75,0.4)，使用缩放坐标后的圆距离。", "Ellipse axes (0.75,0.4), using the circle distance in scaled coordinates."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:length(p/vec2f(0.75,0.4))-1.0"],
+  ["rounded-box", ["圆角卡片", "Rounded card"], 2, ["几何", "Geometry"], ["矩形半尺寸 (0.5,0.3)，距离减去圆角半径 0.15。", "Box half-size (0.5,0.3), subtract radius 0.15 from its distance."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:box(p,vec2f(0.5,0.3))-0.15"],
+  ["capsule", ["胶囊", "Capsule"], 2, ["几何", "Geometry"], ["端点 (−0.5,−0.3) 与 (0.5,0.3)，半径 0.18。", "Endpoints (−0.5,−0.3), (0.5,0.3), radius 0.18."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:segment(p,vec2f(-0.5,-0.3),vec2f(0.5,0.3))-0.18"],
+  ["diamond", ["菱形", "Diamond"], 2, ["几何", "Geometry"], ["四个顶点在坐标轴 ±0.7，距离为 (|x|+|y|−0.7)/√2。", "Vertices at ±0.7 on each axis; distance (|x|+|y|−0.7)/√2."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:(abs(p.x)+abs(p.y)-0.7)/sqrt(2.0)"],
+  ["triangle", ["等边三角形", "Equilateral triangle"], 2, ["几何", "Geometry"], ["三条边的距离为 −y−0.35、0.8660254x+0.5y−0.35、−0.8660254x+0.5y−0.35；取最大值。", "Take the maximum of −y−0.35, 0.8660254x+0.5y−0.35, −0.8660254x+0.5y−0.35."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:max(-p.y-0.35,max(0.8660254*p.x+0.5*p.y-0.35,-0.8660254*p.x+0.5*p.y-0.35))"],
+  ["hexagon", ["蜂巢单元", "Hexagon"], 2, ["几何", "Geometry"], ["正六边形，距离 max(|y|,0.8660254|x|+0.5|y|)−0.55。", "Hexagon distance max(|y|,0.8660254|x|+0.5|y|)−0.55."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:max(abs(p.y),0.8660254*abs(p.x)+0.5*abs(p.y))-0.55"],
+  ["star", ["五角星光", "Five-point star"], 2, ["几何", "Geometry"], ["极坐标轮廓半径 r=0.5+0.18cos(5θ)，θ=atan2(y,x)。", "Polar radius r=0.5+0.18cos(5θ), θ=atan2(y,x)."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:length(p)-(0.5+0.18*cos(5.0*atan2(p.y,p.x)))"],
+  ["union", ["两个圆的并集", "Circle union"], 2, ["几何", "Geometry"], ["两个半径 0.4 的圆，圆心 (±0.25,0)，取并集。", "Union of radius-0.4 circles centered at (±0.25,0)."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:min(length(p+vec2f(0.25,0.0))-0.4,length(p-vec2f(0.25,0.0))-0.4)"],
+  ["intersection", ["两个圆的交集", "Circle intersection"], 2, ["几何", "Geometry"], ["两个半径 0.5 的圆，圆心 (±0.25,0)，取交集。", "Intersection of radius-0.5 circles centered at (±0.25,0)."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:max(length(p+vec2f(0.25,0.0))-0.5,length(p-vec2f(0.25,0.0))-0.5)"],
+  ["cutout", ["月牙", "Crescent"], 2, ["几何", "Geometry"], ["从原点半径 0.6 的圆减去圆心 (0.28,0.12)、半径 0.5 的圆。", "Subtract the circle at (0.28,0.12), radius 0.5, from the centered circle of radius 0.6."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:max(length(p)-0.6,-(length(p-vec2f(0.28,0.12))-0.5))"],
+  ["rotation", ["旋转方块", "Rotated box"], 2, ["几何", "Geometry"], ["半尺寸 (0.5,0.3) 的矩形逆时针旋转 π/4。", "Rotate a box of half-size (0.5,0.3) counterclockwise by π/4."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:box(rotate(p,-PI/4.0),vec2f(0.5,0.3))"],
+  ["tiles", ["重复圆点", "Repeated discs"], 2, ["图案", "Patterns"], ["5×5 单元，每格局部坐标 fract(uv×5)−0.5，圆半径 0.3；mask 用局部距离。", "5×5 cells; local coordinates fract(uv×5)−0.5, radius 0.3; apply mask to the local distance."], ["组合距离场，再实现 mask 函数进行边缘平滑。", "Combine distance fields, then implement mask to smooth the edges."], "@fill:length(fract(uv*5.0)-vec2f(0.5))-0.3"],
   ["wave", ["正弦曲线", "Sine wave"], 3, ["图案", "Patterns"], ["绘制 y=0.35sin(6x)，距离 |y−0.35sin(6x)|−0.025；BG 与 INK。", "Draw y=0.35sin(6x), distance |y−0.35sin(6x)|−0.025; BG and INK."], ["将曲线当作随 x 改变位置的细带。", "Treat the curve as a narrow band."], "@fill:abs(p.y-0.35*sin(p.x*6.0))-0.025"],
   ["rays", ["放射条纹", "Radial rays"], 3, ["图案", "Patterns"], ["θ=atan2(y,x)，权重 step(0,sin(12θ))，混合 BG 和 GOLD。", "θ=atan2(y,x); blend BG and GOLD using step(0,sin(12θ))."], ["使用极坐标角度。", "Use the polar angle."], "return vec4f(mix(BG,GOLD,step(0.0,sin(12.0*atan2(p.y,p.x)))),1.0);"],
   ["ripples", ["同心涟漪", "Concentric ripples"], 3, ["图案", "Patterns"], ["权重 0.5+0.5cos(24|p|)，混合 BG 和 INK。", "Blend BG and INK with 0.5+0.5cos(24|p|)."], ["把径向距离作为波的相位。", "Use radial distance as phase."], "return vec4f(mix(BG,INK,0.5+0.5*cos(24.0*length(p))),1.0);"],
@@ -59,32 +64,15 @@ const definitions: Array<[string,PracticeText,1|2|3,PracticeText,PracticeText,Pr
 export const PRACTICE_CHALLENGES:readonly PracticeChallenge[]=definitions.map(([id,title,level,topic,goal,hint,body])=>({id,title,level,topic,goal,hint,reference:wrap(body.startsWith('@fill:')?fill(body.slice(6)):body)}));
 export function findPractice(id:string){return PRACTICE_CHALLENGES.find(c=>c.id===id);}
 export function practiceStarter(language:ShaderLanguage):string {
-  if(language==='glsl') return `const vec3 BG=vec3(0.03,0.04,0.08), INK=vec3(0.24,0.83,0.69), GOLD=vec3(1.0,0.55,0.28);
-const float PI=3.14159265359;
-float mask(float d){return 1.0-smoothstep(-0.008,0.008,d);}
-float box(vec2 p,vec2 b){vec2 q=abs(p)-b;return length(max(q,vec2(0.0)))+min(max(q.x,q.y),0.0);}
-float segment(vec2 p,vec2 a,vec2 b){vec2 q=p-a,v=b-a;return length(q-v*clamp(dot(q,v)/dot(v,v),0.0,1.0));}
-vec2 rotate(vec2 p,float a){return vec2(cos(a)*p.x-sin(a)*p.y,sin(a)*p.x+cos(a)*p.y);}
-// uv: 0..1; p: -1..1, origin at center
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-  vec2 uv = fragCoord / iResolution.xy;
-  vec2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;
-  // TODO: draw the target
+  if(language==='glsl') return `void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   fragColor = vec4(0.03, 0.04, 0.08, 1.0);
 }`;
-  if(language==='hlsl') return `static const float3 BG=float3(0.03,0.04,0.08), INK=float3(0.24,0.83,0.69), GOLD=float3(1.0,0.55,0.28);
-static const float PI=3.14159265359;
-float mask(float d){return 1.0-smoothstep(-0.008,0.008,d);}
-float box(float2 p,float2 b){float2 q=abs(p)-b;return length(max(q,float2(0.0,0.0)))+min(max(q.x,q.y),0.0);}
-float segment(float2 p,float2 a,float2 b){float2 q=p-a,v=b-a;return length(q-v*clamp(dot(q,v)/dot(v,v),0.0,1.0));}
-float2 rotate(float2 p,float a){return float2(cos(a)*p.x-sin(a)*p.y,sin(a)*p.x+cos(a)*p.y);}
-float4 mainImage(float2 fragCoord) {
-  float2 uv = fragCoord / iResolution.xy;
-  float2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;
-  // TODO: draw the target
+  if(language==='hlsl') return `float4 mainImage(float2 fragCoord) {
   return float4(0.03, 0.04, 0.08, 1.0);
 }`;
-  return wrap('// TODO: draw the target\n  return vec4f(BG,1.0);');
+  return `fn mainImage(fragCoord: vec2f) -> vec4f {
+  return vec4f(0.03, 0.04, 0.08, 1.0);
+}`;
 }
 export function practiceProject(challenge:PracticeChallenge,source:string,language:ShaderLanguage):ShaderProject {
   const p=createProject('Practice · '+challenge.title[0],{ids:{next:()=> 'practice-'+challenge.id},clock:{nowISO:()=> '2026-10-21T00:00:00.000Z'}});
@@ -105,5 +93,5 @@ export interface PracticeProgress {source:string;language:ShaderLanguage;best:nu
 export type PracticeRecords=Record<string,PracticeProgress>;
 export const PRACTICE_STORAGE='haiyue.shaderlab.practice.v1';
 export function parsePracticeRecords(raw:string|null):PracticeRecords {
-  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&['wgsl','glsl','hlsl'].includes(v.language)){result[c.id]={source:v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true};}}}catch{}return result;
+  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&['wgsl','glsl','hlsl'].includes(v.language)){result[c.id]={source:v.source===legacyPracticeStarters[v.language as ShaderLanguage]?practiceStarter(v.language as ShaderLanguage):v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true};}}}catch{}return result;
 }

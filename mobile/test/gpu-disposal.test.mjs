@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
+import {FrameRate} from '../../shared/dist/views/frame-rate.js';
 
 test('final GPU disposal destroys resources before the host destroys the device, without a deferred fence',()=>{
  const destroyed=[],exports={};let fences=0;
@@ -11,7 +12,7 @@ test('final GPU disposal destroys resources before the host destroys the device,
   createSphere3D:()=>({}),createBox3D:()=>({}),createTorus3D:()=>({}),
   LiveCamera:class{dispose(){destroyed.push('camera');}}};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
- vm.runInNewContext(js,{exports,require:()=>fake});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake});
  const engine={device:{features:new Set(),queue:{onSubmittedWorkDone(){fences++;return new Promise(()=>{});}}}};
  const runtime=new exports.NativeShaderRuntime(engine,()=>{},{});
  const resource=name=>({destroy(){destroyed.push(name);}});
@@ -35,7 +36,7 @@ test('prepare owns a validated snapshot before asynchronous source translation m
   refreshProjectSources:async snapshot=>{translated=snapshot;assert.notEqual(snapshot,source);snapshot.passes[0].code='translated';await Promise.resolve();return [{severity:'error',message:'stop before GPU allocation',pass:'image',line:1,column:1}];}};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
  // This JSON path must not need an additional platform structuredClone.
- vm.runInNewContext(js,{exports,require:()=>fake});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake});
  const runtime=new exports.NativeShaderRuntime({device:{features:new Set()}},()=>{},{});
  await assert.rejects(runtime.prepare(source),error=>error instanceof exports.NativeCompileError&&error.diagnostics[0].message==='stop before GPU allocation');
  assert.ok(translated);assert.equal(JSON.stringify(source),before);
@@ -46,7 +47,7 @@ test('frame bindings are reused for both feedback slots and invalidated on textu
  const fake={SphericalTransform3D:noop,BasicMaterial:noop,KeyboardState:noop,LiveCamera:noop,
   createSphere3D:()=>({}),createBox3D:()=>({}),createTorus3D:()=>({})};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
- vm.runInNewContext(js,{exports,require:()=>fake});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake});
  const device={features:new Set(),createBindGroup:descriptor=>{const group={descriptor};groups.push(group);return group;}};
  const runtime=new exports.NativeShaderRuntime({device},()=>{},{}),compiled={layout:{}},view=()=>({view:{}});
  const a=[view(),view(),view(),view()],b=[a[0],view(),a[2],a[3]];
@@ -74,7 +75,7 @@ test('pipeline reuse preserves warnings, owns uniforms and invalidates source, C
   pushErrorScope(){},popErrorScope:async()=>null,createShaderModule(){modules++;return {getCompilationInfo:async()=>({messages:[{type:fail?'error':'warning',message:fail?'invalid shader':'warning',lineNum:1,linePos:1}]})};},
   createRenderPipelineAsync:async()=>{pipelines++;return {};},createBuffer:()=>({destroy(){destroyed++;}}),createBindGroup:()=>({})};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
- vm.runInNewContext(js,{exports,require:()=>fake,GPUShaderStage:{FRAGMENT:1},GPUBufferUsage:{UNIFORM:1,COPY_DST:2}});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake,GPUShaderStage:{FRAGMENT:1},GPUBufferUsage:{UNIFORM:1,COPY_DST:2}});
  const runtime=new exports.NativeShaderRuntime({device},()=>{},{});
  const first=await runtime.prepare(source);
  await assert.rejects(runtime.prepare(null),/invalid project/);assert.throws(()=>runtime.commit(first),/已失效/);
@@ -101,7 +102,7 @@ test('application compile hands off an independent snapshot without validating o
   createSphere3D:()=>({}),createBox3D:()=>({}),createTorus3D:()=>({}),validateProject:()=>{validations++;throw Error('unexpected repeated validation');},
   refreshProjectSources:async snapshot=>{translated=snapshot;snapshot.passes[0].code='generated';await Promise.resolve();return [{severity:'error',message:'stop before GPU allocation',pass:'image',line:1,column:1}];}};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
- vm.runInNewContext(js,{exports,require:()=>fake});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake});
  const runtime=new exports.NativeShaderRuntime({device:{features:new Set()}},()=>{},{});
  app.connect({preview:preparedPreview(()=>({prepare:snapshot=>{handed=snapshot;return runtime.prepareOwnedSnapshot(snapshot);},commit(){},release(){},play(){},step(){},reset(){}}))});
  assert.equal(await app.compile(),false);assert.equal(validations,0);assert.equal(handed,translated);
@@ -113,7 +114,7 @@ test('embedded preview compilation leaves the caller GUI scene active; standalon
  const exports={},noop=class{},switches=[],fake={SphericalTransform3D:noop,BasicMaterial:noop,KeyboardState:noop,LiveCamera:noop,OrbitControl:noop,
   createSphere3D:()=>({}),createBox3D:()=>({}),createTorus3D:()=>({})};
  const js=ts.transpileModule(readFileSync(new URL('../src/gpu-runtime.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
- vm.runInNewContext(js,{exports,require:()=>fake});
+ vm.runInNewContext(js,{exports,require:name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake});
  const engine={device:{features:new Set()},switchScene:scene=>switches.push(scene)};
  let requested=0;
  const embedded=new exports.NativeShaderRuntime(engine,()=>requested++,{},undefined,{size:()=>({width:512,height:288}),output(){}});

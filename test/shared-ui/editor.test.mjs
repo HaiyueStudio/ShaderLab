@@ -98,3 +98,12 @@ test('50 page mounts release subscriptions and late events without disposing the
   }
   assert.equal(application.disposed,false);controller.dispose();application.dispose();
 });
+
+test('shared editor buttons carry vector names, semantic variants and accessible names',()=>{
+ const x=setup(),parts=['project','toolbar'].map(part=>{const r=new Recorder();return {r,page:mountShaderEditorPart(r,x.controller,part)};});
+ try{
+  const buttons=parts.flatMap(({r})=>[...r.nodes.values()].map(e=>e.node).filter(n=>n.kind==='Button'&&n.props.icon));
+  assert.equal(buttons.length,6);for(const {props} of buttons){assert.equal(props.text,'');assert.ok(props.a11y.label);assert.equal(props.layout.minHeight,44);assert.ok(['primary','quiet'].includes(props.variant));}
+  assert.equal(parts[0].r.nodes.get('/shader-project/actions/save').node.props.icon,'save');assert.equal(parts[1].r.nodes.get('/shader-toolbar/controls/play').node.props.icon,'pause');
+ }finally{parts.forEach(({page})=>page.dispose());x.controller.dispose();x.application.dispose();}
+});

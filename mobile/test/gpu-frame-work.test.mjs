@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
+import {FrameRate} from '../../shared/dist/views/frame-rate.js';
 const load=(file,require)=>{const exports={};vm.runInNewContext(ts.transpileModule(readFileSync(new URL(file,import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText,{exports,require});return exports;};
 const {KeyboardState}=load('../../web/src/keyboardTexture.ts',()=>({}));
 function fixture(optimized=true, embedded=false){
  const noop=class{},writes=[],submissions=[],encoders=[],outputs=[];
  const fake={SphericalTransform3D:noop,BasicMaterial:noop,KeyboardState,LiveCamera:class{read(){return null;}},createSphere3D:()=>({}),createBox3D:()=>({}),createTorus3D:()=>({})};
- const {NativeShaderRuntime}=load('../src/gpu-runtime.ts',()=>fake);
+ const {NativeShaderRuntime}=load('../src/gpu-runtime.ts',name=>name.endsWith('/frame-rate.js')?{FrameRate}:fake);
  const device={features:new Set(),queue:{writeTexture(d,data){writes.push({kind:'keys',data:Uint8Array.from(data)});},writeBuffer(b,o,data){writes.push({kind:b.name,data:Array.from(data)});},submit(buffers){submissions.push(buffers);}},createCommandEncoder(){const record=[];encoders.push(record);return {beginRenderPass(d){record.push(d);return {setPipeline(){},setBindGroup(){},draw(){},end(){}};},finish(){return record;}};}};
  const engine={device,width:512,height:288,getOutputView:()=> 'screen'};
  const runtime=new NativeShaderRuntime(engine,()=>{},{},undefined,embedded?{size:()=>({width:512,height:288}),output:t=>outputs.push(t)}:undefined);

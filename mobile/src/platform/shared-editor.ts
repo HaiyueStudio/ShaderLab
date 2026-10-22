@@ -1,4 +1,4 @@
-import { Application, Button, GridLayout, LayoutBase, isIOS, type View } from '@nativescript/core';
+import { Application, GridLayout, LayoutBase, isIOS, type View } from '@nativescript/core';
 import { HYNativeScriptRenderer } from '@haiyue/native/ui';
 import type { HYPlatformView } from '@haiyue/ui/core';
 import { ShaderEditorController, type ShaderEditorPorts } from '../../../shared/dist/views/editor-controller.js';
@@ -23,8 +23,7 @@ export class NativeSharedEditor {
     });
     const renderer=new HYNativeScriptRenderer(host,{safeArea:'host',keyboardDismissLabel:'完成',selectionCancelLabel:'取消',environment:{theme:shaderTheme},platformViews:{'gpu-preview':factory,'code-editor':factory},onError:error=>this.controller.report(error.message)});
     const page=mountShaderEditorPart(renderer,this.controller,part);this.owned.push({renderer,page});
-    const keys=part==='project'?['/shader-project/actions/save','/shader-project/actions/export']:part==='toolbar'?['run','play','reset','step'].map(key=>'/shader-toolbar/controls/'+key):[];
-    for(const key of keys){const button=host.getViewById<Button>(key);if(button){button.fontSize=20;button.padding=0;}}
+
   }
   suspend(){for(const {page} of this.owned)page.suspend();}
   resume(){for(const {page} of this.owned)page.resume();}

@@ -109,7 +109,7 @@ export function localizeProps<P extends object>(props:P):P {
   if(locale==='zh-CN')return props;
   const cached=translated.get(props);if(cached?.locale===locale)return cached.value as P;
   const value={...props} as Record<string,unknown>;
-  for(const key of ['text','label','title','placeholder'])if(typeof value[key]==='string')value[key]=t(value[key]);
+  for(const key of ['text','label','title','placeholder','description'])if(typeof value[key]==='string')value[key]=t(value[key]);
   if(value.a11y){const a=value.a11y as Record<string,string>;value.a11y={...a,...(a.label?{label:t(a.label)}:{}),...(a.description?{description:t(a.description)}:{})};}
   if(Array.isArray(value.options))value.options=value.options.map(option=>({...option,label:t(option.label)}));
   translated.set(props,{locale,value});return value as P;

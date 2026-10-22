@@ -13,7 +13,9 @@ export const shaderAppearance = Object.freeze({
 export const shaderTheme = Object.freeze({
   color: Object.freeze({text:shaderAppearance.color.text,muted:shaderAppearance.color.muted,
     surface:shaderAppearance.color.surface,input:shaderAppearance.color.input,accent:shaderAppearance.color.accent,
-    danger:shaderAppearance.color.danger,border:shaderAppearance.color.border,focus:shaderAppearance.color.focus}),
+    danger:shaderAppearance.color.danger,border:shaderAppearance.color.border,focus:shaderAppearance.color.focus,
+    selected:shaderAppearance.color.selected,pressed:shaderAppearance.color.hover,disabled:shaderAppearance.color.disabled,elevated:shaderAppearance.color.elevated,onAccent:'#ffffff'}),
+  typography:Object.freeze({title:Object.freeze({fontSize:24,lineHeight:32,weight:'bold' as const}),body:Object.freeze({fontSize:14,lineHeight:20}),caption:Object.freeze({fontSize:12,lineHeight:18})}),
   fontSize:shaderAppearance.size.font,lineHeight:shaderAppearance.size.line,gap:shaderAppearance.size.gap,radius:shaderAppearance.size.radius,
 });
 export const shaderControlLayout = Object.freeze({minHeight:shaderAppearance.size.control,minWidth:64});
