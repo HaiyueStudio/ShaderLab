@@ -1,3 +1,4 @@
+@import './editor.css';
 Page { background-color:#101318; color:#e7ecf2; }
 ActionBar { background-color:#151a21; color:#e7ecf2; }
 Button { background-color:#202832; color:#dbe5ed; border-radius:6; margin:3; padding:8 12; min-height:44; font-size:13; text-transform:none; }

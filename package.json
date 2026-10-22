@@ -35,10 +35,10 @@
     "@haiyue/editor-platform": "file:vendor/haiyue-editor-platform-0.1.0.tgz",
     "@haiyue/editor-app-kit": "file:vendor/haiyue-editor-app-kit-0.1.0.tgz",
     "@rollup/plugin-terser": "^1.0.0",
-    "@haiyue/native": "file:vendor/haiyue-native-0.1.4-p1.5.tgz",
+    "@haiyue/native": "file:vendor/haiyue-native-0.1.4-p1.6.tgz",
     "esbuild": "0.25.0",
     "webpack": "5.111.1",
-    "@haiyue/ui": "file:vendor/haiyue-ui-0.2.1-p1.3.tgz"
+    "@haiyue/ui": "file:vendor/haiyue-ui-0.2.1-p1.4.tgz"
   },
   "overrides": {
     "webpack": "5.111.1"

@@ -11,9 +11,9 @@ export function localizedNativeText<V extends Label|Button>(view:V,source:string
   view.text=t(source);const entry={view:new WeakRef(view),source,last:view.text,accessibility};labels.add(entry);entries.set(view,entry);collected.register(view,entry,entry);return view;
 }
 onLocaleChange(()=>{for(const entry of labels){const view=entry.view.deref();if(!view){labels.delete(entry);continue;}if(view.text===entry.last){view.text=t(entry.source);entry.last=view.text;if(view instanceof Button)view.accessibilityLabel=t(entry.accessibility);}}});
-export function installNativeSettings(owner:Page,setMSAA:(value:boolean)=>void=()=>{}) {
+export function installNativeSettings(owner:Page,setMSAA:(value:boolean)=>void=()=>{},options:{inline?:boolean}={}) {
   let active:HYNativeOverlayHandle|undefined;
-  const action=new ActionItem(),gear=new HYNativeButton({text:'',icon:'settings',variant:'quiet',a11y:{label:t('设置')}},shaderTheme);gear.width=44;gear.height=44;localizedNativeText(gear,'','设置');gear.accessibilityIdentifier='app-settings';action.actionView=gear;action.ios.position='right';
+  const action=new ActionItem(),gear=new HYNativeButton({text:'',icon:'settings',variant:'quiet',a11y:{label:t('设置')}},shaderTheme);gear.width=44;gear.height=44;localizedNativeText(gear,'','设置');gear.accessibilityIdentifier='app-settings';if(!options.inline){action.actionView=gear;action.ios.position='right';}
   gear.on('tap',()=>{
     if(active)return;
     const body=new StackLayout();body.padding=20;
@@ -33,5 +33,5 @@ export function installNativeSettings(owner:Page,setMSAA:(value:boolean)=>void=(
     shader.on('tap',()=>{void pick(shader,'首选 Shader 语言',['WGSL','GLSL','HLSL'].map(label=>({value:label,label})),preferences().shaderLanguage.toUpperCase()).then(choice=>{if(active&&choice&&['WGSL','GLSL','HLSL'].includes(choice)){savePreferences({shaderLanguage:choice.toLowerCase() as 'wgsl'|'glsl'|'hlsl'});shader.setPresentation({text:choice,icon:'chevronDown'},shaderTheme);shaderField.update({label:t('首选 Shader 语言'),description:t('用于新建作品和新代码页签，不修改已有代码。')});}}).catch(failure);});
     let restoring=false;msaa.on('checkedChange',()=>{if(restoring)return;try{savePreferences({msaa:msaa.checked});setMSAA(msaa.checked);}catch(error){restoring=true;msaa.checked=preferences().msaa;restoring=false;failure(error);}});
     active=hyShowNativeOverlay(owner,{title:t('设置'),content:body,theme:shaderTheme,height:510,closeLabel:t('关闭'),returnFocus:gear,onClosed:()=>{off();for(const cancel of pickers)cancel();active=undefined;}});
-  });owner.actionBar.actionItems.addItem(action);
+  });if(!options.inline)owner.actionBar.actionItems.addItem(action);return gear;
 }

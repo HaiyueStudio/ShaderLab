@@ -18,7 +18,7 @@ function derive<V,P>(read:(state:ShaderEditorViewState)=>V,create:(value:V)=>P):
 }
 
 /** The exact same fragments and selectors are mounted by Web and NativeScript. */
-export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEditorController, part: ShaderEditorPart): HYPage {
+export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEditorController, part: ShaderEditorPart, presentation:{compact?:boolean}={}): HYPage {
   const root = `shader-${part}`, bindings: HYBinding<ShaderEditorViewState>[] = [];
   const initial = controller.getSnapshot();
   function bind<K extends HYComponentKind>(kind:K,path:readonly string[],select:(s:ShaderEditorViewState)=>HYComponentProps[K],children?:readonly HYNode[],slots?:Readonly<Record<string,readonly HYNode[]>>):HYNode {
@@ -32,19 +32,20 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
   const scale = (path:readonly string[]) => {
     // Preset choices have fixed props. Build their immutable protocol snapshots
     // once, retaining the shared options/layout across subsequent selections.
-    const base=hyNode('Select','scale',{value:String(PREVIEW_SCALES[0]),options:scales,layout:{...controlLayout,width:96,minWidth:96,maxWidth:96},a11y:{label:'渲染分辨率'}}).props;
+    const width=presentation.compact?88:96;
+    const base=hyNode('Select','scale',{value:String(PREVIEW_SCALES[0]),options:scales,layout:{...controlLayout,width,minWidth:width,maxWidth:width},a11y:{label:'渲染分辨率'}}).props;
     const presets=new Map(PREVIEW_SCALES.map(value=>[String(value),hyNode('Select','scale',{...base,value:String(value)}).props]));
     return bind('Select',path,s=>presets.get(String((path[0]==='information'?settings(s):s).application.project.preview.scale))!);
   };
   const mode = (path:readonly string[]) => bind('Select',path,derive(s=>settings(s).application.project.preview.mode==='canvas'?'canvas':settings(s).application.project.preview.mesh,value=>({value,options:modes,layout:{...controlLayout,width:120},a11y:{label:'预览模式'}})));
   let tree: HYNode;
   if (part === 'project') {
-    tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:8,padding:[4,8,4,8]}},{children:[
-      hyNode('Row','name',{layout:{gap:8,align:'center',maxWidth:320}},{children:[
-        bind('Text',['name','label'],()=>({text:'作品名称',textStyle:'caption',tone:'muted',wrap:false,layout:{width:56,minWidth:56}})),
-        bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:180,minWidth:80,maxWidth:240,grow:1},a11y:{label:'作品名称'}}))),
+    tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:presentation.compact?4:8,padding:presentation.compact?[4,0,4,0]:[4,8,4,8]}},{children:[
+      hyNode('Row','name',{layout:{gap:8,align:presentation.compact?'stretch':'center',...(presentation.compact?{}:{maxWidth:320})}},{children:[
+        ...(!presentation.compact?[bind('Text',['name','label'],()=>({text:'作品名称',textStyle:'caption',tone:'muted',wrap:false,layout:{width:56,minWidth:56}}))]:[]),
+        bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:presentation.compact?0:180,minWidth:presentation.compact?56:80,...(presentation.compact?{}:{maxWidth:240}),grow:1},a11y:{label:'作品名称'}}))),
       ]}),
-      hyNode('Row','actions',{layout:{column:1,gap:6,align:'center'}},{children:[
+      hyNode('Row','actions',{layout:{column:1,gap:presentation.compact?0:6,align:'center'}},{children:[
         bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:'',icon:editorIcons.save,variant:'primary',size:'compact',busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'正在保存…':'保存作品'}}))),
         bind('Button',['actions','export'],derive(s=>s.composing,disabled=>({text:'',icon:editorIcons.export,variant:'quiet',size:'compact',disabled,layout:editorIconLayout,a11y:{label:'导出工程'}}))),
       ]}),
@@ -56,7 +57,7 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
       ],{footer:[hyNode('Button','close',{text:'完成',layout:{...controlLayout,align:'end'}})]}),
     ]});
   } else if (part === 'toolbar') {
-    tree=hyNode('Scroll',root,{axis:'horizontal',layout:{height:56}},{children:[hyNode('Row','controls',{layout:{gap:6,padding:[4,8,4,8],align:'center'}},{children:[
+    tree=hyNode('Scroll',root,{axis:'horizontal',layout:{height:presentation.compact?44:56}},{children:[hyNode('Row','controls',{layout:{gap:presentation.compact?0:6,padding:presentation.compact?[0,0,0,0]:[4,8,4,8],align:'center'}},{children:[
       bind('Button',['controls','run'],derive(s=>(s.application.compile.status==='compiling'?1:0)+(s.composing?2:0),flags=>({text:'',icon:editorIcons.run,variant:'primary',size:'compact',busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'编译中':'运行',description:'Ctrl / ⌘ + Enter'}}))),
       bind('Button',['controls','play'],derive(s=>s.application.playing,playing=>({text:'',icon:playing?editorIcons.pause:editorIcons.play,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:playing?'暂停':'播放'}}))),scale(['controls','scale']),
       hyNode('Button','reset',{text:'',icon:editorIcons.reset,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:'重置',description:'重置时间与 Buffer'}}),hyNode('Button','step',{text:'',icon:editorIcons.step,variant:'quiet',size:'compact',layout:editorIconLayout,a11y:{label:'单帧',description:'暂停并前进一帧'}}),

@@ -1,0 +1,14 @@
+/* Native editing workspace: quiet chrome and shared touch target sizes. */
+.editor-project-bar { padding:4 8; background-color:#10132f; border-bottom-width:1; border-color:#343765; }
+.editor-navigation { padding:2 8; background-color:#10132f; }
+.editor-preview { padding:8; }
+.editor-preview-surface { background-color:#0c1029; border-radius:8; }
+.editor-playback { padding:6 0; }
+.editor-code { border-left-width:1; border-color:#343765; }
+.editor-pass-bar { background-color:#10132f; border-bottom-width:1; border-color:#343765; padding:0 8; }
+.editor-code-actions { padding:4 8; background-color:#080b21; border-bottom-width:1; border-color:#343765; }
+.editor-source-surface { background-color:#0d131d; }
+TextView.editor-source { background-color:transparent; font-family:monospace; font-size:13; border-width:0; margin:0; }
+.editor-output-heading { border-top-width:1; border-color:#343765; background-color:#10132f; padding:0 4; }
+.editor-output-body { background-color:#0c1029; padding:8 12; }
+Label.editor-channel-heading { font-size:12; color:#a9add4; margin:8 0; }

@@ -54,7 +54,7 @@ const english:Record<string,string> = {
   '实时渲染帧率':'Live rendering frame rate','准备 WebGPU 预览…':'Preparing WebGPU preview…','重新加载预览':'Reload preview',
   '开启声音':'Enable sound','静音':'Mute','音量':'Volume','导出时长':'Export duration','导出 WAV':'Export WAV','WAV 导出时长':'WAV export duration',
   '纹理通道':'Texture channels','图片 / 视频 / 键盘 / Buffer':'Image / Video / Keyboard / Buffer','静态图片 / 内置纹理 / Cubemap':'Static image / Built-in / Cubemap',
-  '代码语言':'Shader language','切换语言会转换当前代码':'Switching language converts the current code','粘贴时自动识别语言':'Detect language on paste',
+  'Shader 键盘':'Shader keyboard','作品操作':'Project actions','重命名':'Rename','导出作品':'Export project','导入作品':'Import project','保存截图到照片':'Save image to Photos','分享截图':'Share image','导出 Sound WAV':'Export Sound WAV','自动识别':'Detect language','代码语言':'Shader language','切换语言会转换当前代码':'Switching language converts the current code','粘贴时自动识别语言':'Detect language on paste',
   '自动编译':'Auto compile','添加代码页签':'Add code tab','添加 Buffer、Sound 或 Common':'Add Buffer, Sound or Common','启用':'Enabled',
   '内置变量':'Built-in variables','查看内置变量':'Show built-in variables','编译输出':'Compiler output','准备编辑':'Ready to edit','0 个问题':'0 issues',
   '点击运行，查看你的 Shader。':'Run your shader to see the result.','✓ 编译成功 · Haiyue WebGPU':'✓ Compiled · Haiyue WebGPU',
