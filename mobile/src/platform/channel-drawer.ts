@@ -1,5 +1,5 @@
 import {hyShowNativeOverlay,HYNativeCardGrid,type HYNativeOverlayHandle} from '@haiyue/native/ui';
-import {nativeAction,nativeTab} from './presentation';
+import {nativeAction,nativeCardTarget,nativeTab} from './presentation';
 import {t} from '../../../shared/dist/views/i18n.js';
 import { Page, GridLayout, StackLayout, LayoutBase, ScrollView, Button, Label, Image, ImageSource, WebView, Color, isIOS, type View } from '@nativescript/core';
 import { categoriesFor, categoryOf, channelChoices, channelName, type ChannelCategory } from '../../../shared/dist/views/channel-catalog.js';
@@ -23,7 +23,8 @@ export function openNativeChannelDrawer(owner:Page,ports:{
   const release=()=>{closed=true;epoch++;stopVideo();};
   const close=()=>{if(closed)return;overlay.close();};
   const valid=()=>!closed&&session===ports.session();
-  const button=(name:string,action:()=>void|Promise<void>,primary=false)=>{const b=nativeAction(t(name),primary);b.accessibilityLabel=t(name);b.className=primary?'primary':'';b.on('tap',()=>{if(action===close){close();return;}if(!valid()||busy)return;void Promise.resolve().then(action).catch(error=>{if(valid())feedback.text=error instanceof Error?error.message:String(error);});});return b;};
+  const activate=(action:()=>void|Promise<void>)=>()=>{if(action===close){close();return;}if(!valid()||busy)return;void Promise.resolve().then(action).catch(error=>{if(valid())feedback.text=error instanceof Error?error.message:String(error);});};
+  const button=(name:string,action:()=>void|Promise<void>,primary=false)=>{const b=nativeAction(t(name),primary);b.accessibilityLabel=t(name);b.className=primary?'primary':'';b.on('tap',activate(action));return b;};
   const syncSelection=()=>{const current=passOf(ports.project() as ShaderProject,ports.pass).channels[ports.index]!;description.text=t('当前输入：{name}',{name:current.kind==='none'?t('未绑定'):channelName(ports.project(),current)});for(const entry of cards){const selected=JSON.stringify(entry.channel)===JSON.stringify(current);entry.card.borderColor=new Color(selected?c.accent:c.border);entry.button.accessibilityLabel='使用 '+entry.name+(selected?'，已选':'');}};
   const select=async(channel:Channel)=>{if(!valid()||busy)return;busy=true;feedback.text='';try{await ports.bind(channel);if(valid())syncSelection();}finally{busy=false;}};
   tabs.orientation='horizontal';const tabScroll=new ScrollView();tabScroll.orientation='horizontal';tabScroll.content=tabs;GridLayout.setRow(tabScroll,0);panel.addChild(tabScroll);
@@ -40,7 +41,7 @@ export function openNativeChannelDrawer(owner:Page,ports:{
     if(!choices.length)content.addChild(text('暂无素材，上传后即可预览并绑定。',true));
     choices.forEach((choice,index)=>{
       const card=new GridLayout(),contents=new StackLayout();card.className='card';card.borderWidth=1;contents.padding=8;card.addChild(contents);materialCards.push(card);
-      const choose=button('',()=>select(choice.channel));choose.margin=0;choose.borderWidth=0;choose.backgroundColor=new Color('transparent');choose.horizontalAlignment='stretch';choose.verticalAlignment='stretch';
+      const choose=nativeCardTarget();choose.on('tap',activate(()=>select(choice.channel)));
       cards.push({card,channel:choice.channel,button:choose,name:choice.name});
       const image=(src:string,height=110)=>{const view=new Image();view.height=height;view.stretch='aspectFit';view.accessibilityLabel=choice.name+' 预览';view.src=src.startsWith('./assets/')?'~/assets/'+src.slice(9):src.startsWith('data:')?ImageSource.fromBase64Sync(src.slice(src.indexOf(',')+1)):src;return view;};
       if(choice.image)contents.addChild(image(choice.image));

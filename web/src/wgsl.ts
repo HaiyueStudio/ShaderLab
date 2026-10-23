@@ -7,6 +7,7 @@ import { wgslBuiltins as builtins, writtenWgslBuiltins } from './wgslBuiltins.js
 import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
 import { translateWgslToHlsl } from './wgslHlsl.js';
+import { restoreGlslForLoops } from './glslLoops.js';
 
 export interface WgslTranslationOptions {
   entryPoint?: 'image' | 'sound' | 'common';
@@ -136,6 +137,7 @@ export async function translateWgsl(source: string, options: WgslTranslationOpti
     const generated = naga.writeGlsl(module, info, { version: '300 es', stage: 'fragment', entryPoint: prefix + 'Entry', reflect: true, flags: { adjustCoordinateSpace: false, includeUnusedItems: separate } });
     if (/^#extension\b/m.test(generated.code)) throw new Error('此 WGSL 需要 WebGL2 / Shadertoy 不提供的 GLSL 扩展，无法导出。');
     let code = generated.code.replace(/^#version[^\n]*\n|^precision[^\n]*\n/gm, '');
+    if (!options.legacyEntryWrapper) code = restoreGlslForLoops(code);
     const output = /layout\(location = 0\) out vec[24] (\w+);/.exec(code);
     if (!output) throw new Error('编译器未生成可识别的颜色输出。');
     code = code.replace(output[0], '');

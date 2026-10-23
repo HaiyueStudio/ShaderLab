@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { runEditorBrowserScenario } from '../../scripts/editor-e2e/browserDriver.mjs';
 import { examples } from '../dist/examples.js';
+import { createProject } from '../dist/model.js';
 const root = resolve(import.meta.dirname, '../..'),
   out = resolve(root, 'web/artifacts/hlsl-conversion');
 mkdirSync(out, { recursive: true });
@@ -216,6 +217,33 @@ const report = await runEditorBrowserScenario({
       resolve(out, 'editor.png'),
       Buffer.from(shot.result.data, 'base64'),
     );
+    const loopCases = [
+      'var s=0.0;for(var i=0;i<8;i++){if(i==2){continue;}if(s>12.0){break;}s+=f32(i);}return vec4f(s/32.0,0.2,0.4,1.0);',
+      'var s=0.0;for(var i=7;i>=0;i--){if(i==3){continue;}s+=f32(i);}return vec4f(s/32.0,0.2,0.4,1.0);',
+      'var s=0.0;var i=0;for(;i<4;i+=2){for(var j=0;j<3;j++){if(j==1){continue;}s+=f32(i+j);}}return vec4f(s/16.0,f32(i)/8.0,0.3,1.0);',
+      'var s=0.0;for(var i=0;i<bound();i++){s+=f32(i);}return vec4f(s/8.0,f32(limit)/8.0,0.3,1.0);',
+      'var s=0.0;for(var i=0;i<4;i=step(i)){if(i==1){continue;}s+=f32(i);}return vec4f(s/8.0,0.2,0.4,1.0);',
+      'var s=0.0;for(var x=0.0;x<0.4;x+=0.1){s+=x;}return vec4f(s,0.2,0.4,1.0);',
+    ];
+    for(const body of loopCases){
+      const project=createProject('HLSL for parity');
+      project.passes.find(p=>p.id==='image').code=(body.includes('bound()')?'var<private> limit:i32=5;fn bound()->i32{limit-=1;return limit;}':body.includes('step(i)')?'fn step(i:i32)->i32{return i+1;}':'')+'fn mainImage(p:vec2f)->vec4f{'+body+'}';
+      await evaluate('shaderEditor.open('+JSON.stringify(project)+')');await render();
+      const original=await pixel();await choose('image','hlsl');
+      const code=await evaluate('shaderEditor.getProject().passes.find(p=>p.id==="image").hlsl');
+      assert.match(code,/for\s*\(/);assert.doesNotMatch(code,/while\s*\(/);
+      await render();near(await pixel(),original);
+    }
+    // The original HLSL guard exits before running a final update. Shrink its
+    // generated budget to one iteration to check that ordering on a real GPU.
+    const limited=createProject('HLSL iteration guard');
+    limited.passes.find(p=>p.id==='image').code='fn mainImage(p:vec2f)->vec4f{var i=0;var s=0.0;for(;i<4;i++){s+=1.0;}return vec4f(f32(i)/8.0,s/8.0,0.3,1.0);}';
+    await evaluate('shaderEditor.open('+JSON.stringify(limited)+')');await render();await choose('image','hlsl');
+    const bounded=await evaluate('shaderEditor.getProject().passes.find(p=>p.id==="image").hlsl');
+    assert.match(bounded,/uint2\(4294967295u,\s*4294967295u\)/);
+    for(const budget of [0,1]){
+      await source('image',bounded.replace(/uint2\(4294967295u,\s*4294967295u\)/g,'uint2(0u,'+budget+'u)'),'hlsl');await render();near(await pixel(),[0,budget*32,77,255]);
+    }
     const gallery = [];
     for (const example of examples()) {
       await evaluate(
@@ -250,8 +278,10 @@ const report = await runEditorBrowserScenario({
       status: 'passed',
       pixel: [36, 51, 153, 255],
       gallery,
+      loopCases: loopCases.length,
       checks: [
         'real UI selects HLSL and converts current Image / Buffer / Sound',
+        'HLSL for loops retain pixels for nesting, continue, break, effectful tests and continuing calls; iteration budgets zero/one preserve update order',
         'non-symmetric matrix and Buffer texture pixels retain their values across WGSL / HLSL / GLSL',
         'Common stays independent and edits update HLSL without reconverting Passes',
         'converted HLSL Sound produces PCM',

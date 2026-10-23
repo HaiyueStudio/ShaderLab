@@ -43,7 +43,7 @@ export function mountShaderEditorPart(renderer: HYRenderer, controller: ShaderEd
     tree=hyNode('Grid',root,{layout:{columns:[{grow:1},'auto'],rows:['auto','auto'],gap:presentation.compact?4:8,padding:presentation.compact?[4,0,4,0]:[4,8,4,8]}},{children:[
       hyNode('Row','name',{layout:{gap:8,align:presentation.compact?'stretch':'center',...(presentation.compact?{}:{maxWidth:320})}},{children:[
         ...(!presentation.compact?[bind('Text',['name','label'],()=>({text:'作品名称',textStyle:'caption',tone:'muted',wrap:false,layout:{width:56,minWidth:56}}))]:[]),
-        bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:presentation.compact?0:180,minWidth:presentation.compact?56:80,...(presentation.compact?{}:{maxWidth:240}),grow:1},a11y:{label:'作品名称'}}))),
+        bind('TextInput',['name','field'],derive(s=>s.name,value=>({value,placeholder:'作品名称',layout:{...controlLayout,width:presentation.compact?0:180,minWidth:presentation.compact?56:80,...(presentation.compact?{padding:[0,12,0,12] as const}:{maxWidth:240}),grow:1},a11y:{label:'作品名称'}}))),
       ]}),
       hyNode('Row','actions',{layout:{column:1,gap:presentation.compact?0:6,align:'center'}},{children:[
         bind('Button',['actions','save'],derive(s=>(s.application.save.status==='saving'?1:0)+(s.composing?2:0),flags=>({text:'',icon:editorIcons.save,variant:'primary',size:'compact',busy:!!(flags&1),disabled:!!(flags&2),layout:editorIconLayout,a11y:{label:flags&1?'正在保存…':'保存作品'}}))),

@@ -22,7 +22,7 @@ TextField:focus { border-color:${c.focus}; }
 .card Label.section { font-size:16; margin:8 0; }
 .toolbar { background-color:${c.surface}; padding:4; }
 .body { padding:${s.padding}; }
-Button.example-card-target { background-color:transparent; border-width:0; padding:0; margin:0; }
+Button.example-card-target, Button.example-card-target:highlighted { background-color:transparent; border-width:0; padding:0; margin:0; }
 `);
 write('web/styles.css',`
 :root {

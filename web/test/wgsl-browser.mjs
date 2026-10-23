@@ -93,6 +93,22 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint})=>{
   const restored=await compare(texture);native.forEach((v,i)=>v.forEach((x,c)=>assert.ok(Math.abs(x-restored[i][c])<=2,JSON.stringify({native,restored}))));
  };
  await open(p);await roundtrip(false);
+ // Exercise the restored for header on both GPU backends, including continuing
+ // on continue, nested counters, live outer variables and side-effectful tests.
+ const loopBodies=[
+  'var s=0.0;for(var i=0;i<8;i++){if(i==2){continue;}if(s>12.0){break;}s+=f32(i);}return vec4f(s/32.0,p/iResolution.xy,1.0);',
+  'var s=0.0;for(var i=7;i>=0;i--){if(i==3){continue;}s+=f32(i);}return vec4f(s/32.0,0.2,0.4,1.0);',
+  'var s=0.0;var i=0;for(;i<4;i+=2){for(var j=0;j<3;j++){if(j==1){continue;}s+=f32(i+j);}}return vec4f(s/16.0,f32(i)/8.0,0.3,1.0);',
+  'var s=0.0;for(var i=0;;i++){if(i>=4){break;}s+=f32(i);}return vec4f(s/8.0,0.2,0.3,1.0);',
+  'var s=0.0;for(var i=0;i<bound();i++){s+=f32(i);}return vec4f(s/8.0,f32(limit)/8.0,0.3,1.0);',
+ ];
+ for(const body of loopBodies){
+  passOf(p,'image').code=(body.includes('bound()')?'var<private> limit:i32=5;fn bound()->i32{limit-=1;return limit;}':'')+'fn mainImage(p:vec2f)->vec4f{'+body+'}';
+  await open(p);
+  const exported=await call('shader.shadertoy.export',{pass:'image'});
+  assert.match(exported.code,/for\s*\(/);assert.doesNotMatch(exported.code,/loop_init/);
+  await roundtrip(false);
+ }
  // A read-only builtin needs no copy; a writable one must preserve the old
  // value captured before mutation, including mutation through a pointer.
  for(const body of [

@@ -13,9 +13,10 @@ import {
   maskComments,
   renameIdentifiers,
 } from './wgslModules.js';
-import { wgslBuiltins } from './wgslBuiltins.js';
+import { wgslBuiltins, writtenWgslBuiltins } from './wgslBuiltins.js';
 import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
+import { restoreHlslForLoops } from './glslLoops.js';
 
 /** Runtime reads stay external to the Pass. Initializers and array lengths
  * still need constant expressions, including chains such as COUNT=ROWS*COLS. */
@@ -147,6 +148,33 @@ function constantAggregates(code: string) {
   return code;
 }
 
+/** Naga's SSA load temporaries can read host builtins directly when neither
+ * the Pass nor Common writes them. Keep user locals and dynamic indexed snapshots:
+ * reevaluating an index after it changes would change the shader's result.
+ */
+function inlineBuiltinLoads(code: string, readonly: ReadonlySet<string>): string {
+  for (const declaration of declarations(code, 'hlsl').reverse()) {
+    if (!/\([^)]*\)\s*\{/.test(declaration.text)) continue;
+    const aliases: Record<string, string> = {};
+    let text = declaration.text.replace(
+      /\b(?:float|half|int|uint|bool)(?:[234](?:x[234])?)?\s+(_e\d+(?:_\d+)?)\s*(?:\[\d+\])?\s*=\s*(\w+)((?:\s*\.\s*[xyzwrgba]{1,4}|\s*\[\s*[0-3]u?\s*\])*)\s*;/g,
+      (statement, local: string, value: string, suffix: string) => {
+        if (!readonly.has(value)) return statement;
+        // Generated loads are immutable; also leave any matching author local
+        // alone if the output contains a later assignment to that identifier.
+        const rest = declaration.text.replace(statement, '');
+        if (new RegExp(`\\b${local}(?:\\s*\\.\\s*\\w+|\\s*\\[[^\\]]+\\])*\\s*(?:=(?!=)|(?:[+\\-*/%&|^]|<<|>>)=|\\+\\+|--)`).test(rest)) return statement;
+        aliases[local] = value + suffix; return '';
+      },
+    );
+    const mask = maskComments(text);
+    text = text.replace(/\b[A-Za-z_]\w*\b/g, (name, at: number) =>
+      mask.slice(at, at + name.length) === name && !/\.\s*$/.test(mask.slice(0, at)) ? aliases[name] ?? name : name);
+    code = code.slice(0, declaration.start) + text + code.slice(declaration.end);
+  }
+  return code;
+}
+
 /** Naga performs syntax/type lowering. Only the fixed host declarations are
  * removed: generated text remains ordinary mainImage/mainSound HLSL source. */
 export async function translateWgslToHlsl(
@@ -263,7 +291,9 @@ export async function translateWgslToHlsl(
       if (name) emitted[d.name] = name;
       code = code.slice(0, d.start) + code.slice(d.end);
     }
-    code = renameIdentifiers(code, emitted);
+    code = restoreHlslForLoops(renameIdentifiers(code, emitted));
+    const written = new Set([...writtenWgslBuiltins(authored), ...(options.preserveBuiltinAliases ?? [])]);
+    code = inlineBuiltinLoads(code, new Set(wgslBuiltins.filter(name => !written.has(name))));
     const comments = (input: string, output: string) =>
       preserveShaderComments(input, output, {
         from: 'wgsl',

@@ -1,4 +1,5 @@
 import { declarations, renameIdentifiers } from './wgslModules.js';
+import { compactWgslFloatLiterals } from './shaderFloatLiterals.js';
 
 /** Slang's runtime module includes host bindings and a stage wrapper. Language
  * conversion exposes the authored functions, so it can be edited/converted
@@ -76,10 +77,10 @@ export function hlslAuthoringWgsl(
     if (remove.has(d.name)) code = code.slice(0, d.start) + code.slice(d.end);
   return (
     (hints ? hints + '\n' : '') +
-    renameIdentifiers(
+    compactWgslFloatLiterals(renameIdentifiers(
       code.replace(/^\s*\/\/ @haiyue-hlsl-module\s*$/gm, ''),
       names,
-    ).trim() +
+    )).trim() +
     '\n'
   );
 }

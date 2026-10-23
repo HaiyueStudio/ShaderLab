@@ -1,11 +1,22 @@
 import { HYNativeButton, hyPickNativeOption } from '@haiyue/native/ui';
 import type { HYIconName, HYOption } from '@haiyue/ui/core';
-import { Color, type Button, type View } from '@nativescript/core';
+import { Button, Color, type View } from '@nativescript/core';
 import { shaderTheme } from '../../../shared/dist/views/presentation.js';
 import { t } from '../../../shared/dist/views/i18n.js';
 export { HYNativeButton };
 export function nativeAction(text:string,primary=false,icon?:HYIconName):HYNativeButton {
   return new HYNativeButton({text,variant:primary?'primary':'quiet',size:'compact',...(icon?{icon}:{})},shaderTheme);
+}
+/** Hit surface for a card whose visible content is a sibling below the button.
+ * Action buttons paint an opaque pressed surface, which would hide that content.
+ * A plain native button retains accessibility and ScrollView touch cancellation.
+ */
+export function nativeCardTarget():Button {
+  const button=new Button();button.text='';button.className='example-card-target';
+  button.backgroundColor=new Color('transparent');button.borderWidth=0;
+  button.padding=0;button.margin=0;button.minHeight=button.minWidth=44;
+  button.horizontalAlignment=button.verticalAlignment='stretch';button.accessibilityRole='button';
+  return button;
 }
 const tabStates=new WeakMap<Button,{selected:boolean;segmented:boolean}>();
 function paintTab(button:Button,selected:boolean,segmented:boolean,pressed=false):void {

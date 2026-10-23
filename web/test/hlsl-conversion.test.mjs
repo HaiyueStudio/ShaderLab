@@ -26,6 +26,55 @@ const workspace = () => {
   w.application.connect({ convertSource });
   return w;
 };
+
+test('HLSL decimal constants stay concise through WGSL conversion and repeated language switches',async()=>{
+  const w=workspace();
+  w.document.setSource('image','// radius 0.012\nfloat4 mainImage(float2 p){return float4(0.012,0.1,0.000001,0.333333333);}','hlsl');
+  for(const language of ['wgsl','hlsl','wgsl']){
+    await w.setLanguage('image',language);
+    const code=sourceOf(w.document.state,'image');
+    if(language==='wgsl'){
+      assert.match(code,/\b0\.012f\b/);assert.match(code,/\b0\.1f\b/);
+      assert.doesNotMatch(code,/\d\.\d{10,}(?:e[+-]?\d+)?f\b/i);
+    }
+    assert.match(code,/radius 0\.012/);await compiled(w);
+  }
+});
+
+test('HLSL authoring reads readonly builtins directly and retains author locals', async () => {
+  const w = workspace();
+  w.document.setSource('image', `// builtin reads stay readable
+fn mainImage(p:vec2f)->vec4f {
+  var size=iResolution;size.x+=1.0;
+  return vec4f(p/iResolution.xy,iTime+iTimeDelta+iFrameRate+iSampleRate+f32(iFrame)+iMouse.x+iDate.x+iChannelTime[2]+iChannelResolution[1].x+size.x,1.0);
+}`, 'wgsl');
+  await w.setLanguage('image', 'hlsl');
+  const code=sourceOf(w.document.state,'image');
+  assert.doesNotMatch(code,/\b(?:float[234]?|int|uint)\s+_e\d+\s*=\s*i\w+(?:\.[xyzw]+|\[\d+\])*\s*;/);
+  assert.match(code,/p\s*\/\s*iResolution\.xy/);
+  assert.match(code,/float3 size\b/);
+  assert.match(code,/\bsize\s*=\s*iResolution/);
+  assert.match(code,/builtin reads stay readable/);
+  await compiled(w);
+});
+
+for (const separate of [false,true])
+  test(`HLSL keeps builtin snapshots when a ${separate?'Common':'Pass'} helper mutates the builtin`,async()=>{
+    const w=workspace(),helper='fn change()->f32{iTime=0.75;return 0.2;}';
+    if(separate)w.document.setSource('common',helper,'wgsl');
+    w.document.setSource('image',(separate?'':helper)+'fn mainImage(p:vec2f)->vec4f{return vec4f(iTime,change(),iTime,1.0);}','wgsl');
+    await w.setLanguage('image','hlsl');
+    assert.match(sourceOf(w.document.state,'image'),/float _e\d+\s*=\s*iTime\s*;/);
+    await compiled(w);
+  });
+
+test('HLSL retains indexed builtin snapshots when an intervening call changes the index',async()=>{
+  const w=workspace();
+  w.document.setSource('image','var<private> cursor:u32=0u;fn change()->f32{cursor=1u;return 0.2;}fn mainImage(p:vec2f)->vec4f{return vec4f(iChannelTime[cursor],change(),iChannelTime[cursor],1.0);}','wgsl');
+  await w.setLanguage('image','hlsl');
+  assert.match(sourceOf(w.document.state,'image'),/float _e\d+\s*=\s*iChannelTime\[/);
+  await compiled(w);
+});
 async function compiled(w, id = 'image') {
   const p = w.document.serialize();
   assert.deepEqual(await refreshProjectSources(p, hlsl, translateWgsl), []);

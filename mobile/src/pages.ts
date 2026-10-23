@@ -1,10 +1,11 @@
 import {HYNativeCardGrid,hyShowNativeOverlay} from '@haiyue/native/ui';
-import {HYNativeButton,nativeAction,nativeTab,pickNative} from './platform/presentation';
+import {HYNativeButton,nativeAction,nativeCardTarget,nativeTab,pickNative} from './platform/presentation';
 import type {HYIconName} from '@haiyue/ui/core';
 import {practiceIndex} from './practice';
 import {NativeCodeChrome} from './platform/code-chrome';
 import {confirmNative} from './platform/confirmation';
 import {createGalleryDeleteAction} from './platform/gallery-deletion';
+import {createPageNavigation} from './platform/page-navigation';
 import {shaderPreviewModes} from '../../shared/dist/views/presentation.js';
 import {shaderAppearance,shaderTheme} from '../../shared/dist/views/presentation.js';
 import {editorIcons} from '../../shared/dist/views/editor-icons.js';
@@ -51,7 +52,11 @@ import { MobileCompiler } from './compiler';
 import { pickFile, shareFile, dataUrl, writeBytes } from './files';
 let projects = new MobileProjects();
 function label(text: string, cls = '', wrap = true) { const v = localizedNativeText(new Label(),text); v.className = cls; v.textWrap = wrap; return v; }
-function button(text: string, fn: () => void | Promise<void>, cls = '',translate=true) { const b=nativeAction(translate?t(text):text,cls==='primary');if(translate)localizedNativeText(b,text);if(cls==='danger')b.setPresentation({text:translate?t(text):text,variant:'danger'},shaderTheme);b.className=cls;b.accessibilityLabel=translate?t(text):text;b.on('tap',()=>void perform(fn));return b; }
+function button(text: string, fn: () => void | Promise<void>, cls = '',translate=true) {
+    const b=cls==='example-card-target'?nativeCardTarget():nativeAction(translate?t(text):text,cls==='primary');
+    if(translate)localizedNativeText(b,text);if(cls==='danger'&&b instanceof HYNativeButton)b.setPresentation({text:translate?t(text):text,variant:'danger'},shaderTheme);
+    b.className=cls;b.accessibilityLabel=translate?t(text):text;b.on('tap',()=>void perform(fn));return b;
+}
 function iconButton(icon:HYIconName,name:string,fn:()=>void|Promise<void>,cls='') { const b=new HYNativeButton({text:'',icon,variant:cls==='primary'?'primary':'quiet',a11y:{label:t(name)}},shaderTheme);localizedNativeText(b,'',name);b.width=44;b.height=44;b.on('tap',()=>void perform(fn));return b; }
 async function perform(fn: () => unknown | Promise<unknown>) { try {
     await fn();
@@ -74,6 +79,9 @@ function navigate(create: () => Page) { Frame.topmost().navigate({ create }); }
 async function imported() { const file = await pickFile('project'); return file ? parseProject(await File.fromPath(file).readText()) : null; }
 export function galleryPage() {
     const p = page('haiyue / ShaderLab', false), content = new StackLayout();
+    const navigation = createPageNavigation(p, {current:()=>p.frame?.currentPage,navigate:create=>p.frame.navigate({create})});
+    const navigate = (create:()=>Page):void => { navigation.open(create); };
+    p.on('navigatedTo',()=>navigation.returned());
     installNativeSettings(p);
     content.className = 'body';
     p.content = scroll(content);

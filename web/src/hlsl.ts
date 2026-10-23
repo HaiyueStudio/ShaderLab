@@ -1,3 +1,4 @@
+import { compactWgslFloatLiterals } from './shaderFloatLiterals.js';
 import type { MainModule, GlobalSession } from '../../vendor/slang-2026.19/slang-wasm.js';
 import { LIMITS } from './model.js';
 import { cubemapRequirements } from './channelBindings.js';
@@ -88,7 +89,8 @@ export function createHlslTranslator(load: () => Promise<MainModule>): HlslTrans
         if (!composite) return error();
         const linked = composite.link();
         if (!linked) return error();
-        const code = linked.getEntryPointCode(0, 0);
+        const generated = linked.getEntryPointCode(0, 0);
+        const code = generated ? compactWgslFloatLiterals(generated) : generated;
         if (!code) return error();
         // Reject additional user resources instead of allowing Slang's automatic
         // register allocation to collide with the host's fixed bindings.
