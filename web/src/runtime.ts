@@ -1,3 +1,6 @@
+import {decodeReadback} from '../../shared/dist/domain/inspection.js';
+import {PassProfiler} from './gpuProfiler.js';
+import {FRAME_BYTES,FRAME_FLOATS,parameterData,type ShaderParameter} from '../../shared/dist/domain/parameters.js';
 import { HaiyueEngine, Entity, Camera3D, CartesianTransform3D, SphericalTransform3D, OrbitControl,
   BasicMaterial, Mesh3D, createSphere3D, createBox3D, type Scene } from '@haiyue/engine';
 import { createTorus3D } from '@haiyue/engine/geometry';
@@ -47,6 +50,13 @@ export class ShaderRuntime {
     if (this.playing && this.visible && !document.hidden && !this.failed && !this.dead) this.sound.play(this.time);
     else { this.time = this.sound.position ?? this.time; this.sound.pause(); }
   }
+  private parametersData=new Float32Array(32);
+  setParameters(parameters:readonly ShaderParameter[]=[]){this.parametersData=parameterData(parameters);if(this.active)this.active.project.parameters=JSON.parse(JSON.stringify(parameters));this.dirty=true;}
+  profiler!:PassProfiler;
+  viewed:PassId='image';
+  private exportSize:{width:number;height:number}|undefined;
+  setExportSize(size:{width:number;height:number}|undefined){this.exportSize=size;this.dirty=true;}
+  renderExportFrame(index:number,fps:number){this.setPlaying(false);if(index===0)this.reset();this.render(1/fps,true);}
   private scene!: Scene;
   private gpu: GPUDevice | undefined;
   private orbit: OrbitControl | undefined;
@@ -103,9 +113,10 @@ export class ShaderRuntime {
     await this.engine.init();
     const device = this.engine.device;
     this.gpu = device;
+    this.profiler=new PassProfiler(device);
     this.bufferFormat = feedbackFormat(device.features);
     this.sampler = device.createSampler({ label: 'ShaderEditor.channelSampler', minFilter: 'linear', magFilter: 'linear', addressModeU: 'repeat', addressModeV: 'repeat' });
-    this.frameLayout = device.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: 144 } }] });
+    this.frameLayout = device.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: FRAME_BYTES } }] });
     this.emptyLayout = device.createBindGroupLayout({ entries: [] });
     this.emptyGroup = device.createBindGroup({ layout: this.emptyLayout, entries: [] });
     this.keyboardTexture = this.texture(256, 3, 'rgba8unorm', 'keyboard');
@@ -169,7 +180,7 @@ export class ShaderRuntime {
         try {
           const pipeline = await device.createRenderPipelineAsync({ label: `ShaderEditor.${pass.id}`, layout,
             vertex: { module, entryPoint: 'hy_vertex' }, fragment: { module, entryPoint: 'hy_fragment', targets: [{ format: pass.id === 'image' ? 'rgba8unorm' : this.bufferFormat }] }, primitive: { topology: 'triangle-list' } });
-          const uniform = device.createBuffer({ label: `ShaderEditor.${pass.id}.uniform`, size: 144, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+          const uniform = device.createBuffer({ label: `ShaderEditor.${pass.id}.uniform`, size: FRAME_BYTES, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
           result.passes.push({ channelDimensions: binding.dimensions, channelLayout, pass, pipeline, uniform, group: device.createBindGroup({ layout: this.frameLayout, entries: [{ binding: 0, resource: { buffer: uniform } }] }) });
         } catch (error) {
           result.diagnostics.push({ pass: pass.id, severity: 'error', message: String(error), line: 1, column: 1 });
@@ -240,7 +251,7 @@ export class ShaderRuntime {
       if (this.cameraTexture) this.retire([this.cameraTexture.texture]);
       this.cameraTexture = undefined; this.cameraTime = 0;
     }
-    this.active = prepared; this.soundExportDuration = prepared.project.sound.duration;
+    this.active = prepared;this.parametersData=parameterData(prepared.project.parameters); this.soundExportDuration = prepared.project.sound.duration;
     this.sound.onError = message => this.onSoundError?.(message);
     this.sound.load(prepared.audio, prepared.soundRenderer ? (start, count, current) => prepared.soundRenderer!.render(start, count, () => current() && !this.dead && this.active === prepared) : undefined); this.sound.setVolume(prepared.project.sound.volume);
     if (previous) this.releasePrepared(previous);
@@ -289,7 +300,7 @@ export class ShaderRuntime {
   private resize() {
     this.engine.resizeToDisplaySize();
     const scale = this.active!.project.preview.scale;
-    const w = Math.max(1, this.engine.width * scale), h = Math.max(1, this.engine.height * scale);
+    const w = this.exportSize?.width ?? Math.max(1, this.engine.width * scale), h = this.exportSize?.height ?? Math.max(1, this.engine.height * scale);
     const cap = Math.min(1, 2048 / Math.max(w, h), Math.sqrt(1_048_576 / (w * h)));
     const width = Math.max(1, Math.floor(w * cap)), height = Math.max(1, Math.floor(h * cap));
     if (width === this.width && height === this.height && this.targets.size) return;
@@ -324,13 +335,14 @@ export class ShaderRuntime {
         device.queue.copyExternalImageToTexture({ source: camera.video }, { texture: this.cameraTexture.texture }, [camera.width, camera.height]);
         this.cameraTime = camera.time;
       }
-      const next = 1 - this.current;
+      const next = 1 - this.current;this.profiler.begin();
       for (const compiled of this.active.passes) {
         const inputs = compiled.pass.channels.map((c, index) => c.kind === 'camera' ? this.cameraTexture ?? this.fallback : c.kind === 'keyboard' ? this.keyboardTexture : c.kind === 'builtin' ? this.active!.images.get('builtin:' + c.texture)! : c.kind === 'image' || c.kind === 'cubemap' || c.kind === 'video' ? this.active!.images.get(c.assetId)! : c.kind === 'buffer'
           ? this.targets.get(c.pass)![usesCurrentFrame(compiled.pass.id, c.pass) ? next : this.current]! : compiled.channelDimensions[index] === 'cube' ? this.fallbackCube : this.fallback);
-        const data = new Float32Array(36);
+        const data = new Float32Array(FRAME_FLOATS);
         data.set([this.width, this.height, 1, this.time, this.delta, this.frame, this.delta > 0 ? 1 / this.delta : 0, 44100]);
         data.set(this.mouse, 8);
+        data.set(this.parametersData,36);
         const date = new Date();
         data.set([date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds() + date.getMilliseconds() / 1000], 12);
         inputs.forEach((input, i) => {
@@ -340,12 +352,12 @@ export class ShaderRuntime {
         });
         device.queue.writeBuffer(compiled.uniform, 0, data);
         const group = device.createBindGroup({ layout: compiled.channelLayout, entries: [{ binding: 0, resource: this.sampler }, ...inputs.map((input, i) => ({ binding: i + 1, resource: input.view }))] });
-        const pass = encoder.beginRenderPass({ label: `ShaderEditor.${compiled.pass.id}`, colorAttachments: [{ view: this.targets.get(compiled.pass.id)![next]!.view, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 0] }] });
-        pass.setPipeline(compiled.pipeline); pass.setBindGroup(0, compiled.group); pass.setBindGroup(1, this.emptyGroup); pass.setBindGroup(2, group); pass.draw(3); pass.end();
+        const pass = encoder.beginRenderPass({ label: `ShaderEditor.${compiled.pass.id}`, ...this.profiler.pass(compiled.pass.id), colorAttachments: [{ view: this.targets.get(compiled.pass.id)![next]!.view, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 0] }] });
+        pass.setPipeline(compiled.pipeline); pass.setBindGroup(0, compiled.group); pass.setBindGroup(1, this.emptyGroup); pass.setBindGroup(2, group); pass.draw(3); pass.end();this.profiler.endPass(compiled.pass.id);
       }
-      device.queue.submit([encoder.finish()]); this.current = next; this.frame++; if(this.playing && this.visible && !document.hidden && !step)this.frameRate.tick(performance.now()); this.dirty = this.keyboard.endFrame();
+      this.profiler.resolveInto(encoder);device.queue.submit([encoder.finish()]);this.profiler.submitted(); this.current = next; this.frame++; if(this.playing && this.visible && !document.hidden && !step)this.frameRate.tick(performance.now()); this.dirty = this.keyboard.endFrame();
     }
-    const output = this.targets.get('image')![this.current]!;
+    const output = (this.targets.get(this.viewed)??this.targets.get('image'))![this.current]!;
     if (this.mode === 'canvas') { if (!step) this.present(output); }
     else if (this.material.texture !== output.texture) this.material.texture = output.texture;
     if (this.visible && !document.hidden) this.bufferPreviews?.render(
@@ -361,17 +373,11 @@ export class ShaderRuntime {
     const pass = encoder.beginRenderPass({ colorAttachments: [{ view: this.engine.getOutputView(), loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 1] }] });
     pass.setPipeline(this.presenter); pass.setBindGroup(0, group); pass.draw(3); pass.end(); device.queue.submit([encoder.finish()]);
   }
-  async readImage(): Promise<{ width: number; height: number; pixels: Uint8Array }> {
-    const output = this.targets.get('image')?.[this.current]; if (!output) throw new Error('尚无可读取的渲染结果。');
-    const device = this.engine.device, stride = Math.ceil(output.width * 4 / 256) * 256;
-    const buffer = device.createBuffer({ label: 'ShaderEditor.readback', size: stride * output.height, usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ });
-    try {
-      const encoder = device.createCommandEncoder(); encoder.copyTextureToBuffer({ texture: output.texture }, { buffer, bytesPerRow: stride }, [output.width, output.height]);
-      device.queue.submit([encoder.finish()]); await buffer.mapAsync(GPUMapMode.READ);
-      const mapped = new Uint8Array(buffer.getMappedRange()), pixels = new Uint8Array(output.width * output.height * 4);
-      for (let y = 0; y < output.height; y++) pixels.set(mapped.subarray(y * stride, y * stride + output.width * 4), y * output.width * 4);
-      buffer.unmap(); return { width: output.width, height: output.height, pixels };
-    } finally { buffer.destroy(); }
+  async readImage(id:PassId='image') {
+    const output=this.targets.get(id)?.[this.current];if(!output)throw Error('尚无可读取的渲染结果。');
+    const format=id==='image'?'rgba8unorm':this.bufferFormat,bytes=format==='rgba32float'?16:format==='rgba16float'?8:4,stride=Math.ceil(output.width*bytes/256)*256,device=this.engine.device;
+    const buffer=device.createBuffer({size:stride*output.height,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
+    try{const encoder=device.createCommandEncoder();encoder.copyTextureToBuffer({texture:output.texture},{buffer,bytesPerRow:stride},[output.width,output.height]);device.queue.submit([encoder.finish()]);await buffer.mapAsync(GPUMapMode.READ);const result=decodeReadback(new Uint8Array(buffer.getMappedRange()),stride,output.width,output.height,format);buffer.unmap();return result;}finally{buffer.destroy();}
   }
   private clearTargets() {
     if (!this.targets.size) return;
@@ -415,7 +421,7 @@ export class ShaderRuntime {
   async dispose() {
     if (this.dead) return; this.dead = true; this.cameraInput.dispose(); if (this.cameraTexture) this.retire([this.cameraTexture.texture]); await this.sound.dispose(); this.invalidate(); this.engine.stop(); this.lifecycle.abort(); this.orbit?.dispose();
     if (this.errorListener) this.gpu?.removeEventListener('uncapturederror', this.errorListener);
-    this.bufferPreviews?.dispose(); this.scene?.destroy(); this.releaseTargets(); if (this.active) this.releasePrepared(this.active);
+    this.profiler?.dispose();this.bufferPreviews?.dispose(); this.scene?.destroy(); this.releaseTargets(); if (this.active) this.releasePrepared(this.active);
     await this.gpu?.queue.onSubmittedWorkDone().catch(() => {});
     this.keyboardTexture?.texture.destroy(); this.fallback?.texture.destroy(); this.fallbackCube?.texture.destroy(); this.presentSize?.destroy(); this.engine.destroy();
   }

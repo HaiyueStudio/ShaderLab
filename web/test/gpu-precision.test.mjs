@@ -33,15 +33,15 @@ test('high precision requests the optional filtering feature without losing engi
   assert.deepEqual(descriptor,original);assert.equal(adapter.requestDevice,method);
   assert.equal(feedbackFormat(device.features),'rgba32float');
   await wrapped.requestDevice({requiredFeatures:['float32-filterable']});
-  assert.deepEqual(requests[1].requiredFeatures,['float32-filterable']);
+  assert.deepEqual(requests[1].requiredFeatures,['float32-filterable','timestamp-query']);
 });
 
 test('unsupported adapters retain their native request and use filterable half precision without requesting an invalid feature',async()=>{
-  const {gpu,adapter,requests}=fakeGpu(['timestamp-query']);
+  const {gpu,adapter,requests}=fakeGpu([]);
   const wrapped=await shaderGpuProvider(gpu).requestAdapter({powerPreference:'high-performance'});
   assert.equal(wrapped,adapter);
-  const device=await wrapped.requestDevice({requiredFeatures:['timestamp-query']});
-  assert.deepEqual(requests[0].requiredFeatures,['timestamp-query']);
+  const device=await wrapped.requestDevice({});
+  assert.deepEqual(requests[0].requiredFeatures,undefined);
   assert.equal(feedbackFormat(device.features),'rgba16float');
 });
 

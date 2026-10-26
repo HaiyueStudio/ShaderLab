@@ -26,6 +26,7 @@ export interface ShaderServices extends ShaderEnvironment {
     open(context: ShaderRequest): Promise<ShaderProject | null>;
     save(snapshot: Readonly<ShaderProject>, context: ShaderRequest): Promise<'saved' | 'cancelled'>;
     saveDraft(snapshot: Readonly<ShaderProject>, context: ShaderRequest): Promise<void>;
+    checkpoint?(snapshot:Readonly<ShaderProject>,context:ShaderRequest):Promise<void>;
   };
   readonly preview: {
     prepare(snapshot: Readonly<ShaderProject>, context: ShaderRequest): Promise<{

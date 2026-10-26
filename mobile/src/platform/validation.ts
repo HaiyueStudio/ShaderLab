@@ -79,6 +79,7 @@ export interface ValidationPorts {
   setSource(source:string):void;
   saved():Promise<ShaderProject[]>;
   pixels():Promise<{width:number;height:number;pixels:Uint8Array}>;
+  recovery?():Promise<unknown>;
 }
 
 /** Synthetic semantic replay on real GPU and storage; physical input is a separate check. */
@@ -90,7 +91,8 @@ export async function validateNativeEditor(p:ValidationPorts):Promise<void> {
     const deadline=Date.now()+45000;
     while(!condition()){if(p.disposed())throw Error('Page disposed during '+label);if(Date.now()>deadline)throw Error('Timed out: '+label);await new Promise(resolve=>setTimeout(resolve,50));}
   };
-  const equal=(actual:unknown,expected:unknown,label:string)=>{if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error(label+': '+JSON.stringify({actual,expected}));};
+  const canonical=(value:unknown):unknown=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([key,item])=>[key,canonical(item)])):value;
+  const equal=(actual:unknown,expected:unknown,label:string)=>{if(JSON.stringify(canonical(actual))!==JSON.stringify(canonical(expected)))throw Error(label+': '+JSON.stringify({actual,expected}));};
   try {
     await save();
     await wait(()=>p.status().frame>3,'first rendered frames');
@@ -123,6 +125,7 @@ export async function validateNativeEditor(p:ValidationPorts):Promise<void> {
     p.application.dispatch({type:'project.open',project:saved!,fork:false});
     equal(p.application.snapshot(),saved,'reopen');
     await p.shared.controller.compile();equal(p.application.state.compile.status,'ready','reopened compile');await wait(()=>p.status().frame>3,'reopened GPU frames');
+    if(p.recovery){report.recovery=await p.recovery();await p.shared.controller.compile();await wait(()=>p.status().frame>3,'P0 restored GPU frames');}
     const final=p.shared.diagnostics();equal([final.preview,final.editor],[1,1],'PlatformView mount count');
     report.final=final;report.persisted=saved;report.render=p.status();report.application={pane:p.application.state.pane,compile:p.application.state.compile.status,save:p.application.state.save.status};
     report.status='passed';

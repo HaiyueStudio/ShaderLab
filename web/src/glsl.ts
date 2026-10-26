@@ -33,7 +33,7 @@ class Parser {
   private locals = new Map<string, LocalBinding>();
   private globals = new Map<string, string>([
     ['gl_FragCoord', 'vec4f'], ['iResolution', 'vec3f'], ['iTime', 'f32'], ['iTimeDelta', 'f32'], ['iFrame', 'i32'], ['iFrameRate', 'f32'], ['iMouse', 'vec4f'], ['iDate', 'vec4f'], ['iSampleRate', 'f32'],
-    ...[0, 1, 2, 3].map(i => [`iChannel${i}`, SAMPLER_2D] as [string, string]), ['iChannelResolution', 'array<vec3f, 4>'], ['iChannelTime', 'array<f32, 4>'],
+    ...[0, 1, 2, 3].map(i => [`iChannel${i}`, SAMPLER_2D] as [string, string]), ['iChannelResolution', 'array<vec3f, 4>'], ['iChannelTime', 'array<f32, 4>'], ['iParams', 'array<vec4f, 8>'],
   ]);
   private readonly functions = new FunctionTable();
   private readonly helpers = new Map<string, string>();

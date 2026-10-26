@@ -1,3 +1,5 @@
+import {practiceForChapter,parseLearning,LEARNING_STORAGE} from '../../shared/dist/domain/learning.js';
+import {getLocale} from '../../shared/dist/views/i18n.js';
 import { TUTORIAL_CHAPTERS, TUTORIAL_STAGES, TUTORIAL_REFERENCES, findTutorial, searchTutorials } from './tutorialContent.js';
 import { TUTORIAL_LABS, tutorialProject } from './tutorialLabs.js';
 import { tutorialDiff } from './tutorialDiff.js';
@@ -14,6 +16,7 @@ function channelName(channel: Channel) {
   if (channel.kind==='keyboard') return '键盘';
   return channel.kind==='none' ? '未绑定' : channel.kind;
 }
+function learnedChapters(){try{return parseLearning(localStorage.getItem(LEARNING_STORAGE));}catch{return parseLearning(null);}}
 export class TutorialPage {
   private current = TUTORIAL_CHAPTERS[0]!;
   private preview: WgslPreview | undefined;
@@ -21,7 +24,7 @@ export class TutorialPage {
   private outline = document.getElementById('tutorial-outline')!;
   private search = document.getElementById('tutorial-search') as HTMLInputElement;
   private counter = document.getElementById('tutorial-results')!;
-  constructor(private navigate: (id: string) => void, private open: (project: ShaderProject) => void) {
+  constructor(private navigate: (id: string) => void, private open: (project: ShaderProject) => void,private practice:(id:string)=>void=()=>{}) {
     const facts = document.querySelectorAll('.tutorial-facts strong');
     [TUTORIAL_CHAPTERS.length,TUTORIAL_STAGES.length,TUTORIAL_LABS.length].forEach((count,i)=>{
       if (facts[i]) facts[i]!.textContent = String(count);
@@ -52,7 +55,8 @@ export class TutorialPage {
       const section = element('section'); section.append(element('h3', '', '0' + (stageIndex + 1) + ' · ' + stage.title));
       for (const chapter of chapters) {
         const index = TUTORIAL_CHAPTERS.indexOf(chapter);
-        const link = this.link(chapter.id, String(index + 1).padStart(2, '0') + '  ' + chapter.title);
+        const learned=learnedChapters().chapters.includes(chapter.id);
+        const link = this.link(chapter.id, (learned?'✓ ':'')+String(index + 1).padStart(2, '0') + '  ' + chapter.title);
         if (chapter.id === this.current.id) link.setAttribute('aria-current', 'page');
         section.append(link);
       }
@@ -85,6 +89,7 @@ export class TutorialPage {
     const dl=element('dl'); for (const [label,value] of values) dl.append(element('dt','',label),element('dd','',value));experiment.append(dl);
     const task = element('section', 'tutorial-exercise'); task.append(element('h3', '', '继续挑战'), element('p', '', chapter.exercise));
     this.article.append(experiment,task);
+    const learning=element('div','product-row'),mark=element('button','secondary',getLocale()==='en'?'Mark learned & practice':'学完本章，进入练习');mark.id='tutorial-practice';mark.onclick=()=>{const progress=learnedChapters();if(!progress.chapters.includes(chapter.id))progress.chapters.push(chapter.id);try{localStorage.setItem(LEARNING_STORAGE,JSON.stringify(progress));}catch{window.dispatchEvent(new CustomEvent('shaderlab-recovery-error',{detail:getLocale()==='en'?'Could not save learning progress.':'无法保存学习进度。'}));}this.practice(practiceForChapter(chapter.id));};learning.append(mark);this.article.append(learning);
     const labHeader = element('div', 'tutorial-lab-header'), label = element('div');
     label.append(element('h3', '', '本章完整工程'),element('p', 'muted', '已实现本章步骤。点击保存后才加入我的作品。'));
     const launch = element('button', 'primary compact', '打开练习 · 新草稿 ↗');

@@ -12,6 +12,7 @@ export interface ShaderApplicationState {
   readonly pane: 'preview' | 'code' | 'channels';
   readonly playing: boolean;
   readonly save: { readonly status: 'idle' | 'saving' | 'failed'; readonly request?: number; readonly error?: string };
+  readonly draft:{readonly status:'idle'|'saving'|'saved'|'failed';readonly request?:number;readonly revision?:number;readonly error?:string};
   readonly compile: {
     readonly status: 'idle' | 'compiling' | 'ready' | 'failed'; readonly request?: number;
     readonly acceptedRevision?: number; readonly diagnostics: readonly ShaderDiagnostic[];

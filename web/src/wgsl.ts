@@ -182,7 +182,7 @@ export async function translateWgsl(source: string, options: WgslTranslationOpti
     }
     const mutable = new Set([...writtenWgslBuiltins(authored), ...(options.preserveBuiltinAliases ?? [])]);
     const direct = new Set(options.legacyEntryWrapper ? [] : builtins.filter(name =>
-      !mutable.has(name) && (!sound || name === 'iSampleRate' || name === 'iChannelResolution')));
+      !mutable.has(name) && (!sound || name === 'iSampleRate' || name === 'iParams' || name === 'iChannelResolution')));
     // Private WGSL globals become GLSL copies by default. Read-only builtins
     // already exist as Shadertoy uniforms, so remove the copies and their
     // initialization, including array-copy loops. Keep genuinely writable
@@ -200,6 +200,7 @@ export async function translateWgsl(source: string, options: WgslTranslationOpti
         const values: Record<string, string> = { iResolution: 'vec3(1024.0,64.0,1.0)', iTime: prefix + 'TimeInput', iTimeDelta: '(1.0/iSampleRate)', iFrameRate: 'iSampleRate', iFrame: '0', iMouse: 'vec4(0.0)', iDate: 'vec4(0.0)' };
         if (values[name]) return `${dest} = ${values[name]};`;
       }
+      if (name === 'iParams') return `for (int ${prefix}I=0; ${prefix}I<8; ${prefix}I++) { ${dest}[${prefix}I] = iParams[${prefix}I]; }`;
       if (name === 'iChannelResolution' || name === 'iChannelTime') return `for (int ${prefix}I=0; ${prefix}I<4; ${prefix}I++) { ${dest}[${prefix}I] = ${sound && name === 'iChannelTime' ? '0.0' : name + '[' + prefix + 'I]'}; }`;
       return `${dest} = ${name};`;
     });

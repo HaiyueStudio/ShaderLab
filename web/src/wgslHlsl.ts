@@ -17,6 +17,7 @@ import { wgslBuiltins, writtenWgslBuiltins } from './wgslBuiltins.js';
 import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
 import { restoreHlslForLoops } from './glslLoops.js';
+import { simplifyHlslAuthoring } from './hlslCleanup.js';
 
 /** Runtime reads stay external to the Pass. Initializers and array lengths
  * still need constant expressions, including chains such as COUNT=ROWS*COLS. */
@@ -294,6 +295,7 @@ export async function translateWgslToHlsl(
     code = restoreHlslForLoops(renameIdentifiers(code, emitted));
     const written = new Set([...writtenWgslBuiltins(authored), ...(options.preserveBuiltinAliases ?? [])]);
     code = inlineBuiltinLoads(code, new Set(wgslBuiltins.filter(name => !written.has(name))));
+    code = simplifyHlslAuthoring(code, authored);
     const comments = (input: string, output: string) =>
       preserveShaderComments(input, output, {
         from: 'wgsl',

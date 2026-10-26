@@ -13,7 +13,7 @@ import { detectShaderLanguage } from './sourceLanguage.js';
 import { glslParser } from './glslLanguage.js';
 import { hlslParser } from './hlslLanguage.js';
 
-export const BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3', 'iSampler', 'channel0', 'channel1', 'channel2', 'channel3'];
+export const BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iParams', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3', 'iSampler', 'channel0', 'channel1', 'channel2', 'channel3'];
 const keywords = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable requires diagnostic true false'.split(' '));
 const types = /^(?:[fiub]32|f16|bool|vec[234][fhiu]?|mat[234]x[234][fh]?|array|ptr|atomic|sampler|texture_\w+)$/;
 export const wgslParser: StreamParser<{ depth: number }> = {
@@ -58,16 +58,16 @@ export class CodeEditor {
   get language() { return this.view.state.field(languageState); }
   private replacing = false;
   private localeOff:()=>void;
-  constructor(parent: HTMLElement, onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void, compile: () => void) {
+  constructor(parent: HTMLElement, onChange: (pass: CodeId, code: string, language: ShaderLanguage,group?:boolean) => void, compile: () => void,private readonly history?:{undo():boolean;redo():boolean}) {
     // Split panes use slots. Mount styles in the actual DOM root, not the split's
     // composed ShadowRoot, whose styles cannot reach slotted editor descendants.
     this.view = new EditorView({ parent, root: parent.getRootNode() as Document | ShadowRoot, state: this.createState('', onChange, compile) });
     this.onChange = onChange; this.compile = compile;
     this.localeOff=onLocaleChange(()=>this.view.dispatch({effects:this.languageConfig.reconfigure(languageExtensions(this.language))}));
   }
-  private readonly onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void;
+  private readonly onChange: (pass: CodeId, code: string, language: ShaderLanguage,group?:boolean) => void;
   private readonly compile: () => void;
-  private createState(code: string, onChange: (pass: CodeId, code: string, language: ShaderLanguage) => void, compile: () => void, language: ShaderLanguage = 'wgsl') {
+  private createState(code: string, onChange: (pass: CodeId, code: string, language: ShaderLanguage,group?:boolean) => void, compile: () => void, language: ShaderLanguage = 'wgsl') {
     return EditorState.create({ doc: code, extensions: [basicSetup, languageState.init(() => language), this.languageConfig.of(languageExtensions(language)), syntaxHighlighting(colors), shaderCodeMenu(()=>this.language),
       invertedEffects.of(tr => tr.effects.some(effect => effect.is(languageEffect)) ? [
         languageEffect.of(tr.startState.field(languageState)),
@@ -79,8 +79,8 @@ export class CodeEditor {
         return detected && detected !== tr.startState.field(languageState) ? { effects: [languageEffect.of(detected), this.languageConfig.reconfigure(languageExtensions(detected))] } : null;
       }),
       autocompletion({ override: [context => { const word = context.matchBefore(/\w*/); return !word || word.from === word.to && !context.explicit ? null : { from: word.from, options: [...BUILTINS, ...(context.state.field(languageState) === 'hlsl' ? ['float2', 'float3', 'float4', 'float', 'int', 'mul', 'lerp', 'saturate', 'frac', 'Texture2D', 'SampleLevel'] : context.state.field(languageState) === 'glsl' ? ['vec2', 'vec3', 'vec4', 'float', 'int', 'texture', 'void', 'mix'] : ['vec2f', 'vec3f', 'vec4f', 'textureSampleLevel', 'mix']), 'mainImage', 'mainSound', 'sin', 'cos', 'tanh', 'smoothstep', 'length', 'normalize', 'dot'].map(label => ({ label, type: label.startsWith('i') ? 'variable' : 'function' })) }; }] }),
-      Prec.highest(keymap.of([{ key: 'Mod-Enter', run: () => { compile(); return true; } }])),
-      EditorView.updateListener.of(update => { if (update.docChanged && !this.replacing) onChange(this.pass, update.state.doc.toString(), update.state.field(languageState)); }),
+      Prec.highest(keymap.of([{ key: 'Mod-Enter', run: () => { compile(); return true; } },{key:'Mod-z',run:()=>this.history?.undo()??false},{key:'Mod-Shift-z',run:()=>this.history?.redo()??false},{key:'Mod-y',run:()=>this.history?.redo()??false}])),
+      EditorView.updateListener.of(update => { if (update.docChanged && !this.replacing) onChange(this.pass, update.state.doc.toString(), update.state.field(languageState),update.transactions.every(tr=>tr.isUserEvent('input.type')||tr.isUserEvent('delete'))); }),
       editorTheme] });
   }
   show(pass: CodeId, code: string, language: ShaderLanguage = 'wgsl') {
@@ -123,7 +123,7 @@ export class WgslPreview {
   readonly view: EditorView;
   constructor(parent: HTMLElement, label = '转换后的 WGSL 代码', language: ShaderLanguage = 'wgsl') {
     this.view = new EditorView({ parent, root: parent.getRootNode() as Document | ShadowRoot,
-      state: EditorState.create({ extensions: [basicSetup, language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser), syntaxHighlighting(colors), editorTheme,
+      state: EditorState.create({ extensions: [basicSetup, language === 'hlsl' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser), syntaxHighlighting(colors), editorTheme,
         EditorState.readOnly.of(true), EditorView.editable.of(false),
         EditorView.contentAttributes.of({ 'aria-label': label, tabindex: '0' }),
       ] }),

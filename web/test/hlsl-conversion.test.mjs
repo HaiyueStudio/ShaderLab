@@ -27,6 +27,19 @@ const workspace = () => {
   return w;
 };
 
+test('GLSL to HLSL removes generated local copies and split zero initialization',async()=>{
+ const w=workspace();
+ w.document.setSource('image','// palette calculation\nvoid mainImage(out vec4 fragColor,in vec2 fragCoord){vec2 uv=fragCoord/iResolution.xy;float t=iTime;vec3 color=vec3(uv,0.5+0.5*sin(t));fragColor=vec4(color,1.0);}','glsl');
+ await w.setLanguage('image','hlsl');const code=sourceOf(w.document.state,'image');
+ assert.doesNotMatch(code,/\b(?:float[234]?)\s+_e\d+\b/);assert.doesNotMatch(code,/\(float[234]?\)0|\(0\.0\)\.xxxx/);
+ assert.match(code,/float2 uv\w* = .*fragCoord \/ iResolution\.xy/);assert.match(code,/float3 color = float3/);assert.match(code,/palette calculation/);await compiled(w);
+});
+
+test('GLSL local snapshots remain distinct when later writes need the old value',async()=>{
+ const w=workspace();w.document.setSource('image','void mainImage(out vec4 c,in vec2 p){float x=0.2;float before=x;x=0.8;c=vec4(before,x,0.0,1.0);}','glsl');
+ await w.setLanguage('image','hlsl');const code=sourceOf(w.document.state,'image');assert.match(code,/\bfloat before\b/);await compiled(w);
+});
+
 test('HLSL decimal constants stay concise through WGSL conversion and repeated language switches',async()=>{
   const w=workspace();
   w.document.setSource('image','// radius 0.012\nfloat4 mainImage(float2 p){return float4(0.012,0.1,0.000001,0.333333333);}','hlsl');

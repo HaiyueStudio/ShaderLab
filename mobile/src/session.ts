@@ -22,7 +22,7 @@ export class MobileSession {
     open(project: ShaderProject, fork = false) { this.application.dispatch({ type: 'project.open', project, fork }); }
     /** Kept for the G01 replay; production adapters use change/actions. */
     changed() { this.application.change(() => {}); }
-    setSource(source: string, language = this.language) { this.application.setSource(this.pass, source, language); }
+    setSource(source: string, language = this.language,group=false) { this.application.setSource(this.pass, source, language,group); }
     paste(text: string) { this.setSource(text, this.autoDetect ? detectShaderLanguage(text, this.language) ?? this.language : this.language); }
     switchLanguage(language: ShaderLanguage) { return this.application.switchLanguage(this.pass, language); }
     add(pass: CodeId) { this.application.dispatch({ type: 'pass.add', pass }); }

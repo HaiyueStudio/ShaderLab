@@ -15,6 +15,7 @@ export async function prepare(){
  run(path.join(root,'scripts/build-presentation.mjs'),[],root);
  cpSync(path.join(root,'web/assets'),path.join(app,'src/assets'),{recursive:true});
  cpSync(path.join(app,'resources/gallery'),path.join(app,'src/assets/gallery'),{recursive:true});
+ cpSync(path.join(app,'resources/gallery-actions'),path.join(app,'src/assets/gallery-actions'),{recursive:true});
  const validation=path.join(app,'src/assets/g07');mkdirSync(validation,{recursive:true});
  cpSync(path.join(root,'review/m24-ui/g01/project.hyshader'),path.join(validation,'project.hyshader'));
  const native=path.dirname(require.resolve('@haiyue/native/package.json'));

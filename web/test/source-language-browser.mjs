@@ -23,6 +23,8 @@ scenario:async({evaluate,click:rawClick,waitFor,cdp,nextPaint})=>{
  const choose=async lang=>{
   const previousNotice=await evaluate('({hidden:document.getElementById("notice").hidden,text:document.getElementById("notice-text").textContent})');
   await evaluate('(()=>{const s=document.getElementById("code-language").shadowRoot.querySelector("select");s.value='+JSON.stringify(lang)+';s.dispatchEvent(new Event("change",{bubbles:true}));})()');
+  await waitFor(()=>evaluate('document.getElementById("conversion-dialog")?.open || !document.getElementById("code-language").disabled'),'conversion preview');
+  if(await evaluate('Boolean(document.getElementById("conversion-dialog")?.open)'))await click('document.getElementById("conversion-apply")');
   await waitFor(()=>evaluate('!document.getElementById("code-language").disabled'),'conversion complete');
   assert.equal(await language(),lang);
   assert.deepEqual(await evaluate('({hidden:document.getElementById("notice").hidden,text:document.getElementById("notice-text").textContent})'),previousNotice);

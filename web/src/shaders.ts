@@ -16,6 +16,7 @@ struct HyUniforms {
   date: vec4f,
   channelResolution: array<vec4f, 4>,
   channelTime: vec4f,
+  params: array<vec4f, 8>,
 };
 @group(0) @binding(0) var<uniform> hy_uniforms: HyUniforms;
 @group(2) @binding(0) var iSampler: sampler;
@@ -33,6 +34,7 @@ var<private> iDate: vec4f;
 var<private> iSampleRate: f32;
 var<private> iChannelResolution: array<vec3f, 4>;
 var<private> iChannelTime: array<f32, 4>;
+var<private> iParams: array<vec4f, 8>;
 // Shadertoy UVs: bottom-left origin. Explicit LOD also permits nonuniform flow.
 fn channel0(uv: vec2f) -> vec4f { return textureSampleLevel(iChannel0, iSampler, vec2f(uv.x, 1.0 - uv.y), 0.0); }
 fn channel1(uv: vec2f) -> vec4f { return textureSampleLevel(iChannel1, iSampler, vec2f(uv.x, 1.0 - uv.y), 0.0); }
@@ -67,6 +69,7 @@ export function wrapShader(pass: RenderPass, common = '') {
   iResolution = vec3f(1024.0, 64.0, 1.0);
   iFrameRate = iSampleRate;
   for (var i = 0u; i < 4u; i++) { iChannelResolution[i] = hy_uniforms.channelResolution[i].xyz; }
+  for (var hy_param = 0u; hy_param < 8u; hy_param++) { iParams[hy_param] = hy_uniforms.params[hy_param]; }
   ${commonInit ? commonInit + '(vec2f(0.0));' : ''}
   return vec4f(mainSound(i32(index), iTime), 0.0, 1.0);
 }` : `
@@ -83,6 +86,7 @@ export function wrapShader(pass: RenderPass, common = '') {
     iChannelResolution[i] = hy_uniforms.channelResolution[i].xyz;
     iChannelTime[i] = hy_uniforms.channelTime[i];
   }
+  for (var hy_param = 0u; hy_param < 8u; hy_param++) { iParams[hy_param] = hy_uniforms.params[hy_param]; }
   ${commonInit ? commonInit + '(vec2f(position.x, iResolution.y - position.y));' : ''}
   return mainImage(vec2f(position.x, iResolution.y - position.y));
 }`;

@@ -89,9 +89,9 @@ export function comparePractice(actual:PracticePixels,target:PracticePixels){
   const score=Math.max(0,100*(1-Math.sqrt(squared/diff.length)/255)),mismatch=bad/(diff.length/4);
   return {score:Math.round(score*100)/100,mismatch,passed:score>=98&&mismatch<=0.02,diff:{width:actual.width,height:actual.height,pixels:diff}};
 }
-export interface PracticeProgress {source:string;language:ShaderLanguage;best:number;passed:boolean;reviewed?:boolean}
+export interface PracticeProgress {source:string;language:ShaderLanguage;best:number;passed:boolean;reviewed?:boolean;attempts?:number;hints?:number}
 export type PracticeRecords=Record<string,PracticeProgress>;
 export const PRACTICE_STORAGE='haiyue.shaderlab.practice.v1';
 export function parsePracticeRecords(raw:string|null):PracticeRecords {
-  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&['wgsl','glsl','hlsl'].includes(v.language)){result[c.id]={source:v.source===legacyPracticeStarters[v.language as ShaderLanguage]?practiceStarter(v.language as ShaderLanguage):v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true};}}}catch{}return result;
+  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&['wgsl','glsl','hlsl'].includes(v.language)){result[c.id]={source:v.source===legacyPracticeStarters[v.language as ShaderLanguage]?practiceStarter(v.language as ShaderLanguage):v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true,...(v.attempts===undefined?{}:{attempts:Number.isSafeInteger(v.attempts)?Math.max(0,Math.min(100000,v.attempts)):0}),...(v.hints===undefined?{}:{hints:Number.isInteger(v.hints)?Math.max(0,Math.min(3,v.hints)):0})};}}}catch{}return result;
 }

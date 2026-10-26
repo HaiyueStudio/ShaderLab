@@ -1,8 +1,13 @@
+import {receiveProject} from '../../shared/dist/domain/library.js';
+import {installProductTools,installLibraryFilters,libraryCardActions} from './productTools.js';
+import {installCreationTools} from './creationTools.js';
+import {decodeShare} from '../../shared/dist/domain/sharing.js';
 import {PracticePage} from './practicePage.js';
+import {createRecoveryUI} from './recovery.js';
 import { mountWebSharedEditor } from './platform/shared-editor.js';
 import { preferences } from './preferences.js';
 import { initializeSettings } from './settings.js';
-import { t, onLocaleChange } from '../../shared/dist/views/i18n.js';
+import { t, onLocaleChange, getLocale } from '../../shared/dist/views/i18n.js';
 import { preferredProject, preferredSource } from '../../shared/dist/domain/preferences.js';
 import { shaderPreviewModes } from '../../shared/dist/views/presentation.js';
 import { saveIndicator, saveMessage } from '../../shared/dist/views/editor-controller.js';
@@ -51,12 +56,13 @@ const createPreferred=()=>preferredProject(preferences().shaderLanguage,{ids:{ne
 const disposeSettings=initializeSettings(enabled=>workspace.runtime?.setMSAA(enabled));
 const localeOff=onLocaleChange(()=>{controlSignature='';sharedHostState=undefined;sync();renderDiagnostics();renderGallery();channelPicker.localize();$('back-gallery').setAttribute('aria-label',t('返回 Gallery'));$<HYSelect>('preview-mode').options=shaderPreviewModes.map(option=>({...option,label:t(option.label)}));});
 const uploadCube = createCubeUploader(workspace, async(pass,index)=>{const session=app.state.session;await compile();if(sharedUI&&session===app.state.session)channelPicker.open(pass,index);});
-const tutorial = new TutorialPage(id => { setRoute('tutorial/' + id); $('tutorial-title').focus({ preventScroll: true }); $('tutorial-title').scrollIntoView({ block: 'start' }); }, project => { void run(() => open(project, true)); });
-const practice=new PracticePage(id=>setRoute(id?'practice/'+id:'practice'),project=>{void run(async()=>{await open(project);await save();});});
+const tutorial = new TutorialPage(id => { setRoute('tutorial/' + id); $('tutorial-title').focus({ preventScroll: true }); $('tutorial-title').scrollIntoView({ block: 'start' }); }, project => { void run(() => open(project, true)); },id=>setRoute('practice/'+id));
+const practice=new PracticePage(id=>setRoute(id?'practice/'+id:'practice'),project=>{void run(async()=>{await open(project);await save();});},id=>setRoute('tutorial/'+id));
 const thumbnails = new Map<string, string>();
 const thumbnailFailures = new Set<string>();
 let exampleThumbnailJob: Promise<void> | undefined;
 let saved: GalleryItem[] = [], opened = false, route = 'gallery', disposed = false;
+let savedGalleryState:{items:GalleryItem[];query:string;locale:string;filter:string}|undefined;
 let revision = 0, openedRevision = 0, openSequence = 0, autoTimer: ReturnType<typeof setTimeout> | undefined;
 let runtimePromise: Promise<ShaderRuntime> | undefined, openPromise: Promise<void> = Promise.resolve();
 let uploadTarget:ChannelTarget|undefined, translation: string | null = null;
@@ -75,7 +81,10 @@ function beginChannelUpload(target:ChannelTarget,kind:'image'|'video'|'cubemap')
   uploadTarget=target;$<HTMLInputElement>(kind==='video'?'video-input':'texture-input').click();
 }
 function updateBufferPreviews(){workspace.runtime?.setBufferPreviews(workspace.document.state.id,[...bufferPreviews,...drawerBufferPreviews]);}
-const editor = new CodeEditor($('code-editor'), (pass, code, language) => { void run(() => workspace.document.setSource(pass, code, language)); }, () => { void run(compile); });
+const editor = new CodeEditor($('code-editor'), (pass, code, language,group) => { void run(() => app.setSource(pass,code,language,group)); }, () => { void run(compile); },{undo:()=>app.undoSource(),redo:()=>app.redoSource()});
+let draftTimer:ReturnType<typeof setTimeout>|undefined;let draftSession='';
+const recovery=createRecoveryUI({store,app,flush:()=>{if(opened)sharedUI?.controller.flushEdits();},open:async(project,pass)=>{await open(project);app.markModified();selectPass(pass);},openSaved:project=>open(project),refresh:async()=>{saved=await store.list();renderGallery();},changed:()=>{controlSignature='';sync();queueDraft();}});
+function queueDraft(){if(!opened||disposed)return;const sameSession=draftSession===app.state.session;draftSession=app.state.session;if(!workspace.document.dirty&&!sameSession)return;if(draftTimer)clearTimeout(draftTimer);const session=app.state.session;draftTimer=setTimeout(()=>{draftTimer=undefined;if(session===app.state.session&&opened)void app.saveDraft().catch(error=>notice('草稿保存失败：'+String(error),true));},500);}
 const generatedPreview = new WgslPreview($('generated-code'), '运行用 WGSL');
 const shadertoyPreview = new WgslPreview($('shadertoy-code'), 'Shadertoy GLSL 导出预览', 'glsl');
 let shadertoyBundle: Awaited<ReturnType<typeof exportShadertoy>> | undefined;
@@ -118,15 +127,24 @@ function translateSource() {
 }
 
 function notice(message: string, error = false) { $('notice').hidden = false; $('notice').classList.toggle('error', error); $('notice-text').textContent = t(message); }
+window.addEventListener('shaderlab-recovery-error',event=>notice((event as CustomEvent<string>).detail,true));
 async function run(action: () => unknown | Promise<unknown>) { try { return await action(); } catch (error) { notice(error instanceof Error ? error.message : String(error), true); return undefined; } }
 function button(label: string, action: () => unknown | Promise<unknown>, className = '') { const b = document.createElement('button'); b.textContent = t(label); b.className = className; b.onclick = () => { void run(action); }; return b; }
 function bind(id: string, action: () => unknown | Promise<unknown>) { $(id).addEventListener('click', () => { void run(action); }); }
 function download(bytes: BlobPart, name: string, type: string) {
   const url = URL.createObjectURL(new Blob([bytes], { type })), a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
+let readOnlyPayload='';const viewerSplits=new Map<HTMLElement,Record<string,string|null>>();
+function clearReadOnly(){readOnlyPayload='';document.body.classList.remove('readonly-player');document.getElementById('viewer-copy')?.remove();const field=document.querySelector('[data-hy-key="/shader-project/name/field"]') as HTMLElement&{readOnly:boolean};if(field)field.readOnly=false;for(const[split,attributes]of viewerSplits)for(const[key,value]of Object.entries(attributes)){if(value===null)split.removeAttribute(key);else split.setAttribute(key,value);}viewerSplits.clear();}
+function playerLayout(){for(const id of ['workspace-split','preview-split']){const split=$(id);viewerSplits.set(split,Object.fromEntries(['ratio','min-second','bar-size'].map(key=>[key,split.getAttribute(key)])));split.setAttribute('min-second','0');split.setAttribute('bar-size','0');split.setAttribute('ratio','1');}const field=document.querySelector('[data-hy-key="/shader-project/name/field"]') as HTMLElement&{readOnly:boolean};if(field)field.readOnly=true;}
+const library=installLibraryFilters(()=>{savedGalleryState=undefined;renderGallery();});
+const creationTools=installCreationTools({app,library:store.creations,selection:()=>{const r=editor.view.state.selection.main;return editor.view.state.sliceDoc(r.from,r.to);},runtime:()=>workspace.runtime,compile,flush:()=>sharedUI?.controller.flushEdits(),changed:()=>{queueDraft();sync();},download,open:project=>open(project)});
+const productTools=installProductTools({app,runtime:()=>workspace.runtime,compile,flush:()=>sharedUI?.controller.flushEdits(),changed:()=>{queueDraft();sync();},download,open:project=>open(project),creations:()=>creationTools.show(),engineExport:()=>creationTools.engineExport()});
+async function showReadOnly(payload:string){const project=decodeShare(payload);clearReadOnly();await open(project);readOnlyPayload=payload;document.body.classList.add('readonly-player');playerLayout();setRoute('editor');history.replaceState(null,'','#view/'+payload);const previous=document.getElementById('viewer-copy');previous?.remove();const copy=button('复制并创作',async()=>{clearReadOnly();await open(project,true);app.markModified();});copy.id='viewer-copy';document.querySelector('.project-bar')!.append(copy);}
 function basename() { return workspace.document.state.name.replace(/[<>:"/\\|?*\x00-\x1f]/g, '-').trim() || 'shader'; }
 function exportProject() { download(JSON.stringify(workspace.document.serialize(), null, 2), `${basename()}.hyshader`, 'application/json'); }
 function setRoute(next: string) {
+  if(readOnlyPayload&&next!=='editor')clearReadOnly();
   if (next === 'editor' && route !== 'editor') {
     editorReturnRoute = route === 'tutorial' ? 'tutorial/' + tutorial.currentId : route === 'practice' ? 'practice/'+practice.currentId : 'gallery';
   }
@@ -142,7 +160,7 @@ function setRoute(next: string) {
   }
   if (route === 'tutorial') { tutorial.show(next.split('/')[1] ?? tutorial.currentId); next = 'tutorial/' + tutorial.currentId; }
   if(route==='practice'){practice.show(next.split('/')[1]??'');next='practice'+(practice.currentId?'/'+practice.currentId:'');}
-  workspace.runtime?.setVisible(route === 'editor'); history.replaceState(null, '', `#${next}`);
+  workspace.runtime?.setVisible(route === 'editor'); history.replaceState(null, '',readOnlyPayload&&next==='editor'?'#view/'+readOnlyPayload:`#${next}`);
   window.scrollTo(0, 0);
   if (next === 'gallery') { renderGallery(); void generateExampleThumbnails(); }
 }
@@ -200,6 +218,8 @@ function renderDiagnostics() {
 function selectPass(pass: CodeId) { app.dispatch({ type: 'pass.select', pass }); editor.show(pass, sourceOf(workspace.document.state, pass), languageOf(workspace.document.state, pass)); controlSignature = ''; sync(); renderDiagnostics(); }
 let sharedHostState: { signature:string; source:string } | undefined;
 function sync() {
+  for(const control of document.querySelectorAll<HTMLElement>('[data-recovery-label]'))control.textContent=t(control.dataset.recoveryLabel!);
+  for(const[id,label,enabled]of [['undo-source','撤销',app.canUndoSource()],['redo-source','重做',app.canRedoSource()]] as const){const button=document.getElementById(id) as HTMLButtonElement|null;if(button){button.disabled=!enabled;button.title=t(label);button.setAttribute('aria-label',button.title);}}
   const p = workspace.document.state, language = languageOf(p, app.state.activePass), source = sourceOf(p, app.state.activePass);
   const visibleTabs = codeTabs(p);
   const signature = JSON.stringify([app.state.activePass, language, visibleTabs, Boolean(workspace.runtime), p.sound.enabled, p.sound.channels, p.passes.map(item => [item.id, item.enabled, item.channels]), p.assets.map(a => [a.id, a.name])]);
@@ -326,6 +346,7 @@ function changed() {
   refreshSaveState();
   if (workspace.document.revision === revision) return;
   revision = workspace.document.revision;
+  queueDraft();
   if (workspace.configuringSound) return;
   if (autoTimer) clearTimeout(autoTimer);
   if (opened && $<HYCheckbox>('auto-run').checked) autoTimer = setTimeout(() => { void run(compile); }, 650);
@@ -336,9 +357,10 @@ app.connect({ projects: {
     const file = pendingImport; pendingImport = undefined;
     if (!file || context.signal.aborted) return null;
     if (file.size > LIMITS.projectBytes) throw new Error('工程不能超过 48 MB。');
-    return parseProject(await file.text());
+    return receiveProject(parseProject(await file.text()),(await store.list()).map(v=>v.project),crypto.randomUUID(),new Date().toISOString());
   },
-  saveDraft: async () => {}, // Web Gallery has no automatic recovery-draft feature.
+  saveDraft: async (snapshot,context) => {if(context.signal.aborted)return;if(context.session===app.state.session&&context.revision<=app.state.savedRevision){if(context.revision===app.state.revision){await store.ready();await store.archive.discardDraft(snapshot.id,context.session);}return;}if(opened||context.session!==app.state.session)await store.draft(snapshot as ShaderProject,context.activePass,context.session);},
+  checkpoint:async(snapshot,context)=>{if(!context.signal.aborted)await store.checkpoint(snapshot as ShaderProject,'before-conversion',context.activePass);},
   async save(project, context) {
     if (context.signal.aborted) return 'cancelled';
     const fallback = saved.find(item => item.project.id === project.id)?.thumbnail ?? '';
@@ -357,11 +379,12 @@ app.connect({ projects: {
   },
 } });
 async function save() {
+  if(readOnlyPayload)return false;
   if (!opened) return false;
   try { return await (sharedUI ? sharedUI.controller.save() : app.save()); }
   catch (error) { throw new Error(`本地保存失败：${String(error)}。请导出工程以保留作品。`); }
 }
-async function open(project: ShaderProject, fork = false) { workspace.open(project, fork); await openPromise; }
+async function open(project: ShaderProject, fork = false) {if(opened&&workspace.document.dirty)await app.saveDraft();workspace.open(project, fork); await openPromise; }
 function card(project: ShaderProject, image: string, category: string, click: () => Promise<void>, index = '', placeholder = '暂无预览') {
   const article = document.createElement('article'); article.className = 'shader-card';
   const open = button('', click, 'card-open'); open.setAttribute('aria-label', `打开 ${project.name}`); open.dataset.project = project.id;
@@ -380,11 +403,19 @@ function renderGallery() {
   $('examples').setAttribute('aria-busy', String(Boolean(exampleThumbnailJob)));
   $('retry-example-previews').hidden = !thumbnailFailures.size || Boolean(exampleThumbnailJob);
   const query = $<HTMLInputElement>('gallery-search').value.toLowerCase();
-  const items = saved.filter(item => item.project.name.toLowerCase().includes(query)); $('project-count').textContent = String(saved.length);
+  $('project-count').textContent = String(saved.length);
+  // Thumbnail completion must not replace a saved card between pointer-down
+  // and click, or the user's attempt to open their work is silently lost.
+  const locale=getLocale();
+  const filter=JSON.stringify(library.filter);
+  if(savedGalleryState?.items===saved&&savedGalleryState.query===query&&savedGalleryState.locale===locale&&savedGalleryState.filter===filter)return;
+  savedGalleryState={items:saved,query,locale,filter};
+  const items = library.select(saved,{...library.filter,query});
   $('saved-projects').replaceChildren(...items.map(item => {
-    const element = card(item.project, item.thumbnail, 'LOCAL PROJECT', () => open(item.project));
+    const element = card(item.project, item.thumbnail, 'LOCAL PROJECT', ()=>recovery.openWork(item.project));
+    libraryCardActions(element,item.project,async project=>{await store.save(project,item.thumbnail);saved=await store.list();renderGallery();},async project=>{await store.save(project,item.thumbnail);saved=await store.list();renderGallery();});
     const remove = button('', async () => {
-      if (!confirm(`删除本地作品「${item.project.name}」？`)) return;
+      if (!confirm(`将「${item.project.name}」移到回收站？之后可以恢复。`)) return;
       if (workspace.document.state.id === item.project.id) { opened = false; if (autoTimer) clearTimeout(autoTimer); refreshSaveState(); }
       await app.whenWritesSettled(); await store.delete(item.project.id); saved = saved.filter(p => p.project.id !== item.project.id); renderGallery();
     }, 'card-delete');
@@ -473,6 +504,8 @@ async function start() {
   bind('nav-tutorial', () => setRoute('tutorial/' + tutorial.currentId));
   window.addEventListener('hashchange', () => { void run(async () => {
     const hash = location.hash.slice(1);
+    if(hash.startsWith('view/')){await showReadOnly(hash.slice(5));return;}
+    clearReadOnly();
     if (hash === 'practice' || hash.startsWith('practice/')) setRoute(hash);
     else if (hash === 'tutorial' || hash.startsWith('tutorial/')) setRoute(hash);
     else if (hash === 'editor') { if (!opened) await open(createPreferred()); else setRoute('editor'); }
@@ -492,6 +525,7 @@ async function start() {
   $<HTMLInputElement>('project-input').onchange = () => { void run(async () => {
     const input = $<HTMLInputElement>('project-input'), file = input.files?.[0]; input.value = ''; if (!file) return;
     pendingImport = file;
+    if(opened&&workspace.document.dirty)await app.saveDraft();
     if (await app.pick(true)) { void workspace.runtime?.setSoundAudible(false); workspace.onOpen?.(); await openPromise; }
   }); };
   if (!sharedUI) bind('save-project', async () => { if (await save()) notice('作品已保存到此浏览器的 Gallery。'); });
@@ -511,6 +545,9 @@ async function start() {
   }
   if (!sharedUI) $<HTMLInputElement>('project-name').onchange = () => { void run(() => app.dispatch({ type: 'project.rename', name: $<HTMLInputElement>('project-name').value.trim() || 'Untitled shader' })); };
   $('gallery-search').addEventListener('input', renderGallery);
+  const recoveryActions=document.createElement('div');recoveryActions.className='recovery-actions';for(const[label,action]of [['恢复草稿',recovery.drafts],['回收站',recovery.trash]] as const){const control=button(label,action);control.dataset.recoveryLabel=label;recoveryActions.append(control);}document.querySelector('.my-work .section-heading')!.append(recoveryActions);
+  const history=button('版本历史',recovery.history,'quiet');history.id='project-history';history.dataset.recoveryLabel='版本历史';document.querySelector('.project-bar')!.append(history);
+  for(const[name,text,action]of [['undo-source','↶',()=>app.undoSource()],['redo-source','↷',()=>app.redoSource()]] as const){const control=button(text,action,'quiet');control.id=name;control.title=t(name==='undo-source'?'撤销':'重做');control.setAttribute('aria-label',control.title);$('builtin-variables-button').before(control);}
   $('add-pass-menu').addEventListener('item-select', event => {
     const pass = (event as CustomEvent<HYDropdownSelectDetail>).detail.value as CodeId;
     if (!['common', 'sound', ...PASS_IDS].includes(pass) || codeTabs(workspace.document.state).includes(pass)) return;
@@ -536,7 +573,7 @@ async function start() {
     const select = $<HYSelect>('code-language');
     const language = select.value as ShaderLanguage;
     select.disabled = true;
-    try { if (await workspace.setLanguage(app.state.activePass, language)) notifications.success({ key: 'source-conversion', message: t('已转换为 {language}',{language:language.toUpperCase()}), duration: 3 }); }
+    try {const plan=await app.prepareLanguageConversion(app.state.activePass,language);if(plan&&await recovery.review(plan))notifications.success({ key: 'source-conversion', message: t('已转换为 {language}',{language:language.toUpperCase()}), duration: 3,placement:'bottomRight' });}
     catch (error) { notifications.error({ key: 'source-conversion', message: '代码转换失败', description: error instanceof Error ? error.message : String(error) }); }
     finally { select.disabled = false; select.value = languageOf(workspace.document.state, app.state.activePass); sync(); renderDiagnostics(); }
   }); });
@@ -599,12 +636,14 @@ async function start() {
   bind('apply-glsl', async () => { if (!translation) return; workspace.applyGlsl(app.state.activePass, glslEditor.value); editor.show(app.state.activePass, sourceOf(workspace.document.state, app.state.activePass), languageOf(workspace.document.state, app.state.activePass)); $<HTMLDialogElement>('glsl-dialog').close(); await compile(); });
   bind('gpu-retry', () => location.reload());
   window.addEventListener('keydown', event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); if(route==='practice')return;void run(save); } });
-  window.addEventListener('beforeunload', event => { if (hasUnsavedChanges()) { event.preventDefault(); event.returnValue = ''; } });
-  window.addEventListener('pagehide', () => { disposed = true; if (autoTimer) clearTimeout(autoTimer); saveIndicatorOff();localeOff();disposeSettings();uploadCube.dispose(); channelPicker.dispose();sharedUI?.dispose(); notifications.remove(); disposeUI(); tutorial.dispose(); practice.dispose(); wgslPreview.destroy(); generatedPreview.destroy(); shadertoyPreview.destroy(); glslEditor.destroy(); editor.destroy(); void workspace.dispose(); void store.close(); }, { once: true });
+  window.addEventListener('beforeunload', event => { if(opened&&workspace.document.dirty)void app.saveDraft().catch(()=>{});if (hasUnsavedChanges()) { event.preventDefault(); event.returnValue = ''; } });
+  window.addEventListener('pagehide', () => { const closing=opened&&workspace.document.dirty?app.saveDraft():app.whenWritesSettled().then(()=>false);disposed = true;if(draftTimer)clearTimeout(draftTimer); if (autoTimer) clearTimeout(autoTimer); saveIndicatorOff();localeOff();productTools.dispose();library.dispose();disposeSettings();uploadCube.dispose(); channelPicker.dispose();sharedUI?.dispose(); notifications.remove(); disposeUI(); tutorial.dispose(); practice.dispose(); wgslPreview.destroy(); generatedPreview.destroy(); shadertoyPreview.destroy(); glslEditor.destroy(); editor.destroy();void closing.catch(()=>{}).finally(async()=>{await workspace.dispose();await store.close();}); }, { once: true });
   window.haiyueEditorHost?.onSaveAndClose(async () => { try { await save(); return !workspace.document.dirty; } catch { return false; } });
   try { saved = await store.list(); } catch (error) { notice(`无法读取 Gallery：${String(error)}。原有数据保留，可导入工程继续创作。`, true); }
+  const recoveredDrafts=await store.archive.drafts().catch(()=>[]);if(recoveredDrafts.length)notice(t('发现 {count} 份恢复草稿，可继续之前的创作。',{count:recoveredDrafts.length}));
   const initialRoute = location.hash.slice(1); renderGallery(); $('app').setAttribute('aria-busy', 'false');
-  if (initialRoute === 'editor') await open(saved[0]?.project ?? createPreferred());
+  if(initialRoute.startsWith('view/'))await showReadOnly(initialRoute.slice(5));
+  else if (initialRoute === 'editor') {await open(saved[0]?.project ?? createPreferred());if(recoveredDrafts.length)void recovery.drafts();}
   else if (initialRoute === 'practice' || initialRoute.startsWith('practice/')) setRoute(initialRoute);
   else if (initialRoute === 'tutorial' || initialRoute.startsWith('tutorial/')) setRoute(initialRoute);
   else setRoute('gallery');

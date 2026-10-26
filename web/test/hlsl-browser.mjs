@@ -23,7 +23,9 @@ scenario:async({evaluate,click,waitFor,cdp,nextPaint,assertNoBrowserErrors})=>{
  await click('document.getElementById("code-language").shadowRoot.querySelector("select")');
  await key('Escape',27);
  await evaluate('(()=>{const s=document.getElementById("code-language").shadowRoot.querySelector("select");s.value="hlsl";s.dispatchEvent(new Event("change",{bubbles:true}));})()');
- await waitFor(()=>evaluate('document.getElementById("code-language").value==="hlsl"'),'HLSL language selected');
+ await waitFor(()=>evaluate('document.getElementById("conversion-dialog")?.open'),'HLSL conversion preview');
+ await click('document.getElementById("conversion-apply")');
+ await waitFor(()=>evaluate('!document.getElementById("code-language").disabled && shaderEditor.getProject().editorLanguages.image==="hlsl"'),'HLSL language selected');
  assert.match(await evaluate('document.querySelector("#code-editor .cm-content").textContent'),/float4 mainImage/);
  assert.equal(await evaluate('document.querySelector("#code-editor .cm-content").getAttribute("aria-label")'),'HLSL 代码编辑器');
  assert.equal((await compile()).compiled,true);

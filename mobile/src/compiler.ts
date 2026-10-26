@@ -11,7 +11,7 @@ export class MobileCompiler {
     private pending = new Set<(error: Error) => void>();
     private sequence = 0;
     private disposed = false;
-    constructor() {
+    constructor(private readonly evaluationTimeout=15000) {
         this.view.height = 1;
         this.view.opacity = .01;
         this.view.isUserInteractionEnabled = false;
@@ -31,28 +31,34 @@ export class MobileCompiler {
                 event.error ? reject(Error(event.error)) : resolve();
             });
         });
-        void this.ready.catch(() => { });
+        void this.ready.catch(error => {if(this.browser===browser&&!this.disposed)this.release(error as Error);});
         this.view.addChild(browser);
         browser.src = '~/compiler/index.html';
         return this.ready;
     }
     private evaluate(script: string): Promise<string> {
+        // The protocol returns text. WKWebView rejects unsupported JS result
+        // types (including a Promise from a launcher) before invoking take().
+        // Normalize at the page boundary, also for fire-and-poll launch calls.
+        const errorPrefix='__HY_SHADER_BRIDGE_ERROR__';
+        const textScript=`(()=>{try{return String(${script});}catch(error){return ${JSON.stringify(errorPrefix)}+String(error)+' '+String(error?.stack||'');}})()`;
         return new Promise((resolve, reject) => {
             const browser = this.browser;
             if (this.disposed || !browser) {
                 reject(Error('转换服务已关闭'));
                 return;
             }
-            const fail = (error: Error) => { this.pending.delete(fail); reject(error); };
-            const complete = (value: string) => { this.pending.delete(fail); resolve(value); };
+            let settled=false;const timer=setTimeout(()=>fail(Error('转换器响应超时，请重试。')),this.evaluationTimeout);
+            const fail = (error: Error) => {if(settled)return;settled=true;clearTimeout(timer);this.pending.delete(fail); reject(error); };
+            const complete = (value: string) => {if(settled)return;if(value.startsWith(errorPrefix)){fail(Error(value.slice(errorPrefix.length)));return;}settled=true;clearTimeout(timer);this.pending.delete(fail); resolve(value); };
             this.pending.add(fail);
             try {
                 if (isAndroid)
-                    (browser.android as android.webkit.WebView).evaluateJavascript(script, new android.webkit.ValueCallback({ onReceiveValue: (value: string) => {
+                    (browser.android as android.webkit.WebView).evaluateJavascript(textScript, new android.webkit.ValueCallback({ onReceiveValue: (value: string) => {
                         try { complete(JSON.parse(value)); } catch (error) { fail(error as Error); }
                     } }));
                 else
-                    (browser.ios as WKWebView).evaluateJavaScriptCompletionHandler(script, (value, error) => error ? fail(Error(error.localizedDescription)) : complete(String(value ?? '')));
+                    (browser.ios as WKWebView).evaluateJavaScriptCompletionHandler(textScript, (value, error) => error ? fail(Error(`${/nativeShaderCompiler\.(\w+)/.exec(script)?.[1]??'evaluate'}: ${error.localizedDescription}`)) : complete(String(value ?? '')));
             } catch (error) { fail(error as Error); }
         });
     }
@@ -64,24 +70,33 @@ export class MobileCompiler {
     }
     private async run(method: 'start' | 'hlsl', code: string, options: WgslTranslationOptions | HlslTranslationOptions): Promise<WgslTranslationResult> {
         let timer: ReturnType<typeof setTimeout> | undefined;
-        try { await Promise.race([this.load(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(Error('转换器加载超时')), 15000); })]); } finally { if (timer) clearTimeout(timer); }
+        try { await Promise.race([this.load(), new Promise<never>((_, reject) => { timer = setTimeout(() => reject(Error('转换器加载超时')), 15000); })]); } catch(error){this.release(error instanceof Error?error:Error(String(error)));throw error;}finally { if (timer) clearTimeout(timer); }
         const id = String(++this.sequence);
-        await this.evaluate(`window.nativeShaderCompiler.${method}(${JSON.stringify(id)},${JSON.stringify(code)},${JSON.stringify(options)})`);
-        for (let attempt = 0; attempt < 300; attempt++) {
-            if (this.disposed)
-                throw Error('转换已取消');
-            const result = await this.evaluate(`window.nativeShaderCompiler.take(${JSON.stringify(id)})`);
-            if (result)
-                return JSON.parse(result) as WgslTranslationResult;
-            await new Promise(r => setTimeout(r, 100));
+        const browser=this.browser;
+        try {
+            await this.evaluate(`window.nativeShaderCompiler.${method}(${JSON.stringify(id)},${JSON.stringify(code)},${JSON.stringify(options)})`);
+            for (let attempt = 0; attempt < 300; attempt++) {
+                if (this.disposed)throw Error('转换已取消');
+                const result = await this.evaluate(`window.nativeShaderCompiler.take(${JSON.stringify(id)})`);
+                if (result)return JSON.parse(result) as WgslTranslationResult;
+                await new Promise(r => setTimeout(r, 100));
+            }
+            await this.evaluate(`window.nativeShaderCompiler.cancel(${JSON.stringify(id)})`);
+            throw Error('转换超时，请检查代码大小后重试');
+        } catch(error) {
+            // A failed page load/process must not poison every later retry.
+            // Never release a replacement created by another request.
+            if(this.browser===browser)this.release(error instanceof Error?error:Error(String(error)));
+            throw error;
         }
-        await this.evaluate(`window.nativeShaderCompiler.cancel(${JSON.stringify(id)})`);
-        throw Error('转换超时，请检查代码大小后重试');
     }
     dispose() {
         if (this.disposed) return;
         this.disposed = true;
-        const error = Error('转换服务已关闭');
+        this.release(Error('转换服务已关闭'));
+    }
+    private release(error:Error) {
+        this.ready=undefined;
         this.rejectReady?.(error); this.rejectReady = undefined;
         for (const reject of this.pending) reject(error);
         const browser = this.browser; this.browser = undefined;

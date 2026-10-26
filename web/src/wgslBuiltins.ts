@@ -1,6 +1,6 @@
 import { maskComments } from './wgslModules.js';
 
-export const wgslBuiltins = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime'];
+export const wgslBuiltins = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iParams'];
 
 /** Conservative write/address detection. A false positive only retains a copy.
  * Taking an address also counts: a helper may mutate through the pointer. */

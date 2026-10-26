@@ -52,7 +52,7 @@ test('save flushes uncommitted name and editor content; composition cannot silen
   assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');assert.equal(r.nodes.get('/shader-project/status').node.props.visible,false);
   r.event('/shader-project/name/field','valueChange','海月 🌙 未失焦');
   assert.equal(saveIndicator(x.controller.getSnapshot()),'modified');
-  assert.notEqual(application.state.project.name,'海月 🌙 未失焦');
+  assert.equal(application.state.project.name,'海月 🌙 未失焦'); // Persist names before blur as well.
   assert.equal(await x.controller.save(),true);assert.equal(x.writes[0].name,'海月 🌙 未失焦');assert.match(x.writes[0].passes.find(p=>p.id==='image').code,/edited 🌙/);
   assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');assert.equal(saveFeedback(x.controller.getSnapshot()),'');assert.equal(r.nodes.get('/shader-project/status').node.props.visible,false);
   application.setSource('image','// later edit','wgsl');assert.equal(saveMessage(x.controller.getSnapshot()),'有未保存的修改');
@@ -68,6 +68,20 @@ test('export flushes the focused name and editor, and rejects unconfirmed compos
   exported=undefined;x.controller.dispatch({key:'/shader-project/name/field',type:'compositionStart',reason:'keyboard',transaction:2});
   await assert.rejects(x.controller.exportProject(),/候选/);assert.equal(exported,undefined);
   x.controller.dispose();application.dispose();
+});
+
+test('saving normalizes a live name draft and clears the modified indicator even when the project name already matches',async()=>{
+ const x=setup(),name=x.application.state.project.name;
+ x.controller.dispatch({key:'/shader-project/name/field',type:'valueChange',value:'  '+name+'  ',reason:'keyboard',transaction:1});
+ assert.equal(saveIndicator(x.controller.getSnapshot()),'modified');
+ await x.controller.save();assert.equal(x.controller.getSnapshot().name,name);assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');
+ x.controller.dispose();x.application.dispose();
+});
+test('live title autosave lets the user clear and retype the field without filling a fallback into the input',async()=>{
+ const x=setup();x.controller.dispatch({key:'/shader-project/name/field',type:'valueChange',value:'',reason:'keyboard',transaction:1});
+ assert.equal(x.controller.getSnapshot().name,'');assert.equal(x.application.state.project.name,'Untitled shader');
+ x.controller.dispatch({key:'/shader-project/name/field',type:'valueChange',value:'  My shader  ',reason:'keyboard',transaction:2});assert.equal(x.controller.getSnapshot().name,'  My shader  ');assert.equal(x.application.state.project.name,'My shader');
+ await x.controller.save();assert.equal(x.controller.getSnapshot().name,'My shader');assert.equal(saveIndicator(x.controller.getSnapshot()),'saved');x.controller.dispose();x.application.dispose();
 });
 
 test('late preview initialization and save completion cannot overwrite a newly opened project',async()=>{

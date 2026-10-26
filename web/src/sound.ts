@@ -1,3 +1,4 @@
+import {FRAME_BYTES,FRAME_FLOATS,parameterData,type ShaderParameter} from '../../shared/dist/domain/parameters.js';
 import { wrapShader } from './shaders.js';
 import { resolveChannelBindings } from './channelBindings.js';
 import type { ShaderProject, ShaderDiagnostic } from './model.js';
@@ -30,7 +31,7 @@ export async function createSoundRenderer(device: GPUDevice, project: ShaderProj
   }))];
   if (validation && !info.messages.some(m => m.type === 'error')) diagnostics.push({ pass: 'sound', severity: 'error', line: 1, column: 1, message: validation.message });
   if (diagnostics.some(d => d.severity === 'error')) throw new SoundCompileError(diagnostics);
-  const frameLayout = device.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: 144 } }] });
+  const frameLayout = device.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: FRAME_BYTES } }] });
   const emptyLayout = device.createBindGroupLayout({ entries: [] });
   const channels = device.createBindGroupLayout({ entries: [
     { binding: 0, visibility: GPUShaderStage.FRAGMENT, sampler: { type: 'filtering' } },
@@ -47,7 +48,7 @@ export async function createSoundRenderer(device: GPUDevice, project: ShaderProj
   const valid = () => !disposed && current();
   if (!valid()) throw new Error('Sound 合成已取消。');
   const width = 1024, height = 64, block = SOUND_BLOCK, bytes = block * 16;
-  const uniform = device.createBuffer({ size: 144, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+  const uniform = device.createBuffer({ size: FRAME_BYTES, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
   const target = device.createTexture({ size: [width, height], format: 'rgba32float', usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC });
   const readback = device.createBuffer({ size: bytes, usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ });
   try {
@@ -55,7 +56,7 @@ export async function createSoundRenderer(device: GPUDevice, project: ShaderProj
     const empty = device.createBindGroup({ layout: emptyLayout, entries: [] });
     const group = device.createBindGroup({ layout: channels, entries: [{ binding: 0, resource: sampler }, ...inputs.map((t, i) => ({ binding: i + 1, resource: t.view }))] });
     const left = new Float32Array(count), right = new Float32Array(count);
-    const data = new Float32Array(36); data[7] = SOUND_RATE;
+    const data = new Float32Array(FRAME_FLOATS); data[7] = SOUND_RATE; data.set(parameterData(project.parameters),36);
     inputs.forEach((t, i) => { if (pass.channels[i]!.kind !== 'none') data.set([t.width, t.height, 1, 0], 16 + i * 4); });
     for (let offset = 0; offset < count; offset += block) {
       if (!valid()) throw new Error('Sound 合成已取消。');

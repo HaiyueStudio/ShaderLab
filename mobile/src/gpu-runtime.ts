@@ -1,3 +1,6 @@
+import {decodeReadback} from '../../shared/dist/domain/inspection.js';
+import {PassProfiler} from '../../web/src/gpuProfiler.js';
+import {FRAME_BYTES,FRAME_FLOATS,parameterData,type ShaderParameter} from '../../shared/dist/domain/parameters.js';
 import { HaiyueEngine, Entity, Camera3D, CartesianTransform3D, SphericalTransform3D, OrbitControl, BasicMaterial, Mesh3D, createSphere3D, createBox3D } from '@haiyue/engine';
 import { createTorus3D } from '@haiyue/engine/geometry';
 import { NativeVideo } from './video';
@@ -54,6 +57,15 @@ export interface EmbeddedShaderPreview {
     output(texture:GPUTexture):void;
 }
 export class NativeShaderRuntime {
+  private parametersData=new Float32Array(32);
+  setParameters(parameters:readonly ShaderParameter[]=[]){this.parametersData=parameterData(parameters);if(this.active)this.active.project.parameters=JSON.parse(JSON.stringify(parameters));this.dirty=true;this.requestFrame();}
+    profiler!:PassProfiler;
+  private offscreenRendering=false;
+  private exportSize:{width:number;height:number}|undefined;
+  setExportSize(size:{width:number;height:number}|undefined){this.exportSize=size;this.dirty=true;}
+  renderExportFrame(index:number,fps:number){this.setPlaying(false);this.offscreenRendering=true;try{if(index===0)this.reset();this.stepPending=true;this.render(1/fps);}finally{this.offscreenRendering=false;}}
+    private pendingGpuWork=0;
+    get hasPendingGpuWork(){return this.pendingGpuWork>0;}
     private active?: Prepared;
     private readonly pipelineCache = new Map<PassId, PipelineCache>();
     private cameraTexture?: Texture;
@@ -83,7 +95,7 @@ export class NativeShaderRuntime {
     // replacing a video/camera texture replaces the corresponding slot.
     private inputBindings = new WeakMap<Pipeline, (InputBinding | undefined)[]>();
     private presentBindings = new WeakMap<GPUTextureView, GPUBindGroup>();
-    private readonly uniformData = new Float32Array(36);
+    private readonly uniformData = new Float32Array(FRAME_FLOATS);
     private readonly presentData = new Float32Array(4);
     private readonly noOffsets = new Uint32Array(0);
     private black!: Texture;
@@ -125,14 +137,15 @@ export class NativeShaderRuntime {
         this.presentedWidth = width; this.presentedHeight = height;
         return true;
     }
-    private submitCommands(encoder: GPUCommandEncoder) { this.device.queue.submit([encoder.finish()]); }
+    private submitCommands(encoder: GPUCommandEncoder) { this.device.queue.submit([encoder.finish()]);this.profiler.submitted(); }
 
     constructor(readonly engine: HaiyueEngine, readonly requestFrame: () => void, private readonly orbitTarget: HTMLCanvasElement, private readonly hlsl?: HlslTranslator, private readonly embedded?: EmbeddedShaderPreview, private readonly wgsl?: WgslTranslator) { this.bufferFormat = engine.device.features.has('float32-filterable') ? 'rgba32float' : 'rgba16float'; }
     private get device() { return this.engine.device; }
     async initialize() {
         const d = this.device;
+    this.profiler=new PassProfiler(d,false); // Native bridge timestamp sampling is opt-in only after device qualification.
         this.sampler = d.createSampler({ minFilter: 'linear', magFilter: 'linear', addressModeU: 'repeat', addressModeV: 'repeat' });
-        this.frameLayout = d.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: 144 } }] });
+        this.frameLayout = d.createBindGroupLayout({ entries: [{ binding: 0, visibility: GPUShaderStage.FRAGMENT, buffer: { type: 'uniform', minBindingSize: FRAME_BYTES } }] });
         this.emptyLayout = d.createBindGroupLayout({ entries: [] });
         this.emptyGroup = d.createBindGroup({ layout: this.emptyLayout, entries: [] });
         this.black = this.texture(1, 1, 'rgba8unorm');
@@ -193,7 +206,11 @@ export class NativeShaderRuntime {
     /** Internal ownership hand-off from ShaderApplication's independent,
      * normalized compile snapshot. The caller must not reuse this snapshot.
      * External/imported projects must use prepare(), which validates and copies. */
-    async prepareOwnedSnapshot(snapshot: ShaderProject): Promise<Prepared> {
+    async prepareOwnedSnapshot(snapshot:ShaderProject):Promise<Prepared>{
+        this.pendingGpuWork++;this.requestFrame();
+        try{return await this.prepareSnapshot(snapshot);}finally{this.pendingGpuWork--;this.requestFrame();}
+    }
+    private async prepareSnapshot(snapshot: ShaderProject): Promise<Prepared> {
         const generation = ++this.generation;
         const next: Prepared = { generation, project: snapshot, passes: [], images: new Map(), videos: new Map(), diagnostics: await refreshProjectSources(snapshot, this.hlsl, this.wgsl) };
         if (next.diagnostics.length)
@@ -211,7 +228,7 @@ export class NativeShaderRuntime {
                 const dimensionsKey = binding.dimensions.join(','), cached = this.pipelineCache.get(pass.id);
                 if (cached && cached.code === pass.code && cached.common === snapshot.common && cached.dimensions === dimensionsKey) {
                     next.diagnostics.push(...cached.diagnostics.map(d => ({ ...d })));
-                    const uniform = this.device.createBuffer({ size: 144, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+                    const uniform = this.device.createBuffer({ size: FRAME_BYTES, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
                     next.passes.push({ pass, pipeline: cached.pipeline, layout: cached.layout, dimensions: binding.dimensions, uniform, group: this.device.createBindGroup({ layout: this.frameLayout, entries: [{ binding: 0, resource: { buffer: uniform } }] }) });
                     continue;
                 }
@@ -229,7 +246,7 @@ export class NativeShaderRuntime {
                     continue;
                 try {
                     const pipeline = await this.device.createRenderPipelineAsync({ layout: this.device.createPipelineLayout({ bindGroupLayouts: [this.frameLayout, this.emptyLayout, layout] }), vertex: { module, entryPoint: 'hy_vertex' }, fragment: { module, entryPoint: 'hy_fragment', targets: [{ format: pass.id === 'image' ? 'rgba8unorm' : this.bufferFormat }] }, primitive: { topology: 'triangle-list' } });
-                    const uniform = this.device.createBuffer({ size: 144, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+                    const uniform = this.device.createBuffer({ size: FRAME_BYTES, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
                     next.passes.push({ pass, pipeline, layout, dimensions: binding.dimensions, uniform, group: this.device.createBindGroup({ layout: this.frameLayout, entries: [{ binding: 0, resource: { buffer: uniform } }] }) });
                     if (!this.dead && generation === this.generation) this.pipelineCache.set(pass.id, { code: pass.code, common: snapshot.common, dimensions: dimensionsKey, layout, pipeline, diagnostics: next.diagnostics.slice(diagnosticStart).map(d => ({ ...d })) });
                 }
@@ -279,7 +296,7 @@ export class NativeShaderRuntime {
             if (this.cameraTexture) { const texture = this.cameraTexture.texture; void this.device.queue.onSubmittedWorkDone().then(() => texture.destroy()); }
             this.cameraTexture = undefined; this.cameraTime = 0;
         }
-        this.active = next; this.reset(); this.setMode(next.project.preview.mode, next.project.preview.mesh);
+        this.active = next;this.parametersData=parameterData(next.project.parameters); this.reset(); this.setMode(next.project.preview.mode, next.project.preview.mesh);
         this.syncCamera();
         if (old) this.release(old);
     }
@@ -344,7 +361,7 @@ export class NativeShaderRuntime {
         }
     }
     private resize() { if (!this.active)
-        return; const size = this.embedded?.size() ?? {width:this.engine.width,height:this.engine.height}; const scale = this.active.project.preview.scale; const factor = Math.min(scale, 1280 / Math.max(size.width, size.height), Math.sqrt(786432 / (size.width * size.height))); const width = Math.max(1, Math.floor(size.width * factor)), height = Math.max(1, Math.floor(size.height * factor)); if (width === this.width && height === this.height && this.targets.size)
+        return; const size = this.exportSize ?? this.embedded?.size() ?? {width:this.engine.width,height:this.engine.height}; const scale = this.exportSize ? 1 : this.active.project.preview.scale; const factor = Math.min(scale, 1280 / Math.max(size.width, size.height), Math.sqrt(786432 / (size.width * size.height))); const width = Math.max(1, Math.floor(size.width * factor)), height = Math.max(1, Math.floor(size.height * factor)); if (width === this.width && height === this.height && this.targets.size)
         return; this.clearTargets(); this.width = width; this.height = height; for (const p of this.active.passes)
         this.targets.set(p.pass.id, [this.texture(width, height, p.pass.id === 'image' ? 'rgba8unorm' : this.bufferFormat), this.texture(width, height, p.pass.id === 'image' ? 'rgba8unorm' : this.bufferFormat)]); this.frame = 0; this.time = 0; this.dirty = true; }
     private render(delta: number) {
@@ -367,12 +384,13 @@ export class NativeShaderRuntime {
             }
             const encoder = this.device.createCommandEncoder();
             this.uploadKeyboard();
-            const next = 1 - this.current;
+            const next = 1 - this.current;this.profiler.begin();
             for (const compiled of this.active.passes) {
                 const inputs = this.inputs(this.active, compiled.pass, next, compiled.dimensions), data = this.uniformData;
                 data.fill(0);
                 data.set([this.width, this.height, 1, this.time, dt, this.frame, dt > 0 ? 1 / dt : 0, 44100]);
                 data.set(this.mouse, 8);
+                data.set(this.parametersData,36);
                 const date = new Date();
                 data.set([date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds() + date.getMilliseconds() / 1000], 12);
                 inputs.forEach((input, i) => { if (compiled.pass.channels[i]!.kind !== 'none')
@@ -385,14 +403,15 @@ export class NativeShaderRuntime {
                     }).pass) ? this.time : Math.max(0, this.time - dt); });
                 this.device.queue.writeBuffer(compiled.uniform, 0, data);
                 const group = this.bindInputs(compiled, inputs, next);
-                const pass = encoder.beginRenderPass({ colorAttachments: [{ view: this.targets.get(compiled.pass.id)![next]!.view, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 0] }] });
+                const pass = encoder.beginRenderPass({ ...this.profiler.pass(compiled.pass.id),colorAttachments: [{ view: this.targets.get(compiled.pass.id)![next]!.view, loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 0] }] });
                 pass.setPipeline(compiled.pipeline);
                 pass.setBindGroup(0, compiled.group, this.noOffsets, 0, 0);
                 pass.setBindGroup(1, this.emptyGroup, this.noOffsets, 0, 0);
                 pass.setBindGroup(2, group, this.noOffsets, 0, 0);
                 pass.draw(3);
-                pass.end();
+                pass.end();this.profiler.endPass(compiled.pass.id);
             }
+            this.profiler.resolveInto(encoder);
             // Canvas presentation can follow the graph in the same encoder.
             // Scene/embedded consumers belong to Engine's later submission.
             if (this.optimizeFrameWork && !this.embedded && this.mode === 'canvas') pendingEncoder = encoder;
@@ -401,6 +420,7 @@ export class NativeShaderRuntime {
             this.frame++;
             this.dirty = this.keyboard.endFrame();
         }
+        if(this.offscreenRendering){if(pendingEncoder)this.submitCommands(pendingEncoder);const output=this.targets.get('image')?.[this.current];if(output&&this.embedded)this.embedded.output(output.texture);this.onFrame?.();return;}
         const output = this.targets.get(this.viewed)?.[this.current] ?? this.targets.get('image')?.[this.current];
         if (!output) { if (pendingEncoder) this.submitCommands(pendingEncoder); return; }
         if (this.embedded) this.embedded.output(output.texture);
@@ -453,23 +473,14 @@ export class NativeShaderRuntime {
     async sound(start: number, count: number) { if (!this.active?.sound)
         throw Error('请启用并编译 Sound'); const p = this.active; p.soundInputs?.splice(0, 4, ...this.inputs(p, p.project.sound, this.current, resolveChannelBindings(p.project.sound, p.project.common).dimensions)); return p.sound!.render(start, count, () => !this.dead && this.active === p); }
     /** A deterministic first frame for practice judging; the host keeps owning presentation. */
-    renderStill() { this.setPlaying(false); this.reset(); this.render(0); }
-    async readImage(id: PassId = 'image') { const output = this.targets.get(id)?.[this.current]; if (!output)
-        throw Error('尚无渲染结果'); if (id !== 'image')
-        throw Error('请切换 Image 后导出截图'); const stride = Math.ceil(output.width * 4 / 256) * 256, buffer = this.device.createBuffer({ size: stride * output.height, usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ }); try {
-        const encoder = this.device.createCommandEncoder();
-        encoder.copyTextureToBuffer({ texture: output.texture }, { buffer, bytesPerRow: stride }, [output.width, output.height]);
-        this.device.queue.submit([encoder.finish()]);
-        await buffer.mapAsync(GPUMapMode.READ);
-        const mapped = new Uint8Array(buffer.getMappedRange()), pixels = new Uint8Array(output.width * output.height * 4);
-        for (let y = 0; y < output.height; y++)
-            pixels.set(mapped.subarray(y * stride, y * stride + output.width * 4), y * output.width * 4);
-        buffer.unmap();
-        return { width: output.width, height: output.height, pixels };
+    renderStill() { this.setPlaying(false);this.offscreenRendering=true;try{this.reset();this.render(0);}finally{this.offscreenRendering=false;} }
+    async readImage(id:PassId='image') {
+        const output=this.targets.get(id)?.[this.current];if(!output)throw Error('尚无渲染结果');
+        const format=id==='image'?'rgba8unorm':this.bufferFormat,bytes=format==='rgba32float'?16:format==='rgba16float'?8:4,stride=Math.ceil(output.width*bytes/256)*256;
+        const buffer=this.device.createBuffer({size:stride*output.height,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
+        this.pendingGpuWork++;this.requestFrame();
+        try{const encoder=this.device.createCommandEncoder();encoder.copyTextureToBuffer({texture:output.texture},{buffer,bytesPerRow:stride},[output.width,output.height]);this.device.queue.submit([encoder.finish()]);await buffer.mapAsync(GPUMapMode.READ);const result=decodeReadback(new Uint8Array(buffer.getMappedRange()),stride,output.width,output.height,format);buffer.unmap();return result;}finally{buffer.destroy();this.pendingGpuWork--;this.requestFrame();}
     }
-    finally {
-        buffer.destroy();
-    } }
     dispose() {
         if (this.dead) return;
         this.dead = true; ++this.generation; this.orbit?.dispose();
@@ -481,7 +492,7 @@ export class NativeShaderRuntime {
         this.active = undefined; this.pipelineCache.clear();
         this.cameraInput.dispose(); this.cameraTexture?.texture.destroy(); this.cameraTexture = undefined;
         for (const t of [this.black, this.cube, this.keys]) t?.texture.destroy();
-        this.presentSize?.destroy(); this.scene?.destroy();
+        this.profiler?.dispose();this.presentSize?.destroy(); this.scene?.destroy();
         this.onFrame = undefined; this.onCameraError = undefined;
     }
 }

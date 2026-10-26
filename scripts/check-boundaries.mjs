@@ -1,17 +1,21 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, relative, dirname, sep } from 'node:path';
+import ts from 'typescript';
 const root = resolve(import.meta.dirname, '..'), violations = [];
 // Existing shader/compiler content is still product code. Native consumes source,
 // never Web's generated page artifacts or browser UI/runtime entry points.
-const mobileWebSources = new Set(['sound','wgsl','glslProject','sourceProject','sourceConversion','sourceCommon','hlslTypes','channelBindings','shaders','keyboardTexture','examples','tutorialContent','tutorialLabs','glsl']);
+const mobileWebSources = new Set(['enginePackage','gpuProfiler','sound','wgsl','glslProject','sourceProject','sourceConversion','sourceCommon','hlslTypes','channelBindings','shaders','keyboardTexture','examples','tutorialContent','tutorialLabs','glsl']);
 function walk(dir) {
   for (const name of readdirSync(dir)) {
     const file = resolve(dir, name);
     if (statSync(file).isDirectory()) { walk(file); continue; }
     if (!/\.[cm]?[jt]s$/.test(file) || file.endsWith('.d.ts')) continue;
     const source = readFileSync(file, 'utf8'), location = relative(root, file);
-    for (const match of source.matchAll(/(?:from\s*|import\s*\()(['"])([^'"]+)\1/g)) {
-      const spec = match[2], shared = location.startsWith('shared/');
+    // Parse actual imports. Exported source templates are data, not dependencies
+    // of shared; regex matching also mistook quoted generated code for imports.
+    const imports=[];const visit=node=>{if((ts.isImportDeclaration(node)||ts.isExportDeclaration(node))&&node.moduleSpecifier&&ts.isStringLiteralLike(node.moduleSpecifier))imports.push(node.moduleSpecifier.text);if(ts.isCallExpression(node)&&node.expression.kind===ts.SyntaxKind.ImportKeyword&&node.arguments[0]&&ts.isStringLiteralLike(node.arguments[0]))imports.push(node.arguments[0].text);ts.forEachChild(node,visit);};visit(ts.createSourceFile(file,source,ts.ScriptTarget.Latest,false,file.endsWith('.ts')?ts.ScriptKind.TS:ts.ScriptKind.JS));
+    for (const spec of imports) {
+      const shared = location.startsWith('shared/');
       if (spec.startsWith('.')) {
         const target = resolve(dirname(file), spec), targetPath = relative(root, target);
         if (!target.startsWith(root + sep)) violations.push(`${location} imports outside ShaderLab: ${spec}`);

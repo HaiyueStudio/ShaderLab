@@ -1,3 +1,4 @@
+import {FRAME_BYTES} from '../../shared/dist/domain/parameters.js';
 import { compactWgslFloatLiterals } from './shaderFloatLiterals.js';
 import type { MainModule, GlobalSession } from '../../vendor/slang-2026.19/slang-wasm.js';
 import { LIMITS } from './model.js';
@@ -10,13 +11,14 @@ const failure = (message: string): HlslTranslationResult => ({ code: null, diagn
 function header(options: HlslTranslationOptions) {
   return `struct HyUniforms {
   float4 resolutionTime; float4 timing; float4 mouse; float4 date;
-  float4 channelResolution[4]; float4 channelTime;
+  float4 channelResolution[4]; float4 channelTime; float4 params[8];
 };
 [[vk::binding(0, 0)]] ConstantBuffer<HyUniforms> hy_uniforms;
 [[vk::binding(0, 2)]] SamplerState iSampler;
 ${Array.from({ length: 4 }, (_, i) => `[[vk::binding(${i + 1}, 2)]] Texture${options.channelTypes?.[i] === 'cube' ? 'Cube' : '2D'}<float4> iChannel${i};`).join('\n')}
 static float3 iResolution; static float iTime; static float iTimeDelta;
 static int iFrame; static float iFrameRate; static float4 iMouse; static float4 iDate;
+static float4 iParams[8];
 static float iSampleRate; static float3 iChannelResolution[4]; static float iChannelTime[4];
 ${Array.from({ length: 4 }, (_, i) => options.channelTypes?.[i] === 'cube'
     ? `float4 channel${i}(float3 direction) { return iChannel${i}.SampleLevel(iSampler, direction, 0.0); }`
@@ -36,6 +38,7 @@ float4 hy_fragment(float4 position : SV_Position) : SV_Target {
     iChannelResolution[i] = hy_uniforms.channelResolution[i].xyz;
     iChannelTime[i] = hy_uniforms.channelTime[i];
   }
+  for (int hy_param = 0; hy_param < 8; hy_param++) { iParams[hy_param] = hy_uniforms.params[hy_param]; }
   ${sound ? `uint base = asuint(hy_uniforms.timing.x);
   uint index = base + uint(position.y) * 1024u + uint(position.x);
   iSampleRate = 44100.0; iResolution = float3(1024.0, 64.0, 1.0);
@@ -98,7 +101,7 @@ export function createHlslTranslator(load: () => Promise<MainModule>): HlslTrans
         const allowed = new Set(['hy_uniforms', 'iSampler', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3']);
         if (layout?.parameters?.some((p: { name: string }) => !allowed.has(p.name))) return failure('HLSL 使用内置 iChannel0–3、iSampler 和 iResolution 等变量；暂不支持自定义 uniform、纹理或存储缓冲区。');
         const uniform = layout?.parameters?.find((p: { name: string }) => p.name === 'hy_uniforms');
-        if (!uniform || uniform.type?.elementType?.sizes?.find((s: { kind: string }) => s.kind === 'uniform')?.value !== 144)
+        if (!uniform || uniform.type?.elementType?.sizes?.find((s: { kind: string }) => s.kind === 'uniform')?.value !== FRAME_BYTES)
           return failure('HLSL 编译结果的内置变量布局不兼容，请检查编译器版本。');
         for (const resource of layout.parameters) {
           const group = resource.name === 'hy_uniforms' ? 0 : 2;

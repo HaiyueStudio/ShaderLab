@@ -361,6 +361,51 @@ html[lang=en] .code-column>.panel-title{height:auto;min-height:54px;flex-wrap:wr
 
 .brand img { object-fit:contain; border-radius:22%; }
 
+/* Local recovery and conversion share the editor's dark surfaces. */
+.recovery-dialog { width:min(1040px,calc(100vw - 40px)); max-height:calc(100dvh - 48px); padding:0; overflow:auto; box-shadow:0 24px 80px #0008; }
+.recovery-dialog>header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:3; background:var(--surface); }
+.recovery-dialog h2 { margin:0; font-size:18px; }
+.recovery-dialog h3 { font-size:13px; margin:0; padding:10px 12px; color:var(--muted); border-bottom:1px solid var(--line); }
+.recovery-body { padding:16px 20px; }
+.recovery-body>p { color:var(--muted); line-height:1.6; }
+.recovery-body button { margin:4px 8px 4px 0; min-height:36px; }
+.recovery-body>#conversion-apply { background:var(--lime); color:#fff; }
+.source-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:12px 0; }
+.source-comparison section { min-width:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+.source-comparison .cm-editor { height:330px; font-size:12px; }
+.source-comparison .cm-scroller { overflow:auto; }
+.recovery-body details { padding:12px 0; color:var(--muted); }
+.recovery-body details pre { max-height:260px; overflow:auto; background:var(--bg); font-size:12px; padding:12px; }
+.diff-added { color:#9ce9b0; background:#183b2d; }
+.diff-removed { color:#ffacb3; background:#45252f; }
+.recovery-entry { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); }
+.recovery-entry p { overflow-wrap:anywhere; }
+.recovery-error { margin:0; padding:0 20px 16px; color:#ffacb3; }
+.recovery-error:empty { display:none; }
+.recovery-actions { display:flex; gap:8px; flex-wrap:wrap; }
+#undo-source,#redo-source { width:36px; height:36px; padding:0; font-size:22px; line-height:1; }
+@media(max-width:700px) { .recovery-dialog { width:calc(100vw - 16px); max-height:calc(100dvh - 24px); }.recovery-body { padding:12px; }.source-comparison { grid-template-columns:1fr; }.source-comparison .cm-editor { height:220px; }.recovery-entry { flex-wrap:wrap; gap:4px; } }
+
+
+/* Product P1 */
+.product-actions {display:flex;align-items:center;margin-left:8px}.product-actions>button {width:40px;min-height:40px;font-size:24px;padding:0;border-radius:10px}
+.product-drawer {width:min(720px,calc(100vw - 28px));max-height:88dvh;overflow:auto;padding:0;color:#e8e9ff;background:#11142c;border:1px solid #3b3d61;border-radius:18px;box-shadow:0 20px 80px #0009}
+.product-drawer::backdrop {background:#050719b8;backdrop-filter:blur(5px)}.product-drawer>header {display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #32354e;position:sticky;top:0;background:#11142c;z-index:2}.product-drawer h2 {margin:0;font-size:18px}.product-body {display:grid;gap:14px;padding:22px}.product-drawer>.recovery-error {padding:0 22px}
+.product-field {display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.product-field>span {color:#aeb3d3;font-size:13px}.product-field input:not([type=checkbox]):not([type=range]):not([type=color]),.product-field select {min-width:0;max-width:240px;width:100%;padding:9px 12px;background:#090d22;color:#eceeff;border:1px solid #45496b;border-radius:8px;font:inherit}.product-field input[type=color] {height:38px;width:72px;border:0;background:transparent}.product-field input[type=range] {flex:1;min-width:50px;accent-color:#a793ff}.product-field input[type=checkbox] {accent-color:#a793ff;width:20px;height:20px}.product-field output {font:12px monospace;min-width:40px}
+.parameter-card {border:1px solid #363b5a;border-radius:12px;padding:15px;display:grid;gap:12px;background:#171b36}.parameter-card code {color:#b5a6ff}.product-row {display:flex;align-items:center;gap:8px;flex-wrap:wrap}.product-row .product-field {flex:1;min-width:100px}.product-row .product-field input {width:64px}.inspection-image {width:100%;max-height:400px;object-fit:contain;cursor:crosshair;background:#070a1d;image-rendering:pixelated}.product-body pre {white-space:pre-wrap;overflow-wrap:anywhere;color:#bdc4e5;font:12px/1.7 monospace}.library-filters {display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:16px 0}.library-filters .product-field {flex:1;min-width:180px}.library-card-actions {display:flex;gap:6px;align-items:center;padding:8px 12px;border-top:1px solid #34374e}.library-card-actions span {flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.library-card-actions button {font-size:12px;padding:4px 9px;min-height:30px}.export-surface {position:fixed;left:-10000px;top:0;pointer-events:none}
+.readonly-player #workspace-split {display:block;height:calc(100dvh - 150px)}.readonly-player #project-history,.readonly-player .code-column,.readonly-player .texture-section,.readonly-player .product-actions,.readonly-player .shared-project [data-hy-key="/shader-project/actions/save"],.readonly-player .shared-project [data-hy-key="/shader-project/actions/export"] {display:none!important}.readonly-player .preview-column {height:100%;width:100%}.readonly-player #preview-split {height:100%}.readonly-player .shared-project [data-hy-key="/shader-project/name/field"] {pointer-events:none}.readonly-player .shared-project [data-hy-key="/shader-project/status"] {display:none}.readonly-player #viewer-copy {display:inline-flex;white-space:nowrap}
+.learning-paths {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:20px 0}.learning-path-card {padding:16px;border:1px solid #353b5c;border-radius:12px;background:#12172e}.learning-path-card h3 {margin:0 0 8px}.learning-path-card p {font-size:12px;color:#a8b1cf}.learning-path-card button {margin:3px;font-size:12px;min-height:32px;padding:6px 10px}.practice-overlay {position:relative;aspect-ratio:1;width:100%;max-width:320px;overflow:hidden;background:#070a1d}.practice-overlay img {width:100%;height:100%;position:absolute;inset:0;image-rendering:pixelated}.practice-overlay .actual {clip-path:inset(0 50% 0 0)}
+@media(max-width:700px){.product-field {flex-wrap:wrap}.product-field>span {flex-basis:100%}.product-drawer {max-height:92dvh}.library-filters {gap:8px}.library-filters .product-field {min-width:130px}}
+
+/* Reusable creation library */
+.creation-tabs {display:flex;gap:6px;padding:5px;background:#090d20;border:1px solid #303652;border-radius:12px}
+.creation-tabs button {flex:1;min-width:0;border:0;border-radius:8px;background:transparent;color:#a5abc7;padding:10px}
+.creation-tabs button[aria-selected=true] {background:#32345d;color:#ecebff;box-shadow:0 2px 6px #0003}
+.creation-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.creation-card,.creation-save {min-width:0;padding:16px;border:1px solid #313853;border-radius:12px;background:linear-gradient(135deg,#1a203b,#12172c)}
+.creation-card h3 {flex:1;margin:0;font-size:15px}.creation-card .product-row {flex-wrap:nowrap}.creation-card p {font-size:13px;line-height:1.6}.creation-card details {margin:12px 0}.creation-card summary {cursor:pointer;color:#ada6ff;font-size:13px}.creation-card pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;font-size:12px}.creation-card>button {margin:4px 6px 0 0;min-height:36px}
+.creation-save {display:grid;gap:10px}.creation-save h3 {margin:0}.creation-save input,.creation-save textarea,#creation-library input[type=search] {width:100%;min-width:0;box-sizing:border-box;padding:10px 12px;color:#e8e9ff;background:#0c1023;border:1px solid #3c4365;border-radius:8px}.creation-save textarea {min-height:140px;font:12px/1.6 ui-monospace,monospace;resize:vertical}.creation-save input:focus,.creation-save textarea:focus {outline:2px solid #9385fa;outline-offset:1px}#creation-library .product-row>input[type=search] {flex:1}#engine-export .recovery-error {white-space:pre-line}
+@media(max-width:600px){.creation-list {grid-template-columns:1fr}.creation-tabs button {font-size:12px;padding:9px 4px}}
+
 /* ShaderLab shared presentation — generated by scripts/build-presentation.mjs. */
 :root {
  --bg:#080b21; --surface:#10132f; --line:#343765; --muted:#a9add4; --text:#eef0ff; --lime:#8177f2;

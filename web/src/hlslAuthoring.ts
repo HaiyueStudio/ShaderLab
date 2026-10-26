@@ -31,6 +31,7 @@ export function hlslAuthoringWgsl(
     'iSampleRate',
     'iChannelResolution',
     'iChannelTime',
+    'iParams',
     'iSampler',
     'iChannel0',
     'iChannel1',

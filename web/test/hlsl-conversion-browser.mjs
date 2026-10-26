@@ -52,6 +52,8 @@ const report = await runEditorBrowserScenario({
           JSON.stringify(language) +
           ';s.dispatchEvent(new Event("change",{bubbles:true}));})()',
       );
+      await waitFor(()=>evaluate('document.getElementById("conversion-dialog")?.open || !document.getElementById("code-language").disabled'),'conversion preview');
+      if(await evaluate('Boolean(document.getElementById("conversion-dialog")?.open)'))await click('document.getElementById("conversion-apply")');
       await waitFor(
         () =>
           evaluate(
@@ -217,6 +219,24 @@ const report = await runEditorBrowserScenario({
       resolve(out, 'editor.png'),
       Buffer.from(shot.result.data, 'base64'),
     );
+    const glslCases = [
+      'void mainImage(out vec4 c,in vec2 p){vec2 uv=p/iResolution.xy;float t=0.012;vec3 color=vec3(uv,0.5+0.5*sin(t));c=vec4(color,1.0);}',
+      'void mainImage(out vec4 c,in vec2 p){float x=0.2;float before=x;x=0.8;c=vec4(before,x,0.0,1.0);}',
+      'float x=0.2;float change(){x=0.8;return 0.3;}void mainImage(out vec4 c,in vec2 p){c=vec4(x,change(),x,1.0);}',
+      'float change(inout float x){x+=0.25;return x;}void mainImage(out vec4 c,in vec2 p){float x=0.2;c=vec4(x,change(x),x,1.0);}',
+      'void mainImage(out vec4 c,in vec2 p){float x=0.2;float before=x;if(p.x>0.0){x=0.8;}c=vec4(before,x,0.0,1.0);}',
+      'void mainImage(out vec4 c,in vec2 p){float x=0.0;x+=0.2;c=vec4(x,0.1,0.3,1.0);}',
+      'void mainImage(out vec4 c,in vec2 p){float a[2];a[0]=0.2;a[1]=0.8;int i=0;float before=a[i];i=1;c=vec4(before,a[i],0.0,1.0);}',
+    ];
+    for(const [index,code] of glslCases.entries()){
+      await evaluate('shaderEditor.open('+JSON.stringify(createProject('GLSL local copy parity'))+')');
+      await source('image',code,'glsl');await render();const original=await pixel();
+      await choose('image','hlsl');await render();near(await pixel(),original);
+      if(index===0){
+        const output=await evaluate('shaderEditor.getProject().passes.find(p=>p.id==="image").hlsl');
+        assert.doesNotMatch(output,/\bfloat[234]?\s+_e\d+\b|\(float[234]?\)0/);assert.match(output,/float3 color =/);
+      }
+    }
     const loopCases = [
       'var s=0.0;for(var i=0;i<8;i++){if(i==2){continue;}if(s>12.0){break;}s+=f32(i);}return vec4f(s/32.0,0.2,0.4,1.0);',
       'var s=0.0;for(var i=7;i>=0;i--){if(i==3){continue;}s+=f32(i);}return vec4f(s/32.0,0.2,0.4,1.0);',
@@ -279,8 +299,10 @@ const report = await runEditorBrowserScenario({
       pixel: [36, 51, 153, 255],
       gallery,
       loopCases: loopCases.length,
+      glslLocalCases: glslCases.length,
       checks: [
         'real UI selects HLSL and converts current Image / Buffer / Sound',
+        'GLSL to HLSL removes safe SSA copies and split initializers; snapshots across writes, calls, inout arguments, branches and indexed loads preserve GPU pixels',
         'HLSL for loops retain pixels for nesting, continue, break, effectful tests and continuing calls; iteration budgets zero/one preserve update order',
         'non-symmetric matrix and Buffer texture pixels retain their values across WGSL / HLSL / GLSL',
         'Common stays independent and edits update HLSL without reconverting Passes',

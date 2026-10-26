@@ -1,6 +1,6 @@
 import type { StreamParser } from '@codemirror/language';
 
-export const GLSL_BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3'];
+export const GLSL_BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iParams', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3'];
 const keywords = new Set('const uniform in out inout attribute varying buffer shared coherent volatile restrict readonly writeonly layout centroid flat smooth noperspective patch sample invariant precise precision highp mediump lowp if else switch case default for while do break continue return discard struct true false'.split(' '));
 const types = /^(?:void|bool|int|uint|float|double|[biud]?vec[234]|d?mat[234](?:x[234])?|[iu]?(?:sampler|image)(?:1D|2D|3D|Cube|2DRect|Buffer)(?:Array)?(?:MS)?(?:Shadow)?|atomic_uint)$/;
 type State = { blockComment: boolean; macros: Set<string>; macroName: 'define' | 'undef' | null; continued: boolean };

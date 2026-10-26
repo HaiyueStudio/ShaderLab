@@ -1,3 +1,5 @@
+import {validateParameters,type ShaderParameter,type ParameterPreset} from './parameters.js';
+import {validateLibrary,type LibraryMetadata} from './library.js';
 import { cloneValue, utf8Length } from './values.js';
 import type { ShaderEnvironment } from '../ports/services.js';
 import { builtinTexture, type BuiltinTextureId } from './builtinTextures.js';
@@ -29,6 +31,7 @@ export const channelTypes = (channels: readonly Channel[]) => channels.map(c => 
 export interface ShaderProject {
   format: 'haiyue-shader'; version: 1; id: string; name: string; description: string;
   updatedAt: string; editorLanguages?: Partial<Record<CodeId, ShaderLanguage>>; tabs?: CodeId[]; common: string; commonGlsl?: string; commonHlsl?: string; sound: SoundPass; passes: ShaderPass[]; assets: TextureAsset[];
+  parameters?:ShaderParameter[]; parameterPresets?:ParameterPreset[]; library?:LibraryMetadata;
   preview: { mode: PreviewMode; mesh: PreviewMesh; scale: number };
 }
 export interface ShaderDiagnostic { language?: ShaderLanguage; pass: CodeId; severity: 'error' | 'warning' | 'info'; message: string; line: number; column: number }
@@ -120,6 +123,7 @@ export function validateProject(value: unknown): ShaderProject {
       if (c.kind === 'buffer') assert(PASS_IDS.includes(c.pass) && c.pass !== ('image' as string) && p.passes.some(b => b.id === c.pass && b.enabled), '通道引用的 Buffer 必须启用。');
     }
   }
+  validateParameters(p.parameters,p.parameterPresets);validateLibrary(p.library);
   cameraFacing(p);
   for (const [id, language] of Object.entries(p.editorLanguages ?? {})) {
     const source = id === 'common' ? (language === 'hlsl' ? p.commonHlsl : p.commonGlsl) : (id === 'sound' ? sound : p.passes.find(pass => pass.id === id))?.[language === 'hlsl' ? 'hlsl' : 'glsl'];

@@ -1,16 +1,36 @@
 import {File,Folder,knownFolders,path} from '@nativescript/core';
-import {parseProject,type ShaderProject} from './project';
+import {parseProject,type ShaderProject,type CodeId} from './project';
+import {ProjectArchive,type VersionReason} from '../../shared/dist/application/project-archive.js';
+import {NativeArchiveBackend} from './platform/archive-backend';
+import {CreationLibrary} from '../../shared/dist/application/creation-library.js';
 export class MobileProjects {
- private root:Folder;
- private works:Folder;
- constructor(directory='ShaderLab'){this.root=Folder.fromPath(path.join(knownFolders.documents().path,directory));this.works=this.root.getFolder('works');}
- private pending:Promise<unknown>=Promise.resolve();
- private async records(){const entries:{file:File;project:ShaderProject}[]=[];for(const file of await this.works.getEntities()){if(!(file instanceof File)||!file.name.endsWith('.hyshader'))continue;try{entries.push({file,project:parseProject(await file.readText())});}catch{const backup=file.path+'.backup';if(File.exists(backup))try{entries.push({file,project:parseProject(await File.fromPath(backup).readText())});}catch{/* Keep both damaged files for manual recovery. */}}}return entries;}
- async list(){return(await this.records()).map(r=>r.project).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));}
- private serial<T>(operation:()=>Promise<T>){const next=this.pending.then(operation,operation);this.pending=next.catch(()=>{});return next;}
- save(project:ShaderProject){const encoded=JSON.stringify(project),snapshot=parseProject(encoded);return this.serial(async()=>{const record=(await this.records()).find(r=>r.project.id===snapshot.id);const file=record?.file??this.works.getFile(crypto.randomUUID()+'.hyshader');if(record)await File.fromPath(file.path+'.backup').writeText(JSON.stringify(record.project));await file.writeText(encoded);});}
- remove(id:string){return this.serial(async()=>{for(const {file,project}of await this.records())if(project.id===id){await file.remove();if(File.exists(file.path+'.backup'))await File.fromPath(file.path+'.backup').remove();}});}
- async draft(project:ShaderProject,pass:string){const encoded=JSON.stringify({project,pass});return this.serial(()=>this.root.getFile('draft.json').writeText(encoded));}
- async restoreDraft():Promise<{project:ShaderProject;pass:string}|null>{const file=path.join(this.root.path,'draft.json');if(!File.exists(file))return null;try{const data=JSON.parse(await File.fromPath(file).readText());return{project:parseProject(JSON.stringify(data.project)),pass:data.pass};}catch{return null;}}
- async export(project:ShaderProject){const encoded=JSON.stringify(project,null,2);parseProject(encoded);const file=this.root.getFile('ShaderLab-export.hyshader');await file.writeText(encoded);return file.path;}
+  private root:Folder;private works:Folder;private backend:NativeArchiveBackend;private migration:Promise<void>|undefined;
+  readonly archive:ProjectArchive;
+  readonly creations:CreationLibrary;
+  constructor(directory='ShaderLab'){
+    this.root=Folder.fromPath(path.join(knownFolders.documents().path,directory));this.works=this.root.getFolder('works');this.backend=new NativeArchiveBackend(this.root.getFolder('archive'));
+    this.archive=new ProjectArchive(this.backend,{ids:{next:()=>crypto.randomUUID()},clock:{nowISO:()=>new Date().toISOString()}});
+    this.creations=new CreationLibrary(this.backend,()=>crypto.randomUUID());
+  }
+  ready(){return this.migration??=(async()=>{
+    if(await this.backend.run(tx=>tx.get('migrated')))return;
+    for(const file of await this.works.getEntities())if(file instanceof File&&file.name.endsWith('.hyshader')){
+      let project:ShaderProject|undefined;try{project=parseProject(await file.readText());}catch{if(File.exists(file.path+'.backup'))try{project=parseProject(await File.fromPath(file.path+'.backup').readText());}catch{/* Preserve damaged originals. */}}
+      if(project&&!await this.backend.run(tx=>tx.get('record:'+project!.id)))await this.archive.save(project);
+    }
+    const draft=path.join(this.root.path,'draft.json');if(File.exists(draft)){
+      let legacy:{project:ShaderProject;pass:CodeId}|undefined;
+      try{const data=JSON.parse(await File.fromPath(draft).readText());legacy={project:parseProject(JSON.stringify(data.project)),pass:data.pass as CodeId};}catch{/* A damaged legacy draft must not block saved works; keep the original. */}
+      // A storage failure must retry migration, rather than marking it complete.
+      if(legacy)await this.archive.draft(legacy.project,legacy.pass);
+    }
+    await this.backend.run(tx=>tx.set('migrated',true));
+  })().catch(error=>{this.migration=undefined;throw error;});}
+  async list(){await this.ready();return(await this.archive.list()).map(item=>item.project);}
+  async save(project:ShaderProject){await this.ready();await this.archive.save(project);}
+  async remove(id:string){await this.ready();await this.archive.remove(id);}
+  async draft(project:ShaderProject,pass:string,owner?:string){await this.ready();await this.archive.draft(project,pass as CodeId,owner);}
+  async restoreDraft(id?:string){await this.ready();return this.archive.restoreDraft(id);}
+  async checkpoint(project:ShaderProject,reason:VersionReason,pass:CodeId){await this.ready();await this.archive.checkpoint(project,reason,pass);}
+  async export(project:ShaderProject){const encoded=JSON.stringify(project,null,2);parseProject(encoded);const file=this.root.getFile('ShaderLab-export.hyshader');await file.writeText(encoded);return file.path;}
 }

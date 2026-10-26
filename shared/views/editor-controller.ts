@@ -31,6 +31,7 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
   private depth = 0;
   private pending = false;
   private dead = false;
+  private liveName=false;
   constructor(readonly application: ShaderApplication, private readonly ports: ShaderEditorPorts) {
     this.current = { locale:getLocale(),application: application.state, name: application.state.project.name, composing: false, informationOpen: false, message: '' };
     this.unlistenLocale=onLocaleChange(()=>{this.current={...this.current,locale:getLocale()};this.notify();});
@@ -39,7 +40,7 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
       const opened = previous.session !== next.session;
       this.current = { ...this.current, application: next,
         ...(previous.revision !== next.revision ? { message: '' } : {}),
-        ...(opened || previous.project.name !== next.project.name ? { name: next.project.name } : {}),
+        ...(opened || !this.liveName&&previous.project.name !== next.project.name ? { name: next.project.name } : {}),
         ...(opened ? { composing: false, informationOpen: false, message: '' } : {}) };
       this.notify();
     });
@@ -63,14 +64,18 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
   }
   private update(patch: Partial<ShaderEditorViewState>) { if (!this.dead) { this.current = { ...this.current, ...patch }; this.notify(); } }
   report(message: string) { this.update({ message }); }
+  private persistLiveName(){this.liveName=true;try{this.application.dispatch({type:'project.rename',name:this.current.name.trim()||'Untitled shader'});}finally{this.liveName=false;}}
   private flush() {
     if (this.dead) throw Error('编辑页面已关闭。');
     if (this.current.composing) throw Error('请先确认输入法候选，再保存或运行。');
     this.transaction(() => {
-      this.application.dispatch({ type: 'project.rename', name: this.current.name.trim() || 'Untitled shader' });
+      const name=this.current.name.trim() || 'Untitled shader';
+      this.update({name});
+      this.application.dispatch({ type: 'project.rename', name });
       this.ports.flushEditor();
     });
   }
+  flushEdits(){this.flush();}
   async compile(): Promise<boolean> {
     this.flush();
     return this.compileFlushed();
@@ -111,8 +116,8 @@ export class ShaderEditorController implements HYStore<ShaderEditorViewState, HY
       const name = event.key === '/shader-project/name/field';
       if (name) {
         if (event.type === 'compositionStart') this.update({ composing: true });
-        else if (event.type === 'compositionEnd') this.update({ composing: false });
-        else if (event.type === 'valueChange') this.update({ name: String(event.value), message: '' });
+        else if (event.type === 'compositionEnd') {this.update({ composing: false });this.persistLiveName();}
+        else if (event.type === 'valueChange') {this.update({ name: String(event.value), message: '' });if(!this.current.composing)this.persistLiveName();}
         else if (event.type === 'commit') { this.update({ name: String(event.value) }); this.flush(); }
         return;
       }
@@ -149,5 +154,6 @@ export function saveIndicator(state: ShaderEditorViewState): 'modified' | 'saved
 /** Routine persistence state lives on the active code tab; keep actionable feedback visible. */
 export function saveFeedback(state: ShaderEditorViewState): string {
   if (state.application.save.status === 'saving' || state.application.save.status === 'failed') return saveMessage(state);
+  if(state.application.draft.status==='failed')return'草稿保存失败：'+state.application.draft.error;
   return ['作品已保存','已保存；仍有新的修改'].includes(state.message) ? '' : state.message;
 }
