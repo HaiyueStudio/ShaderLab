@@ -4,6 +4,8 @@ import { passOf, type ShaderProject, type ShaderDiagnostic, type CodeId } from '
 import type { HlslTranslator, HlslTranslationOptions } from './hlslTypes.js';
 import { passCommon, resolveChannelBindings } from './channelBindings.js';
 import { externalCommon, glslCommon, hlslCommon, type WgslTranslator } from './sourceCommon.js';
+import {normalizeExtendedSources} from './extendedSources.js';
+export {normalizeExtendedSources} from './extendedSources.js';
 
 export async function projectHlslOptions(project: ShaderProject, pass: CodeId, wgsl?: WgslTranslator): Promise<HlslTranslationOptions> {
   if (pass === 'common') return { entryPoint: 'common' };
@@ -16,6 +18,8 @@ export async function projectHlslOptions(project: ShaderProject, pass: CodeId, w
 /** Work only on a renderer/export snapshot; authored drafts are never replaced
  * by generated WGSL or by another language's Common cache. */
 export async function refreshProjectSources(project: ShaderProject, hlsl?: HlslTranslator, wgsl?: WgslTranslator): Promise<ShaderDiagnostic[]> {
+  const authoringLanguages=new Map([...project.passes,project.sound].map(pass=>[pass.id,languageOf(project,pass.id)]));
+  const extended=await normalizeExtendedSources(project,wgsl);if(extended.length)return extended;
   const diagnostics: ShaderDiagnostic[] = [];
   const commonLanguage = languageOf(project, 'common'), common = sourceOf(project, 'common');
   const enabled = [...project.passes, project.sound].filter(p => p.enabled);
@@ -44,7 +48,7 @@ export async function refreshProjectSources(project: ShaderProject, hlsl?: HlslT
     catch(error){diagnostics.push({pass:'common',language:commonLanguage,severity:'error',line:1,column:1,message:String(error instanceof Error?error.message:error)});continue;}
     const result = await hlsl(pass.hlsl ?? '', options);
     if (result.code !== null) pass.code = result.code;
-    else diagnostics.push(...result.diagnostics.map(d => ({ pass: d.source === 'common' ? 'common' as const : pass.id, language: 'hlsl' as const, severity: 'error' as const, line: d.line, column: d.column, message: 'HLSL: ' + d.message })));
+    else {const language:'slang'|'hlsl'=authoringLanguages.get(pass.id)==='slang'?'slang':'hlsl';diagnostics.push(...result.diagnostics.map(d => ({ pass: d.source === 'common' ? 'common' as const : pass.id, language, severity: 'error' as const, line: d.line, column: d.column, message: (language==='slang'?'Slang: ':'HLSL: ') + d.message })));}
   }
   return diagnostics;
 }

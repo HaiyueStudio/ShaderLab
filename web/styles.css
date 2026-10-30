@@ -202,7 +202,7 @@ hy-select, hy-checkbox { color-scheme:dark; }
 #add-pass:hover { background:#283321; }
 #pass-enable-label { flex-shrink:0; }
 .code-language-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-#code-language { width:86px; font-size:12px; }
+#code-language { width:118px; font-size:12px; }
 .code-column > .panel-title { flex-wrap:wrap; height:auto; min-height:54px; gap:10px; }
 .language-options { display:flex; align-items:center; flex-wrap:wrap; gap:8px 16px; padding:8px 16px; border-bottom:1px solid var(--line); color:var(--muted); font-size:11px; flex-shrink:0; }
 .language-options hy-checkbox { font-size:12px; }
@@ -258,7 +258,7 @@ hy-select, hy-checkbox { color-scheme:dark; }
 #compile{--editor-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 3 14 9-14 9Z'/%3E%3C/svg%3E")}
 @media(max-width:600px){.shared-editor .project-bar{padding:8px 4px;gap:0}.shared-editor .project-name{gap:0}.shared-editor #back-gallery{padding-inline:4px}.project-name input{width:140px}}
 .code-language-controls{flex-wrap:nowrap;gap:10px;min-width:0}
-#code-language{flex:0 0 86px}
+#code-language{flex:0 0 118px}
 #detect-language{white-space:nowrap;font-size:12px}
 .code-heading-actions{margin-left:auto;flex-wrap:wrap}
 .diagnostics-title{align-items:center;gap:12px;flex-wrap:wrap}

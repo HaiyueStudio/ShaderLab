@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "ShaderLab";
+"NSCameraUsageDescription" = "将相机实时画面作为你选择的 Buffer 或 Image 效果的纹理输入。相机画面仅在本机处理。";
+"NSPhotoLibraryAddUsageDescription" = "将你绘制的 Shader 图像保存到照片。";

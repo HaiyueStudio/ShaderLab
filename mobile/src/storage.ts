@@ -27,7 +27,9 @@ export class MobileProjects {
     await this.backend.run(tx=>tx.set('migrated',true));
   })().catch(error=>{this.migration=undefined;throw error;});}
   async list(){await this.ready();return(await this.archive.list()).map(item=>item.project);}
-  async save(project:ShaderProject){await this.ready();await this.archive.save(project);}
+  async listWorks(){await this.ready();return this.archive.list();}
+  async save(project:ShaderProject,thumbnail?:string){await this.ready();await this.archive.save(project,thumbnail);}
+  async updateThumbnail(project:ShaderProject,thumbnail:string){await this.ready();return this.archive.updateThumbnail(project,thumbnail);}
   async remove(id:string){await this.ready();await this.archive.remove(id);}
   async draft(project:ShaderProject,pass:string,owner?:string){await this.ready();await this.archive.draft(project,pass as CodeId,owner);}
   async restoreDraft(id?:string){await this.ready();return this.archive.restoreDraft(id);}

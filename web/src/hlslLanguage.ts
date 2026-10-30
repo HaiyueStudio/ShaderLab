@@ -1,7 +1,7 @@
 import { glslParser } from './glslLanguage.js';
 
 const types = /^(?:half|double|float|int|uint|bool)(?:[1-4](?:x[1-4])?)?$|^(?:Texture\w*|RWTexture\w*|SamplerState|SamplerComparisonState|ConstantBuffer|StructuredBuffer|RWStructuredBuffer|ByteAddressBuffer|RWByteAddressBuffer)$/;
-const keywords = new Set('static cbuffer tbuffer register packoffset groupshared row_major column_major nointerpolation linear centroid sample noperspective inline typedef namespace using public private export extern'.split(' '));
+const keywords = new Set('static cbuffer tbuffer register packoffset groupshared row_major column_major nointerpolation linear centroid sample noperspective inline typedef namespace using public private export extern interface extension implementing __generic func associatedtype This where'.split(' '));
 export const hlslParser: typeof glslParser = {
   ...glslParser,
   token(stream, state) {

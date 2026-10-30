@@ -1,5 +1,5 @@
 import type { ShaderLanguage } from './project';
-const words = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable true false void in out inout uniform precision highp mediump lowp static cbuffer tbuffer register packoffset groupshared row_major column_major nointerpolation typedef namespace using'.split(' '));
+const words = new Set('fn var let const override struct return if else for while loop continuing break continue switch case default discard enable true false void in out inout uniform precision highp mediump lowp static cbuffer tbuffer register packoffset groupshared row_major column_major nointerpolation typedef namespace using function export interface type number boolean const let as do typeof __generic extension implementing associatedtype This'.split(' '));
 export function shaderSpans(text: string, _language: ShaderLanguage) {
     const spans: {
         start: number;

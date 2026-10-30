@@ -5,6 +5,9 @@ import { languageOf, sourceOf } from './sourceLanguage.js';
 import { builtinTexture } from './builtinTextures.js';
 import { externalCommon, glslCommon } from './sourceCommon.js';
 import { passOf, PASS_LABELS, type Channel, type RenderPassId, type ShaderProject } from './model.js';
+import {normalizeExtendedSources} from './extendedSources.js';
+import {createSourceConverter} from './sourceConversion.js';
+import {translateHlsl} from './hlsl.js';
 
 export interface ShadertoyPassExport extends WgslTranslationResult {
   pass: RenderPassId;
@@ -14,6 +17,11 @@ export interface ShadertoyPassExport extends WgslTranslationResult {
 /** Resolve the active Common draft for both the UI and API. Never export stale
  * generated Common after its GLSL original has been edited. */
 export async function translateProjectWgsl(project: Readonly<ShaderProject>, code: string, id: RenderPassId = 'image'): Promise<WgslTranslationResult> {
+  if(languageOf(project,'common')==='typescript'){
+    const snapshot=structuredClone(project),errors=await normalizeExtendedSources(snapshot,translateWgsl,'common');
+    if(errors.length)return {code:null,diagnostics:errors.map(d=>({...d,source:'common' as const})),warnings:[]};
+    return translateProjectWgsl(snapshot,code,id);
+  }
   if (languageOf(project, 'common') === 'hlsl' && sourceOf(project, 'common').trim()) return { code: null, diagnostics: [{ line: 1, column: 1, source: 'common', message: 'HLSL Common 暂不支持导出 Shadertoy GLSL；请导出工程或查看运行用 WGSL。' }], warnings: [] };
   let common = project.common;
   if (languageOf(project, 'common') === 'glsl') {
@@ -29,6 +37,14 @@ export async function exportShadertoyPass(project: Readonly<ShaderProject>, id: 
     channel.kind === 'none' ? '无纹理' : channel.kind === 'camera' ? (channel.facing === 'user' ? '前置相机 · Webcam' : '后置相机 · Webcam') : channel.kind === 'buffer' ? PASS_LABELS[channel.pass] : channel.kind === 'keyboard' ? 'Keyboard · 256 × 3' : channel.kind === 'builtin' ? builtinTexture(channel.texture).name : project.assets.find(a => a.id === channel.assetId)?.name ?? channel.assetId,
   }));
   const meta = { pass: id, label: PASS_LABELS[id], channels };
+  if(['typescript','slang'].includes(languageOf(project,id))||['typescript','slang'].includes(languageOf(project,'common'))){
+    try{
+      const code=await createSourceConverter({wgsl:translateWgsl,hlsl:translateHlsl})(project,id,'glsl');
+      const snapshot=structuredClone(project),errors=await normalizeExtendedSources(snapshot,translateWgsl,id);
+      if(errors.length)throw Error(errors.map(d=>d.message).join('\n'));
+      return {...meta,code:(externalCommon(code)?await glslCommon(snapshot,id,translateWgsl)+'\n':'')+code,diagnostics:[],warnings:[]};
+    }catch(error){return {...meta,code:null,diagnostics:[{line:1,column:1,message:String(error)}],warnings:[]};}
+  }
   if (languageOf(project, id) === 'glsl' && externalCommon(sourceOf(project, id))) {
     try { return { ...meta, code: (await glslCommon(project, id, translateWgsl)) + '\n' + sourceOf(project,id), diagnostics:[], warnings:['此独立导出文件已链接当前 Common；编辑器中的 Common 仍保持独立。'] }; }
     catch(error) { return {...meta,code:null,diagnostics:[{line:1,column:1,message:String(error)}],warnings:[]}; }

@@ -1,6 +1,6 @@
 import { declarations, maskComments } from './wgslModules.js';
 
-type Language = 'glsl' | 'wgsl' | 'hlsl';
+type Language = import('./model.js').ShaderLanguage;
 type Comment = { text: string; start: number; end: number };
 const internal = (text: string) => /^\/\/\s*@haiyue-/.test(text)
   || /^\/\/ Shadertoy GLSL ES 3\.00 · Common 已合并到此 Pass\s*$/.test(text);

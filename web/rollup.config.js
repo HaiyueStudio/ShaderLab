@@ -15,6 +15,7 @@ const nagaAsset = {
 const slangAsset = {
   name: 'shader-slang-asset',
   buildStart() {
+    for(const name of ['LICENSE.txt','ThirdPartyNoticeText.txt'])this.emitFile({type:'asset',fileName:'licenses/typescript/'+name,source:readFileSync(fileURLToPath(import.meta.resolve('typescript/'+name)))});
     const root = new URL('../vendor/slang-2026.19/', import.meta.url);
     for (const name of ['LICENSE', ...readdirSync(new URL('LICENSES/', root)).map(n => 'LICENSES/' + n), ...readdirSync(new URL('third-party-notices/', root)).map(n => 'third-party-notices/' + n)])
       this.emitFile({ type: 'asset', fileName: 'licenses/slang/' + name, source: readFileSync(new URL(name, root)) });

@@ -1,6 +1,9 @@
+import {SHADER_LANGUAGES,LANGUAGE_LABELS,type ShaderLanguage as SupportedShaderLanguage} from './project';
+import {nativeLanguagesRequested,validateNativeLanguages} from './platform/languages-validation';
 import {validateProduct,nativeProductRequested} from './platform/product-validation';
 import {nativeTutorialIndex,nativeTutorialChapter,type TutorialPorts} from './tutorial';
 import {tutorialReview} from './platform/tutorial-review';
+import {uiRefreshReview} from './platform/ui-refresh-review';
 import {validateCreations,nativeCreationRequested} from './platform/creation-validation';
 import {nativeCreationLibrary,nativeEngineExport,type NativeCreationPorts} from './platform/creation-tools';
 import {createEnginePackage} from '../../web/src/enginePackage.js';
@@ -8,7 +11,8 @@ import {nativeParameters,nativeMetadata,nativeInspection,nativeSharing,type Nati
 import {filterLibrary,duplicateProject,receiveProject,type LibraryFilter} from '../../shared/dist/domain/library.js';
 import {practiceForChapter} from '../../shared/dist/domain/learning.js';
 import {HYNativeCardGrid,hyShowNativeOverlay} from '@haiyue/native/ui';
-import {HYNativeButton,nativeAction,nativeCardTarget,nativeTab,pickNative} from './platform/presentation';
+import {HYNativeButton,nativeAction,nativeAssetIcon,nativeCardTarget,nativeTab,pickNative} from './platform/presentation';
+import {NativeGalleryPreviews,projectThumbnail} from './platform/gallery-previews';
 import type {HYIconName} from '@haiyue/ui/core';
 import {practiceIndex} from './practice';
 import {NativeCodeChrome} from './platform/code-chrome';
@@ -27,7 +31,8 @@ import {saveIndicator,saveMessage} from '../../shared/dist/views/editor-controll
 import {openNativeChannelDrawer} from './platform/channel-drawer';
 import {preferences} from './preferences';
 import {installNativeSettings,localizedNativeText} from './platform/settings';
-import {t,onLocaleChange} from '../../shared/dist/views/i18n.js';
+import {t,onLocaleChange,getLocale} from '../../shared/dist/views/i18n.js';
+import {localizedProperty} from './platform/localization';
 import {preferredProject,preferredSource} from '../../shared/dist/domain/preferences.js';
 import {guiComparisonRequested} from './experiments/gui-ui/flags';
 import {configurePreviewExperiment, previewProfileSnapshot} from './experiments/gui-ui/preview-profile';
@@ -38,7 +43,7 @@ import { TrailingTask } from './platform/trailing-task';
 import { observeEditorDocument } from './platform/editor-document';
 import { validateNativeLifetimes } from './platform/lifecycle-validation';
 import { preparedPreview } from '../../shared/dist/ports/preparedPreview.js';
-import { ApplicationSettings, Application, Page, Frame, GridLayout, StackLayout, ScrollView, Label, Button, TextView, TextField, FormattedString, Span, Switch, ActionBar, NavigationButton, Image, ImageSource, Color, Utils, knownFolders, path, File, Dialogs, isAndroid, type View, type TouchGestureEventData } from '@nativescript/core';
+import { ApplicationSettings, Application, Page, Frame, GridLayout, StackLayout, ScrollView, Label, Button, TextView, TextField, FormattedString, Span, Switch, ActionBar, ActionItem, NavigationButton, Image, ImageSource, Color, Utils, knownFolders, path, File, Dialogs, isAndroid, type View, type TouchGestureEventData } from '@nativescript/core';
 import { Canvas } from '@nativescript/canvas';
 import { NativeRenderHost, NativeTouchInput, NativeCanvasTextures } from '@haiyue/native/engine';
 import { NativeDesktopInput } from '@haiyue/native/input/desktop';
@@ -51,7 +56,7 @@ import { tutorialProject } from '../../web/src/tutorialLabs.js';
 import { translateGlsl } from '../../web/src/glsl.js';
 import { createSourceConverter } from '../../web/src/sourceConversion.js';
 import { externalCommon, glslCommon } from '../../web/src/sourceCommon.js';
-import { projectHlslOptions } from '../../web/src/sourceProject.js';
+import { projectHlslOptions, normalizeExtendedSources } from '../../web/src/sourceProject.js';
 import { projectTranslationOptions } from '../../web/src/glslProject.js';
 import { encodeWave } from '../../web/src/sound.js';
 import { MobileSession } from './session';
@@ -71,18 +76,19 @@ function button(text: string, fn: () => void | Promise<void>, cls = '',translate
     b.className=cls;b.accessibilityLabel=translate?t(text):text;b.on('tap',()=>void perform(fn));return b;
 }
 function iconButton(icon:HYIconName,name:string,fn:()=>void|Promise<void>,cls='') { const b=new HYNativeButton({text:'',icon,variant:cls==='primary'?'primary':'quiet',a11y:{label:t(name)}},shaderTheme);localizedNativeText(b,'',name);b.width=44;b.height=44;b.on('tap',()=>void perform(fn));return b; }
+function imageButton(icon:string,name:string,fn:()=>void|Promise<void>,variant:'primary'|'secondary'|'quiet'='quiet'){const b=nativeAssetIcon(icon,name,variant);localizedNativeText(b,'',name);b.on('tap',()=>void perform(fn));return b;}
 async function perform(fn: () => unknown | Promise<unknown>) { try {
     await fn();
 }
 catch (error) {
-    await Dialogs.alert({ title: 'ShaderLab', message: String(error instanceof Error ? error.message : error), okButtonText: t('知道了') });
+    await Dialogs.alert({ title: 'ShaderLab', message: t(String(error instanceof Error ? error.message : error)), okButtonText: t('知道了') });
 } }
 function scroll(content: View, horizontal = false) { const v = new ScrollView(); v.orientation = horizontal ? 'horizontal' : 'vertical'; v.content = content; return v; }
 function row(...children: View[]) { const v = new StackLayout(); v.orientation = 'horizontal'; for (const child of children)
     {child.verticalAlignment='middle';v.addChild(child);} return v; }
-function page(title: string, back = true) { const p = new Page(); p.backgroundColor = new Color(shaderAppearance.color.canvas); p.actionBar = new ActionBar(); p.actionBar.title = title; if (back) {
+function page(title: string, back = true) { const p = new Page(); p.backgroundColor = new Color(shaderAppearance.color.canvas); p.actionBar = new ActionBar(); localizedProperty(p.actionBar,'title',title); if (back) {
     const nav = new NavigationButton();
-    nav.text = '返回';
+    localizedProperty(nav,'text','返回');
     if (isAndroid)
         nav.android.systemIcon = 'ic_menu_back';
     nav.on('tap', () => p.frame.goBack());
@@ -91,15 +97,24 @@ function page(title: string, back = true) { const p = new Page(); p.backgroundCo
 function navigate(create: () => Page) { Frame.topmost().navigate({ create }); }
 async function imported() { const file = await pickFile('project'); return file ? receiveProject(parseProject(await File.fromPath(file).readText()),await projects.list(),crypto.randomUUID(),new Date().toISOString()) : null; }
 export function galleryPage() {
-    const p = page('haiyue / ShaderLab', false), content = new StackLayout();
+    const p = page('ShaderLab', false), content = new StackLayout(),root=new GridLayout();p.id='gallery-page';root.rows='*,1,1';
     const navigation = createPageNavigation(p, {current:()=>p.frame?.currentPage,navigate:create=>p.frame.navigate({create})});
     const navigate = (create:()=>Page):void => { navigation.open(create); };
     p.on('navigatedTo',()=>navigation.returned());
     installNativeSettings(p);
+    if(isAndroid){
+        p.actionBar.android.icon='~/assets/icon.png';p.actionBar.android.iconVisibility='always';
+        const title=label('ShaderLab','',false);title.fontSize=18;title.fontWeight='bold';title.textAlignment='center';title.horizontalAlignment='center';p.actionBar.titleView=title;
+    }else{
+        const logo=new GridLayout();logo.id='app-logo';logo.width=logo.height=44;logo.accessibilityHidden=true;
+        const artwork=new Image();artwork.src='~/assets/icon.png';artwork.width=artwork.height=32;artwork.stretch='aspectFit';logo.addChild(artwork);
+        const item=new ActionItem();item.actionView=logo;item.ios.position='left';p.actionBar.actionItems.addItem(item);
+    }
     content.className = 'body';
-    p.content = scroll(content);
+    const galleryScroll=scroll(content);galleryScroll.id='gallery-scroll';root.addChild(galleryScroll);p.content=root;
+    let previews:NativeGalleryPreviews|undefined;const stopPreviews=()=>{previews?.dispose();previews=undefined;};p.on('navigatingFrom',stopPreviews);p.on('unloaded',stopPreviews);
     content.addChild(label('从灵感开始', 'title'));
-    content.addChild(label('编写 GLSL / WGSL / HLSL，用原生 WebGPU 看见想法。', 'muted'));
+    content.addChild(label('编写 WGSL / GLSL / HLSL / TypeScript / Slang，用原生 WebGPU 看见想法。', 'muted'));
     const shortcuts=new GridLayout();shortcuts.id='gallery-actions';shortcuts.columns='44,8,44,8,44,8,44,8,44,*';shortcuts.marginTop=12;shortcuts.marginBottom=4;
     const shortcut=(id:string,name:string,action:()=>void|Promise<void>,primary=false)=>{
         const control=new HYNativeButton({text:'',variant:primary?'primary':'secondary',a11y:{label:t(name)}},shaderTheme);
@@ -114,7 +129,7 @@ export function galleryPage() {
     shortcut('restore-draft','恢复草稿',()=>showNativeDrafts(p,projects,(project,pass)=>navigate(()=>editorPage(project,false,pass,true))));
     content.addChild(shortcuts);
     const samples = examples();
-    content.addChild(label(`示例 · ${samples.length} 个 · 打开即可编辑`, 'section'));
+    const examplesTitle=localizedNativeText(new Label(),'示例 · {count} 个 · 打开即可编辑',undefined,{count:samples.length});examplesTitle.className='section';examplesTitle.textWrap=true;content.addChild(examplesTitle);
     const cards = new HYNativeCardGrid({minCardWidth:260,maxColumns:3,gap:12});
     content.addChild(cards);
     const sampleViews = samples.map(sample => {
@@ -135,7 +150,7 @@ export function galleryPage() {
         card.addChild(body);
         const open = button('', () => navigate(() => editorPage(sample.project, true)), 'example-card-target');
         open.accessibilityLabel = sample.project.name;
-        open.accessibilityHint = sample.project.description;
+        localizedProperty(open,'accessibilityHint',sample.project.description);
         open.accessibilityIdentifier = 'example-' + sample.id;
         open.horizontalAlignment = 'stretch';
         open.verticalAlignment = 'stretch';
@@ -145,32 +160,39 @@ export function galleryPage() {
     cards.setItems(sampleViews);
     const worksHeading=new GridLayout();worksHeading.id='library-heading';worksHeading.columns='auto,12,*';worksHeading.marginTop=16;worksHeading.marginBottom=12;
     const worksTitle=label('我的作品','section');worksTitle.margin=0;worksTitle.verticalAlignment='middle';worksHeading.addChild(worksTitle);
-    const filter:LibraryFilter={sort:'updated'},search=new TextField();search.hint=search.accessibilityLabel=t('搜索作品');search.id=search.accessibilityIdentifier='library-search';
+    const filter:LibraryFilter={sort:'updated'},search=new TextField();localizedProperty(search,'hint','搜索作品');localizedProperty(search,'accessibilityLabel','搜索作品');search.id=search.accessibilityIdentifier='library-search';
     search.width='100%';search.maxWidth=280;search.height=44;search.horizontalAlignment='right';search.verticalAlignment='middle';
     search.backgroundImage='~/assets/gallery-actions/search.png';search.backgroundSize='18 18';search.backgroundPosition='12 center';search.backgroundRepeat='no-repeat';
     search.paddingLeft=40;search.paddingRight=12;search.style.placeholderColor=new Color(shaderAppearance.color.muted);search.autocorrect=false;search.autocapitalizationType='none';search.returnKeyType='search';search.on('returnPress',()=>search.dismissSoftInput());
     GridLayout.setColumn(search,2);worksHeading.addChild(search);content.addChild(worksHeading);
     const filters=button('筛选与排序',async()=>{const choice=await pickNative(filters,'筛选与排序',[{value:'favorite',label:t('只看收藏')},{value:'updated',label:t('最近更新')},{value:'oldest',label:t('最早更新')},{value:'name',label:t('按名称')},{value:'folder',label:t('文件夹')},{value:'tag',label:t('标签')},{value:'clear',label:t('清除筛选')}]);if(choice==='favorite')filter.favorites=!filter.favorites;else if(choice==='folder'||choice==='tag'){const value=await Dialogs.prompt({title:t(choice==='folder'?'文件夹':'标签'),defaultText:filter[choice]??'',okButtonText:t('确定'),cancelButtonText:t('取消')});if(value.result)filter[choice]=value.text.trim();}else if(choice==='clear'){filter.favorites=false;filter.folder='';filter.tag='';search.text='';}else if(choice)filter.sort=choice as NonNullable<LibraryFilter['sort']>;await refresh();});content.addChild(filters);search.on('textChange',()=>{filter.query=search.text??'';void perform(refresh);});
-    const works = new HYNativeCardGrid({minCardWidth:260,maxColumns:3,gap:12});
+    const works = new HYNativeCardGrid({minCardWidth:260,maxColumns:3,gap:12});works.id='gallery-works';
     content.addChild(works);
     const deleteProject=createGalleryDeleteAction({
         confirm:project=>confirmNative(p,{title:t('删除作品'),message:t('将“{name}”移到回收站？之后可以恢复。',{name:project.name}),accept:t('删除'),destructive:true}),
         remove:id=>projects.remove(id),refresh:()=>refresh(),
     });
-    let refreshVersion=0;const refresh = async () => { const version=++refreshVersion,items:View[]=[];const saved = filterLibrary((await projects.list()).map(project=>({project})),filter).map(item=>item.project); if(version!==refreshVersion)return;if (!saved.length)
-        items.push(label('点击编辑器里的“保存”，作品才会出现在这里。', 'muted')); for (const project of saved) {
+    let refreshVersion=0;const refresh = async () => { const version=++refreshVersion,items:View[]=[];const saved = filterLibrary(await projects.listWorks(),filter); if(version!==refreshVersion)return;if (!saved.length)
+        items.push(label('点击编辑器里的“保存”，作品才会出现在这里。', 'muted')); for (const {project,thumbnail} of saved) {
         const card = new GridLayout();
-        card.className = 'card';
-        card.columns = '*,auto,auto';card.rows='auto,auto';const meta=[project.library?.folder,...project.library?.tags??[]].filter(Boolean).join(' · ');if(meta){const details=label(meta,'muted');GridLayout.setRow(details,1);GridLayout.setColumnSpan(details,3);card.addChild(details);}
+        card.className = 'card';card.padding=0;card.rows='160,auto';card.clipToBounds=true;
+        const art=new GridLayout();art.backgroundColor=new Color(shaderAppearance.color.input);const image=new Image();image.stretch='aspectFill';image.accessibilityHidden=true;image.id='work-preview-'+project.id;art.addChild(image);
+        const placeholder=label('正在生成预览…','muted');placeholder.textAlignment='center';placeholder.verticalAlignment='middle';art.addChild(placeholder);card.addChild(art);
+        const show=(url:string)=>{try{const source=ImageSource.fromBase64Sync(url.slice(url.indexOf(',')+1));if(!source||source.width<=0)return false;image.imageSource=source;placeholder.visibility='collapse';return true;}catch{return false;}};
+        if(!thumbnail||!show(thumbnail)){if(!previews||previews.closed)previews=new NativeGalleryPreviews(root,projects);previews.enqueue(project,url=>{if(version===refreshVersion)show(url);},()=>{if(version===refreshVersion)placeholder.text=t('预览暂不可用');});}
+        const footer=new GridLayout();footer.columns='*,8,44,44';footer.padding=12;GridLayout.setRow(footer,1);card.addChild(footer);
+        const details=new StackLayout();details.accessibilityHidden=true;const name=new Label();name.text=project.name;name.textWrap=false;name.fontSize=16;name.fontWeight='bold';name.maxLines=1;details.addChild(name);
+        const meta=[project.library?.folder,...project.library?.tags??[]].filter(Boolean).join(' · '),subtitle=new Label();subtitle.text=meta||LANGUAGE_LABELS[languageOf(project,'image')];subtitle.fontSize=12;subtitle.textWrap=true;subtitle.color=new Color(shaderAppearance.color.muted);details.addChild(subtitle);footer.addChild(details);
         let opening=false;
-        const open = button(project.name, async()=>{if(opening||p.frame?.currentPage!==p)return;opening=true;try{const draft=await projects.restoreDraft(project.id);if(draft){const choice=await pickNative(open,'此作品有未保存草稿',[{value:'draft',label:t('恢复草稿')},{value:'saved',label:t('打开已保存版本')}]);if(choice==='draft')navigate(()=>editorPage(draft.project,false,draft.pass,true));else if(choice==='saved')navigate(()=>editorPage(project));}else navigate(()=>editorPage(project));}finally{opening=false;}},'',false);
-        card.addChild(open);
-        const remove = button('🗑', () => deleteProject(project), 'danger');
-        remove.accessibilityIdentifier='delete-project-'+project.id;
-        open.accessibilityIdentifier='saved-project-'+project.id;
-        remove.accessibilityLabel = '删除 ' + project.name;
-        const organize=button('⋯',async()=>{const choice=await pickNative(organize,'作品操作',[{value:'metadata',label:t('整理作品')},{value:'copy',label:t('复制作品')},{value:'favorite',label:t(project.library?.favorite?'取消收藏':'收藏')}]);if(choice==='metadata')nativeMetadata(p,project,async value=>{value.updatedAt=new Date().toISOString();await projects.save(value);await refresh();});else if(choice==='copy'){await projects.save(duplicateProject(project,crypto.randomUUID(),new Date().toISOString()));await refresh();}else if(choice==='favorite'){await projects.save({...project,library:{folder:project.library?.folder??'',tags:project.library?.tags??[],favorite:!project.library?.favorite}});await refresh();}});organize.accessibilityIdentifier='organize-'+project.id;GridLayout.setColumn(organize,1);card.addChild(organize);GridLayout.setColumn(remove, 2);
-        card.addChild(remove);
+        const openWork=async()=>{if(opening||p.frame?.currentPage!==p)return;opening=true;try{const draft=await projects.restoreDraft(project.id);if(draft){const choice=await pickNative(open,'此作品有未保存草稿',[{value:'draft',label:t('恢复草稿')},{value:'saved',label:t('打开已保存版本')}]);if(choice==='draft')navigate(()=>editorPage(draft.project,false,draft.pass,true));else if(choice==='saved')navigate(()=>editorPage(project));}else navigate(()=>editorPage(project));}finally{opening=false;}};
+        const open=button('',openWork,'example-card-target',false);open.accessibilityLabel=project.name;footer.addChild(open);
+        const openArt=button('',openWork,'example-card-target',false);openArt.accessibilityHidden=true;art.addChild(openArt);
+        const remove = imageButton('trash','删除作品',()=>deleteProject(project));
+        remove.id=remove.accessibilityIdentifier='delete-project-'+project.id;
+        open.id=open.accessibilityIdentifier='saved-project-'+project.id;
+        remove.accessibilityLabel = t('删除作品')+' · '+project.name;
+        const organize=imageButton('more','作品操作',async()=>{const choice=await pickNative(organize,'作品操作',[{value:'metadata',label:t('整理作品')},{value:'copy',label:t('复制作品')},{value:'favorite',label:t(project.library?.favorite?'取消收藏':'收藏')}]);if(choice==='metadata')nativeMetadata(p,project,async value=>{value.updatedAt=new Date().toISOString();await projects.save(value);await refresh();});else if(choice==='copy'){await projects.save(duplicateProject(project,crypto.randomUUID(),new Date().toISOString()));await refresh();}else if(choice==='favorite'){await projects.save({...project,library:{folder:project.library?.folder??'',tags:project.library?.tags??[],favorite:!project.library?.favorite}});await refresh();}});organize.accessibilityIdentifier='organize-'+project.id;GridLayout.setColumn(organize,2);footer.addChild(organize);GridLayout.setColumn(remove,3);
+        footer.addChild(remove);
         items.push(card);
     } works.setItems(items);};
     const trash=button('回收站',()=>showNativeTrash(p,projects,refresh));trash.accessibilityIdentifier='gallery-trash';content.addChild(trash);
@@ -180,6 +202,8 @@ export function galleryPage() {
 function tutorialPorts():TutorialPorts{return{page,chapter:tutorialChapter,editor:id=>editorPage(tutorialProject(id),true),practice:id=>practiceIndex(project=>editorPage(project),practiceForChapter(id),tutorialChapter)};}
 export function tutorialIndex(){return nativeTutorialIndex(tutorialPorts());}
 export function tutorialReviewPage(){projects=new MobileProjects('ShaderLab-TutorialReview');return tutorialReview(tutorialIndex);}
+export function uiRefreshReviewPage(){projects=new MobileProjects('ShaderLab-UIRefreshReview/'+Date.now());return uiRefreshReview(galleryPage,projects);}
+export function languagesReviewPage(){projects=new MobileProjects('ShaderLab-LanguagesReview/'+Date.now());if(!isAndroid)UIApplication.sharedApplication.idleTimerDisabled=true;return editorPage(createProject('Language review'));}
 function tutorialChapter(id:string){return nativeTutorialChapter(id,tutorialPorts());}
 export function editorPage(project: ShaderProject, fork = false, initial: CodeId = 'image',recovered=false) {
     return new MobileEditor(project, fork, initial,false,recovered).page;
@@ -224,6 +248,7 @@ class MobileEditor {
     private outputToggle!: Button;
     private time = label('0.00 s','muted',false);
     private modeButton?: Button;
+    private localizeCodeActions?:()=>void;
     private paneButtons:{pane:MobilePane;view:Button}[]=[];
     private codeRun?: Button;
     private language!: Button;
@@ -253,18 +278,20 @@ class MobileEditor {
     private layoutTimer?: ReturnType<typeof setTimeout>;
     private previewVisible = true;
     private foreground = true;
-    private statsAt=0;private fullPreview=false;private fullExit?:View;
+    private statsAt=0;private fullPreview=false;private previousPane?:MobilePane;private fullscreenButton?:HYNativeButton;private previewControls?:GridLayout;private previewOutput?:Button;private playbackBar?:GridLayout;
     private productPorts():NativeProductPorts{return{page:this.page,app:this.session.application,runtime:()=>this.runtime,compile:()=>this.compile(),changed:()=>this.draft(),flush:()=>this.shared?.controller.flushEdits(),fullscreen:()=>this.presentation()};}
     private creationPorts():NativeCreationPorts{return{...this.productPorts(),library:projects.creations,selection:()=>{const r=nativeSelection(this.editor);return (this.editor.text??'').slice(r.start,r.end);},open:async project=>{if(this.session.dirty)await this.session.application.saveDraft();this.session.open(project);this.showSource();this.renderChannels();this.draft();await this.compile();},package:project=>createEnginePackage(project,(source,options)=>this.compiler.hlsl(source,options),this.wgslCompiler,async id=>dataUrl(path.join(knownFolders.currentApp().path,'assets',builtinTexture(id).file),'image/png'))};}
-    private presentation(){this.fullPreview=!this.fullPreview;if(this.fullPreview){this.select('preview');if(!this.fullExit&&this.previewSurface){const exit=button('退出全屏',()=>this.presentation());exit.accessibilityIdentifier='exit-presentation';exit.horizontalAlignment='right';exit.verticalAlignment='top';this.previewSurface.addChild(exit);this.fullExit=exit;}}if(this.fullExit)this.fullExit.visibility=this.fullPreview?'visible':'collapse';this.root.getChildAt(0).visibility=this.fullPreview?'collapse':'visible';this.layout();}
+    private presentation(){this.editor.dismissSoftInput();this.fullPreview=!this.fullPreview;if(this.fullPreview){this.previousPane=this.pane;this.select('preview');}else{this.select(this.previousPane??'preview');this.previousPane=undefined;}this.root.getChildAt(0).visibility=this.fullPreview?'collapse':'visible';this.status.visibility=this.fullPreview?'collapse':'visible';this.syncPreviewChrome();this.layout();}
+    private syncPreviewChrome(){if(this.fullscreenButton){this.fullscreenButton.backgroundImage='~/assets/gallery-actions/'+(this.fullPreview?'fullscreen-exit':'fullscreen')+'.png';this.fullscreenButton.accessibilityLabel=t(this.fullPreview?'退出全屏':'全屏预览');}if(this.previewControls){this.previewControls.columns=this.fullPreview?'44':'110,8,44';this.previewControls.width=this.fullPreview?44:162;if(this.fullscreenButton)GridLayout.setColumn(this.fullscreenButton,this.fullPreview?0:2);}if(this.modeButton)this.modeButton.visibility=this.fullPreview?'collapse':'visible';if(this.previewOutput)this.previewOutput.visibility=this.fullPreview?'collapse':'visible';if(this.playbackBar)this.playbackBar.visibility=this.fullPreview?'collapse':'visible';this.preview.padding=this.fullPreview?0:8;}
 
     private playingButton!: Button;
     private unlisten = () => { };
     constructor(project: ShaderProject, fork: boolean, initial: CodeId, private readonly validate = false,recovered=false) {
+        this.canvas.id='editor-render-canvas';this.compileState.id='editor-compile-state';
         this.session.application.connect({
             projects: {
                 open: async context => { const file = await pickFile('project'); return file && !context.signal.aborted ? receiveProject(parseProject(await File.fromPath(file).readText()),await projects.list(),crypto.randomUUID(),new Date().toISOString()) : null; },
-                save: async (snapshot, context) => { if (context.signal.aborted) return 'cancelled'; await projects.save(snapshot as ShaderProject); return 'saved'; },
+                save: async (snapshot, context) => { if (context.signal.aborted) return 'cancelled';let thumbnail='';if(this.runtime&&this.session.application.state.compile.acceptedRevision===context.revision)try{thumbnail=await projectThumbnail(this.runtime);}catch{/* A preview failure must not prevent saving code. */}if(context.signal.aborted)return 'cancelled';await projects.save(snapshot as ShaderProject,thumbnail);return 'saved'; },
                 saveDraft: async (snapshot, context) => {if(context.signal.aborted)return;const state=this.session.application.state;if(context.session===state.session&&context.revision<=state.savedRevision){if(context.revision===state.revision){await projects.ready();await projects.archive.discardDraft(snapshot.id,context.session);}return;}await projects.draft(snapshot as ShaderProject,context.activePass,context.session);},
                 checkpoint:async(snapshot,context)=>{if(!context.signal.aborted)await projects.checkpoint(snapshot as ShaderProject,'before-conversion',context.activePass);},
             },
@@ -293,11 +320,11 @@ class MobileEditor {
         this.root.iosOverflowSafeArea = false;
         this.root.iosOverflowSafeAreaEnabled = false;
         this.page.content = this.root;
-        const top=new GridLayout();top.columns='*,auto,auto,auto';top.className='editor-project-bar';
+        const top=new GridLayout();top.id='editor-project-bar';top.columns='*,auto,auto,auto';top.className='editor-project-bar';
         const sharedHost=new GridLayout();top.addChild(sharedHost);
         if(this.shared)this.shared.mount('project',sharedHost);
         else {
-            const name=new GridLayout();name.columns='*,auto,auto';this.title.text=this.session.project.name;this.title.hint=t('作品名称');name.addChild(this.title);
+            const name=new GridLayout();name.columns='*,auto,auto';this.title.text=this.session.project.name;localizedProperty(this.title,'hint','作品名称');name.addChild(this.title);
             const save=iconButton(editorIcons.save,'保存作品',()=>this.save(),'primary'),exported=iconButton(editorIcons.export,'导出工程',async()=>{await shareFile(await projects.export(this.session.project));});
             GridLayout.setColumn(save,1);GridLayout.setColumn(exported,2);name.addChild(save);name.addChild(exported);sharedHost.addChild(name);
             this.title.on('textChange',()=>{if(this.title.text!==this.session.project.name){this.session.application.dispatch({type:'project.rename',name:this.title.text||'Untitled shader'});this.draft();}});
@@ -345,7 +372,7 @@ class MobileEditor {
         const saveOff=this.shared?this.shared.controller.subscribe(state=>saveIndicator(state)+':'+saveMessage(state),()=>this.syncTabSaveState()):this.session.application.subscribe(()=>this.syncTabSaveState());
         const compileLabel=()=>{const status=this.session.application.state.compile.status;this.compileState.text=t(status==='ready'?'已编译':status==='compiling'?'正在编译…':status==='failed'?'编译失败':'代码已修改');this.compileState.color=new Color(status==='failed'?shaderAppearance.color.danger:status==='ready'?shaderAppearance.color.saved:shaderAppearance.color.muted);this.outputLog.visibility=status==='failed'||this.outputExpanded?'visible':'collapse';this.codeChrome?.setErrors(this.session.application.state.compile.diagnostics.filter(d=>d.pass===this.session.pass&&d.severity==='error').map(d=>d.line));};
         const compileOff=this.session.application.select(state=>state.compile.status,compileLabel);
-        const localeOff=onLocaleChange(()=>{compileLabel();this.renderChannels();this.syncTabSaveState();});
+        const localeOff=onLocaleChange(()=>{compileLabel();this.renderChannels();this.syncTabSaveState();this.updateMode();this.localizeCodeActions?.();});
         this.unlisten = () => { localeOff();compileOff();saveOff();stateOff(); Application.off(Application.suspendEvent, suspend); Application.off(Application.resumeEvent, resume); };
         this.layout();
     }
@@ -355,19 +382,20 @@ class MobileEditor {
         const surface=new GridLayout();this.previewSurface=surface;surface.className='editor-preview-surface';surface.clipToBounds=true;this.preview.addChild(surface);
         this.shared.mount('preview',surface,this.canvas,value=>{if(!value)this.runtime?.releaseInput();this.runtime?.setCaptureVisible(value&&this.foreground&&this.previewVisible);});
         const modeButton=new HYNativeButton({text:'Canvas',icon:'chevronDown',variant:'secondary',size:'compact',a11y:{label:t('渲染方式')}},shaderTheme);
-        modeButton.width=110;modeButton.height=44;modeButton.horizontalAlignment='right';modeButton.verticalAlignment='top';modeButton.margin=8;modeButton.accessibilityIdentifier='editor-preview-mode';this.modeButton=modeButton;
+        localizedProperty(modeButton,'accessibilityLabel','渲染方式');modeButton.width=110;modeButton.height=44;modeButton.accessibilityIdentifier='editor-preview-mode';this.modeButton=modeButton;
         modeButton.on('tap',()=>void perform(async()=>{
             const choice=await pickNative(modeButton,'渲染方式',shaderPreviewModes.map(option=>({value:option.value,label:t(option.label)})),this.session.project.preview.mode==='canvas'?'canvas':this.session.project.preview.mesh);
             const selected=shaderPreviewModes.find(option=>option.value===choice);if(!selected||this.disposed)return;
             const mesh=selected.value==='canvas'?this.session.project.preview.mesh:selected.value as typeof this.session.project.preview.mesh;
             this.session.application.dispatch({type:'preview.mode',mode:selected.value==='canvas'?'canvas':'scene',mesh});this.runtime?.setMode(this.session.project.preview.mode,mesh);this.updateMode();this.draft();
-        }));surface.addChild(modeButton);this.updateMode();
+        }));const controls=this.previewControls=new GridLayout();controls.columns='110,8,44';controls.width=162;controls.height=44;controls.horizontalAlignment='right';controls.verticalAlignment='top';controls.margin=8;controls.addChild(modeButton);
+        const fullscreen=this.fullscreenButton=imageButton('fullscreen','全屏预览',()=>this.presentation(),'secondary');fullscreen.id=fullscreen.accessibilityIdentifier='editor-fullscreen';GridLayout.setColumn(fullscreen,2);controls.addChild(fullscreen);surface.addChild(controls);this.updateMode();
         const outputButton=button('Image',async()=>{
             const ids=this.session.project.passes.filter(p=>p.enabled).map(p=>p.id);
             const choice=await pickNative(outputButton,'预览输出',ids.map(id=>({value:id,label:PASS_LABELS[id]})),this.runtime?.viewed??'image');
             const id=ids.find(id=>id===choice);if(id&&this.runtime){this.runtime.viewed=id;outputButton.text=PASS_LABELS[id];this.host?.requestFrame();}
-        },'',false);outputButton.accessibilityLabel=t('预览输出');outputButton.horizontalAlignment='left';outputButton.verticalAlignment='top';outputButton.margin=8;surface.addChild(outputButton);
-        const playback=new GridLayout();playback.columns='*,auto';playback.className='editor-playback';const toolbar=new GridLayout();playback.addChild(toolbar);this.shared.mount('toolbar',toolbar);
+        },'',false);this.previewOutput=outputButton;outputButton.accessibilityLabel=t('预览输出');outputButton.horizontalAlignment='left';outputButton.verticalAlignment='top';outputButton.margin=8;surface.addChild(outputButton);
+        const playback=this.playbackBar=new GridLayout();playback.columns='*,auto';playback.className='editor-playback';const toolbar=new GridLayout();playback.addChild(toolbar);this.shared.mount('toolbar',toolbar);
         const stats=new StackLayout();stats.verticalAlignment='middle';stats.paddingLeft=4;this.time.fontSize=11;this.fps.fontSize=11;this.time.textAlignment=this.fps.textAlignment='right';stats.addChild(this.time);stats.addChild(this.fps);GridLayout.setColumn(stats,1);playback.addChild(stats);GridLayout.setRow(playback,1);this.preview.addChild(playback);
     }
     private updateMode(){if(this.modeButton){const value=this.session.project.preview;this.modeButton.text=t(shaderPreviewModes.find(option=>option.value===(value.mode==='canvas'?'canvas':value.mesh))?.label??'Canvas');}}
@@ -405,7 +433,7 @@ class MobileEditor {
         this.tabs.orientation = 'horizontal';
         this.tabs.className = 'toolbar';
         const tabBar=new GridLayout();tabBar.className='editor-pass-bar';tabBar.columns='*,auto,auto,auto';tabBar.addChild(scroll(this.tabs,true));
-        for(const[index,title,glyph,command]of [[1,'撤销','↶','undo'],[2,'重做','↷','redo']] as const){const control=button(glyph,()=>this.editorCommand(command));control.width=44;control.fontSize=22;control.accessibilityLabel=t(title);control.accessibilityIdentifier='editor-'+command;GridLayout.setColumn(control,index);tabBar.addChild(control);}
+        for(const[index,title,glyph,command]of [[1,'撤销','↶','undo'],[2,'重做','↷','redo']] as const){const control=button(glyph,()=>this.editorCommand(command));control.width=44;control.fontSize=22;localizedProperty(control,'accessibilityLabel',title);control.accessibilityIdentifier='editor-'+command;GridLayout.setColumn(control,index);tabBar.addChild(control);}
         const reference=button('内置变量',()=>{
             const body=new StackLayout();body.padding=20;
             for(const [name,description] of shaderReference){body.addChild(label(name));const detail=label(description,'muted');detail.marginBottom=12;body.addChild(detail);}
@@ -416,23 +444,23 @@ class MobileEditor {
             hlsl: (code, options) => this.compiler.hlsl(code, options),
         }) });
         this.language = button('WGSL', async () => {
-            const choice = await pickNative(this.language,'转换代码语言',['WGSL','GLSL','HLSL'].map(label=>({value:label,label})),this.session.language.toUpperCase());
-            if (this.disposed || (!choice||!['WGSL', 'GLSL', 'HLSL'].includes(choice)) || choice.toLowerCase() === this.session.language) return;
+            const choice = await pickNative(this.language,'转换代码语言',SHADER_LANGUAGES.map(value=>({value:LANGUAGE_LABELS[value],label:LANGUAGE_LABELS[value]})),LANGUAGE_LABELS[this.session.language]);
+            if (this.disposed || (!choice||!SHADER_LANGUAGES.some(value=>LANGUAGE_LABELS[value]===choice)) || choice.toLowerCase() === this.session.language) return;
             this.language.isEnabled = false;
             this.message('正在转换代码…');
             try {
                 if(nativeComposing(this.editor))throw Error(t('请先确认输入法候选，再保存或运行。'));
                 const plan=await this.session.application.prepareLanguageConversion(this.session.pass,choice.toLowerCase() as ShaderLanguage);
                 if (plan&&await reviewNativeConversion(this.page,this.session.application,plan)) {
-                    this.showSource(); this.draft(); this.message('已转换为 ' + choice);
+                    this.showSource(); this.draft(); this.message(t('已转换为 {language}',{language:choice}));
                 }
             } finally { if (!this.disposed) { this.language.isEnabled = true; this.showSource(); } }
         });
         this.language.accessibilityIdentifier = 'shader-language';
         const detect=button('自动识别',()=>{this.session.autoDetect=!this.session.autoDetect;paintDetect();});
-        detect.accessibilityIdentifier='editor-detect-language';const paintDetect=()=>{(detect as HYNativeButton).setPresentation({text:t('自动识别'),icon:this.session.autoDetect?'check':undefined,variant:'quiet',size:'compact',a11y:{label:t('粘贴时自动识别语言')}},shaderTheme);detect.accessibilityState=this.session.autoDetect?'checked':undefined;};paintDetect();
-        (this.language as HYNativeButton).setPresentation({text:this.session.language.toUpperCase(),icon:'chevronDown',variant:'secondary',size:'compact'},shaderTheme);this.language.minWidth=88;
-        const more=button('⋯',()=>this.codeTools(more));more.width=44;more.fontSize=24;more.accessibilityLabel=t('代码操作');more.accessibilityIdentifier='editor-code-tools';
+        detect.accessibilityIdentifier='editor-detect-language';const paintDetect=()=>{(detect as HYNativeButton).setPresentation({text:t('自动识别'),icon:this.session.autoDetect?'check':undefined,variant:'quiet',size:'compact',a11y:{label:t('粘贴时自动识别语言')}},shaderTheme);detect.accessibilityState=this.session.autoDetect?'checked':undefined;};this.localizeCodeActions=paintDetect;paintDetect();
+        (this.language as HYNativeButton).setPresentation({text:LANGUAGE_LABELS[this.session.language],icon:'chevronDown',variant:'secondary',size:'compact'},shaderTheme);this.language.minWidth=88;
+        const more=button('⋯',()=>this.codeTools(more));more.width=44;more.fontSize=24;localizedProperty(more,'accessibilityLabel','代码操作');more.accessibilityIdentifier='editor-code-tools';
         const actions=new GridLayout();actions.columns='auto,*,auto,auto,auto';actions.className='editor-code-actions';actions.addChild(this.language);GridLayout.setColumn(detect,1);detect.horizontalAlignment='left';actions.addChild(detect);const hide=iconButton('chevronDown','收起键盘',()=>this.editor.dismissSoftInput());hide.accessibilityIdentifier='editor-hide-keyboard';hide.visibility='collapse';this.editor.on('focus',()=>{hide.visibility='visible';if(this.pane!=='code')this.session.application.dispatch({type:'pane.select',pane:'code'});});this.editor.on('blur',()=>hide.visibility='collapse');GridLayout.setColumn(hide,2);actions.addChild(hide);GridLayout.setColumn(more,3);actions.addChild(more);this.codeRun=iconButton(editorIcons.run,'运行',()=>this.compile(),'primary');this.codeRun.accessibilityIdentifier='editor-code-run';GridLayout.setColumn(this.codeRun,4);actions.addChild(this.codeRun);GridLayout.setRow(actions,1);this.code.addChild(actions);
         this.editor.className='editor-source';this.editor.accessibilityIdentifier='shader-code';
         this.editor.autocorrect = false;
@@ -487,14 +515,14 @@ class MobileEditor {
         else if(choice==='声音'){if(this.audio?.playing)this.audio.pause();else this.startSound();}
         else if(choice==='Shader 键盘')this.keyboard();
     }
-    private showSource() { this.changing = true; this.editor.text = this.session.source; this.language.text = this.session.language.toUpperCase(); this.language.accessibilityLabel = this.language.text; this.tabs.removeChildren();this.tabSaveLamp=undefined;this.activeCodeTab=undefined;
+    private showSource() { this.changing = true; this.editor.text = this.session.source; this.language.text = LANGUAGE_LABELS[this.session.language]; this.language.accessibilityLabel = this.language.text; this.tabs.removeChildren();this.tabSaveLamp=undefined;this.activeCodeTab=undefined;
         for (const id of this.session.tabs) {
             const tab=button(PASS_LABELS[id], () => { this.session.pass = id; this.showSource(); this.renderChannels(); }, '');
             nativeTab(tab,id===this.session.pass);tab.on('loaded',()=>nativeTab(tab,id===this.session.pass));
             if(id===this.session.pass){const text=new FormattedString(),name=new Span(),lamp=new Span();name.text=PASS_LABELS[id]+'  ';lamp.text='●';lamp.fontSize=10;text.spans.push(name,lamp);tab.formattedText=text;this.tabSaveLamp=lamp;this.activeCodeTab=tab;}
             this.tabs.addChild(tab);
         }
-        this.syncTabSaveState();this.updateMode();this.codeChrome?.setErrors(this.session.application.state.compile.diagnostics.filter(d=>d.pass===this.session.pass&&d.severity==='error').map(d=>d.line));this.tabs.addChild(button('＋', () => this.addPass())); this.changing = false; setTimeout(() => this.highlight(), 0); }
+        this.syncTabSaveState();this.updateMode();this.localizeCodeActions?.();this.codeChrome?.setErrors(this.session.application.state.compile.diagnostics.filter(d=>d.pass===this.session.pass&&d.severity==='error').map(d=>d.line));this.tabs.addChild(button('＋', () => this.addPass())); this.changing = false; setTimeout(() => this.highlight(), 0); }
     private syncTabSaveState() {
         if(!this.tabSaveLamp||!this.activeCodeTab)return;
         const view=this.shared?.controller.getSnapshot(),modified=view?saveIndicator(view)==='modified':this.session.dirty||this.session.application.state.save.status==='failed';
@@ -504,8 +532,8 @@ class MobileEditor {
     }
     private highlight() { if (!this.disposed)
         this.highlighter?.refresh(); }
-    private draft() {this.edited=true;if (!this.shared) this.status.text = '有未保存的修改'; this.draftTask.request(); }
-    private async save() { if(this.shared){await this.shared.controller.save();await this.session.application.saveDraft();return;} if (!await this.session.application.save() || this.disposed) return; this.status.text = this.session.dirty ? '已保存；仍有新的修改' : '已保存到我的作品'; await this.session.application.saveDraft(); }
+    private draft() {this.edited=true;if (!this.shared) this.status.text = t('有未保存的修改'); this.draftTask.request(); }
+    private async save() { if(this.shared){await this.shared.controller.save();await this.session.application.saveDraft();return;} if (!await this.session.application.save() || this.disposed) return; this.status.text = t(this.session.dirty ? '已保存；仍有新的修改' : '已保存到我的作品'); await this.session.application.saveDraft(); }
     private select(pane: MobilePane) { this.session.application.dispatch({ type: 'pane.select', pane }); if (pane !== 'code')
         this.editor.dismissSoftInput(); this.layout(); }
     private scheduleLayout() {
@@ -562,7 +590,8 @@ class MobileEditor {
         const names = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ' ', ...'abcdefghijklmnopqrstuvwxyz', ...'0123456789'];
         this.desktop = new NativeDesktopInput(this.canvas, { bindings: names.map(key => ({ key })), enabled: () => this.previewVisible && !this.disposed, onKey: event => { const code = keyCode(event.key); this.pulse(code); return true; } });
         this.canvas.on('tap', () => this.desktop?.focus());
-        if(this.validate&&guiComparisonRequested()){
+        if(nativeLanguagesRequested())void validateNativeLanguages({page:this.page,app:this.session.application,store:projects,runtime:()=>this.runtime,language:this.language,editor:this.editor,sync:()=>this.showSource(),codePane:()=>this.select('code'),disposed:()=>this.disposed});
+        else if(this.validate&&guiComparisonRequested()){
             const run=async()=>{while(!this.runtime||!this.guiFrameProbe){if(this.disposed)return;await new Promise(r=>setTimeout(r,50));}
                 await measureGuiComparison({frameWorkOptimized:()=>this.runtime!.optimizeFrameWork,previewProfile:()=>previewProfileSnapshot(this.runtime!),mode:'shared',application:this.session.application,engine:this.runtime.engine,probe:this.guiFrameProbe,disposed:()=>this.disposed,
                     scale:value=>this.shared!.controller.dispatch({key:'/shader-toolbar/controls/scale',type:'commit',value:String(value),reason:'keyboard',transaction:1}),
@@ -600,7 +629,7 @@ class MobileEditor {
         if (this.disposed || sequence !== this.compileSequence || this.session.application.state.compile.status === 'idle') return;
         const result = this.session.application.state.compile;
         if (!compiled) throw new NativeCompileError([...result.diagnostics]);
-        this.diagnostics.text = result.diagnostics.length ? result.diagnostics.map(d => PASS_LABELS[d.pass] + ':' + d.line + ':' + d.column + ' ' + d.message).join('\n') : '编译成功';
+        this.diagnostics.text = result.diagnostics.length ? result.diagnostics.map(d => PASS_LABELS[d.pass] + ':' + d.line + ':' + d.column + ' ' + d.message).join('\n') : t('编译成功');
         this.diagnostics.className = result.diagnostics.length ? 'error' : 'muted';
         this.status.visibility='collapse';
         this.startSound();
@@ -617,7 +646,7 @@ class MobileEditor {
         if(this.disposed)return;
         const result=this.session.application.state.compile;
         if(result.status!=='ready'&&result.status!=='failed')return;
-        this.diagnostics.text=result.diagnostics.length?result.diagnostics.map(d=>PASS_LABELS[d.pass]+':'+d.line+':'+d.column+' '+d.message).join('\n'):'编译成功';
+        this.diagnostics.text=result.diagnostics.length?result.diagnostics.map(d=>PASS_LABELS[d.pass]+':'+d.line+':'+d.column+' '+d.message).join('\n'):t('编译成功');
         this.diagnostics.className=result.status==='failed'?'error':'muted';
         if(result.status==='failed')this.message('编译失败；保留当前页面与上次预览');else this.status.visibility='collapse';
         const items=new StackLayout();if(result.diagnostics.length){for(const diagnostic of result.diagnostics){const row=button(`${PASS_LABELS[diagnostic.pass]}:${diagnostic.line}:${diagnostic.column} · ${diagnostic.message}`,async()=>{if(diagnostic.language&&diagnostic.language!==languageOf(this.session.project,diagnostic.pass)){this.session.pass=diagnostic.pass;await this.generated();return;}this.session.pass=diagnostic.pass;this.showSource();this.select('code');setTimeout(()=>{if(!this.disposed)focusNativeLine(this.editor,diagnostic.line,diagnostic.column);},50);},'',false);row.accessibilityIdentifier='diagnostic-'+diagnostic.pass+'-'+diagnostic.line;items.addChild(row);}}else items.addChild(label(this.diagnostics.text,this.diagnostics.className,false));this.outputLog.content=items;
@@ -668,7 +697,7 @@ class MobileEditor {
         throw Error('每个作品最多 16 个资源'); if (choice === '上传立方体六面') {
         const faces = {} as Record<typeof CUBE_FACES[number], string>;
         for (const face of CUBE_FACES) {
-            await Dialogs.alert('请选择 ' + CUBE_FACE_LABELS[face]);
+            await Dialogs.alert({title:'ShaderLab',message:t('请选择 {name}',{name:CUBE_FACE_LABELS[face]}),okButtonText:t('知道了')});
             const file = await pickFile('image');
             if(this.disposed||ownerSession!==this.session.application.state.session)throw Error('作品已切换，请重新上传素材。');
             if (!file)
@@ -683,9 +712,12 @@ class MobileEditor {
         throw Error('资源过大，请压缩后导入'); this.session.application.change(p => { p.assets.push({ id, name: File.fromPath(file).name, kind, dataUrl: url }); }); return { kind, assetId: id }; }
     private async generated() {
         const id = this.session.pass, snapshot = this.session.application.snapshot();
+        const errors=await normalizeExtendedSources(snapshot,this.wgslCompiler,'common');if(errors.length)throw Error(errors.map(d=>d.message).join('\n'));
         const authored = sourceOf(snapshot, id), sourceLanguage = languageOf(snapshot, id);
         let code: string, language: 'wgsl' | 'glsl', notes: string;
-        if (sourceLanguage !== 'wgsl') {
+        if(sourceLanguage==='typescript'||sourceLanguage==='slang'){
+            code=await createSourceConverter({wgsl:this.wgslCompiler,hlsl:(source,options)=>this.compiler.hlsl(source,options)})(snapshot,id,'wgsl');language='wgsl';notes='生成结果只读。';
+        }else if (sourceLanguage !== 'wgsl') {
             const result = sourceLanguage === 'hlsl' ? await this.compiler.hlsl(authored, await projectHlslOptions(snapshot, id, this.wgslCompiler)) : translateGlsl(authored, { ...projectTranslationOptions(snapshot, id), ...(externalCommon(authored) ? { common: await glslCommon(snapshot, id, this.wgslCompiler) } : {}) });
             if (result.code === null)
                 throw Error(result.diagnostics.map(d => d.line + ':' + d.column + ' ' + d.message).join('\n'));
@@ -719,7 +751,7 @@ class MobileEditor {
         body.addChild(source);
         const release = this.host?.pausePresentation();
         this.audio?.pause();
-        modal=hyShowNativeOverlay(this.page,{title:t('生成的 ')+language.toUpperCase(),content:body,scrollable:false,kind:'drawer',width:760,theme:shaderTheme,closeLabel:t('关闭'),onClosed:()=>{release?.();if(!this.disposed)this.startSound();}});
+        modal=hyShowNativeOverlay(this.page,{title:t('生成的 {language}',{language:language.toUpperCase()}),content:body,scrollable:false,kind:'drawer',width:760,theme:shaderTheme,closeLabel:t('关闭'),onClosed:()=>{release?.();if(!this.disposed)this.startSound();}});
     }
     private pulse(code: number) { if (!code || !this.runtime)
         return; this.runtime.keyboard.down(code); this.host?.requestFrame(); setTimeout(() => { this.runtime?.keyboard.up(code); this.host?.requestFrame(); }, 90); }

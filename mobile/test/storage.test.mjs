@@ -25,3 +25,9 @@ test('failed atomic replacement retains the complete previous draft after restar
  const store=new MobileProjects('failure'),a=createProject('old');await store.draft(a);a.name='new';failRename=true;await assert.rejects(store.draft(a),/原子保存/);
  const restarted=new MobileProjects('failure');assert.equal((await restarted.restoreDraft(a.id)).project.name,'old');await restarted.draft(a);assert.equal((await new MobileProjects('failure').restoreDraft(a.id)).project.name,'new');
 });
+test('saved preview images survive restart and do not replace a recovery draft',async()=>{
+ const store=new MobileProjects('previews'),project=createProject('Preview work'),thumbnail='data:image/png;base64,iVBORw0KGgo=';await store.save(project,thumbnail);
+ const restarted=new MobileProjects('previews');assert.equal((await restarted.listWorks())[0].thumbnail,thumbnail);
+ const draft=structuredClone(project);draft.name='Unsaved draft';await restarted.draft(draft,'image');assert.equal(await restarted.updateThumbnail(project,'rendered'),true);
+ assert.equal((await new MobileProjects('previews').listWorks())[0].thumbnail,'rendered');assert.equal((await restarted.restoreDraft(project.id)).project.name,'Unsaved draft');assert.equal((await restarted.archive.history(project.id)).length,1);
+});

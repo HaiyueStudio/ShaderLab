@@ -1,3 +1,4 @@
+import {localizeText} from '../../shared/dist/views/i18n.js';
 import {CREATION_KINDS,filterCreations,insertCreationFunction,applyCreationPreset,instantiateTemplate,type CreationKind,type CreationItem} from '../../shared/dist/domain/creationLibrary.js';
 import {BUILTIN_CREATIONS} from '../../shared/dist/domain/creationSeeds.js';
 import {languageOf,sourceOf} from './sourceLanguage.js';
@@ -9,7 +10,7 @@ import {createEnginePackage} from './enginePackage.js';
 import {translateHlsl} from './hlsl.js';
 import {translateWgsl} from './wgsl.js';
 import {builtinTexture} from '../../shared/dist/domain/builtinTextures.js';
-const L=(zh:string,en:string)=>getLocale()==='en'?en:zh;
+const L=localizeText;
 export interface CreationPorts extends ProductPorts{library:CreationLibrary;selection():string}
 const kindName=(kind:CreationKind)=>L({function:'函数',template:'效果模板',preset:'参数预设'}[kind],{function:'Functions',template:'Effect templates',preset:'Parameter presets'}[kind]);
 export function installCreationTools(p:CreationPorts){

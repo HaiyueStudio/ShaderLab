@@ -11,6 +11,8 @@ import { t, onLocaleChange } from '../../shared/dist/views/i18n.js';
 import type { CodeId, ShaderDiagnostic, ShaderLanguage } from './model.js';
 import { detectShaderLanguage } from './sourceLanguage.js';
 import { glslParser } from './glslLanguage.js';
+import {typescriptParser} from './typescriptLanguage.js';
+import {LANGUAGE_LABELS} from './model.js';
 import { hlslParser } from './hlslLanguage.js';
 
 export const BUILTINS = ['iResolution', 'iTime', 'iTimeDelta', 'iFrame', 'iFrameRate', 'iMouse', 'iDate', 'iSampleRate', 'iChannelResolution', 'iChannelTime', 'iParams', 'iChannel0', 'iChannel1', 'iChannel2', 'iChannel3', 'iSampler', 'channel0', 'channel1', 'channel2', 'channel3'];
@@ -46,8 +48,8 @@ const languageState = StateField.define<ShaderLanguage>({ create: () => 'wgsl', 
   return value;
 } });
 const languageExtensions = (language: ShaderLanguage) => [
-  language === 'hlsl' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser),
-  EditorView.contentAttributes.of({ 'aria-label': t('{language} 代码编辑器',{language:language.toUpperCase()}), spellcheck: 'false' }),
+  language === 'typescript' ? StreamLanguage.define(typescriptParser) : language === 'hlsl'||language==='slang' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser),
+  EditorView.contentAttributes.of({ 'aria-label': t('{language} 代码编辑器',{language:LANGUAGE_LABELS[language]}), spellcheck: 'false' }),
 ];
 export class CodeEditor {
   readonly view: EditorView;
@@ -78,7 +80,7 @@ export class CodeEditor {
         const detected = detectShaderLanguage(tr.newDoc.toString(), tr.startState.field(languageState));
         return detected && detected !== tr.startState.field(languageState) ? { effects: [languageEffect.of(detected), this.languageConfig.reconfigure(languageExtensions(detected))] } : null;
       }),
-      autocompletion({ override: [context => { const word = context.matchBefore(/\w*/); return !word || word.from === word.to && !context.explicit ? null : { from: word.from, options: [...BUILTINS, ...(context.state.field(languageState) === 'hlsl' ? ['float2', 'float3', 'float4', 'float', 'int', 'mul', 'lerp', 'saturate', 'frac', 'Texture2D', 'SampleLevel'] : context.state.field(languageState) === 'glsl' ? ['vec2', 'vec3', 'vec4', 'float', 'int', 'texture', 'void', 'mix'] : ['vec2f', 'vec3f', 'vec4f', 'textureSampleLevel', 'mix']), 'mainImage', 'mainSound', 'sin', 'cos', 'tanh', 'smoothstep', 'length', 'normalize', 'dot'].map(label => ({ label, type: label.startsWith('i') ? 'variable' : 'function' })) }; }] }),
+      autocompletion({ override: [context => { const word = context.matchBefore(/(?:gpu\.|Math\.)?\w*/); return !word || word.from === word.to && !context.explicit ? null : { from: word.from, options: [...BUILTINS, ...(['hlsl','slang'].includes(context.state.field(languageState)) ? ['float2', 'float3', 'float4', 'float', 'int', 'mul', 'lerp', 'saturate', 'frac', 'Texture2D', 'SampleLevel'] : context.state.field(languageState)==='typescript'?['vec2f','vec3f','vec4f','number','function','gpu.add','gpu.sub','gpu.mul','gpu.div','Math.sin','Math.cos']:context.state.field(languageState) === 'glsl' ? ['vec2', 'vec3', 'vec4', 'float', 'int', 'texture', 'void', 'mix'] : ['vec2f', 'vec3f', 'vec4f', 'textureSampleLevel', 'mix']), 'mainImage', 'mainSound', 'sin', 'cos', 'tanh', 'smoothstep', 'length', 'normalize', 'dot'].map(label => ({ label, type: label.startsWith('i') ? 'variable' : 'function' })) }; }] }),
       Prec.highest(keymap.of([{ key: 'Mod-Enter', run: () => { compile(); return true; } },{key:'Mod-z',run:()=>this.history?.undo()??false},{key:'Mod-Shift-z',run:()=>this.history?.redo()??false},{key:'Mod-y',run:()=>this.history?.redo()??false}])),
       EditorView.updateListener.of(update => { if (update.docChanged && !this.replacing) onChange(this.pass, update.state.doc.toString(), update.state.field(languageState),update.transactions.every(tr=>tr.isUserEvent('input.type')||tr.isUserEvent('delete'))); }),
       editorTheme] });
@@ -123,7 +125,7 @@ export class WgslPreview {
   readonly view: EditorView;
   constructor(parent: HTMLElement, label = '转换后的 WGSL 代码', language: ShaderLanguage = 'wgsl') {
     this.view = new EditorView({ parent, root: parent.getRootNode() as Document | ShadowRoot,
-      state: EditorState.create({ extensions: [basicSetup, language === 'hlsl' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser), syntaxHighlighting(colors), editorTheme,
+      state: EditorState.create({ extensions: [basicSetup, language === 'typescript' ? StreamLanguage.define(typescriptParser) : language === 'hlsl'||language==='slang' ? StreamLanguage.define(hlslParser) : language === 'glsl' ? StreamLanguage.define(glslParser) : StreamLanguage.define(wgslParser), syntaxHighlighting(colors), editorTheme,
         EditorState.readOnly.of(true), EditorView.editable.of(false),
         EditorView.contentAttributes.of({ 'aria-label': label, tabindex: '0' }),
       ] }),

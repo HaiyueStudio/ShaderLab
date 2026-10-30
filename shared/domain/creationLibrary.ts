@@ -1,4 +1,4 @@
-import {validateProject,type ShaderProject,type ShaderLanguage} from './model.js';
+import {validateProject,SHADER_LANGUAGES,type ShaderProject,type ShaderLanguage} from './model.js';
 import {validateParameters,validValue,type ShaderParameter} from './parameters.js';
 import {cloneValue,utf8Length} from './values.js';
 
@@ -17,7 +17,7 @@ export function validateCreation(value:unknown):CreationItem {
  else if(p.kind==='preset'){validateParameters(p.parameters,undefined);assert(p.parameters.length>0,'没有可保存的参数 / No parameters to save');}
  else if(p.kind==='function'){
   assert(p.sources&&typeof p.sources==='object'&&!Array.isArray(p.sources)&&Object.keys(p.sources).length>0,'函数源码为空 / Empty function');
-  for(const [lang,source] of Object.entries(p.sources))assert(['wgsl','glsl','hlsl'].includes(lang)&&typeof source==='string'&&source.trim()&&source.length<=100000&&!/\bmain(?:Image|Sound)\s*\(/.test(source),'只保存辅助函数，且每种语言不能超过 100 KB / Save helper functions only, up to 100 KB per language');
+  for(const [lang,source] of Object.entries(p.sources))assert((SHADER_LANGUAGES as readonly string[]).includes(lang)&&typeof source==='string'&&source.trim()&&source.length<=100000&&!/\bmain(?:Image|Sound)\s*\(/.test(source),'只保存辅助函数，且每种语言不能超过 100 KB / Save helper functions only, up to 100 KB per language');
  }else throw Error('素材类型无效 / Invalid asset kind');
  return cloneValue(p);
 }
@@ -33,7 +33,7 @@ export function filterCreations(items:readonly CreationItem[],kind:CreationKind,
 /** Insert at module scope as one source edit; never place a declaration inside mainImage. */
 export function insertCreationFunction(source:string,item:CreationItem,language:ShaderLanguage){
  if(item.kind!=='function'||!item.sources[language])throw Error('此函数没有当前语言版本 / No function for this language');
- const code=item.sources[language]!,clean=(v:string)=>v.replace(/\/\*[\s\S]*?\*\//g,' ').replace(/\/\/[^\n]*/g,' '),pattern=language==='wgsl'?/\b(?:fn|struct|alias|const|override)\s+(\w+)/g:/\b(?:struct\s+|(?:void|float[234]?|int[234]?|uint[234]?|bool|vec[234]|mat[234])\s+)(\w+)\s*(?:\(|\{|=)/g;
+ const code=item.sources[language]!,clean=(v:string)=>v.replace(/\/\*[\s\S]*?\*\//g,' ').replace(/\/\/[^\n]*/g,' '),pattern=language==='typescript'?/\b(?:function|interface|type|const|let)\s+(\w+)/g:language==='wgsl'?/\b(?:fn|struct|alias|const|override)\s+(\w+)/g:/\b(?:struct\s+|(?:void|float[234]?|int[234]?|uint[234]?|bool|vec[234]|mat[234])\s+)(\w+)\s*(?:\(|\{|=)/g;
  const names=[...clean(code).matchAll(pattern)].map(v=>v[1]!);if(!names.length)throw Error('未找到函数或全局声明 / No function or global declaration found');
  const current=new Set([...clean(source).matchAll(pattern)].map(v=>v[1]!));for(const name of names)if(current.has(name))throw Error('名称已存在，请先重命名 / Name already used: '+name);
  // GLSL #version and WGSL enable/requires/diagnostic must precede functions.

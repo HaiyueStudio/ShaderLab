@@ -1,4 +1,4 @@
-import {createProject,passOf,type ShaderLanguage,type ShaderProject} from './model.js';
+import {createProject,passOf,SHADER_LANGUAGES,type ShaderLanguage,type ShaderProject} from './model.js';
 import {legacyPracticeStarters} from './practice-legacy-starters.js';
 
 export type PracticeText = readonly [string,string];
@@ -67,7 +67,8 @@ export function practiceStarter(language:ShaderLanguage):string {
   if(language==='glsl') return `void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   fragColor = vec4(0.03, 0.04, 0.08, 1.0);
 }`;
-  if(language==='hlsl') return `float4 mainImage(float2 fragCoord) {
+  if(language==='typescript')return 'export function mainImage(fragCoord: vec2f): vec4f {\n  return vec4f(0.03, 0.04, 0.08, 1.0);\n}';
+  if(language==='hlsl'||language==='slang') return `float4 mainImage(float2 fragCoord) {
   return float4(0.03, 0.04, 0.08, 1.0);
 }`;
   return `fn mainImage(fragCoord: vec2f) -> vec4f {
@@ -77,8 +78,7 @@ export function practiceStarter(language:ShaderLanguage):string {
 export function practiceProject(challenge:PracticeChallenge,source:string,language:ShaderLanguage):ShaderProject {
   const p=createProject('Practice · '+challenge.title[0],{ids:{next:()=> 'practice-'+challenge.id},clock:{nowISO:()=> '2026-10-21T00:00:00.000Z'}});
   const image=passOf(p,'image');image.code=language==='wgsl'?source:practiceStarter('wgsl');
-  if(language==='glsl')image.glsl=source;
-  if(language==='hlsl')image.hlsl=source;
+  if(language!=='wgsl')image[language]=source;
   p.editorLanguages={image:language};return p;
 }
 export interface PracticePixels {width:number;height:number;pixels:Uint8Array}
@@ -93,5 +93,5 @@ export interface PracticeProgress {source:string;language:ShaderLanguage;best:nu
 export type PracticeRecords=Record<string,PracticeProgress>;
 export const PRACTICE_STORAGE='haiyue.shaderlab.practice.v1';
 export function parsePracticeRecords(raw:string|null):PracticeRecords {
-  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&['wgsl','glsl','hlsl'].includes(v.language)){result[c.id]={source:v.source===legacyPracticeStarters[v.language as ShaderLanguage]?practiceStarter(v.language as ShaderLanguage):v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true,...(v.attempts===undefined?{}:{attempts:Number.isSafeInteger(v.attempts)?Math.max(0,Math.min(100000,v.attempts)):0}),...(v.hints===undefined?{}:{hints:Number.isInteger(v.hints)?Math.max(0,Math.min(3,v.hints)):0})};}}}catch{}return result;
+  const result:PracticeRecords={};try {const data=JSON.parse(raw??'{}');for(const c of PRACTICE_CHALLENGES){const v=data?.[c.id];if(v&&typeof v.source==='string'&&v.source.length<=100000&&(SHADER_LANGUAGES as readonly string[]).includes(v.language)){result[c.id]={source:v.source===(legacyPracticeStarters as Partial<Record<ShaderLanguage,string>>)[v.language as ShaderLanguage]?practiceStarter(v.language as ShaderLanguage):v.source,language:v.language,best:typeof v.best==='number'&&Number.isFinite(v.best)?Math.max(0,Math.min(100,v.best)):0,passed:v.passed===true,reviewed:v.reviewed===true,...(v.attempts===undefined?{}:{attempts:Number.isSafeInteger(v.attempts)?Math.max(0,Math.min(100000,v.attempts)):0}),...(v.hints===undefined?{}:{hints:Number.isInteger(v.hints)?Math.max(0,Math.min(3,v.hints)):0})};}}}catch{}return result;
 }

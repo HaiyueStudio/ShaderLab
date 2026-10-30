@@ -12,6 +12,7 @@ import { declarations, detachCommon, renameIdentifiers } from './wgslModules.js'
 import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
 import { passCommon, resolveChannelBindings } from './channelBindings.js';
+import {normalizeExtendedSources} from './extendedSources.js';
 
 /** Compiler dependencies are supplied by Web or the native compiler bridge. */
 export function createSourceConverter(compilers: {
@@ -123,7 +124,7 @@ export function createSourceConverter(compilers: {
     }));
     return included?'// @haiyue-common-included\n'+code:code;
   };
-  return async (snapshot, pass, target) => {
+  const legacy:ShaderSourceConverter=async (snapshot, pass, target) => {
     const from = languageOf(snapshot, pass), source = sourceOf(snapshot, pass);
     if (pass !== 'common' && from !== target && from !== 'hlsl' && target !== 'hlsl' && source.trim()) {
       const retained = target === 'wgsl' ? codeOf(snapshot, pass) : passOf(snapshot as ShaderProject, pass).glsl;
@@ -138,5 +139,23 @@ export function createSourceConverter(compilers: {
       }
     }
     return convert(snapshot, pass, target);
+  };
+  return async(snapshot,pass,target)=>{
+    const from=languageOf(snapshot,pass),source=sourceOf(snapshot,pass);
+    if(from===target||!source.trim())return source;
+    if(!['typescript','slang'].includes(from)&&!['typescript','slang'].includes(target)&&!['typescript','slang'].includes(languageOf(snapshot,'common')))return legacy(snapshot,pass,target);
+    const project=JSON.parse(JSON.stringify(snapshot)) as ShaderProject;
+    const errors=await normalizeExtendedSources(project,compilers.wgsl,pass);
+    if(errors.length)throw Error(errors.map(d=>`${d.pass}:${d.line}:${d.column} ${d.message}`).join('\n'));
+    if(target==='typescript'){
+      const wgsl=await legacy(project,pass,'wgsl');
+      const common=pass==='common'||!passCommon({...passOf(project,pass),code:wgsl},'Common')?'':commonWgsl(project);
+      return resultCode(await compilers.wgsl(wgsl,{target:'typescript',entryPoint:pass==='common'?'common':pass==='sound'?'sound':'image',...(pass==='common'?{}:{common,channels:passOf(project,pass).channels})}));
+    }
+    if(from==='slang'&&target==='hlsl'){
+      const code=await legacy(project,pass,'wgsl');if(pass==='common')throw Error('Slang Common 请与使用它的 Pass 一起转换。');
+      passOf(project,pass).code=code;project.editorLanguages={...project.editorLanguages,[pass]:'wgsl'};
+    }
+    return legacy(project,pass,target==='slang'?'hlsl':target);
   };
 }

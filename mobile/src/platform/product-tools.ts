@@ -3,7 +3,7 @@ import {hyShowNativeOverlay} from '@haiyue/native/ui';
 import {NativeCanvasTextures} from '@haiyue/native/engine';
 import {nativeAction,pickNative} from './presentation';
 import {shaderTheme} from '../../../shared/dist/views/presentation.js';
-import {getLocale} from '../../../shared/dist/views/i18n.js';
+import {getLocale,localizeText} from '../../../shared/dist/views/i18n.js';
 import type {ShaderApplication} from '../../../shared/dist/application/application.js';
 import {nextParameter,type ShaderParameter,type ParameterPreset} from '../../../shared/dist/domain/parameters.js';
 import {encodeShare,exportSpec,FrameArchive,type ExportShape} from '../../../shared/dist/domain/sharing.js';
@@ -12,7 +12,7 @@ import type {ShaderProject,PassId} from '../project';
 import type {NativeShaderRuntime} from '../gpu-runtime';
 import {writeBytes,shareFile} from '../files';
 import {encodeVideo} from './video-export';
-const L=(zh:string,en:string)=>getLocale()==='en'?en:zh;
+const L=localizeText;
 function text(value:string,cls=''){const v=new Label();v.text=value;v.className=cls;v.textWrap=true;v.marginBottom=10;return v;}
 function body(){const v=new StackLayout();v.padding=16;return v;}
 function field(host:StackLayout,name:string,value:string){host.addChild(text(name,'muted'));const input=new TextField();input.text=value;input.autocorrect=false;input.autocapitalizationType='none';input.marginBottom=10;input.accessibilityLabel=name;host.addChild(input);return input;}

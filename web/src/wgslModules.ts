@@ -11,7 +11,7 @@ export function maskComments(source: string): string {
   }
   return out;
 }
-export function declarations(source: string, language: 'wgsl' | 'glsl' | 'hlsl') {
+export function declarations(source: string, language: import('./model.js').ShaderLanguage) {
   const masked = maskComments(source), result: { name: string; text: string; start: number; end: number }[] = [];
   let start = 0, braces = 0, parentheses = 0;
   for (let at = 0; at < masked.length; at++) {
@@ -22,9 +22,9 @@ export function declarations(source: string, language: 'wgsl' | 'glsl' | 'hlsl')
     if (c === '}') braces--;
     if (braces || parentheses || (c !== ';' && c !== '}')) continue;
     const head = masked.slice(start, at + 1).trim();
-    const name = language === 'wgsl'
+    const name = language === 'typescript' ? /\b(?:function|interface|type|const|let)\s+(\w+)/.exec(head)?.[1] : language === 'wgsl'
       ? /\b(?:fn|struct|alias|const|override|var(?:\s*<[^>]+>)?)\s+(\w+)/.exec(head)?.[1]
-      : /^struct\s+(\w+)/.exec(head)?.[1] ?? /^(?:(?:static|const|highp|mediump|lowp)\s+)*\w+(?:<[^;{}]+>)?\s+(\w+)/.exec(head)?.[1];
+      : /^typedef\s+[\s\S]+?\b(\w+)\s*(?:\[[^\]]*\]\s*)*;\s*$/.exec(head)?.[1] ?? /^struct\s+(\w+)/.exec(head)?.[1] ?? /^(?:(?:static|const|highp|mediump|lowp)\s+)*\w+(?:<[^;{}]+>)?\s+(\w+)/.exec(head)?.[1];
     if (language !== 'wgsl' && c === '}' && /^struct\b/.test(head)) {
       const tail = /^\s*;/.exec(masked.slice(at + 1));
       if (tail) at += tail[0].length;

@@ -1,4 +1,6 @@
-import { t, getLocale, onLocaleChange } from '../../shared/dist/views/i18n.js';
+import {SHADER_LANGUAGES,LANGUAGE_LABELS,type ShaderLanguage as SupportedShaderLanguage} from './model.js';
+import { t, getLocale, onLocaleChange,LOCALE_OPTIONS } from '../../shared/dist/views/i18n.js';
+import {isLocale} from '../../shared/dist/domain/locales.js';
 import { preferences, savePreferences } from './preferences.js';
 import type { HYSelect, HYCheckbox } from '@haiyue/ui';
 
@@ -15,7 +17,7 @@ export function localizeStaticUI(root:HTMLElement=document.body) {
 export function initializeSettings(setMSAA:(enabled:boolean)=>void) {
   const dialog=document.getElementById('settings-dialog') as HTMLDialogElement;
   const language=document.getElementById('settings-locale') as HYSelect,shader=document.getElementById('settings-shader-language') as HYSelect,msaa=document.getElementById('settings-msaa') as HYCheckbox;
-  language.options=[{value:'zh-CN',label:'中文'},{value:'en',label:'English'}];shader.options=['wgsl','glsl','hlsl'].map(value=>({value,label:value.toUpperCase()}));
+  language.options=LOCALE_OPTIONS.map(option=>({...option}));shader.options=SHADER_LANGUAGES.map(value=>({value,label:LANGUAGE_LABELS[value]}));
   const sync=()=>{const value=preferences();language.value=value.locale;shader.value=value.shaderLanguage;msaa.checked=value.msaa;};
   const save=(patch:Parameters<typeof savePreferences>[0])=>{try{if(patch.msaa!==undefined)setMSAA(patch.msaa);savePreferences(patch);document.getElementById('settings-message')!.textContent=t('设置已保存');}catch(error){sync();setMSAA(preferences().msaa);document.getElementById('settings-message')!.textContent=t('无法保存设置')+': '+String(error instanceof Error?error.message:error);}};
   let pressedBackdrop=false;
@@ -27,8 +29,8 @@ export function initializeSettings(setMSAA:(enabled:boolean)=>void) {
   const show=()=>{pressedBackdrop=false;sync();document.getElementById('settings-message')!.textContent='';dialog.showModal();};
   document.getElementById('settings-button')!.addEventListener('click',show);
   document.getElementById('settings-close')!.addEventListener('click',()=>dialog.close());
-  language.addEventListener('value-change',()=>save({locale:language.value==='en'?'en':'zh-CN'}));
-  shader.addEventListener('value-change',()=>save({shaderLanguage:shader.value as 'wgsl'|'glsl'|'hlsl'}));
+  language.addEventListener('value-change',()=>{if(isLocale(language.value))save({locale:language.value});});
+  shader.addEventListener('value-change',()=>save({shaderLanguage:shader.value as SupportedShaderLanguage}));
   msaa.addEventListener('checked-change',()=>save({msaa:msaa.checked}));
   sync();return ()=>{dialog.removeEventListener('pointerdown',pointerDown);dialog.removeEventListener('pointercancel',pointerCancel);dialog.removeEventListener('click',backdropClick);dialog.close();};
 }

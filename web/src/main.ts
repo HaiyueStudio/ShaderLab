@@ -1,3 +1,6 @@
+import {SHADER_LANGUAGES,LANGUAGE_LABELS,type ShaderLanguage as SupportedShaderLanguage} from './model.js';
+import {createSourceConverter} from './sourceConversion.js';
+import {normalizeExtendedSources} from './extendedSources.js';
 import {receiveProject} from '../../shared/dist/domain/library.js';
 import {installProductTools,installLibraryFilters,libraryCardActions} from './productTools.js';
 import {installCreationTools} from './creationTools.js';
@@ -43,7 +46,7 @@ document.body.append(notifications);
 const sharedUIEnabled = new URLSearchParams(location.search).get('ui') !== 'legacy';
 let sharedUI: ReturnType<typeof mountWebSharedEditor> | undefined;
 let saveIndicatorOff = () => {};
-$<HYSelect>('code-language').options = [{ value: 'wgsl', label: 'WGSL' }, { value: 'glsl', label: 'GLSL' }, { value: 'hlsl', label: 'HLSL' }];
+$<HYSelect>('code-language').options = SHADER_LANGUAGES.map(value=>({value,label:LANGUAGE_LABELS[value]}));
 $<HYCheckbox>('detect-language').checked = true;
 $<HYSelect>('preview-scale').options = PREVIEW_SCALES.map(scale => ({ value: String(scale), label: scale * 100 + '%' }));
 $<HYSelect>('sound-duration').options = [1, 4, 8, 16, 30, 60, 120].map(value => ({ value: String(value), label: `${value} 秒` }));
@@ -196,8 +199,10 @@ async function compile() {
   } finally { if (sequence === compileSequence) $<HTMLButtonElement>('compile').disabled = false; }
 }
 async function showGenerated(pass: CodeId, line = 1) {
-  const project = workspace.document.state;
-  const result = languageOf(project, pass) === 'hlsl' ? await translateHlsl(sourceOf(project, pass), await projectHlslOptions(project as ShaderProject, pass, translateWgsl)) : languageOf(project, pass) === 'glsl' ? translateGlsl(sourceOf(project, pass), { ...projectTranslationOptions(project as ShaderProject, pass), ...(externalCommon(sourceOf(project, pass)) ? {common: await glslCommon(project, pass, translateWgsl)} : {}) }) : null;
+  const project = structuredClone(workspace.document.state);
+  const errors=await normalizeExtendedSources(project,translateWgsl,'common');if(errors.length)throw Error(errors.map(d=>d.message).join('\n'));
+  const currentLanguage=languageOf(project,pass);
+  const result = currentLanguage==='typescript'||currentLanguage==='slang'?{code:await createSourceConverter({wgsl:translateWgsl,hlsl:translateHlsl})(project,pass,'wgsl'),diagnostics:[],warnings:[]}:currentLanguage === 'hlsl' ? await translateHlsl(sourceOf(project, pass), await projectHlslOptions(project as ShaderProject, pass, translateWgsl)) : currentLanguage === 'glsl' ? translateGlsl(sourceOf(project, pass), { ...projectTranslationOptions(project as ShaderProject, pass), ...(externalCommon(sourceOf(project, pass)) ? {common: await glslCommon(project, pass, translateWgsl)} : {}) }) : null;
   generatedPreview.show(result ? result.code ?? '' : codeOf(project, pass));
   $('generated-message').textContent = result?.code === null ? result.diagnostics.map(d => `${d.line}:${d.column} ${d.message}`).join('\n') : t('只读预览 · {pass} · 可选择复制',{pass:PASS_LABELS[pass]});
   const notes = $<HTMLDetailsElement>('generated-notes');
@@ -573,7 +578,7 @@ async function start() {
     const select = $<HYSelect>('code-language');
     const language = select.value as ShaderLanguage;
     select.disabled = true;
-    try {const plan=await app.prepareLanguageConversion(app.state.activePass,language);if(plan&&await recovery.review(plan))notifications.success({ key: 'source-conversion', message: t('已转换为 {language}',{language:language.toUpperCase()}), duration: 3,placement:'bottomRight' });}
+    try {const plan=await app.prepareLanguageConversion(app.state.activePass,language);if(plan&&await recovery.review(plan))notifications.success({ key: 'source-conversion', message: t('已转换为 {language}',{language:LANGUAGE_LABELS[language]}), duration: 3,placement:'bottomRight' });}
     catch (error) { notifications.error({ key: 'source-conversion', message: '代码转换失败', description: error instanceof Error ? error.message : String(error) }); }
     finally { select.disabled = false; select.value = languageOf(workspace.document.state, app.state.activePass); sync(); renderDiagnostics(); }
   }); });

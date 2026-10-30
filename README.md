@@ -4,7 +4,9 @@
 
 独立的 Shader 创作工具，包含 Web / PWA / Electron 编辑器和使用 Native 能力的 iOS / Android 应用。
 
-- `web/`：从 Editor/shaderEditor 迁移的完整 Gallery、WGSL / GLSL / HLSL 编辑器、65 章教程、8 个示例、API / IPC。
+App 的「设置 → 界面语言」支持中文、English、日本語。首次启动按系统语言匹配，不支持的语言回退为英文；手动选择会保存在本机。界面、练习题目/提示、教程章节标题与学习目标提供三语，65 章教程正文保留中文并标注正文语言。切换显示语言不修改作品名称、Shader 源码、素材或练习记录。iOS 的相机和照片权限说明也提供三种语言，由系统选择对应版本。
+
+- `web/`：从 Editor/shaderEditor 迁移的完整 Gallery、WGSL / GLSL / HLSL / TypeScript / Slang 编辑器、65 章教程、8 个示例、API / IPC。
 - `shared/`：工程领域、应用状态、actions/selectors、存储/编译端口，以及由 Web 和移动端共同使用的页面语义；领域与应用仍可无 UI 独立构建。
 - `mobile/`：NativeScript 原生界面，Haiyue + Native WebGPU 在 Metal / Vulkan 上渲染，原生触摸与 OrbitControl。
 - 同一份工程格式、GLSL 翻译器、WGSL 包装、Common、Buffer、键盘纹理和示例；通过 `.hyshader` 跨平台交换作品。
@@ -22,7 +24,7 @@ npm run preview
 
 使用 VS Code Live Server 等静态服务访问 `ShaderLab/web/index.html` 时，先在仓库根目录执行 `npm run build`。页面引用的 `web/web/main.js` 是 Rollup 生成的浏览器入口，不是重复拼错的路径；仅安装依赖、类型检查或打包 iOS 都不会生成它。看到该文件 404 时，完成 Web 构建后刷新原地址即可，保留原地址下的本地作品。
 
-代码编辑区支持右键菜单“格式化代码”，主编辑器与练习场均可使用；也可按 Shift + Alt + F。支持 WGSL / GLSL / HLSL，整理缩进、换行和空格，保留注释、宏与续行，格式化可一次撤销。
+代码编辑区支持右键菜单“格式化代码”，主编辑器与练习场均可使用；也可按 Shift + Alt + F。支持 WGSL / GLSL / HLSL / TypeScript / Slang，整理缩进、换行和空格，保留注释、宏与续行，格式化可一次撤销。
 
 ## 草稿、历史与编辑转换
 
@@ -78,7 +80,7 @@ Web 编辑器「⋯ → 素材库」和 App「⋯ → 创作素材库」包含�
 
 导航栏“练习场”提供 36 道独立题目，入门、进阶、挑战各 12 道，覆盖颜色、距离场几何、程序化图案和光照。可按难度、知识点与完成状态筛选，并搜索中英文题目。移动端从首页“练习场”进入。
 
-每题都有明确参数、GPU 参考效果、起始代码、提示和可展开的 WGSL 参考解法。支持 WGSL / GLSL / HLSL 编写与转换，默认使用首选语言。点击“运行并对比”查看参考图、自己的输出与放大 4 倍的差异图；Web 支持 Ctrl / ⌘ + Enter。草稿、最佳分数和完成进度自动保存在当前设备，与 Gallery 作品分开。Web 可保存为作品；移动端可转入完整编辑器继续创作和保存。
+每题都有明确参数、GPU 参考效果、起始代码、提示和可展开的 WGSL 参考解法。支持 WGSL / GLSL / HLSL / TypeScript / Slang 编写与转换，默认使用首选语言。点击“运行并对比”查看参考图、自己的输出与放大 4 倍的差异图；Web 支持 Ctrl / ⌘ + Enter。草稿、最佳分数和完成进度自动保存在当前设备，与 Gallery 作品分开。Web 可保存为作品；移动端可转入完整编辑器继续创作和保存。
 
 评测比较实际 WebGPU 像素，不比较代码。在 128×128 和 256×256 下分别取时间为 0、鼠标为 0 的首帧；RGBA 均方根误差换算匹配分数，两次均须达到 98%，且任一通道误差超过 12/255 的像素占比不超过 2%。这是一套本机绘画练习评测，不上传代码或图片。
 
@@ -98,7 +100,7 @@ Sliding city 支持在画布上向左、右、上、下滑动来移动图片块�
 
 Buffer A–D 和 Image 的通道支持“后置相机 / 前置相机 · 实时视频”。选中后运行并授权，可用 `channel0(fragCoord / iResolution.xy)` 采样 iChannel0 的相机画面；Image 也可接入 Buffer 的输出继续处理。`iChannelResolution` 和 `iChannelTime` 提供视频尺寸和采集时间。同一股相机流可供多个 Buffer 共用，同一作品使用一个方向的相机。暂停、隐藏预览、切后台或退出时会停止采集，播放或返回预览后恢复；不采集麦克风，工程仅保存相机选择。Web 需 HTTPS 或 localhost，移动端使用原生相机。
 
-语言菜单支持 WGSL / GLSL / HLSL。手动切换会转换当前页签的最新代码，成功后一起更新语言和代码；失败或转换期间发生编辑时保留原内容，不再恢复旧草稿或填入模板。Image/Buffer/Sound 支持三种语言互转，WGSL/GLSL Common 也可转换为 HLSL；单独 WGSL Common → GLSL 及 HLSL Common 的反向转换尚不支持，会提示原因。转换为 GLSL 或 HLSL 时，Common 保持独立，Pass 只保留引用；编译时链接当前 Common，并按内容和通道类型缓存派生库。修改 Common 后重新运行即可生效。HLSL 生成由随包 Naga 完成，再用 Slang 2026.19 验证并转换为运行用 WGSL，整个过程可离线进行。用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
+语言菜单支持 WGSL / GLSL / HLSL / TypeScript / Slang，Image / Buffer / Sound 可以在五种语言之间互转。TypeScript 使用静态 GPU 数值子集；Slang 使用随包官方编译器。语法、离线资源与 Common 的转换范围见 [五种语言支持](docs/shader-languages.md)。手动切换会转换当前页签的最新代码，成功后一起更新语言和代码；失败或转换期间发生编辑时保留原内容，不再恢复旧草稿或填入模板。WGSL/GLSL Common 也可转换为 HLSL；单独 WGSL Common → GLSL 及 HLSL Common 的反向转换尚不支持，会提示原因。转换为 GLSL 或 HLSL 时，Common 保持独立，Pass 只保留引用；编译时链接当前 Common，并按内容和通道类型缓存派生库。修改 Common 后重新运行即可生效。HLSL 生成由随包 Naga 完成，再用 Slang 2026.19 验证并转换为运行用 WGSL，整个过程可离线进行。用法、入口与兼容范围见 [HLSL 语言支持](docs/hlsl-support.md)。
 
 只有点击保存才进入“我的作品”。自动恢复草稿存放在独立文件里。教程示例返回时沿导航栈回到对应章节。原生教程按 8 个阶段组织 65 章，首页显示学习进度与继续学习入口；阶段卡片随可用宽度排列为 1–4 列，只展示当前阶段的章节，并支持跨阶段搜索。正文使用居中的阅读栏，分开呈现学习目标、核心表达式、分步讲解、动手实验与延伸阅读。
 

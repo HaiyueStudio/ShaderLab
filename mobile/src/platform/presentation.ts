@@ -7,6 +7,11 @@ export { HYNativeButton };
 export function nativeAction(text:string,primary=false,icon?:HYIconName):HYNativeButton {
   return new HYNativeButton({text,variant:primary?'primary':'quiet',size:'compact',...(icon?{icon}:{})},shaderTheme);
 }
+/** Product vector assets share the native button's theme and 44-point hit area. */
+export function nativeAssetIcon(icon:string,label:string,variant:'primary'|'secondary'|'quiet'='quiet'):HYNativeButton {
+  const button=new HYNativeButton({text:'',variant,a11y:{label:t(label)}},shaderTheme);button.width=button.height=44;
+  button.backgroundImage='~/assets/gallery-actions/'+icon+'.png';button.backgroundSize='22 22';button.backgroundPosition='center center';button.backgroundRepeat='no-repeat';return button;
+}
 /** Hit surface for a card whose visible content is a sibling below the button.
  * Action buttons paint an opaque pressed surface, which would hide that content.
  * A plain native button retains accessibility and ScrollView touch cancellation.

@@ -1,3 +1,4 @@
+import {LANGUAGE_LABELS} from './model.js';
 import type {GalleryStore} from './storage.js';
 import type {ShaderApplication,LanguageConversion} from '../../shared/dist/application/application.js';
 import {codeTabs,PASS_LABELS,type CodeId,type ShaderProject} from './model.js';
@@ -14,7 +15,7 @@ function dialog(title:string){
 function comparison(host:HTMLElement,before:string,after:string,from:ReturnType<typeof languageOf>,to:ReturnType<typeof languageOf>){
   const diff=sourceDiff(before,after),summary=document.createElement('p');summary.textContent=`${from.toUpperCase()} → ${to.toUpperCase()} · +${diff.added} / −${diff.removed}`;host.append(summary);
   const panes=document.createElement('div');panes.className='source-comparison';host.append(panes);const views:WgslPreview[]=[];
-  for(const[title,source,language]of [[t('当前代码'),before,from],[t('预览代码'),after,to]] as const){const pane=document.createElement('section'),heading=document.createElement('h3'),code=document.createElement('div');heading.textContent=title+' · '+language.toUpperCase();pane.append(heading,code);panes.append(pane);const view=new WgslPreview(code,heading.textContent,language);view.show(source);views.push(view);}
+  for(const[title,source,language]of [[t('当前代码'),before,from],[t('预览代码'),after,to]] as const){const pane=document.createElement('section'),heading=document.createElement('h3'),code=document.createElement('div');heading.textContent=title+' · '+LANGUAGE_LABELS[language];pane.append(heading,code);panes.append(pane);const view=new WgslPreview(code,heading.textContent,language);view.show(source);views.push(view);}
   const details=document.createElement('details'),label=document.createElement('summary'),pre=document.createElement('pre');label.textContent=t('查看逐行差异');for(const line of diff.lines.slice(0,2000)){const row=document.createElement('div');row.className='diff-'+line.kind;row.textContent=(line.kind==='added'?'+ ':line.kind==='removed'?'− ':'  ')+line.text;pre.append(row);}details.append(label,pre);host.append(details);return()=>views.forEach(view=>view.destroy());
 }
 export function createRecoveryUI(ports:Ports){

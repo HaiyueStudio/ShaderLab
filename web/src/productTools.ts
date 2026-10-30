@@ -1,3 +1,4 @@
+import {localizeText} from '../../shared/dist/views/i18n.js';
 import type {ShaderApplication} from '../../shared/dist/application/application.js';
 import {nextParameter,type ShaderParameter,type ParameterValue} from '../../shared/dist/domain/parameters.js';
 import {encodeShare,exportSpec,FrameArchive,type ExportShape} from '../../shared/dist/domain/sharing.js';
@@ -6,7 +7,7 @@ import {filterLibrary,duplicateProject,type LibraryFilter} from '../../shared/di
 import {getLocale,onLocaleChange} from '../../shared/dist/views/i18n.js';
 import {ShaderRuntime} from './runtime.js';
 import type {ShaderProject,PassId} from './model.js';
-const L=(zh:string,en:string)=>getLocale()==='en'?en:zh;
+const L=localizeText;
 export function productElement<K extends keyof HTMLElementTagNameMap>(tag:K,text='',cls=''){const n=document.createElement(tag);n.textContent=text;n.className=cls;return n;}
 export function productDialog(title:string){const root=productElement('dialog','','product-drawer'),head=productElement('header'),body=productElement('div','','product-body'),error=productElement('p','','recovery-error'),close=productElement('button','×','icon-button');close.ariaLabel=L('关闭','Close');close.onclick=()=>root.close();head.append(productElement('h2',title),close);root.append(head,body,error);root.addEventListener('click',e=>{if(e.target===root){const r=root.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)root.close();}});root.addEventListener('close',()=>root.remove(),{once:true});document.body.append(root);root.showModal();return{root,body,error};}
 function action(text:string,fn:()=>unknown){const b=productElement('button',text,'secondary');b.type='button';b.onclick=()=>{if(b.disabled)return;b.disabled=true;void Promise.resolve().then(fn).catch(error=>{const target=b.closest('dialog')?.querySelector('.recovery-error');if(target)target.textContent=String(error);else window.dispatchEvent(new CustomEvent('shaderlab-recovery-error',{detail:String(error)}));}).finally(()=>{b.disabled=false;});};return b;}

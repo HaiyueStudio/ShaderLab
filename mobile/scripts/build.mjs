@@ -4,6 +4,7 @@ import path from 'node:path';
 import {prepare,app,require} from './prepare.mjs';
 import {patchCanvasAndroid} from './patch-canvas-android.mjs';
 import {verifyIOSIcons} from './verify-ios-icons.mjs';
+import {verifyIOSLocalizations} from './verify-ios-localizations.mjs';
 import {patchCanvasIOS} from './patch-canvas-ios.mjs';
 const [action='build',platform='android',...args]=process.argv.slice(2);
 if(!['build','run','prepare'].includes(action)||!['android','ios'].includes(platform))throw Error('Use build|run|prepare android|ios');
@@ -16,5 +17,8 @@ const profile=path.join(app,'.ns-profile');mkdirSync(profile,{recursive:true});
 const command=[require.resolve('nativescript/bin/tns'),action,platform,...args,'--profileDir',profile,'--disableAnalytics'];
 const result=platform==='ios'?spawnSync('bundle',['exec',process.execPath,...command],{cwd:app,stdio:'inherit',env:{...process.env,BUNDLE_GEMFILE:path.join(app,'Gemfile')}}):spawnSync(process.execPath,command,{cwd:app,stdio:'inherit'});
 if(result.error)throw result.error;
-if(result.status===0&&platform==='ios'&&action==='build'&&args.includes('--for-device'))verifyIOSIcons(path.join(app,'platforms/ios/build',args.includes('--release')?'Release-iphoneos':'Debug-iphoneos','ShaderLab.xcarchive/Products/Applications/ShaderLab.app'));
+if(result.status===0&&platform==='ios'&&action==='build'&&args.includes('--for-device')){
+ const built=path.join(app,'platforms/ios/build',args.includes('--release')?'Release-iphoneos':'Debug-iphoneos','ShaderLab.xcarchive/Products/Applications/ShaderLab.app');
+ verifyIOSIcons(built);verifyIOSLocalizations(built);
+}
 process.exit(result.status??1);

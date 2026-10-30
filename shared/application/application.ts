@@ -1,9 +1,10 @@
-import { codeOf, codeTabs, createProject, LIMITS, PASS_IDS, PREVIEW_SCALES, passOf, revealCodeTab, validateProject, type CodeId, type ShaderLanguage, type ShaderProject, type ShaderDiagnostic } from '../domain/model.js';
+import { SHADER_LANGUAGES, SOURCE_FIELDS, COMMON_SOURCE_FIELDS, codeOf, codeTabs, createProject, LIMITS, PASS_IDS, PREVIEW_SCALES, passOf, revealCodeTab, validateProject, type CodeId, type ShaderLanguage, type ShaderProject, type ShaderDiagnostic } from '../domain/model.js';
 import { cloneValue } from '../domain/values.js';
 import { languageOf, sourceOf, defaultGlsl, defaultHlsl } from '../domain/sourceLanguage.js';
 import type { ShaderEnvironment, ShaderRequest, ShaderServices } from '../ports/services.js';
 import { Cancellation } from './cancellation.js';
 import { selectors, type ShaderAction, type ShaderApplicationState } from './state.js';
+import {preferredSource} from '../domain/preferences.js';
 import {SourceHistory,type SourceState} from './source-history.js';
 import {validateParameters,type ShaderParameter,type ParameterPreset} from '../domain/parameters.js';
 
@@ -41,16 +42,17 @@ export class ShaderApplication {
     const current=this.sourceState(pass);
     const next=redo?this.sourceHistory.redo(pass,current):this.sourceHistory.undo(pass,current);if(!next)return false;
     this.replaying=true;try{this.change(p=>{
-      const names=pass==='common'?['common','commonGlsl','commonHlsl']:['code','glsl','hlsl'];
+      const names=SHADER_LANGUAGES.map(language=>(pass==='common'?COMMON_SOURCE_FIELDS:SOURCE_FIELDS)[language]);
       const target=(pass==='common'?p:passOf(p,pass)) as unknown as Record<string,unknown>;
-      for(const[at,language]of(['wgsl','glsl','hlsl'] as const).entries()){const value=next.variants?.[language];if(value===undefined)delete target[names[at]!];else target[names[at]!]=value;}
+      for(const[at,language]of SHADER_LANGUAGES.entries()){const value=next.variants?.[language];if(value===undefined)delete target[names[at]!];else target[names[at]!]=value;}
       p.editorLanguages={...p.editorLanguages,[pass]:next.language};
     });}finally{this.replaying=false;}
     const canonical=(p:Readonly<ShaderProject>)=>JSON.stringify({...p,updatedAt:'',tabs:codeTabs(p),editorLanguages:Object.fromEntries(['common','sound',...PASS_IDS].map(id=>[id,languageOf(p,id as CodeId)]))});
     if(this.savedProject&&canonical(this.savedProject)===canonical(this.current.project))this.markSaved();
     return true;
   }
-  private sourceState(pass:CodeId):SourceState{const p=this.current.project,target=pass==='common'?undefined:passOf(p as ShaderProject,pass);const wgsl=pass==='common'?p.common:target!.code,glsl=pass==='common'?p.commonGlsl:target!.glsl,hlsl=pass==='common'?p.commonHlsl:target!.hlsl;return{source:sourceOf(p,pass),language:languageOf(p,pass),variants:{wgsl,...(glsl===undefined?{}:{glsl}),...(hlsl===undefined?{}:{hlsl})}};}
+  private sourceState(pass:CodeId):SourceState{const p=this.current.project,target=pass==='common'?p:passOf(p as ShaderProject,pass),fields=pass==='common'?COMMON_SOURCE_FIELDS:SOURCE_FIELDS;return {source:sourceOf(p,pass),language:languageOf(p,pass),variants:Object.fromEntries(SHADER_LANGUAGES.flatMap(language=>{const source=(target as unknown as Record<string,unknown>)[fields[language]];return typeof source==='string'?[[language,source]]:[];}))};}
+
   connect(services: Partial<Pick<ShaderServices, 'projects' | 'preview' | 'convertSource'>>) { this.assertLive(); this.services = { ...this.services, ...services }; }
   subscribe(listener: () => void) {
     this.assertLive(); this.listeners.add(listener);
@@ -95,16 +97,16 @@ export class ShaderApplication {
     this.assertLive();
     if (!['common', 'sound', ...PASS_IDS].includes(pass)) throw new Error('Pass 不存在。');
     if (typeof source !== 'string' || source.length > LIMITS.code) throw new Error('单个 Pass 代码不能超过 100 KB。');
-    if (!['wgsl', 'glsl', 'hlsl'].includes(language)) throw new Error('不支持的代码语言。');
+    if (!SHADER_LANGUAGES.includes(language)) throw new Error('不支持的代码语言。');
     const previous = this.current.project;
     if (sourceOf(previous, pass) === source && languageOf(previous, pass) === language) return;
     if(!this.replaying)this.sourceHistory.push(pass,this.sourceState(pass),group,Date.parse(this.environment.clock.nowISO()));
     // Preserve immutable asset identities: typing must not copy 48 MB projects.
     const next = { ...previous, editorLanguages: { ...previous.editorLanguages, [pass]: language }, updatedAt: this.environment.clock.nowISO() };
     revealCodeTab(next, pass);
-    if (pass === 'common') { if (language === 'glsl') next.commonGlsl = source; else if (language === 'hlsl') next.commonHlsl = source; else next.common = source; }
+    if (pass === 'common') next[COMMON_SOURCE_FIELDS[language]]=source;
     else {
-      const target = { ...passOf(next, pass), [language === 'wgsl' ? 'code' : language]: source };
+      const target = { ...passOf(next, pass), [SOURCE_FIELDS[language]]: source };
       if (target.id === 'sound') next.sound = target;
       else next.passes = next.passes.map(item => item.id === pass ? target : item);
     }
@@ -116,23 +118,21 @@ export class ShaderApplication {
     if (typeof code !== 'string' || code.length > LIMITS.code) throw new Error('单个 Pass 代码不能超过 100 KB。');
     this.change(project => {
       project.editorLanguages = { ...project.editorLanguages, [pass]: 'wgsl' }; revealCodeTab(project, pass);
-      if (pass === 'common') { project.common = code; delete project.commonGlsl; delete project.commonHlsl; }
-      else { const target = passOf(project, pass); target.code = code; delete target.glsl; delete target.hlsl; }
+      if (pass === 'common') { project.common = code; delete project.commonGlsl; delete project.commonHlsl;delete project.commonTypescript;delete project.commonSlang; }
+      else { const target = passOf(project, pass); target.code = code; delete target.glsl; delete target.hlsl;delete target.typescript;delete target.slang; }
     });
   }
   /** Explicit recovery of an older draft; UI language selection uses conversion. */
   restoreLanguageDraft(pass: CodeId, language: ShaderLanguage) {
     if (languageOf(this.current.project, pass) === language) return;
     const project = this.current.project;
-    const source = language === 'wgsl' ? codeOf(project, pass) : language === 'hlsl'
-      ? (pass === 'common' ? project.commonHlsl ?? '' : passOf(project as ShaderProject, pass).hlsl ?? defaultHlsl(pass))
-      : (pass === 'common' ? project.commonGlsl ?? '' : passOf(project as ShaderProject, pass).glsl ?? defaultGlsl(pass));
+    const source=(pass==='common'?project[COMMON_SOURCE_FIELDS[language]]:passOf(project as ShaderProject,pass)[SOURCE_FIELDS[language]])??(language==='hlsl'?defaultHlsl(pass):language==='glsl'?defaultGlsl(pass):preferredSource(pass,language));
     this.setSource(pass, source, language);
   }
   /** Convert the captured revision, then commit source and language together. */
   async prepareLanguageConversion(pass:CodeId,language:ShaderLanguage):Promise<LanguageConversion|null>{
     this.assertLive();
-    if (!['wgsl', 'glsl', 'hlsl'].includes(language)) throw new Error('不支持的代码语言。');
+    if (!SHADER_LANGUAGES.includes(language)) throw new Error('不支持的代码语言。');
     const sequence = ++this.languageSequence;
     if (languageOf(this.current.project, pass) === language) return null;
     if (!this.services.convertSource) throw new Error('代码转换服务尚未就绪。');

@@ -13,6 +13,7 @@ export interface ArchivedWork {project:ShaderProject;thumbnail:string;savedAt:st
 const key=(id:string)=>'record:'+id;
 const same=(a:Snapshot,b:Snapshot)=>JSON.stringify({...a.project,updatedAt:''})===JSON.stringify({...b.project,updatedAt:''})&&JSON.stringify(a.assets)===JSON.stringify(b.assets);
 const equalAsset=(a:TextureAsset,b:TextureAsset)=>a.id===b.id&&a.name===b.name&&a.kind===b.kind&&(a.kind==='cubemap'&&b.kind==='cubemap'?Object.keys(a.faces).every(k=>a.faces[k as keyof typeof a.faces]===b.faces[k as keyof typeof b.faces]):a.kind!=='cubemap'&&b.kind!=='cubemap'&&a.dataUrl===b.dataUrl);
+const equalData=(a:unknown,b:unknown):boolean=>{if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(key=>Object.prototype.hasOwnProperty.call(b,key)&&equalData((a as Record<string,unknown>)[key],(b as Record<string,unknown>)[key]));};
 
 /** Shared local recovery/history semantics; assets are immutable, deduplicated
  * blobs so saving thirty versions does not duplicate videos thirty times. */
@@ -55,8 +56,16 @@ export class ProjectArchive {
       await tx.set(key(r.id),r);for(const blob of unused){await tx.remove(blob);this.assets.delete(blob);}
     });
   }
-  async save(project:ShaderProject,thumbnail=''){
-    await this.edit(project,async(_tx,r,s)=>{if(r.draft&&(same(r.draft.snapshot,s)||Date.parse(r.draft.snapshot.project.updatedAt)<Date.parse(s.project.updatedAt))){if(!same(r.draft.snapshot,s))this.version(r,r.draft.snapshot,'draft-checkpoint',r.draft.pass);delete r.draft;}if(!r.saved||!same(r.saved,s))this.version(r,s,'saved','image');r.saved=s;r.thumbnail=thumbnail;});
+  async save(project:ShaderProject,thumbnail?:string){
+    await this.edit(project,async(_tx,r,s)=>{if(r.draft&&(same(r.draft.snapshot,s)||Date.parse(r.draft.snapshot.project.updatedAt)<Date.parse(s.project.updatedAt))){if(!same(r.draft.snapshot,s))this.version(r,r.draft.snapshot,'draft-checkpoint',r.draft.pass);delete r.draft;}if(!r.saved||!same(r.saved,s))this.version(r,s,'saved','image');r.saved=s;if(thumbnail!==undefined)r.thumbnail=thumbnail;});
+  }
+  /** Attaching a rendered preview never creates history or overwrites a newer save. */
+  async updateThumbnail(project:ShaderProject,thumbnail:string):Promise<boolean>{
+    const expected=validateProject(project);
+    return this.backend.run(async tx=>{const r=this.record(await tx.get(key(project.id)));if(!r||r.deletedAt||!r.saved)return false;
+      if(!equalData(await this.materialize(tx,r.saved),expected))return false;
+      r.thumbnail=thumbnail;await tx.set(key(r.id),r);return true;
+    });
   }
   private version(r:RecordEntry,snapshot:Snapshot,reason:VersionReason,pass:CodeId){
     const last=r.versions.at(-1);if(last&&last.reason===reason&&same(last.snapshot,snapshot))return;

@@ -1,11 +1,22 @@
 import { helpEnglish } from './help-i18n.js';
-export type Locale = 'zh-CN' | 'en';
+import {nativeEnglish} from './native-english.js';
+import {nativeMessages} from './native-messages.js';
+import {tutorialMessages} from './tutorial-messages.js';
+import {practiceJapanese,practiceEnglish} from './practice-japanese.js';
+import {japanese} from './japanese.js';
+import {isLocale,type Locale} from '../domain/locales.js';
+export {APP_LOCALES,LOCALE_OPTIONS,localeLabel,systemLocale} from '../domain/locales.js';
+export type {Locale};
 let locale: Locale = 'zh-CN';
 const listeners = new Set<() => void>();
 export const getLocale = () => locale;
-export function setLocale(value: Locale) { if(value===locale)return;locale=value;for(const listener of [...listeners])listener(); }
+export function setLocale(value: Locale) { if(!isLocale(value)||value===locale)return;locale=value;for(const listener of [...listeners])listener(); }
 export function onLocaleChange(listener:()=>void) { listeners.add(listener);return ()=>{listeners.delete(listener);}; }
 const english:Record<string,string> = {
+  ...nativeEnglish,
+  ...practiceEnglish,
+  ...Object.fromEntries(Object.entries(nativeMessages).map(([key,value])=>[key,value[0]])),
+  ...Object.fromEntries(Object.entries(tutorialMessages).map(([key,value])=>[key,value[0]])),
   '转换预览已失效，请重新转换。':'This conversion preview has expired. Convert again.', '恢复草稿':'Recovery drafts','恢复到编辑器':'Restore in editor','打开已保存版本':'Open saved version','回收站':'Trash','回收站为空':'Trash is empty','恢复作品':'Restore project','版本历史':'Version history','预览历史版本':'Preview version','恢复此版本':'Restore this version','手动保存':'Manual save','转换前检查点':'Before conversion','恢复前检查点':'Before restore','草稿接续检查点':'Draft checkpoint','此作品有未保存草稿':'This project has an unsaved draft','恢复草稿不会覆盖已保存版本。':'Recovering a draft does not overwrite the saved project.','保留最近 30 个保存或检查点版本；恢复后需手动保存。':'Keep the latest 30 saved versions and checkpoints. Save manually after restoring.','保存作品或应用语言转换后，这里会出现版本。':'Save a project or apply a language conversion to create versions.','恢复会还原此版本的全部代码、通道与素材。':'Restore all code, channels and assets from this version.','当前代码':'Current code','预览代码':'Preview code','预览语言转换':'Preview conversion','查看逐行差异':'Show line differences','逐行差异':'Line differences','应用转换':'Apply conversion','应用前自动创建检查点，可使用撤销恢复原代码与语言。':'A checkpoint is created before applying. Undo restores the original code and language.','作品已修改，请重新选择历史版本。':'The project changed. Select the version again.','作品已切换，请重新打开版本历史。':'The project changed. Reopen version history.','发现 {count} 份恢复草稿，可继续之前的创作。':'Found {count} recovery drafts. Continue your previous work.','将“{name}”移到回收站？之后可以恢复。':'Move “{name}” to Trash? You can restore it later.','查找与替换':'Find and replace','查找内容':'Find','替换为':'Replace with','上一个':'Previous','下一个':'Next','区分大小写':'Match case','替换当前':'Replace current','全部替换':'Replace all','没有匹配项':'No matches','已替换 {count} 处':'Replaced {count} matches','撤销':'Undo','重做':'Redo','代码页签已切换，请重新查找。':'The code tab changed. Search again.','草稿不存在。':'Draft not found.',
   '格式化代码':'Format code','代码操作':'Code actions',
   '练习场':'Practice','返回练习场':'Back to practice',
@@ -27,7 +38,7 @@ const english:Record<string,string> = {
   '粘贴当前 Common 或 Pass 的 GLSL。Common 无需入口函数；其他 Pass 会自动使用已导入的 Common。支持 #define 宏、#if 条件编译与常用语法子集。错误会给出行号提示。':'Paste GLSL for Common or the current pass. Common needs no entry function; other passes include imported Common definitions. Supports #define, #if and common GLSL syntax, with line-numbered errors.',
   '创作素材库':'Creation library','导出 Haiyue 组件':'Export Haiyue component','参数与预设':'Parameters & presets','画面与 Pass 调试':'Pixels & passes','整理作品':'Organize project','分享与展示':'Share & showcase','退出全屏':'Exit fullscreen','筛选与排序':'Filter & sort','只看收藏':'Favorites only','最近更新':'Recently updated','最早更新':'Oldest first','按名称':'By name','文件夹':'Folder','标签':'Tag','清除筛选':'Clear filters','复制作品':'Duplicate project','取消收藏':'Unfavorite','收藏':'Favorite','学完本章，进入练习':'Mark learned & practice','复制并创作':'Copy & create','array<vec4f, 8> · 自定义参数 / Custom parameters':'array<vec4f, 8> · Custom parameters',
   '取消':'Cancel','返回':'Back','更多操作':'More actions','预览输出':'Preview output','查看通道':'View pass','代码':'Code','通道':'Channels',
-  '＋ 新建':'+ New','导入':'Import','恢复上次草稿':'Restore draft','编写 GLSL / WGSL / HLSL，用原生 WebGPU 看见想法。':'Write GLSL / WGSL / HLSL and bring ideas to life with native WebGPU.',
+  '＋ 新建':'+ New','导入':'Import','恢复上次草稿':'Restore draft','编写 WGSL / GLSL / HLSL / TypeScript / Slang，用原生 WebGPU 看见想法。':'Write WGSL / GLSL / HLSL / TypeScript / Slang and bring ideas to life with native WebGPU.',
   '立方体贴图 · 六面预览':'Cubemap · Six-face preview','视频素材':'Video asset','图片素材':'Image asset','选择素材':'Choose asset',
   '选择 iChannel{index} 素材':'Choose iChannel{index} asset','预览并选择 iChannel{index} 素材':'Preview and choose iChannel{index} asset',
   '原创讲解与 WGSL 练习 · 延伸阅读链接指向原作者':'Original lessons and WGSL exercises · Further reading links to original authors',
@@ -97,13 +108,35 @@ const english:Record<string,string> = {
   'WGSL 纹理与采样器（二维 UV 或立方体方向）':'WGSL textures and sampler (2D UVs or cubemap directions)','44100 Hz · Sound 音频采样率':'44100 Hz · Sound sample rate',
 };
 export function t(source:string, values:Record<string,string|number>={}) {
-  let text=locale==='en'?(english[source]??source):source;
-  if(locale==='en'&&!english[source]){
-    if(source.startsWith('保存失败：'))text='Save failed: '+source.slice(5);
-    else if(source.startsWith('已转换为 '))text='Converted to '+source.slice(5);
-    else if(source.startsWith('返回教程 · '))text='Back to tutorial · '+source.slice(7);
+  const en=lookup(english,source);
+  let text=locale==='ja'?(lookup(japanese,source)??japaneseAliases()[en??source]??en??source):locale==='en'?(en??source):(englishSources()[source]??source);
+  if(locale!=='zh-CN'&&text===source){
+    const frames=/^原生 WebGPU 已呈现 (\d+) 帧$/.exec(source);
+    if(frames)text=t('原生 WebGPU 已呈现 {count} 帧',{count:frames[1]!});
+    else if(source.startsWith('保存失败：'))text=t('保存失败：{message}',{message:source.slice(5)});
+    else if(source.startsWith('已转换为 '))text=t('已转换为 {language}',{language:source.slice(5)});
+    else if(source.startsWith('返回教程 · '))text=t('返回教程 · {name}',{name:source.slice(7)});
   }
   return text.replace(/\{(\w+)\}/g,(match,key)=>String(values[key]??match));
+}
+/** Bilingual authored content shares the same Japanese catalog as UI messages. */
+export function localizeText(zh:string,en:string):string {
+  return locale==='en'?en:locale==='ja'?(lookup(practiceJapanese,en)??lookup(japanese,zh)??en):zh;
+}
+function lookup(catalog:Record<string,string>,key:string):string|undefined {return Object.hasOwn(catalog,key)?catalog[key]:undefined;}
+let aliases:Record<string,string>|undefined,authored:Map<string,string>|undefined,sources:Record<string,string>|undefined;
+function englishSources():Record<string,string> {
+  if(!sources){sources=Object.create(null) as Record<string,string>;for(const [zh,en]of Object.entries(english))if(!sources[en])sources[en]=zh;}
+  return sources;
+}
+function japaneseAliases():Record<string,string> {
+  if(!aliases){aliases=Object.create(null) as Record<string,string>;for(const [source,en]of Object.entries(english)){const ja=lookup(japanese,source);if(ja&&!aliases[en])aliases[en]=ja;}Object.assign(aliases,practiceJapanese);}
+  return aliases;
+}
+/** Only use for authored UI, never for names or source code entered by the user. */
+export function messageSource(value:string):string {
+  if(!authored){authored=new Map();for(const [en,ja]of Object.entries(japaneseAliases()))if(!authored.has(ja))authored.set(ja,en);}
+  return authored.get(value)??value;
 }
 /** Cache translated snapshots to preserve portable bindings' referential equality. */
 const translated=new WeakMap<object,{locale:Locale,value:object}>();

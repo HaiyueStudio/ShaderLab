@@ -8,8 +8,13 @@ export const PASS_IDS = ['buffer-a', 'buffer-b', 'buffer-c', 'buffer-d', 'image'
 export type PassId = typeof PASS_IDS[number];
 export type RenderPassId = PassId | 'sound';
 export type CodeId = RenderPassId | 'common';
-export type ShaderLanguage = 'glsl' | 'wgsl' | 'hlsl';
-export interface SoundPass { glsl?: string; hlsl?: string; id: 'sound'; enabled: boolean; code: string; channels: Channel[]; duration: number; volume: number }
+export const SHADER_LANGUAGES = ['wgsl', 'glsl', 'hlsl', 'typescript', 'slang'] as const;
+export type ShaderLanguage = typeof SHADER_LANGUAGES[number];
+export const LANGUAGE_LABELS:Record<ShaderLanguage,string>={wgsl:'WGSL',glsl:'GLSL',hlsl:'HLSL',typescript:'TypeScript',slang:'Slang'};
+export const SOURCE_FIELDS={wgsl:'code',glsl:'glsl',hlsl:'hlsl',typescript:'typescript',slang:'slang'} as const;
+export const COMMON_SOURCE_FIELDS={wgsl:'common',glsl:'commonGlsl',hlsl:'commonHlsl',typescript:'commonTypescript',slang:'commonSlang'} as const;
+export interface ShaderSources {glsl?:string;hlsl?:string;typescript?:string;slang?:string}
+export interface SoundPass extends ShaderSources { id: 'sound'; enabled: boolean; code: string; channels: Channel[]; duration: number; volume: number }
 export type RenderPass = ShaderPass | SoundPass;
 export type BufferId = Exclude<PassId, 'image'>;
 export const CUBE_FACES = ['px', 'nx', 'py', 'ny', 'pz', 'nz'] as const;
@@ -22,7 +27,7 @@ export type PreviewMesh = 'sphere' | 'box' | 'torus';
 // Shared by project validation and both editors so every offered scale can be saved and reopened.
 export const PREVIEW_SCALES = [1, 0.75, 0.5, 0.25] as const;
 export type PreviewScale = typeof PREVIEW_SCALES[number];
-export interface ShaderPass { glsl?: string; hlsl?: string; id: PassId; enabled: boolean; code: string; channels: Channel[] }
+export interface ShaderPass extends ShaderSources { id: PassId; enabled: boolean; code: string; channels: Channel[] }
 export interface ImageAsset { id: string; name: string; kind?: 'image'; dataUrl: string }
 export interface CubeAsset { id: string; name: string; kind: 'cubemap'; faces: Record<CubeFace, string> }
 export interface VideoAsset { id: string; name: string; kind: 'video'; dataUrl: string }
@@ -30,7 +35,7 @@ export type TextureAsset = ImageAsset | CubeAsset | VideoAsset;
 export const channelTypes = (channels: readonly Channel[]) => channels.map(c => c.kind === 'none' ? null : c.kind === 'cubemap' ? 'cube' as const : '2d' as const);
 export interface ShaderProject {
   format: 'haiyue-shader'; version: 1; id: string; name: string; description: string;
-  updatedAt: string; editorLanguages?: Partial<Record<CodeId, ShaderLanguage>>; tabs?: CodeId[]; common: string; commonGlsl?: string; commonHlsl?: string; sound: SoundPass; passes: ShaderPass[]; assets: TextureAsset[];
+  updatedAt: string; editorLanguages?: Partial<Record<CodeId, ShaderLanguage>>; tabs?: CodeId[]; common: string; commonGlsl?: string; commonHlsl?: string; commonTypescript?:string;commonSlang?:string; sound: SoundPass; passes: ShaderPass[]; assets: TextureAsset[];
   parameters?:ShaderParameter[]; parameterPresets?:ParameterPreset[]; library?:LibraryMetadata;
   preview: { mode: PreviewMode; mesh: PreviewMesh; scale: number };
 }
@@ -58,10 +63,10 @@ export function createProject(name: string, environment: ShaderEnvironment): Sha
 /** Explicitly added tabs plus legacy/externally configured modules; never hide authored code. */
 export function codeTabs(project: Readonly<ShaderProject>): CodeId[] {
   const tabs = new Set<CodeId>(['image', ...(project.tabs ?? [])]);
-  if (project.common || project.commonGlsl !== undefined || project.commonHlsl !== undefined) tabs.add('common');
+  if (project.common||SHADER_LANGUAGES.some(language=>language!=='wgsl'&&project[COMMON_SOURCE_FIELDS[language]]!==undefined)) tabs.add('common');
   for (const pass of [...project.passes, project.sound]) {
     const initial = pass.id === 'image' ? DEFAULT_CODE : pass.id === 'sound' ? SOUND_CODE : BUFFER_CODE;
-    if (pass.enabled || pass.code !== initial || pass.glsl !== undefined || pass.hlsl !== undefined || pass.channels.some(c => c.kind !== 'none')) tabs.add(pass.id);
+    if (pass.enabled || pass.code !== initial || SHADER_LANGUAGES.some(language=>language!=='wgsl'&&pass[SOURCE_FIELDS[language]]!==undefined) || pass.channels.some(c => c.kind !== 'none')) tabs.add(pass.id);
   }
   return [...tabs];
 }
@@ -94,11 +99,12 @@ export function validateProject(value: unknown): ShaderProject {
     }
   }
   assert(imageCharacters < LIMITS.projectBytes - 1_000_000, '工程图片总量超过限制。');
-  assert(p.editorLanguages === undefined || (p.editorLanguages !== null && typeof p.editorLanguages === 'object' && !Array.isArray(p.editorLanguages) && Object.entries(p.editorLanguages).every(([id, language]) => ['common', 'sound', ...PASS_IDS].includes(id) && ['glsl', 'wgsl', 'hlsl'].includes(language))), '代码语言设置无效。');
+  assert(p.editorLanguages === undefined || (p.editorLanguages !== null && typeof p.editorLanguages === 'object' && !Array.isArray(p.editorLanguages) && Object.entries(p.editorLanguages).every(([id, language]) => ['common', 'sound', ...PASS_IDS].includes(id) && SHADER_LANGUAGES.includes(language))), '代码语言设置无效。');
   assert(p.tabs === undefined || (Array.isArray(p.tabs) && p.tabs.length <= 7 && p.tabs.includes('image') && new Set(p.tabs).size === p.tabs.length && p.tabs.every(id => ['common', 'sound', ...PASS_IDS].includes(id))), '代码页签无效或重复。');
   assert(p.common === undefined || (typeof p.common === 'string' && p.common.length <= LIMITS.code), 'Common 代码不能超过 100 KB。');
   assert(p.commonGlsl === undefined || (typeof p.commonGlsl === 'string' && p.commonGlsl.length <= LIMITS.code), 'Common GLSL 不能超过 100 KB。');
   assert(p.commonHlsl === undefined || (typeof p.commonHlsl === 'string' && p.commonHlsl.length <= LIMITS.code), 'Common HLSL 不能超过 100 KB。');
+  for(const language of ['typescript','slang'] as const){const source=p[COMMON_SOURCE_FIELDS[language]];assert(source===undefined||typeof source==='string'&&source.length<=LIMITS.code,`Common ${LANGUAGE_LABELS[language]} 不能超过 100 KB。`);}
   assert(Array.isArray(p.passes) && p.passes.length === 5 && PASS_IDS.every(id => p.passes.filter(pass => pass?.id === id).length === 1), '工程需要 Image 和 Buffer A–D，且不能重复。');
   assert(p.sound === undefined || (p.sound !== null && typeof p.sound === 'object'), 'Sound 设置无效。');
   const sound = p.sound ?? createSound();
@@ -109,6 +115,7 @@ export function validateProject(value: unknown): ShaderProject {
     assert(typeof pass.code === 'string' && pass.code.length <= LIMITS.code, '单个 Pass 代码不能超过 100 KB。');
     assert(pass.glsl === undefined || (typeof pass.glsl === 'string' && pass.glsl.length <= LIMITS.code), 'Pass GLSL 不能超过 100 KB。');
     assert(pass.hlsl === undefined || (typeof pass.hlsl === 'string' && pass.hlsl.length <= LIMITS.code), 'Pass HLSL 不能超过 100 KB。');
+    for(const language of ['typescript','slang'] as const){const source=pass[language];assert(source===undefined||typeof source==='string'&&source.length<=LIMITS.code,`Pass ${LANGUAGE_LABELS[language]} 不能超过 100 KB。`);}
     assert(Array.isArray(pass.channels) && pass.channels.length === 4, '每个 Pass 必须有四个纹理通道。');
     for (const c of pass.channels) {
       assert(pass.id !== 'sound' || ['none', 'image', 'cubemap', 'builtin'].includes(c?.kind), 'Sound 支持静态图片、内置纹理与 Cubemap；不支持动态 Buffer、视频或键盘输入。');
@@ -126,7 +133,7 @@ export function validateProject(value: unknown): ShaderProject {
   validateParameters(p.parameters,p.parameterPresets);validateLibrary(p.library);
   cameraFacing(p);
   for (const [id, language] of Object.entries(p.editorLanguages ?? {})) {
-    const source = id === 'common' ? (language === 'hlsl' ? p.commonHlsl : p.commonGlsl) : (id === 'sound' ? sound : p.passes.find(pass => pass.id === id))?.[language === 'hlsl' ? 'hlsl' : 'glsl'];
+    const source = id === 'common' ? p[COMMON_SOURCE_FIELDS[language]] : (id === 'sound' ? sound : p.passes.find(pass => pass.id === id))?.[SOURCE_FIELDS[language]];
     assert(language === 'wgsl' || typeof source === 'string', `${language.toUpperCase()} 语言设置需要对应源码。`);
   }
   assert(p.preview && ['canvas', 'scene'].includes(p.preview.mode) && ['sphere', 'box', 'torus'].includes(p.preview.mesh) && (PREVIEW_SCALES as readonly number[]).includes(p.preview.scale), '预览设置无效。');

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "ShaderLab";
+"NSCameraUsageDescription" = "Use live camera video as a texture input for the Buffer or Image effect you select. Camera frames stay on this device.";
+"NSPhotoLibraryAddUsageDescription" = "Save the shader image you create to Photos.";

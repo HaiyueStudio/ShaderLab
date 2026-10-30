@@ -2,7 +2,7 @@ import {StackLayout,Label,TextField,TextView,File,knownFolders,path,type Page} f
 import {hyShowNativeOverlay} from '@haiyue/native/ui';
 import {nativeAction} from './presentation';
 import {shaderTheme} from '../../../shared/dist/views/presentation.js';
-import {getLocale} from '../../../shared/dist/views/i18n.js';
+import {getLocale,localizeText,t} from '../../../shared/dist/views/i18n.js';
 import {CREATION_KINDS,filterCreations,insertCreationFunction,applyCreationPreset,instantiateTemplate,type CreationKind,type CreationItem} from '../../../shared/dist/domain/creationLibrary.js';
 import {BUILTIN_CREATIONS} from '../../../shared/dist/domain/creationSeeds.js';
 import {languageOf,sourceOf} from '../../../shared/dist/domain/sourceLanguage.js';
@@ -12,7 +12,7 @@ import type {ShaderProject} from '../project';
 import type {NativeProductPorts} from './product-tools';
 import type {createEnginePackage} from '../../../web/src/enginePackage.js';
 import {pickFile,shareFile,writeBytes} from '../files';
-const L=(zh:string,en:string)=>getLocale()==='en'?en:zh;
+const L=localizeText;
 const kindName=(kind:CreationKind)=>L({function:'函数',template:'效果模板',preset:'参数预设'}[kind],{function:'Functions',template:'Effect templates',preset:'Parameter presets'}[kind]);
 function text(value:string,cls=''){const v=new Label();v.text=value;v.textWrap=true;v.className=cls;v.marginBottom=8;return v;}
 function body(){const v=new StackLayout();v.padding=16;return v;}
@@ -26,8 +26,8 @@ export async function nativeCreationLibrary(p:NativeCreationPorts){p.flush();con
  tabs.orientation='horizontal';for(const value of CREATION_KINDS){const button=action(tabs,kindName(value),()=>{kind=value;draw();},'creation-kind-'+value);button.width='33%';}content.addChild(tabs);
  const search=field(content,L('搜索素材','Search assets'));search.on('textChange',()=>{query=search.text??'';draw();});const favorite=action(content,'☆ '+L('只看收藏','Favorites'),()=>{favorites=!favorites;favorite.text=(favorites?'★ ':'☆ ')+L('只看收藏','Favorites');draw();});content.addChild(list);content.addChild(save);
  const reload=async()=>{items=await p.library.list();draw();};
- function draw(){list.removeChildren();save.removeChildren();list.addChild(text(kindName(kind),'section'));const found=filterCreations(items,kind,query,favorites);if(!found.length)list.addChild(text(L('没有匹配素材','No matching assets'),'muted'));
-  for(const item of found){const card=body();card.className='card';card.addChild(text(item.name,'section'));card.addChild(text(item.description,'muted'));card.addChild(text(item.tags.join(' · '),'muted'));action(card,(item.favorite?'★ ':'☆ ')+L('收藏','Favorite'),async()=>{await p.library.save({...item,favorite:!item.favorite});await reload();});
+ function draw(){list.removeChildren();save.removeChildren();list.addChild(text(kindName(kind),'section'));const authored=(item:CreationItem)=>BUILTIN_CREATIONS.some(seed=>seed.id===item.id&&seed.name===item.name&&seed.description===item.description);const found=filterCreations(items,kind,'',favorites).filter(item=>!query||[item.name,item.description,...item.tags,...(authored(item)?[t(item.name),t(item.description)]:[])].join(' ').toLocaleLowerCase().includes(query.toLocaleLowerCase()));if(!found.length)list.addChild(text(L('没有匹配素材','No matching assets'),'muted'));
+  for(const item of found){const card=body();card.className='card';card.addChild(text(authored(item)?t(item.name):item.name,'section'));card.addChild(text(authored(item)?t(item.description):item.description,'muted'));card.addChild(text(item.tags.join(' · '),'muted'));action(card,(item.favorite?'★ ':'☆ ')+L('收藏','Favorite'),async()=>{await p.library.save({...item,favorite:!item.favorite});await reload();});
    action(card,L('查看内容','View contents'),()=>{const detail=body(),source=new TextView();source.editable=false;source.height=340;source.fontFamily='monospace';source.fontSize=12;source.text=item.kind==='function'?item.sources[language]??L('没有当前语言版本','No current language version'):item.kind==='preset'?item.parameters.map(v=>`iParams[${v.slot}] · ${v.name} (${v.kind}) = ${v.value}`).join('\n'):item.project.passes.filter(v=>v.enabled).map(v=>v.id+'\n'+sourceOf(item.project,v.id)).join('\n\n');detail.addChild(source);panel(modal.page,item.name,detail);});
    const use=action(card,item.kind==='template'?L('由模板创建作品','Create from template'):item.kind==='function'?L('插入到当前页顶部','Insert at module top'):L('应用参数预设','Apply parameter preset'),async()=>{p.flush();assert();if(item.kind==='template'){await p.open(instantiateTemplate(item,crypto.randomUUID(),new Date().toISOString()));modal.close();}else if(item.kind==='function'){if(p.app.state.activePass!==pass||languageOf(p.app.state.project,pass)!==language)throw Error('Pass / language changed');p.app.setSource(pass,insertCreationFunction(sourceOf(p.app.state.project,pass),item,language),language);p.changed();modal.close();}else{const values=applyCreationPreset(p.app.state.project.parameters??[],item);p.app.configureParameters(values);p.runtime()?.setParameters(values);p.changed();error.text=L('已应用参数预设','Parameter preset applied');}},'creation-use-'+item.id);if(item.kind==='function')use.isEnabled=!!item.sources[language];
    if(!BUILTIN_CREATIONS.some(v=>v.id===item.id))action(card,L('删除素材','Delete asset'),async()=>{await p.library.remove(item.id);await reload();});list.addChild(card);

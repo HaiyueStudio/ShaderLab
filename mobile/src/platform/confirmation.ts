@@ -8,7 +8,7 @@ export async function confirmNative(owner:View,options:{title:string;message:str
   const actions=new GridLayout();actions.columns='*,8,*';
   const cancel=new HYNativeButton({text:t('取消'),variant:'secondary'},shaderTheme);
   const accept=new HYNativeButton({text:options.accept,variant:options.destructive?'danger':'primary'},shaderTheme);
-  cancel.accessibilityIdentifier='confirmation-cancel';accept.accessibilityIdentifier='confirmation-accept';
+  cancel.id=cancel.accessibilityIdentifier='confirmation-cancel';accept.id=accept.accessibilityIdentifier='confirmation-accept';
   GridLayout.setColumn(accept,2);actions.addChild(cancel);actions.addChild(accept);
   let result=false,settled=false,overlay:HYNativeOverlayHandle;
   const finish=(value:boolean)=>{if(settled)return;settled=true;result=value;cancel.isEnabled=false;accept.isEnabled=false;overlay.close();};

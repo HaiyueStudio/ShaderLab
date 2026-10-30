@@ -23,6 +23,7 @@ export async function prepare(){
  cpSync(path.join(native,'bridge/share/android/HaiyueShareProvider.java'),path.join(java,'HaiyueShareProvider.java'));
  const xml=path.join(app,'App_Resources/Android/src/main/res/xml');mkdirSync(xml,{recursive:true});cpSync(path.join(native,'bridge/share/android/haiyue_share_paths.xml'),path.join(xml,'haiyue_share_paths.xml'));
  const output=path.join(app,'generated/compiler');mkdirSync(output,{recursive:true});
+ for(const name of ['LICENSE.txt','ThirdPartyNoticeText.txt'])cpSync(require.resolve('typescript/'+name),path.join(output,'typescript-'+name));
  const slang=path.join(root,'vendor/slang-2026.19');
  // Embed the compiler in its lazy script: file: XHR is blocked by WebView
  // origin rules. This avoids granting file-origin access to the compiler page.

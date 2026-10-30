@@ -1,5 +1,5 @@
 import type { Module, ModuleInfo } from 'naga-wasm';
-import { HEADER } from './shaders.js';
+import { HEADER, wrapShader } from './shaders.js';
 import { passCommon, resolveChannelBindings } from './channelBindings.js';
 import { LIMITS, emptyChannels, type Channel, type RenderPass } from './model.js';
 import { declarations, detachCommon, renameIdentifiers } from './wgslModules.js';
@@ -12,7 +12,8 @@ import { restoreGlslForLoops } from './glslLoops.js';
 export interface WgslTranslationOptions {
   entryPoint?: 'image' | 'sound' | 'common';
   /** Authoring output for the editor; the native bridge uses the same writer. */
-  target?: 'glsl' | 'hlsl';
+  target?: 'glsl' | 'hlsl' | 'typescript';
+  sourceLanguage?: 'typescript';
   common?: string;
   channels?: Channel[];
   /** Editor conversion keeps Common external; standalone exports still link it. */
@@ -82,6 +83,26 @@ function inlineUniformLoads(code: string, uniforms: ReadonlySet<string>) {
 /** Export authoring WGSL, not arbitrary WebGPU pipelines, as a self-contained
  * Shadertoy pass. Common is linked just as in the renderer. */
 export async function translateWgsl(source: string, options: WgslTranslationOptions = {}): Promise<WgslTranslationResult> {
+  if(options.sourceLanguage==='typescript'||options.target==='typescript'){
+    let module:Module|undefined,info:ModuleInfo|undefined;
+    try{
+      const result=options.sourceLanguage==='typescript'?(await import('./typescriptShader.js')).typescriptToWgsl(source):{code:source,diagnostics:[],warnings:[]};
+      if(result.code===null)return result;
+      const authored=result.code,common=options.common??'',sound=options.entryPoint==='sound',library=options.entryPoint==='common';
+      const pass:RenderPass={id:sound?'sound':'image',enabled:true,code:library?'fn mainImage(p:vec2f)->vec4f{return vec4f(0.0);}':authored,channels:options.channels??emptyChannels(),duration:60,volume:1};
+      const wrapped=wrapShader(pass,library?authored:common);const naga=await loadCompiler();module=naga.parseWgsl(wrapped.code);info=naga.validate(module);
+      if(options.target==='typescript'){
+        const output=(await import('./wgslTypescript.js')).wgslToTypescript(authored);
+        // Verify the emitted editable TypeScript, including its inferred numeric
+        // types, before the language switch can commit it to the document.
+        const {target,sourceLanguage,...context}=options;
+        const checked=await translateWgsl(output,{...context,sourceLanguage:'typescript'});
+        return checked.code===null?checked:{code:output,diagnostics:[],warnings:[]};
+      }
+      return {code:authored,diagnostics:[],warnings:[]};
+    }catch(error){return failure(String(error instanceof Error?error.message:error));}
+    finally{info?.free();module?.free();}
+  }
   if (options.target === 'hlsl') {
     try { return await translateWgslToHlsl(source, options, await loadCompiler()); }
     catch (error) { return failure(error instanceof Error ? error.message : String(error)); }
