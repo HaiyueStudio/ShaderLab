@@ -12,6 +12,7 @@ import * as naga from 'naga-wasm';
 import { passOf } from '../dist/model.js';
 import { exportShadertoyPass } from '../dist/shadertoyExport.js';
 import { glslCommon } from '../dist/sourceCommon.js';
+import {formatShader} from '../../shared/dist/domain/shaderFormatting.js';
 
 test('external Common shares writable builtin copies and preserves Sound-specific builtin values',async()=>{
  const w=new ShaderWorkspace();
@@ -89,7 +90,7 @@ test('conversion keeps Common independent; supports Buffer and Sound', async () 
 });
 
 for (const id of ['image', 'buffer-a', 'sound']) for (const initial of ['wgsl', 'glsl']) {
-  test(`${id} ${initial}: repeated switching and reopen preserve exact sources; edited output is converted`, async () => {
+  test(`${id} ${initial}: repeated switching and reopen preserve formatted sources; edited output is converted`, async () => {
     let w = new ShaderWorkspace();
     const source = id === 'sound'
       ? initial === 'wgsl' ? 'fn mainSound(s:i32,t:f32)->vec2f{return vec2f(sin(t) * 0.23);}'
@@ -102,7 +103,7 @@ for (const id of ['image', 'buffer-a', 'sound']) for (const initial of ['wgsl', 
     const converted = sourceOf(w.document.state, id);
     for (let cycle = 0; cycle < 6; cycle++) {
       const reopened = new ShaderWorkspace(); reopened.document.replace(w.document.serialize()); w = reopened;
-      await w.setLanguage(id, initial); assert.equal(sourceOf(w.document.state, id), source);
+      await w.setLanguage(id, initial); assert.equal(sourceOf(w.document.state, id), formatShader(source,initial));
       await w.setLanguage(id, other); assert.equal(sourceOf(w.document.state, id), converted);
     }
     const edited = converted.replaceAll('0.23', '0.81');

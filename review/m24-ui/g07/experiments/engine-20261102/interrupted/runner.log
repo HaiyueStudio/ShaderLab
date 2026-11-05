@@ -1,0 +1,35 @@
+shared 0 {
+  handler: 5.256499946117401,
+  engineFrameCpu: 2.487499952316284,
+  handlerPlusNextFrameCpu: 6.637041628360748,
+  settled: 51.27608335018158,
+  queueWait: 17.484416663646698,
+  submitToComplete: 67.96354162693024,
+  cadence: 17.38216668367386,
+  idleFrameCpu: 1.358708381652832,
+  handlerPlusSettlingFramesCpu: 8.71295839548111
+}
+node:internal/errors:985
+  const err = new Error(message);
+              ^
+
+Error: Command failed: xcrun devicectl device process launch --timeout 20 --device 8D9238D1-024A-538B-A175-B9E71AA32202 --terminate-existing studio.haiyue.shaderlab --shaderlab-gui-comparison --shaderlab-ui=gui
+ERROR: The process identifier of the launched application could not be determined. It may have already terminated. (com.apple.dt.CoreDeviceError error 10004 (0x2714))
+
+    at genericNodeError (node:internal/errors:985:15)
+    at wrappedFn (node:internal/errors:539:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:509:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: 'xcrun devicectl device process launch --timeout 20 --device 8D9238D1-024A-538B-A175-B9E71AA32202 --terminate-existing studio.haiyue.shaderlab --shaderlab-gui-comparison --shaderlab-ui=gui',
+  stdout: '07:53:48  Acquired tunnel connection to device.\n' +
+    '07:53:48  Enabling developer disk image services.\n' +
+    '07:53:49  Acquired usage assertion.\n',
+  stderr: 'ERROR: The process identifier of the launched application could not be determined. It may have already terminated. (com.apple.dt.CoreDeviceError error 10004 (0x2714))\n'
+}
+
+Node.js v24.19.0

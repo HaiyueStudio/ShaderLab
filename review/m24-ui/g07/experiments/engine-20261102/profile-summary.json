@@ -1,0 +1,79 @@
+{
+  "kind": "Instrumented JS method inclusive elapsed times; not formal timing; upload method calls are not actual GPU writes",
+  "frames": 120,
+  "retainedLayers": true,
+  "summary": {
+    "prepareRoots.ms": {
+      "p95": 1.327541708946228,
+      "sum": 95.92479145526886
+    },
+    "prepareRoots.calls": {
+      "p95": 1,
+      "sum": 120
+    },
+    "rebuildRoot.ms": {
+      "p95": 0.46395838260650635,
+      "sum": 31.216124355793
+    },
+    "rebuildRoot.calls": {
+      "p95": 1,
+      "sum": 120
+    },
+    "shape.ms": {
+      "p95": 0.20074999332427979,
+      "sum": 16.429499328136444
+    },
+    "shape.calls": {
+      "p95": 9,
+      "sum": 1080
+    },
+    "imageUpload.ms": {
+      "p95": 0.018166661262512207,
+      "sum": 1.4171250462532043
+    },
+    "imageUpload.calls": {
+      "p95": 1,
+      "sum": 120
+    },
+    "image.ms": {
+      "p95": 0.34400004148483276,
+      "sum": 27.491500854492188
+    },
+    "image.calls": {
+      "p95": 9,
+      "sum": 1080
+    },
+    "text.ms": {
+      "p95": 0.23016655445098877,
+      "sum": 19.627166867256165
+    },
+    "text.calls": {
+      "p95": 9,
+      "sum": 1080
+    },
+    "shapeUpload.ms": {
+      "p95": 0.033958256244659424,
+      "sum": 2.1936665177345276
+    },
+    "shapeUpload.calls": {
+      "p95": 2,
+      "sum": 240
+    },
+    "textUpload.ms": {
+      "p95": 0.03333330154418945,
+      "sum": 2.2194172143936157
+    },
+    "textUpload.calls": {
+      "p95": 2,
+      "sum": 240
+    },
+    "gui.ms": {
+      "p95": 3.2487916946411133,
+      "sum": 260.0426666736603
+    },
+    "gui.calls": {
+      "p95": 1,
+      "sum": 120
+    }
+  }
+}

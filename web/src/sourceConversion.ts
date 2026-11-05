@@ -13,6 +13,7 @@ import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
 import { passCommon, resolveChannelBindings } from './channelBindings.js';
 import {normalizeExtendedSources} from './extendedSources.js';
+import {formatShader} from '../../shared/dist/domain/shaderFormatting.js';
 
 /** Compiler dependencies are supplied by Web or the native compiler bridge. */
 export function createSourceConverter(compilers: {
@@ -44,7 +45,7 @@ export function createSourceConverter(compilers: {
           let matched=false;
           for(const candidate of candidates){
             const translated=await compilers.wgsl(candidate,{entryPoint:'common',target:'hlsl'});
-            if(translated.code!==null&&compactShaderWhitespace(translated.code)===compactShaderWhitespace(sourceOf(project,'common'))){common=candidate;matched=true;break;}
+            if(translated.code!==null&&formatShader(translated.code,'hlsl')===formatShader(sourceOf(project,'common'),'hlsl')){common=candidate;matched=true;break;}
           }
           if(!matched)throw Error('当前 HLSL Common 已独立修改，无法安全转换仍引用其他语言 Common 的 Pass；已保留原代码。');
         }
@@ -79,7 +80,7 @@ export function createSourceConverter(compilers: {
           common: commonWgsl(project), entryPoint: pass === 'sound' ? 'sound' : 'image', channels: passOf(project, pass).channels,
           legacyEntryWrapper: true,
         });
-        if (previous.code !== null && source === '// @haiyue-common-included\n' + previous.code) return retained;
+        if (previous.code !== null && formatShader(source,from) === formatShader('// @haiyue-common-included\n' + previous.code,from)) return retained;
       }
       if (pass !== 'common' && externalCommon(source)) {
         const common = await glslCommon(project, pass, compilers.wgsl);
@@ -134,13 +135,13 @@ export function createSourceConverter(compilers: {
       if (retained?.trim() && !(target === 'glsl' && /@haiyue-common-included/.test(retained))) {
         try {
           const candidate = { ...snapshot, editorLanguages: { ...snapshot.editorLanguages, [pass]: target } };
-          if (await convert(candidate, pass, from) === source) return retained;
+          if (formatShader(await convert(candidate, pass, from),from) === formatShader(source,from)) return retained;
         } catch { /* A stale/unsupported draft is not a conversion failure. */ }
       }
     }
     return convert(snapshot, pass, target);
   };
-  return async(snapshot,pass,target)=>{
+  const extended:ShaderSourceConverter=async(snapshot,pass,target)=>{
     const from=languageOf(snapshot,pass),source=sourceOf(snapshot,pass);
     if(from===target||!source.trim())return source;
     if(!['typescript','slang'].includes(from)&&!['typescript','slang'].includes(target)&&!['typescript','slang'].includes(languageOf(snapshot,'common')))return legacy(snapshot,pass,target);
@@ -157,5 +158,9 @@ export function createSourceConverter(compilers: {
       passOf(project,pass).code=code;project.editorLanguages={...project.editorLanguages,[pass]:'wgsl'};
     }
     return legacy(project,pass,target==='slang'?'hlsl':target);
+  };
+  return async(snapshot,pass,target)=>{
+    const code=await extended(snapshot,pass,target);
+    return languageOf(snapshot,pass)===target||!code.trim()?code:formatShader(code,target);
   };
 }

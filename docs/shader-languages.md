@@ -18,7 +18,7 @@ export function mainImage(fragCoord: vec2f): vec4f {
 
 标量使用 `number` / `boolean`，或明确的 `f32` / `i32` / `u32`；向量使用 `vec2f` / `vec3f` / `vec4f`，也支持整数向量、矩阵和 `array<T, N>` 固定长度数组。函数参数需要类型，辅助函数的返回值需要明确类型；入口默认返回 `vec4f` / `vec2f`。
 
-标量可用普通运算符。向量、矩阵运算使用 `gpu.add`、`gpu.sub`、`gpu.mul`、`gpu.div`、`gpu.mod` 和 `gpu.neg`；这些调用对应 WGSL 运算，不会转成 JavaScript 数组运算。`gpu.eq / ne / lt / le / gt / ge` 支持比较。通用数值函数沿用 WGSL 名称，例如 `mix`、`smoothstep`、`dot`、`normalize`、`select`。支持常用 `Math.sin / cos / pow / sqrt / floor / abs` 等确定性数学函数。
+标量可用普通运算符，反向转换的标量比较直接生成 `< / <= / > / >= / == / !=`，例如 `for (let i = 0; i < 3; i++)`。向量、矩阵运算使用 `gpu.add`、`gpu.sub`、`gpu.mul`、`gpu.div`、`gpu.mod` 和 `gpu.neg`；这些调用对应 WGSL 运算，不会转成 JavaScript 数组运算。向量比较仍用 `gpu.eq / ne / lt / le / gt / ge`；已有的标量 GPU 比较调用也可继续编译。通用数值函数沿用 WGSL 名称，例如 `mix`、`smoothstep`、`dot`、`normalize`、`select`。支持常用 `Math.sin / cos / pow / sqrt / floor / abs` 等确定性数学函数。
 
 `channel0(uv)` 至 `channel3(uv)` 与其他语言使用同样的通道和左下角 UV 约定；Cubemap 接受 `vec3f` 方向。
 
@@ -41,6 +41,8 @@ export function mainImage(p: vec2f): vec4f {
 不支持 import、async、生成器、异常、类、动态对象或宿主 API。条件值用 if / else 或显式 `select`，不会把有副作用的 JavaScript 三元表达式改成提前求值。反向转换不支持 continuing 读取循环体局部变量的特殊 WGSL loop，会提示先改写为 for，并保留原代码。
 
 浮点数保留源字面量，例如 `0.012`、`0.0`；避免改变推断类型或产生长小数。十六进制浮点数转换为等值十进制。反向转换输出可编辑的 TypeScript 函数和运算表达式，不把 WGSL 藏在字符串中；输出会重新编译验证后才提交。若复合赋值的数组索引含函数调用，需先将索引存入局部变量，防止重复求值改变行为。
+
+语言转换完成后自动排版，转换预览显示的就是格式化结果；取消转换或撤销仍可恢复原始源码。WGSL 与 TypeScript 按表达式结构和运算优先级生成括号，去掉重复分组，同时保留 `a - (b - c)`、`a / (b / c)`、逻辑组合及指针字段访问需要的分组。反复转换不会再累积括号，也不会重排浮点运算的结合顺序。
 
 ## Slang
 

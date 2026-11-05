@@ -1,0 +1,14 @@
+✔ full Engine experiment resolves every subpath and fingerprints transitive chunks (24.867385ms)
+✔ GUI comparison keeps a fixed shader display region and selection command identities (20.699883ms)
+✔ changing a preview texture dirties only its own GUI layer (3.170829ms)
+✔ GUI dialog, gallery layout, viewport changes and disposal keep independent state (4.727732ms)
+✔ compact editor reserves a usable preview and keeps keyboard dismissal above the code region (3.006158ms)
+✔ retained control layer isolates scale/compile changes and preserves target bounds and gallery hiding (5.314142ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 732.838624

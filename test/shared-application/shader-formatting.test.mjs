@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {formatShader,shaderFormatEdits} from '../../shared/dist/domain/shaderFormatting.js';
 import {PRACTICE_CHALLENGES,practiceStarter} from '../../shared/dist/domain/practice.js';
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
+import {transformSync} from 'esbuild';
 const apply=(source,edits)=>{for(const edit of [...edits].reverse())source=source.slice(0,edit.from)+edit.insert+source.slice(edit.to);return source;};
 test('formats a compressed shader with two-space indentation and expression spacing',()=>{
  const source='fn mainImage(fragCoord:vec2f)->vec4f{let uv=fragCoord/iResolution.xy;return vec4f(uv,0.5,1.0);}';
@@ -27,3 +30,17 @@ test('formatting all 36 practice answers and all language starters is idempotent
 });
 
 test('Unicode identifiers and adjacent attributes remain separate shader tokens',()=>{const source='@group(0)@binding(1)var 纹理:texture_2d<f32>;fn f(){let 颜色=vec3f(0.2);let x=颜色.x;}';const out=formatShader(source);assert.ok(out.includes('@group(0) @binding(1) var 纹理: texture_2d<f32>;'));assert.ok(out.includes('let 颜色 = vec3f(0.2);'));assert.equal(apply(source,shaderFormatEdits(source)),out);assert.equal(formatShader(out),out);});
+
+test('TypeScript formatting keeps type annotations and GPU type arguments compact',()=>{
+ const source='interface Tint{color:vec3f;}export function shade(p:vec2f):vec3f{const t=gpu.construct<Tint>(vec3f(p,0.012));for(let i:i32=0;i<3;i++){t.color.x+=0.1;}return t.color;}';
+ const out=formatShader(source,'typescript');assert.ok(out.includes('p: vec2f): vec3f'));assert.ok(out.includes('gpu.construct<Tint>('));assert.ok(out.includes('i < 3'));assert.equal(apply(source,shaderFormatEdits(source,'typescript')),out);assert.equal(formatShader(out,'typescript'),out);
+});
+
+test('native runtimes without Unicode property tables can load and format ASCII code with Chinese comments',()=>{
+ const source=readFileSync(new URL('../../shared/dist/domain/shaderFormatting.js',import.meta.url),'utf8'),module={exports:{}};
+ class NativeRegExp extends RegExp {constructor(pattern,flags){if(String(pattern).includes('ID_Start'))throw new SyntaxError('Unsupported native Unicode property');super(pattern,flags);}}
+ runInNewContext(transformSync(source,{format:'cjs'}).code,{module,exports:module.exports,RegExp:NativeRegExp});
+ const native=module.exports,ascii='// 中文注释保持不变\nfn mainImage(p:vec2f)->vec4f{return vec4f(0.012);}';
+ assert.equal(native.formatShader(ascii),formatShader(ascii));assert.ok(native.shaderFormatEdits(ascii).length>0);
+ const unicode='fn f(){let 颜色=vec3f(0.2);let x=颜色.x;}';assert.equal(native.formatShader(unicode),unicode);assert.equal(native.shaderFormatEdits(unicode).length,0);
+});

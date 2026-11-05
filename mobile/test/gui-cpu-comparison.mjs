@@ -36,6 +36,8 @@ const previewProfile = process.env.PREVIEW_PROFILE === "1";
 const previewBaseline = process.env.PREVIEW_BASELINE === "1";
 const instrumented = process.env.PROFILE === "1" || previewProfile;
 const pairOnly = process.env.ARMS === "shared,optimized";
+const candidateSha256 = process.env.ENGINE_CANDIDATE_SHA256;
+assert.ok(!candidateSha256 || (pairOnly && !previewCompare && !previewProfile && !instrumented), 'Full-package candidate uses the uninstrumented paired protocol');
 assert.ok(!process.env.ARMS || pairOnly, "ARMS must be shared,optimized or omitted");
 assert.ok(!(process.env.PROFILE === "1" && pairOnly), "Pair comparison must run without profiling");
 assert.ok(!previewCompare || (!instrumented && !previewBaseline), "Four-arm comparison must be uninstrumented with per-arm baseline selection");
@@ -55,7 +57,7 @@ const schedule = previewCompare ? [
   ["baseline", "optimized", "shared"],
 ];
 const arms = [...new Set(schedule.flat())];
-writeFileSync(resolve(out, "plan.json"), JSON.stringify({ device, artifact, artifactSha256, instrumented, previewBaseline, previewProfile, previewCompare, schedule, samplesPerRun: 100, stabilitySpreadThreshold: 1.10, startedAt: new Date().toISOString() }, null, 2) + "\n");
+writeFileSync(resolve(out, "plan.json"), JSON.stringify({ device, artifact, artifactSha256, candidateSha256, instrumented, previewBaseline, previewProfile, previewCompare, schedule, samplesPerRun: 100, stabilitySpreadThreshold: 1.10, startedAt: new Date().toISOString() }, null, 2) + "\n");
 const percentile = (values) =>
   [...values].sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
 for (const [round, order] of schedule.entries())
@@ -117,7 +119,8 @@ for (const [round, order] of schedule.entries())
       }
     }
     assert.ok(report, "No fresh complete report");
-    assert.equal(report.guiImplementation, arm === "baseline" ? "baseline" : "optimized", "Frozen patched IPA must be installed");
+    assert.equal(report.guiImplementation, candidateSha256 ? "current-package" : arm === "baseline" ? "baseline" : "optimized", "Frozen candidate IPA must be installed");
+    if (candidateSha256) assert.equal(report.engineCandidate?.sha256, candidateSha256, "Installed Engine must match the frozen package");
     assert.equal(report.instrumented, instrumented);
     if (report.schema >= 2) assert.equal(report.frameWorkOptimized, !oldPreview);
     else assert.ok(!oldPreview && !previewProfile && !previewCompare, "Preview experiments require schema 2");

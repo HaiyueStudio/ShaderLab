@@ -1,0 +1,32 @@
+{
+  "version": "0.2.3",
+  "sha256": "c21995a5ab85f87b9ea0133bfe35b8b698f15ef2a9e68b596e25bb32ace7d4dd",
+  "kind": "full-package",
+  "engineCommit": "fd4e21ecb6ea2a790f26b994198148c75a601796",
+  "shaderLabCommit": "3b7c1196ec76259906d42f1b2d2e55fb56d2ce84",
+  "engineStatus": "",
+  "date": "2026-11-02",
+  "legacyGuiPatch": false,
+  "sources": {
+    "package-lock.json": "34dc346432eea9cf6e73f17fad3d8dd208dcc3693396694f0e49e3c90f4bac0e",
+    "mobile/package.json": "686cb606612d58438ef6cd6b921f76fc1977bdceed98efd21a99e3ea9d638e6d",
+    "mobile/webpack.config.js": "00ff827ae02c71e298ee39913c4bb7d0d8a136a263f410a8eeaf391f67fb9d95",
+    "mobile/src/experiments/gui-ui/sampling.ts": "969ba344e895ea8e9214e76f17523d29d765d6f8586bb190aac19add4ca4453d",
+    "mobile/src/experiments/gui-ui/page.ts": "ce6c6c085f1e8deae6679886c12d07ff27921d431251e07e0f226aab631af02b",
+    "mobile/src/experiments/gui-ui/view.ts": "ad4c64eddf0222b56eb9dc61f672fd242bc4583e29725430170d6dfb080562bc",
+    "mobile/src/gpu-runtime.ts": "96a969efce9223c0eed2b5361d2d3622e83cf39464be0c7c4b9e023268b54fd1",
+    "mobile/src/pages.ts": "91e0df72e122411d663b3ecdd281e4f56cef9c2522804582dcd04c9abb62ec7e",
+    "mobile/test/gui-cpu-comparison.mjs": "30491c6b1503d46bf19fad9dc35058697bd75536bcb026f30f9905ece7f74520",
+    "mobile/scripts/engine-candidate.cjs": "1d70be889ab361ff734f20e3ce825b69bdc627ecdf7f32f83ca93b042cb0258d",
+    "review/m24-ui/g01/project.hyshader": "e6b15855bb81f98a911cad4436ca6beafe0afef00e985f71a7b606cf17baa09f"
+  },
+  "artifactSha256": "84deb64c3fdb12b683034007e481b7116b564551edf6219959df7f85d365864e",
+  "build": "Debug-iphoneos; full Engine 0.2.3 candidate; legacy patch disabled",
+  "packages": {
+    "@haiyue/native": "0.1.4-p1.9",
+    "@haiyue/ui": "0.2.1-p1.4",
+    "@nativescript/canvas": "2.1.18",
+    "@nativescript/core": "9.1.1"
+  },
+  "executableSha256": "5fc29e52ea8a353f5064cb117e62e8b48ee4357489cb54a22d60299d28806670"
+}

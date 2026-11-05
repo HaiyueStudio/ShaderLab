@@ -16,6 +16,7 @@ import {practiceStarter,practiceProject,PRACTICE_CHALLENGES,parsePracticeRecords
 import {examples} from '../dist/examples.js';
 import {wrapShader} from '../dist/shaders.js';
 import {parseWgsl,validate} from 'naga-wasm';
+import {formatShader} from '../../shared/dist/domain/shaderFormatting.js';
 
 const hlsl=createHlslTranslator(()=>createSlang({wasmBinary:readFileSync(new URL('../../vendor/slang-2026.19/slang-wasm.wasm',import.meta.url))}));
 const convert=createSourceConverter({wgsl:translateWgsl,hlsl});
@@ -30,6 +31,7 @@ test('all five languages convert in every direction from the current edited sour
     for(const to of SHADER_LANGUAGES.filter(l=>l!==from)){
       const current=application(a.snapshot());current.setSource('image',first+'\n// current edit '+from,from);
       await current.switchLanguage('image',to);assert.equal(current.state.project.editorLanguages.image,to);
+      assert.equal(sourceOf(current.state.project,'image'),formatShader(sourceOf(current.state.project,'image'),to),'automatically formatted '+from+' → '+to);
       assert.match(sourceOf(current.state.project,'image'),/current edit/);
       const p=current.snapshot();assert.deepEqual(await refreshProjectSources(p,hlsl,translateWgsl),[],from+' → '+to);valid(p);current.dispose();
     }
@@ -105,6 +107,72 @@ test('TypeScript Common stays external and changing it changes the next compiled
 test('structural TypeScript output is source code, preserves for loops and short float literals',()=>{
   const out=wgslToTypescript(DEFAULT_CODE+'\nfn count()->f32{var s=0.0;for(var i=0;i<4;i++){s+=0.012;}return s;}');
   assert.match(out,/export function mainImage/);assert.match(out,/gpu\.div/);assert.match(out,/for\s*\(/);assert.match(out,/0\.012/);assert.doesNotMatch(out,/eval|WGSL_SOURCE|while\s*\(true\)/);assert.ok(typescriptToWgsl(out).code);
+});
+
+test('TypeScript uses scalar comparison symbols and keeps vector comparisons as GPU operations',async()=>{
+  const source=`alias Point = vec2f;
+struct Sample { value: f32, point: Point, }
+fn mainImage(p:vec2f)->vec4f {
+  let sample=Sample(p.x,p);
+  let values=array<f32,2>(0.012,1.0);
+  var count=0;
+  for(var i=0;i<2;i++){if(values[i]<=sample.value && later(p.x)>iTime){count+=1;}}
+  let a=sample.point.x>=0.0;
+  let b=sample.value!=0.0;
+  let c=p.x==p.y;
+  let vectors=p<vec2f(0.5);
+  return vec4f(select(0.0,1.0,vectors.x),f32(count),select(0.0,1.0,a||b||c),1.0);
+}
+fn later(x:f32)->f32{return x;}`;
+  const out=wgslToTypescript(source);
+  for(const part of ['i < 2','values[i] <= sample.value','later(p.x) > iTime','sample.point.x >= 0.0','sample.value != 0.0','p.x == p.y'])assert.ok(out.includes(part),part+'\n'+out);
+  assert.match(out,/gpu\.lt\(p, vec2f\(0\.5\)\)/);assert.doesNotMatch(out,/gpu\.(?:le|ge|gt|eq|ne)\(/);
+  const a=application();a.setSource('image',out,'typescript');const p=a.snapshot();assert.deepEqual(await refreshProjectSources(p,hlsl,translateWgsl),[]);valid(p);a.dispose();
+  const common=await translateWgsl('fn mainImage(p:vec2f)->vec4f{if(gain(p.x)<0.5){return vec4f(1.0);}return vec4f(0.0);}',{target:'typescript',common:'fn gain(x:f32)->f32{return x*0.5;}'});assert.ok(common.code,JSON.stringify(common.diagnostics));assert.match(common.code,/gain\(p.x\) < 0.5/);assert.doesNotMatch(common.code,/function gain/);
+  const pointerCommon=await translateWgsl('fn mainImage(p:vec2f)->vec4f{var q=p;let mask=select(0.0,1.0,p.x<0.5);if(gain(&q)<mask){return vec4f(1.0);}return vec4f(0.0);}',{target:'typescript',common:'fn gain(x:ptr<function,vec2<f32>>)->f32{return (*x).x;}'});assert.ok(pointerCommon.code,JSON.stringify(pointerCommon.diagnostics));assert.match(pointerCommon.code,/gain\(gpu.addressOf\(q\)\) < mask/);assert.doesNotMatch(pointerCommon.code,/function gain/);
+});
+
+test('expression grouping preserves arithmetic, booleans, bitwise operations and pointer member access',async()=>{
+  const source=`interface Sample { value: number; }
+export function mainImage(p:vec2f):vec4f {
+  const a = p.x;
+  const b = p.y;
+  const c = 0.012;
+  let sample = gpu.construct<Sample>(a - (b - c));
+  const address = gpu.addressOf(sample);
+  const v = gpu.load(address).value;
+  const bits = ((i32(a) & 3) | 4);
+  const yes = (a < b || b < c) && a != c;
+  return vec4f((a + b) * c, a / (b / c), -(a + b), select(v, f32(bits), yes));
+}`;
+  const result=typescriptToWgsl(source);assert.ok(result.code,JSON.stringify(result.diagnostics));
+  for(const part of ['a - (b - c)','(a + b) * c','a / (b / c)','-(a + b)','(*address).value','(i32(a) & 3) | 4','(a < b || b < c) && a != c'])assert.ok(result.code.includes(part),part+'\n'+result.code);
+  const a=application();a.setSource('image',source,'typescript');const p=a.snapshot();assert.deepEqual(await refreshProjectSources(p,hlsl,translateWgsl),[]);valid(p);a.dispose();
+});
+
+test('twelve WGSL and TypeScript round trips stabilize without accumulating parentheses or losing current edits',async()=>{
+  let wgsl=`// keep this explanation
+fn mainImage(p:vec2f)->vec4f {
+  var total=(((0.012)));
+  for(var i=0;((i<3));i++) {
+    if(((p.x<2.0)) && (((i!=2)) || ((p.y>=1.0)))) { total+=0.012; }
+  }
+  return vec4f(((total)),0.0,0.0,1.0);
+}`;
+  let firstTs,firstWgsl;
+  for(let cycle=0;cycle<12;cycle++){
+    const ts=wgslToTypescript(wgsl),result=typescriptToWgsl(ts);assert.ok(result.code,JSON.stringify(result.diagnostics));wgsl=result.code;
+    if(cycle===0){firstTs=ts;firstWgsl=wgsl;}else{assert.equal(ts,firstTs);assert.equal(wgsl,firstWgsl);}
+    assert.doesNotMatch(wgsl,/\(\(\(/);assert.match(wgsl,/keep this explanation/);
+  }
+  const a=application();a.setSource('image',firstTs.replaceAll('0.012','0.024'),'typescript');await a.switchLanguage('image','wgsl');assert.match(sourceOf(a.state.project,'image'),/0\.024/);assert.doesNotMatch(sourceOf(a.state.project,'image'),/0\.012/);valid(a.snapshot());a.dispose();
+});
+
+test('conversion preview is formatted while cancel and undo retain the original authored spacing',async()=>{
+  const original='// author note\nfn mainImage(p:vec2f)->vec4f{return vec4f(p/iResolution.xy,0.012,1.0);}';
+  const a=application();a.setSource('image',original,'wgsl');
+  const cancelled=await a.prepareLanguageConversion('image','typescript');assert.equal(cancelled.after,formatShader(cancelled.after,'typescript'));assert.equal(sourceOf(a.state.project,'image'),original);a.cancelLanguageConversion(cancelled);assert.equal(sourceOf(a.state.project,'image'),original);
+  const plan=await a.prepareLanguageConversion('image','typescript');await a.applyLanguageConversion(plan);assert.equal(a.undoSource('image'),true);assert.equal(sourceOf(a.state.project,'image'),original);assert.equal(a.redoSource('image'),true);assert.equal(sourceOf(a.state.project,'image'),plan.after);a.dispose();
 });
 
 test('emitted TypeScript is recompiled before committing; hexadecimal floats retain their numeric value',async()=>{

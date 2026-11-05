@@ -3,7 +3,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
-import * as gui from "@haiyue/engine/gui";
+import { pathToFileURL } from "node:url";
+import { resolve } from "node:path";
+const gui = await import(process.env.SHADERLAB_ENGINE_CANDIDATE
+  ? pathToFileURL(resolve(process.env.SHADERLAB_ENGINE_CANDIDATE, 'dist/gui.js')).href
+  : '@haiyue/engine/gui');
 import { ShaderApplication } from "../../shared/dist/application/application.js";
 import {
   ShaderEditorController,

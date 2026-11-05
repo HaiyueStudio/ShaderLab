@@ -4,6 +4,10 @@ type Token={text:string;from:number;to:number;incomplete:boolean;kind:'word'|'sy
 export interface ShaderFormatEdit {from:number;to:number;insert:string}
 const compounds=/^(?:>>=|<<=|\+\+|--|->|::|&&|\|\||<<|>>|<=|>=|==|!=|\+=|-=|\*=|\/=|%=|&=|\|=|\^=)/;
 const numbers=/^(?:0[xX][\da-fA-F]+(?:\.[\da-fA-F]*)?(?:[pP][+-]?\d+)?|(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)[fFhHuUiIlL]*/;
+// NativeScript's embedded V8 omits some Unicode property tables. A literal
+// property escape prevents the entire app module from loading there.
+const unicodeWords=(()=>{try{return new RegExp('^[\\p{ID_Start}_][\\p{ID_Continue}_]*','u');}catch{return undefined;}})();
+const asciiWords=/^[A-Za-z_]\w*/;
 /** Keep opaque text intact: changing a macro, comment, or literal is not formatting. */
 function tokens(source:string):Token[]{
   const result:Token[]=[];let at=0;
@@ -20,26 +24,32 @@ function tokens(source:string):Token[]{
     }else if(source[at]==='"'||source[at]==="'"){
       kind='string';const quote=source[at++];incomplete=true;while(at<source.length){if(source[at]==='\\')at=Math.min(source.length,at+2);else if(source[at++]===quote){incomplete=false;break;}}
     }else {
-      const number=numbers.exec(source.slice(at)),word=/^[\p{ID_Start}_][\p{ID_Continue}_]*/u.exec(source.slice(at));
-      if(number){at+=number[0].length;kind='word';}else if(word){at+=word[0].length;kind='word';}else at+=(compounds.exec(source.slice(at))?.[0].length??1);
+      const number=numbers.exec(source.slice(at)),word=(unicodeWords??asciiWords).exec(source.slice(at));
+      if(number){at+=number[0].length;kind='word';}else if(word){at+=word[0].length;kind='word';}else {
+        // Preserve code unchanged if this runtime cannot safely classify a
+        // non-ASCII identifier. Comments and strings remain opaque above.
+        if(!unicodeWords&&source.charCodeAt(at)>127)incomplete=true;
+        at+=(compounds.exec(source.slice(at))?.[0].length??1);
+      }
     }
     result.push({text:source.slice(from,at),from,to:at,kind,incomplete});
   }
   return result;
 }
 const operator=/^(?:[+\-*/%=<>!&|^~?:]|>>=?|<<=?|&&|\|\||<=|>=|==|!=|\+=|-=|\*=|\/=|%=|&=|\|=|\^=|->)$/;
-const templateType=/^(?:array|binding_array|vec[234]|mat[234]x[234]|ptr|atomic|texture_\w+|bitcast|Buffer|RWBuffer|StructuredBuffer|RWStructuredBuffer|Texture\w*|RWTexture\w*|vector|matrix)$/;
+const templateType=/^(?:array|binding_array|vec[234]|mat[234]x[234]|ptr|atomic|texture_\w+|bitcast|construct|Buffer|RWBuffer|StructuredBuffer|RWStructuredBuffer|Texture\w*|RWTexture\w*|vector|matrix)$/;
 const prefixContext=/^(?:\(|\[|\{|,|;|:|\?|return|case|=|\+=|-=|\*=|\/=|\+|-|\*|\/|%|&&|\|\||!|~|&|\||\^|==|!=|<|>|<=|>=|->)$/;
 
 /** Shader-aware whitespace formatting; never rewrites source tokens or compiles the shader. */
 export function formatShader(source:string,language:ShaderLanguage='wgsl'):string {
   const input=tokens(source);if(!input.length||input.some(token=>token.incomplete))return source;
-  let output='',line='',depth=0,paren=0,angles=0,previous:Token|undefined,unary=false;
+  let output='',line='',depth=0,paren=0,angles=0,previous:Token|undefined,unary=false,templateClose=false;
   const braces:Array<{paren:number;angles:number;struct:boolean}>=[];
   const newline=()=>{if(line){output+=line+'\n';line='';}};
   const append=(text:string,space=false)=>{if(!line)line='  '.repeat(depth)+text;else line+=(space?' ':'')+text;};
   for(let i=0;i<input.length;i++){
     const token=input[i]!,value=token.text,prev=previous?.text??'',next=input[i+1];
+    const afterTemplate=templateClose;templateClose=false;
     const originalGap=source.slice(previous?.to??0,token.from);
     if(!line&&output&&/\n\s*\n/.test(originalGap)&&!output.endsWith('\n\n')&&prev!=='{'&&value!=='}')output+='\n';
     if(token.kind==='directive'){newline();output+=value+'\n';previous=token;unary=false;continue;}
@@ -64,7 +74,7 @@ export function formatShader(source:string,language:ShaderLanguage='wgsl'):strin
     if(value===','){
       append(value);if(braces.at(-1)?.struct&&paren===braces.at(-1)!.paren&&angles===braces.at(-1)!.angles)newline();previous=token;unary=false;continue;
     }
-    if(value==='('){append(value,/^(?:if|for|while|switch|return)$/.test(prev)||operator.test(prev)&&!unary);paren++;previous=token;unary=false;continue;}
+    if(value==='('){append(value,/^(?:if|for|while|switch|return)$/.test(prev)||operator.test(prev)&&!unary&&!afterTemplate);paren++;previous=token;unary=false;continue;}
     if(value===')'){append(value);paren=Math.max(0,paren-1);previous=token;unary=false;continue;}
     if(value==='['||value===']'||value==='.'||value==='::'||value==='@'){
       append(value,value==='['&&prev==='='||value==='@'&&!!line&&prev!=='('&&prev!=='[');previous=token;unary=false;continue;
@@ -72,12 +82,12 @@ export function formatShader(source:string,language:ShaderLanguage='wgsl'):strin
     const open=language!=='glsl'&&value==='<'&&templateType.test(prev);
     const close=angles>0&&/^(?:>|>>)$/.test(value);
     if(open){angles++;append(value);previous=token;unary=false;continue;}
-    if(close){angles=Math.max(0,angles-value.length);append(value,/^>$/.test(prev));previous=token;unary=false;continue;}
+    if(close){angles=Math.max(0,angles-value.length);append(value,/^>$/.test(prev));previous=token;unary=false;templateClose=true;continue;}
     const currentUnary=/^(?:!|~|\+|-|\*|&|\+\+|--)$/.test(value)&&(!previous||prefixContext.test(prev));
     let space=!!previous;
     if(prev==='('||prev==='['||prev==='.'||prev==='@'||prev==='::'||unary||open||prev==='<'&&angles>0)space=false;
     else if(value==='++'||value==='--')space=false;
-    else if(value===':'&&language==='wgsl')space=false;
+    else if(value===':'&&(language==='wgsl'||language==='typescript'))space=false;
     else if(operator.test(value)||operator.test(prev)||prev===','||prev===';'||previous?.kind==='comment'||previous?.kind==='line')space=true;
     // Never turn two separate operators into a new operator or comment delimiter.
     if(!space&&previous&&/^[+\-*/<>=!&|^:]+$/.test(prev)&&/^[+\-*/<>=!&|^:]+$/.test(value)&&(compounds.test(prev+value)||prev+value==='/*'||prev+value==='//'))space=true;

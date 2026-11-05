@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-02",
+  "engineBuild": "passed",
+  "iosBuild": "passed",
+  "candidateTypecheck": "passed",
+  "candidateGuiAndIdentityTests": {
+    "passed": 6
+  },
+  "boundaries": "passed",
+  "bundleResolution": "90 candidate engine modules; 0 installed old engine modules",
+  "install": "passed",
+  "performance": {
+    "status": "completed",
+    "runs": 8,
+    "operations": 800,
+    "idleFrames": 960,
+    "readback": "all nonzero",
+    "foreground": "all continuous",
+    "guiCpuStability": "passed <= 1.10 spread",
+    "nativeCpuStability": "failed; full operation 1.1494, idle 1.1079",
+    "cpuImprovement": "not observed versus historical candidate"
+  },
+  "guiProfile": "passed; independent diagnostic",
+  "touchUi": {
+    "status": "not accepted",
+    "reason": "XCTest runner exited code 74 before establishing connection; no test method completed",
+    "evidence": "logs/gui-ui.log"
+  },
+  "pageRelease50": "not part of this performance retest",
+  "defaultLaunch": "passed; default native UI restored"
+}

@@ -2,6 +2,8 @@ import ts from 'typescript';
 import {LIMITS} from './model.js';
 import type {WgslTranslationResult} from './wgsl.js';
 import {preserveShaderComments} from './shaderComments.js';
+import {formatShader} from '../../shared/dist/domain/shaderFormatting.js';
+import {primaryExpression,binaryExpression,prefixExpression,expressionOperand,type ShaderExpression} from './shaderExpressions.js';
 
 /** Parses source as data. User TypeScript is never evaluated or transpiled to JS. */
 export function typescriptToWgsl(source:string):WgslTranslationResult {
@@ -26,47 +28,47 @@ export function typescriptToWgsl(source:string):WgslTranslationResult {
   };
   const binary:Record<string,string>={add:'+',sub:'-',mul:'*',div:'/',mod:'%',eq:'==',ne:'!=',lt:'<',le:'<=',gt:'>',ge:'>=',bitAnd:'&',bitOr:'|',bitXor:'^',shl:'<<',shr:'>>'};
   const math=new Set('abs acos acosh asin asinh atan atan2 atanh ceil cos cosh exp exp2 floor log log2 max min pow round sign sin sinh sqrt tan tanh trunc'.split(' '));
-  const expr=(node:ts.Expression):string=>{
-    if(ts.isIdentifier(node))return node.text;
-    if(ts.isNumericLiteral(node))return node.getText(file).replace(/_/g,'');
-    if(node.kind===ts.SyntaxKind.TrueKeyword)return 'true';if(node.kind===ts.SyntaxKind.FalseKeyword)return 'false';
-    if(ts.isParenthesizedExpression(node))return '('+expr(node.expression)+')';
+  const expr=(node:ts.Expression):string=>expression(node).code;
+  const expression=(node:ts.Expression):ShaderExpression=>{
+    if(ts.isIdentifier(node))return primaryExpression(node.text);
+    if(ts.isNumericLiteral(node))return primaryExpression(node.getText(file).replace(/_/g,''));
+    if(node.kind===ts.SyntaxKind.TrueKeyword)return primaryExpression('true');if(node.kind===ts.SyntaxKind.FalseKeyword)return primaryExpression('false');
+    if(ts.isParenthesizedExpression(node))return expression(node.expression);
     if(ts.isPropertyAccessExpression(node)){
       if(ts.isIdentifier(node.expression)&&node.expression.text==='Math'){
         const constants:Record<string,string>={PI:'3.141592653589793',E:'2.718281828459045',SQRT2:'1.4142135623730951'};
-        return constants[node.name.text]??fail(node,'不支持该 Math 常量。');
+        return primaryExpression(constants[node.name.text]??fail(node,'不支持该 Math 常量。'));
       }
-      return expr(node.expression)+'.'+node.name.text;
+      return primaryExpression(expressionOperand(expression(node.expression),12)+'.'+node.name.text);
     }
-    if(ts.isElementAccessExpression(node)&&node.argumentExpression)return expr(node.expression)+'['+expr(node.argumentExpression)+']';
-    if(ts.isAsExpression(node)||ts.isTypeAssertionExpression(node)){const t=type(node.type);return t?`${t}(${expr(node.expression)})`:fail(node,'转换需要 GPU 数值类型。');}
+    if(ts.isElementAccessExpression(node)&&node.argumentExpression)return primaryExpression(expressionOperand(expression(node.expression),12)+'['+expr(node.argumentExpression)+']');
+    if(ts.isAsExpression(node)||ts.isTypeAssertionExpression(node)){const t=type(node.type);return t?primaryExpression(`${t}(${expr(node.expression)})`):fail(node,'转换需要 GPU 数值类型。');}
     if(ts.isPrefixUnaryExpression(node)||ts.isPostfixUnaryExpression(node)){
-      const op=ts.tokenToString(node.operator)!;return ts.isPostfixUnaryExpression(node)?expr(node.operand)+op:op+'('+expr(node.operand)+')';
+      const op=ts.tokenToString(node.operator)!;return ts.isPostfixUnaryExpression(node)?primaryExpression(expressionOperand(expression(node.operand),12)+op):prefixExpression(op,expression(node.operand));
     }
     if(ts.isBinaryExpression(node)){
       const op=ts.tokenToString(node.operatorToken.kind)!;
-      if(op==='**')return `pow(${expr(node.left)}, ${expr(node.right)})`;
+      if(op==='**')return primaryExpression(`pow(${expr(node.left)}, ${expr(node.right)})`);
       if(op==='>>>')return fail(node,'无符号右移请先转换为 u32，再使用 >>。');
       if(op===',')return fail(node,'GPU 表达式不支持逗号运算符。');
-      return '('+expr(node.left)+' '+(op==='==='?'==':op==='!=='?'!=':op)+' '+expr(node.right)+')';
+      return binaryExpression(expression(node.left),op==='==='?'==':op==='!=='?'!=':op,expression(node.right),true);
     }
     if(ts.isCallExpression(node)){
       const args=node.arguments.map(expr),types=node.typeArguments?.map(type)??[];
       if(ts.isPropertyAccessExpression(node.expression)&&ts.isIdentifier(node.expression.expression)){
         const owner=node.expression.expression.text,name=node.expression.name.text;
-        if(owner==='Math'){if(!math.has(name))return fail(node,'该 Math 方法不属于 GPU 数值子集。');return name+'('+args.join(', ')+')';}
+        if(owner==='Math'){if(!math.has(name))return fail(node,'该 Math 方法不属于 GPU 数值子集。');return primaryExpression(name+'('+args.join(', ')+')');}
         if(owner==='gpu'){
-          if(binary[name]){if(args.length!==2)return fail(node,'此 GPU 运算需要两个参数。');return '('+args[0]+' '+binary[name]+' '+args[1]+')';}
-          if(name==='neg')return '-('+args[0]+')';if(name==='not')return '!('+args[0]+')';if(name==='bitNot')return '~('+args[0]+')';
-          if(name==='addressOf')return '&'+args[0];if(name==='load')return '(*'+args[0]+')';
-          if(name==='construct'){if(types.length!==1)return fail(node,'construct 需要结构体类型。');return types[0]+'('+args.join(', ')+')';}
-          if(name==='array'||name==='bitcast')return name+(types.length?'<'+types.join(', ')+'>':'')+'('+args.join(', ')+')';
+          if(binary[name]){if(args.length!==2)return fail(node,'此 GPU 运算需要两个参数。');return binaryExpression(expression(node.arguments[0]!),binary[name]!,expression(node.arguments[1]!),true);}
+          if(['neg','not','bitNot','addressOf','load'].includes(name)){if(args.length!==1)return fail(node,'此 GPU 运算需要一个参数。');return prefixExpression(({neg:'-',not:'!',bitNot:'~',addressOf:'&',load:'*'} as Record<string,string>)[name]!,expression(node.arguments[0]!));}
+          if(name==='construct'){if(types.length!==1)return fail(node,'construct 需要结构体类型。');return primaryExpression(types[0]+'('+args.join(', ')+')');}
+          if(name==='array'||name==='bitcast')return primaryExpression(name+(types.length?'<'+types.join(', ')+'>':'')+'('+args.join(', ')+')');
           return fail(node,'未知的 GPU 运算：'+name);
         }
       }
       if(!ts.isIdentifier(node.expression))return fail(node,'GPU 只支持静态函数调用，不支持对象方法或动态函数。');
       const name=node.expression.text==='Number'?'f32':node.expression.text==='Boolean'?'bool':node.expression.text;
-      return name+(types.length?'<'+types.join(', ')+'>':'')+'('+args.join(', ')+')';
+      return primaryExpression(name+(types.length?'<'+types.join(', ')+'>':'')+'('+args.join(', ')+')');
     }
     return fail(node,'此表达式不属于 GPU 数值子集；条件值请用 if / else 或 select 编写。');
   };
@@ -129,6 +131,6 @@ export function typescriptToWgsl(source:string):WgslTranslationResult {
       else fail(node,'顶层只允许函数、数值变量、interface 和类型别名；不能 import 或执行宿主代码。');
     }
     const metadata=source.match(/^\s*\/\/ @haiyue-(?:common|channel)[^\n]*/gm)?.join('\n');
-    return {code:preserveShaderComments(source,(metadata?metadata+'\n':'')+output.join('\n\n')+'\n',{from:'typescript',to:'wgsl'}),diagnostics:[],warnings:[]};
+    return {code:formatShader(preserveShaderComments(source,(metadata?metadata+'\n':'')+output.join('\n\n')+'\n',{from:'typescript',to:'wgsl'}),'wgsl'),diagnostics:[],warnings:[]};
   }catch(error){const diagnostic=error as {line?:number;column?:number;message?:string};return {code:null,diagnostics:[{line:diagnostic.line??1,column:diagnostic.column??1,message:diagnostic.message??String(error)}],warnings:[]};}
 }

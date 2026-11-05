@@ -1,0 +1,5 @@
+{
+  "status": "incomplete",
+  "reason": "devicectl CoreDeviceError 10004 on first GUI launch; fresh standalone launch subsequently completed 100 operations",
+  "policy": "Preserved entire incomplete run. No samples from it enter the new complete four-round protocol."
+}

@@ -92,7 +92,7 @@ export async function translateWgsl(source: string, options: WgslTranslationOpti
       const pass:RenderPass={id:sound?'sound':'image',enabled:true,code:library?'fn mainImage(p:vec2f)->vec4f{return vec4f(0.0);}':authored,channels:options.channels??emptyChannels(),duration:60,volume:1};
       const wrapped=wrapShader(pass,library?authored:common);const naga=await loadCompiler();module=naga.parseWgsl(wrapped.code);info=naga.validate(module);
       if(options.target==='typescript'){
-        const output=(await import('./wgslTypescript.js')).wgslToTypescript(authored);
+        const output=(await import('./wgslTypescript.js')).wgslToTypescript(authored,common);
         // Verify the emitted editable TypeScript, including its inferred numeric
         // types, before the language switch can commit it to the document.
         const {target,sourceLanguage,...context}=options;

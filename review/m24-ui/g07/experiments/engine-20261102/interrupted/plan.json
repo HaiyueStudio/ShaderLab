@@ -1,0 +1,31 @@
+{
+  "device": "8D9238D1-024A-538B-A175-B9E71AA32202",
+  "artifact": "/Users/qingque/Desktop/HaiyueStudio/ShaderLab/artifacts/m24-g07/gui-engine-20261102/ShaderLab.ipa",
+  "artifactSha256": "84deb64c3fdb12b683034007e481b7116b564551edf6219959df7f85d365864e",
+  "candidateSha256": "c21995a5ab85f87b9ea0133bfe35b8b698f15ef2a9e68b596e25bb32ace7d4dd",
+  "instrumented": false,
+  "previewBaseline": false,
+  "previewProfile": false,
+  "previewCompare": false,
+  "schedule": [
+    [
+      "shared",
+      "optimized"
+    ],
+    [
+      "optimized",
+      "shared"
+    ],
+    [
+      "shared",
+      "optimized"
+    ],
+    [
+      "optimized",
+      "shared"
+    ]
+  ],
+  "samplesPerRun": 100,
+  "stabilitySpreadThreshold": 1.1,
+  "startedAt": "2026-11-01T23:53:31.113Z"
+}

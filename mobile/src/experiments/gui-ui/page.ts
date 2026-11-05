@@ -349,7 +349,7 @@ export class GuiExperimentPage {
             },
             (r, c) => this.region(r, c),
             guiComparisonRequested(),
-            !!(globalThis as any).__shaderlabGuiPatch && !(globalThis as any).__shaderlabGuiBaseline,
+            !!((globalThis as any).__shaderlabEngineCandidate || (globalThis as any).__shaderlabGuiPatch) && !(globalThis as any).__shaderlabGuiBaseline,
             project => this.thumbnail(project),
           );
           this.scene.add(
