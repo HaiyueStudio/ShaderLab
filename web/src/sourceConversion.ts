@@ -14,6 +14,7 @@ import { preserveShaderComments } from './shaderComments.js';
 import { passCommon, resolveChannelBindings } from './channelBindings.js';
 import {normalizeExtendedSources} from './extendedSources.js';
 import {formatShader} from '../../shared/dist/domain/shaderFormatting.js';
+import {simplifyGlslParentheses} from './glslParentheses.js';
 
 /** Compiler dependencies are supplied by Web or the native compiler bridge. */
 export function createSourceConverter(compilers: {
@@ -160,7 +161,9 @@ export function createSourceConverter(compilers: {
     return legacy(project,pass,target==='slang'?'hlsl':target);
   };
   return async(snapshot,pass,target)=>{
-    const code=await extended(snapshot,pass,target);
-    return languageOf(snapshot,pass)===target||!code.trim()?code:formatShader(code,target);
+    let code=await extended(snapshot,pass,target);
+    if(languageOf(snapshot,pass)===target||!code.trim())return code;
+    if(target==='glsl'&&!(languageOf(snapshot,'common')==='glsl'&&/^\s*#/m.test(sourceOf(snapshot,'common'))))code=simplifyGlslParentheses(code);
+    return formatShader(code,target);
   };
 }

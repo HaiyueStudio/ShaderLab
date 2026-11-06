@@ -590,7 +590,7 @@ class MobileEditor {
         const names = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ' ', ...'abcdefghijklmnopqrstuvwxyz', ...'0123456789'];
         this.desktop = new NativeDesktopInput(this.canvas, { bindings: names.map(key => ({ key })), enabled: () => this.previewVisible && !this.disposed, onKey: event => { const code = keyCode(event.key); this.pulse(code); return true; } });
         this.canvas.on('tap', () => this.desktop?.focus());
-        if(nativeLanguagesRequested())void validateNativeLanguages({page:this.page,app:this.session.application,store:projects,runtime:()=>this.runtime,language:this.language,editor:this.editor,sync:()=>this.showSource(),codePane:()=>this.select('code'),disposed:()=>this.disposed});
+        if(nativeLanguagesRequested())void validateNativeLanguages({page:this.page,app:this.session.application,store:projects,runtime:()=>this.runtime,language:this.language,editor:this.editor,sync:()=>this.showSource(),codePane:()=>this.select('code'),previewPane:()=>this.select('preview'),disposed:()=>this.disposed});
         else if(this.validate&&guiComparisonRequested()){
             const run=async()=>{while(!this.runtime||!this.guiFrameProbe){if(this.disposed)return;await new Promise(r=>setTimeout(r,50));}
                 await measureGuiComparison({frameWorkOptimized:()=>this.runtime!.optimizeFrameWork,previewProfile:()=>previewProfileSnapshot(this.runtime!),mode:'shared',application:this.session.application,engine:this.runtime.engine,probe:this.guiFrameProbe,disposed:()=>this.disposed,

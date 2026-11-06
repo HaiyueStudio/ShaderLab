@@ -8,6 +8,7 @@ import { compactShaderWhitespace } from './shaderWhitespace.js';
 import { preserveShaderComments } from './shaderComments.js';
 import { translateWgslToHlsl } from './wgslHlsl.js';
 import { restoreGlslForLoops } from './glslLoops.js';
+import {simplifyGlslParentheses} from './glslParentheses.js';
 
 export interface WgslTranslationOptions {
   entryPoint?: 'image' | 'sound' | 'common';
@@ -272,6 +273,7 @@ export async function translateWgsl(source: string, options: WgslTranslationOpti
     // exports reusable there too, with a namespace absent from the original.
     const reserved = Object.fromEntries([...code.matchAll(/\bhy_\w+\b/g)].map(m => [m[0], prefix + m[0]]));
     code = rename(code, reserved);
+    if(!options.legacyEntryWrapper)code=simplifyGlslParentheses(code);
     const commentNames = { ...reserved, ...sharedNames, mainImage: 'mainImage', mainSound: 'mainSound' };
     const withComments = (input: string, output: string, deduplicate = false) => preserveShaderComments(input, output, { from: 'wgsl', to: 'glsl', names: commentNames, deduplicate });
     if (separate) {

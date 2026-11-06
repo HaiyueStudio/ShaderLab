@@ -26,7 +26,7 @@ const report=await runEditorBrowserScenario({root,route:'web/app-dist/index.html
     await call('shader.source.set',{pass:'image',code:sources[from]+'\n// latest '+from,language:from});await choose(to);await render();const actual=await pixels(),error=Math.max(...actual.map((v,i)=>Math.abs(v-baseline[i])));assert.ok(error<=2,from+' → '+to+' pixel error '+error);conversions.push({from,to,maxChannelError:error});
     if(from==='wgsl'&&(to==='typescript'||to==='slang'))await screenshot(to+'-editor');
   }
-  const roundSource='// grouping and scalar comparison parity\nfn mainImage(p:vec2f)->vec4f{let uv=p/iResolution.xy;var color=vec3f(uv,0.012);for(var i=0;i<3;i++){if(i<2 && (uv.x<0.5 || uv.y>0.2)){color.z+=0.01;}}color.x+=0.6-(0.4-0.2);color.y+=(0.1+0.2)*0.1;return vec4f(color,1.0);}';
+  const roundSource='// grouping and scalar comparison parity\nfn grouping(a:f32,b:f32,c:f32)->f32{return a-(b-c);}\nfn mainImage(p:vec2f)->vec4f{let uv=p/iResolution.xy;var color=vec3f(uv,0.012);for(var i=0;i<3;i++){if(i<2 && (uv.x<0.5 || uv.y>0.2)){color.z+=0.01;}}color.x+=grouping(uv.x,uv.y,0.2)*0.1;color.y+=(uv.x+uv.y)*0.1;return vec4f(color,1.0);}';
   await call('shader.source.set',{pass:'image',code:roundSource,language:'wgsl'});await render();const groupedBaseline=await pixels(),stable={};
   for(let cycle=0;cycle<4;cycle++)for(const language of ['typescript','wgsl']){
     await choose(language);await render();const source=await evaluate('(()=>{const p=shaderEditor.getProject().passes.find(p=>p.id==="image");return p['+JSON.stringify(language==='wgsl'?'code':language)+'];})()');
@@ -35,8 +35,17 @@ const report=await runEditorBrowserScenario({root,route:'web/app-dist/index.html
     const actual=await pixels();assert.ok(Math.max(...actual.map((v,i)=>Math.abs(v-groupedBaseline[i])))<=1,'grouped arithmetic pixels '+cycle+' '+language);
   }
   await screenshot('stable-roundtrip-editor');
+  await call('shader.source.set',{pass:'image',code:roundSource,language:'wgsl'});await render();let firstGlsl;
+  for(let cycle=0;cycle<4;cycle++){
+    await choose('glsl');await render();const source=await evaluate('shaderEditor.getProject().passes.find(p=>p.id==="image").glsl');
+    assert.equal(source,formatShader(source,'glsl'));assert.doesNotMatch(source,/= \(p \/ iResolution\.xy\)/);assert.match(source,/return a - \(b - c\);/);
+    if(cycle===0)firstGlsl=source;else assert.equal(source,firstGlsl,'stable GLSL round trip '+cycle);
+    const actual=await pixels();assert.ok(Math.max(...actual.map((v,i)=>Math.abs(v-groupedBaseline[i])))<=1,'GLSL grouped arithmetic pixels '+cycle);
+    await choose('wgsl');await render();
+  }
+  await choose('glsl');await screenshot('glsl-parentheses-editor');
   await call('shader.source.set',{pass:'image',code:'export function mainImage(',language:'typescript'});const before=await evaluate('JSON.stringify(shaderEditor.getProject())');
   await evaluate('(()=>{const s=document.getElementById("code-language").shadowRoot.querySelector("select");s.value="wgsl";s.dispatchEvent(new Event("change",{bubbles:true}));})()');await waitFor(()=>evaluate('!document.getElementById("code-language").disabled'),'invalid conversion completes');assert.equal(await evaluate('JSON.stringify(shaderEditor.getProject())'),before);
-  assertNoBrowserErrors();return {status:'passed',conversions,formattedConversions:true,stableWgslTypescriptCycles:4,scalarComparisonOperators:true,groupedArithmeticPixelParity:true,invalidSourcePreserved:true,editorLabels:labels};
+  assertNoBrowserErrors();return {status:'passed',conversions,formattedConversions:true,stableWgslTypescriptCycles:4,stableWgslGlslCycles:4,glslParenthesesSimplified:true,scalarComparisonOperators:true,groupedArithmeticPixelParity:true,invalidSourcePreserved:true,editorLabels:labels};
 }});
 writeFileSync(resolve(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));

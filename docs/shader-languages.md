@@ -44,6 +44,8 @@ export function mainImage(p: vec2f): vec4f {
 
 语言转换完成后自动排版，转换预览显示的就是格式化结果；取消转换或撤销仍可恢复原始源码。WGSL 与 TypeScript 按表达式结构和运算优先级生成括号，去掉重复分组，同时保留 `a - (b - c)`、`a / (b / c)`、逻辑组合及指针字段访问需要的分组。反复转换不会再累积括号，也不会重排浮点运算的结合顺序。
 
+WGSL → GLSL 同样清理生成表达式及旧 GLSL 草稿中的冗余括号，覆盖 Image、Buffer、Sound 和独立 Common。函数调用、条件与循环头保留语法要求的括号，减法、除法和浮点结合顺序保持不变；包含预处理宏的源码以及依赖 Common 宏的草稿保留原分组。历史版本校验使用的旧生成格式不变。
+
 ## Slang
 
 使用随包的 Slang 2026.19 官方编译器，与 HLSL 使用同一份固定资源绑定和 GPU 入口。支持该版本可编译到 WGSL 的 Slang 数值语法及泛型专门化。
@@ -71,7 +73,7 @@ TypeScript Common 是无需入口的数值函数 / interface 库，可与 WGSL�
 
 ## 构建和验证
 
-TypeScript 解析器只在转换服务首次使用时加载。Web 资源和移动端隔离编译页面包含 TypeScript 解析器和许可证，移动端渲染仍由原生 WebGPU 完成；运行时无需下载编译器、上传源码或开放应用文件接口。Slang 编译器与 WASM 复用已有离线资源。新增的 TypeScript 解析器懒加载块约 4.4 MiB，Web 总资源约 41.2 MB，因此原始包预算从 39 MB 调整为 43 MB；压缩包预算仍为 20 MB。
+TypeScript 解析器只在转换服务首次使用时加载。Web 资源和移动端隔离编译页面包含 TypeScript 解析器和许可证，移动端渲染仍由原生 WebGPU 完成；运行时无需下载编译器、上传源码或开放应用文件接口。Slang 编译器与 WASM 复用已有离线资源。新增的 TypeScript 解析器懒加载块约 4.4 MiB，Web 总资源约 41.2 MB，因此原始包预算从 39 MB 调整为 43 MB。GLSL 表达式清理增加约 1 KB 压缩脚本，压缩包预算相应从 20,000,000 字节微调为 20,002,000 字节。
 
 `web/test/extended-languages.test.mjs` 覆盖五种语言 20 个转换方向、最新编辑、Slang 泛型、TypeScript Common / Sound / 数组 / 矩阵、8 个内置示例、失败保护及撤销重做。浏览器和移动编译页另验证本地打包后的真实编译器与 GPU 输出。
 
